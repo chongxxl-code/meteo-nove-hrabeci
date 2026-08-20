@@ -30,7 +30,6 @@ def main():
     rv = json.loads(REVIEW.read_text(encoding='utf-8')) if REVIEW.exists() else {}
 
     ndmi = ((g.get('summary') or {}).get('ndmi') or {})
-    ndvi = ((g.get('summary') or {}).get('ndvi') or {})
     es = e.get('summary') or {}
     algo = ((s.get('comparison') or {}).get('ndmi') or {})
     manual = ((ms.get('comparison') or {}).get('ndmi') or {})
@@ -54,22 +53,25 @@ def main():
     confirmed = len(rv.get('confirmed_change') or [])
     nochange = len(rv.get('no_visible_change') or [])
     candidates = (rv.get('summary') or {}).get('algorithmic_candidates', d.get('event_count'))
+    roles = es.get('role_counts') or {}
+    north_count = roles.get('north_facing_slope', 0)
+    south_count = roles.get('south_facing_slope', 0)
 
     findings = [
         {
             'id': 'open-slope-drainage',
-            'title': 'Strmější travní plochy se opakovaně jeví sušší / méně vitální',
-            'state': 'emerging_supported',
-            'confidence': 'moderate',
-            'claim': 'Napříč kontrolovanými travními plochami má vyšší sklon ve většině Sentinel termínů záporný vztah k NDMI i NDVI a tento signál zůstává i po vyřazení pouze ručně potvrzených vegetačních změn.',
+            'title': 'Sklon má slabší, ale stále převážně sušší signál',
+            'state': 'emerging_hypothesis',
+            'confidence': 'low_to_moderate',
+            'claim': 'Po rozšíření sítě na více severních svahů zůstává vyšší sklon většinou spojen s nižším NDMI/NDVI, ale vztah je slabší a méně konzistentní než v původní menší síti.',
             'evidence': [
                 f"Raw NDMI: očekávaný záporný směr v {pct(slope.get('expected_direction_fraction'))} % použitelných scén; medián Pearson r = {slope.get('median_pearson_r')}.",
-                f"Po ručním filtru 5 potvrzených změn: NDMI medián r = {slope_m.get('manual_confirmed_filtered_median_r')}; očekávaný směr {pct(slope_m.get('manual_expected_direction_fraction'))} %.",
+                f"Po ručním filtru {confirmed} potvrzených změn: NDMI medián r = {slope_m.get('manual_confirmed_filtered_median_r')}; očekávaný směr {pct(slope_m.get('manual_expected_direction_fraction'))} %.",
                 f"NDVI po ručním filtru: medián r = {slope_vi_m.get('manual_confirmed_filtered_median_r')}.",
                 f"Síla NDMI vztahu sklonu se s 14denním deštěm mění korelací r = {slope.get('corr_rain_14d_vs_scene_pearson')} (explorační).",
             ],
-            'interpretation': 'Pracovní mechanismus: po srážkách strmější místa mohou rychleji odvádět vodu a plošší místa ji déle držet. Ručně ověřený filtr tento vztah neoslabuje, což zvyšuje jeho věrohodnost, ale stále nejde o přímé měření půdní vlhkosti ani důkaz mechanismu.',
-            'next_test': 'Sledovat vztah po dalších výrazných deštích a v další sezoně; ideálně přidat terénní měření půdní vlhkosti.'
+            'interpretation': 'Odvodnění po svahu zůstává možným mechanismem, ale po rozšíření vzorku už sklon není nejsilnější samostatný prediktor. Výsledek je vhodnější držet jako pracovní hypotézu než jako téměř potvrzený vztah.',
+            'next_test': 'Sledovat sklon odděleně během výrazně mokrých epizod a v další sezoně; ideálně doplnit terénní půdní vlhkost.'
         },
         {
             'id': 'twi-context-dependent',
@@ -88,18 +90,19 @@ def main():
         },
         {
             'id': 'southness-drying',
-            'title': 'Jižní expozice má po ruční kontrole stále sušší signál',
+            'title': 'Jižní expozice je zatím nejsilnější opakovaný terénní signál',
             'state': 'emerging_supported',
             'confidence': 'moderate',
-            'claim': 'U dostatečně sklonitých a směrově koherentních travních ploch je vyšší southness většinou spojena s nižším NDMI; po vyřazení pouze ručně potvrzených změn vztah zůstává zřetelně záporný.',
+            'claim': 'Po rozšíření a vizuálním ověření severní kontrolní skupiny je vyšší southness většinou spojena s nižším NDMI i NDVI. Vztah se prakticky nemění ani po vyřazení pouze ručně potvrzených vegetačních změn.',
             'evidence': [
+                f"Síť nyní obsahuje {north_count} severní a {south_count} jižní kontrolní plochy.",
                 f"Raw southness–NDMI: očekávaný záporný směr v {pct(south.get('expected_direction_fraction'))} % scén; medián Pearson r = {south.get('median_pearson_r')}.",
                 f"Po ručním filtru: NDMI medián r = {south_m.get('manual_confirmed_filtered_median_r')}; očekávaný záporný směr {pct(south_m.get('manual_expected_direction_fraction'))} %.",
                 f"NDVI po ručním filtru: medián r = {south_vi_m.get('manual_confirmed_filtered_median_r')}; očekávaný směr {pct(south_vi_m.get('manual_expected_direction_fraction'))} %.",
                 f"Skupinový jih − sever medián NDMI = {(es.get('aspect_ndmi') or {}).get('median_contrast')}.",
             ],
-            'interpretation': 'Směr odpovídá vyššímu oslunění a potenciálnímu výparu na jižních svazích. Dedicated severní skupina ale zatím obsahuje jen jeden schválený vzorek; nové N4–N8 čekají na ruční kontrolu.',
-            'next_test': 'Schválit další čisté severní kontrolní plochy a znovu přepočítat sever × jih, zejména během teplých suchých epizod.'
+            'interpretation': 'Směr odpovídá vyššímu oslunění a potenciálnímu výparu na jižních svazích. Protože severní skupina už není založená na jediném místě a nové severní plochy prošly vizuální kontrolou, je tento signál podstatně věrohodnější než v předchozí verzi sítě. Stále však jde o jednu sezonu a observační vztah.',
+            'next_test': 'Sledovat sever × jih zejména během teplých suchých epizod a ověřit, zda se stejný směr zopakuje v další sezoně.'
         },
         {
             'id': 'low-position-simple-rule',
@@ -120,13 +123,13 @@ def main():
             'title': 'Algoritmický NDVI propad není totéž co viditelná změna porostu',
             'state': 'emerging_supported',
             'confidence': 'moderate',
-            'claim': 'Automatický detektor našel 12 kandidátních vegetačních narušení, ale ruční historická kontrola potvrdila přesvědčivou změnu jen u části z nich.',
+            'claim': f'Automatický detektor našel {candidates} kandidátních vegetačních narušení, ale ruční historická kontrola potvrdila přesvědčivou změnu jen u {confirmed} z nich.',
             'evidence': [
                 f"Detektor označil {candidates} kandidátních událostí; ruční kontrola potvrdila {confirmed} a u {nochange} nenašla přesvědčivou viditelnou změnu.",
                 f"Ručně ověřený citlivostní test proto vyřazuje jen {ms.get('excluded_observation_count')} sample×datum pozorování, zatímco široký algoritmický filtr vyřazoval {s.get('excluded_observation_count')}.",
                 f"Například TPI900–NDMI je raw {tpi.get('median_pearson_r')}, po širokém algoritmickém filtru {(algo.get('tpi900') or {}).get('filtered_median_r')}, ale po ručním filtru {tpi_m.get('manual_confirmed_filtered_median_r')}.",
             ],
-            'interpretation': 'Spektrální NDVI změna může být reálná i bez nápadné změny v RGB, takže sedm případů neoznačujeme za definitivní falešné poplachy. Pro kauzální interpretaci ale budeme jako přísnější kontrolu používat ručně potvrzené změny a automatické flagy držet odděleně.',
+            'interpretation': f'Spektrální NDVI změna může být reálná i bez nápadné změny v RGB, takže {nochange} vizuálně nepotvrzených případů neoznačujeme automaticky za falešné poplachy. Pro kauzální interpretaci budeme jako přísnější kontrolu používat ručně potvrzené změny a automatické flagy držet odděleně.',
             'next_test': 'Při dalších událostech kombinovat NDVI/NDMI, true-colour snímek a pokud možno místní záznam o seči, pastvě nebo jiném zásahu.'
         },
     ]
