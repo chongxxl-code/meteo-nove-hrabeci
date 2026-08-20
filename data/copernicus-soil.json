@@ -5,30 +5,67 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_utc": "2026-08-20T14:34:38.482553+00:00",
-  "quality_status": "catalog_connected_pixel_access_pending",
+  "computed_at_utc": "2026-08-20T14:47:17.234887+00:00",
+  "quality_status": "operational_copernicus_soil_1km",
   "products": {
     "ssm": {
-      "ok": false,
+      "ok": true,
       "product": "ssm",
       "nominal_date": "2026-08-17T00:00:00.000",
       "name": "c_gls_SSM1km_202608170000_CEURO_S1CSAR_V1.2.1_cog",
       "id": "36f0ea20-a13f-44c4-9434-dc41d7592d34",
       "s3_path": "s3://eodata/CLMS/bio-geophysical/surface_soil_moisture/ssm_europe_1km_daily_v1/2026/08/17/c_gls_SSM1km_202608170000_CEURO_S1CSAR_V1.2.1_cog",
-      "access_mode": "unsigned",
-      "error": "An error occurred (InvalidAccessKeyId) when calling the ListObjectsV2 operation: Unknown",
-      "access_status": "catalog_public_but_eodata_credentials_required_or_unsigned_denied"
+      "access_mode": "signed",
+      "tiff_count": 2,
+      "primary": {
+        "key": "CLMS/bio-geophysical/surface_soil_moisture/ssm_europe_1km_daily_v1/2026/08/17/c_gls_SSM1km_202608170000_CEURO_S1CSAR_V1.2.1_cog/c_gls_SSM1km-SSM_202608170000_CEURO_S1CSAR_V1.2.1.tiff",
+        "raw": 29.0,
+        "value_percent": 14.5,
+        "band_description": "Surface Soil Moisture",
+        "scale_used": 0.5,
+        "nodata": 255.0,
+        "crs": "EPSG:4326",
+        "resolution": [
+          0.008928571428571175,
+          0.0089285714285694
+        ]
+      }
     },
     "swi": {
-      "ok": false,
+      "ok": true,
       "product": "swi",
       "nominal_date": "2026-08-17T12:00:00.000",
       "name": "c_gls_SWI1km_202608171200_CEURO_SCATSAR_V2.1.1_cog",
       "id": "6f50e42b-2787-4d9c-af71-ed93eedf20ae",
       "s3_path": "s3://eodata/CLMS/bio-geophysical/soil_water_index/swi_europe_1km_daily_v2/2026/08/17/c_gls_SWI1km_202608171200_CEURO_SCATSAR_V2.1.1_cog",
-      "access_mode": "unsigned",
-      "error": "An error occurred (InvalidAccessKeyId) when calling the ListObjectsV2 operation: Unknown",
-      "access_status": "catalog_public_but_eodata_credentials_required_or_unsigned_denied"
+      "access_mode": "signed",
+      "tiff_count": 17,
+      "primary": {
+        "key": "CLMS/bio-geophysical/soil_water_index/swi_europe_1km_daily_v2/2026/08/17/c_gls_SWI1km_202608171200_CEURO_SCATSAR_V2.1.1_cog/c_gls_SWI1km-SWI020_202608171200_CEURO_SCATSAR_V2.1.1.tiff",
+        "raw": 66.0,
+        "value_percent": 33.0,
+        "band_description": "Soil Water Index with T=20",
+        "scale_used": 0.5,
+        "nodata": 255.0,
+        "crs": "EPSG:4326",
+        "resolution": [
+          0.008928571428571175,
+          0.008928571428569397
+        ]
+      },
+      "swi_060": {
+        "key": "CLMS/bio-geophysical/soil_water_index/swi_europe_1km_daily_v2/2026/08/17/c_gls_SWI1km_202608171200_CEURO_SCATSAR_V2.1.1_cog/c_gls_SWI1km-SWI060_202608171200_CEURO_SCATSAR_V2.1.1.tiff",
+        "raw": 64.0,
+        "value_percent": 32.0,
+        "band_description": "Soil Water Index with T=60",
+        "scale_used": 0.5,
+        "nodata": 255.0,
+        "crs": "EPSG:4326",
+        "resolution": [
+          0.008928571428571175,
+          0.008928571428569397
+        ]
+      }
     }
   },
   "method_note": "Independent CLMS 1 km satellite soil-moisture control. SSM is top-soil percent saturation; SWI is profile soil-moisture index. It supplements, not replaces, CHMI rain, P-ET0 and Sentinel-2 NDMI."
