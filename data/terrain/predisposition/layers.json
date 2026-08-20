@@ -1,0 +1,276 @@
+{
+  "version": "terrain-predisposition-v1",
+  "status": "terrain_only_explanatory_model",
+  "computed_at_local": "2026-08-20T11:10:51.002191+02:00",
+  "bounds_wgs84": [
+    [
+      50.98,
+      14.38
+    ],
+    [
+      51.06,
+      14.5
+    ]
+  ],
+  "image_size_px": [
+    1200,
+    900
+  ],
+  "source": {
+    "terrain": "ČÚZK DMR 4G 5 m",
+    "hydrology": "D8 flow accumulation + TWI derived from DMR 4G",
+    "export": {
+      "requested_size_px": [
+        2351,
+        2433
+      ],
+      "returned_size_px": [
+        2351,
+        2433
+      ],
+      "actual_pixel_m": 4.999,
+      "reported_crs": "LOCAL_CS[\"S-JTSK / Krovak East North\",UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"5514\"]]",
+      "zero_background_pixels_masked": 2258970,
+      "border_nodata_policy": "exact zero from service background is masked as NoData for this high-elevation study area",
+      "export_href_host": "ags.cuzk.gov.cz"
+    }
+  },
+  "layers": {
+    "wetness": {
+      "file": "data/terrain/predisposition/wetness.png",
+      "label": "Predispozice k zadržování vody",
+      "score_range": [
+        0,
+        100
+      ],
+      "formula": "60% local TWI + 25% valley position TPI300 + 15% valley position TPI900",
+      "interpretation": "Higher score = terrain is more predisposed to concentrate and retain water. Not measured soil moisture."
+    },
+    "drying": {
+      "file": "data/terrain/predisposition/drying.png",
+      "label": "Predispozice k vysychání",
+      "score_range": [
+        0,
+        100
+      ],
+      "formula": "45% inverse TWI + 30% south-facing solar exposure + 15% convexity TPI300 + 10% slope exposure",
+      "interpretation": "Higher score = terrain-only tendency to drain/heat/dry faster. Vegetation, soil type and weather are not yet included."
+    },
+    "cold": {
+      "file": "data/terrain/predisposition/cold.png",
+      "label": "Predispozice k nočnímu hromadění chladu",
+      "score_range": [
+        0,
+        100
+      ],
+      "formula": "35% broad valley position TPI900 + 30% local depression TPI300 + 20% flatness + 15% low relative elevation",
+      "interpretation": "Higher score = terrain-only propensity for cold-air pooling under suitable clear/calm weather. Not a temperature forecast."
+    }
+  },
+  "limitations": [
+    "ČÚZK DMR 4G ends at the Czech border; terrain context and flow contributions from Germany are missing.",
+    "Scores are locally normalized for this Nové Hraběcí study area and should not be compared numerically with another region.",
+    "v1 uses terrain only. Land cover, canopy, soil, buildings, Sentinel vegetation/moisture response and observed weather will be added later.",
+    "Cold-air pooling requires suitable meteorological conditions; terrain predisposition alone does not guarantee a colder night."
+  ],
+  "zones": [
+    {
+      "id": "NH-REF",
+      "name": "Nové Hraběcí – meteorologická reference",
+      "class": "reference",
+      "geometry": "Point",
+      "wetness_score": 47.2,
+      "drying_score": 41.9,
+      "cold_pool_score": 75.6
+    },
+    {
+      "id": "NH-OPEN-01",
+      "name": "Otevřená krajina / pastvina – vzorek 01",
+      "class": "open_land",
+      "geometry": "Polygon",
+      "wetness": {
+        "pixels": 2758,
+        "median": 46.3,
+        "mean": 45.8,
+        "p90": 59.0,
+        "max": 88.6
+      },
+      "drying": {
+        "pixels": 2758,
+        "median": 37.3,
+        "mean": 37.7,
+        "p90": 50.3,
+        "max": 59.0
+      },
+      "cold_pool": {
+        "pixels": 2758,
+        "median": 56.1,
+        "mean": 55.7,
+        "p90": 63.2,
+        "max": 71.0
+      }
+    },
+    {
+      "id": "NH-FOREST-01",
+      "name": "Les – vzorek 01",
+      "class": "forest",
+      "geometry": "Polygon",
+      "wetness": {
+        "pixels": 2498,
+        "median": 41.6,
+        "mean": 42.8,
+        "p90": 62.4,
+        "max": 95.9
+      },
+      "drying": {
+        "pixels": 2498,
+        "median": 46.1,
+        "mean": 44.6,
+        "p90": 59.0,
+        "max": 71.3
+      },
+      "cold_pool": {
+        "pixels": 2498,
+        "median": 63.4,
+        "mean": 60.1,
+        "p90": 77.0,
+        "max": 87.3
+      }
+    },
+    {
+      "id": "NH-WET-01",
+      "name": "Vodní kontrola – Hraničář",
+      "class": "water_wetland",
+      "geometry": "Polygon",
+      "wetness": {
+        "pixels": 449,
+        "median": 67.0,
+        "mean": 67.1,
+        "p90": 74.5,
+        "max": 91.6
+      },
+      "drying": {
+        "pixels": 449,
+        "median": 21.7,
+        "mean": 21.6,
+        "p90": 28.8,
+        "max": 33.5
+      },
+      "cold_pool": {
+        "pixels": 449,
+        "median": 83.0,
+        "mean": 83.1,
+        "p90": 84.4,
+        "max": 85.5
+      }
+    },
+    {
+      "id": "NH-QUARRY-01",
+      "name": "Kamenolom Císařský – těžební jádro",
+      "class": "quarry",
+      "geometry": "Polygon",
+      "wetness": {
+        "pixels": 5232,
+        "median": 17.7,
+        "mean": 21.2,
+        "p90": 46.8,
+        "max": 85.8
+      },
+      "drying": {
+        "pixels": 5232,
+        "median": 52.6,
+        "mean": 52.9,
+        "p90": 74.1,
+        "max": 99.1
+      },
+      "cold_pool": {
+        "pixels": 5232,
+        "median": 17.9,
+        "mean": 18.0,
+        "p90": 33.2,
+        "max": 53.8
+      }
+    },
+    {
+      "id": "NH-RIDGE-01",
+      "name": "Partyzánský vrch – vrcholová kontrola",
+      "class": "ridge_highland",
+      "geometry": "Polygon",
+      "wetness": {
+        "pixels": 1938,
+        "median": 5.6,
+        "mean": 9.1,
+        "p90": 24.2,
+        "max": 54.0
+      },
+      "drying": {
+        "pixels": 1938,
+        "median": 76.8,
+        "mean": 73.6,
+        "p90": 88.4,
+        "max": 94.3
+      },
+      "cold_pool": {
+        "pixels": 1938,
+        "median": 0.0,
+        "mean": 4.2,
+        "p90": 15.6,
+        "max": 24.3
+      }
+    },
+    {
+      "id": "NH-VALLEY-01",
+      "name": "Nízká poloha / údolí – Rožany",
+      "class": "valley_lowland",
+      "geometry": "Polygon",
+      "wetness": {
+        "pixels": 1898,
+        "median": 46.1,
+        "mean": 47.5,
+        "p90": 65.2,
+        "max": 100.0
+      },
+      "drying": {
+        "pixels": 1898,
+        "median": 45.4,
+        "mean": 44.9,
+        "p90": 61.4,
+        "max": 75.8
+      },
+      "cold_pool": {
+        "pixels": 1898,
+        "median": 72.0,
+        "mean": 72.8,
+        "p90": 87.6,
+        "max": 100.0
+      }
+    },
+    {
+      "id": "NH-URBAN-01",
+      "name": "Zastavěné prostředí – Šluknov",
+      "class": "urban",
+      "geometry": "Polygon",
+      "wetness": {
+        "pixels": 3939,
+        "median": 41.8,
+        "mean": 44.7,
+        "p90": 64.6,
+        "max": 90.1
+      },
+      "drying": {
+        "pixels": 3939,
+        "median": 40.7,
+        "mean": 38.8,
+        "p90": 50.5,
+        "max": 64.1
+      },
+      "cold_pool": {
+        "pixels": 3939,
+        "median": 67.4,
+        "mean": 67.3,
+        "p90": 73.2,
+        "max": 83.7
+      }
+    }
+  ]
+}
