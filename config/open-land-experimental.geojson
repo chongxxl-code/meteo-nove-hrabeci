@@ -1,24 +1,25 @@
 {
   "type": "FeatureCollection",
-  "name": "nove-hrabeci-open-land-experimental-v1",
+  "name": "nove-hrabeci-open-land-experimental-v2",
   "properties": {
-    "status": "stable_after_second_visual_check",
-    "generated_at_local": "2026-08-20T12:39:06.898023+02:00",
-    "source_candidates": "nove-hrabeci-open-land-candidates-v2",
-    "review_version": "visual-review-v2.3",
-    "reviewed_at_local": "2026-08-20T12:35:00+02:00",
-    "purpose": "Stable visually reviewed open-land sampling network for Sentinel/terrain response experiments.",
+    "status": "stable_after_v3_visual_review",
+    "generated_at_local": "2026-08-20T13:06:45.666363+02:00",
+    "review_versions": [
+      "visual-review-v2.3",
+      "visual-review-v3.1"
+    ],
+    "purpose": "Stable visually reviewed matched open-land network for Sentinel/terrain response experiments.",
     "role_counts": {
       "high_position": 2,
       "north_facing_slope": 1,
-      "high_twi": 1,
-      "low_twi": 3
+      "high_twi": 2,
+      "low_twi": 3,
+      "low_position": 4,
+      "south_facing_slope": 2
     },
-    "known_gaps": [
-      "low_position",
-      "south_facing_slope",
-      "high_twi_backup"
-    ]
+    "known_gaps": [],
+    "sample_count": 14,
+    "note": "Network combines the seven v2 samples surviving two visual checks with seven newly approved targeted v3 samples."
   },
   "features": [
     {
@@ -492,6 +493,503 @@
             [
               14.4575855,
               51.025886
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "low_position",
+        "selection_score": 0.938,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 0.98,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.7752,
+        "sentinel_ndvi_p10": 0.7356,
+        "sentinel_ndvi_p90": 0.814,
+        "sentinel_ndvi_spread_p90_p10": 0.0784,
+        "sentinel_ndmi_median": 0.1952,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 309.26,
+        "slope_deg": 5.58,
+        "dominant_aspect_deg": 73.3,
+        "aspect_coherence": 0.917,
+        "tpi_300m_m": -6.65,
+        "tpi_900m_m": -22.59,
+        "twi": 6.88,
+        "wetness_score": 60.37,
+        "drying_score": 34.25,
+        "cold_pool_score": 82.48,
+        "candidate_rank": 4,
+        "display_label": "L4",
+        "id": "NH-OPEN-V3-L04",
+        "name": "Nízká poloha · varianta 4",
+        "class": "open_land_target_candidate_v3",
+        "screening_version": 3,
+        "center_lat": 51.030822,
+        "center_lon": 14.449105,
+        "distance_rule": ">=260 m from every v2 candidate center",
+        "review_label": "L4",
+        "review_version": "visual-review-v3.1",
+        "reviewed_at_local": "2026-08-20T13:00:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4486782,
+              51.0304678
+            ],
+            [
+              14.4496667,
+              51.0305533
+            ],
+            [
+              14.4495311,
+              51.0311766
+            ],
+            [
+              14.4485426,
+              51.0310911
+            ],
+            [
+              14.4486782,
+              51.0304678
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "low_position",
+        "selection_score": 0.9176,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 0.98,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.7587,
+        "sentinel_ndvi_p10": 0.7213,
+        "sentinel_ndvi_p90": 0.7908,
+        "sentinel_ndvi_spread_p90_p10": 0.0695,
+        "sentinel_ndmi_median": 0.1806,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 321.43,
+        "slope_deg": 5.92,
+        "dominant_aspect_deg": 29.1,
+        "aspect_coherence": 0.982,
+        "tpi_300m_m": -4.18,
+        "tpi_900m_m": -22.36,
+        "twi": 8.12,
+        "wetness_score": 67.58,
+        "drying_score": 26.71,
+        "cold_pool_score": 79.08,
+        "candidate_rank": 5,
+        "display_label": "L5",
+        "id": "NH-OPEN-V3-L05",
+        "name": "Nízká poloha · varianta 5",
+        "class": "open_land_target_candidate_v3",
+        "screening_version": 3,
+        "center_lat": 51.024062,
+        "center_lon": 14.452229,
+        "distance_rule": ">=260 m from every v2 candidate center",
+        "review_label": "L5",
+        "review_version": "visual-review-v3.1",
+        "reviewed_at_local": "2026-08-20T13:00:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4518022,
+              51.023708
+            ],
+            [
+              14.4527906,
+              51.0237935
+            ],
+            [
+              14.4526551,
+              51.0244168
+            ],
+            [
+              14.4516667,
+              51.0243314
+            ],
+            [
+              14.4518022,
+              51.023708
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "low_position",
+        "selection_score": 0.8869,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 0.98,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.7215,
+        "sentinel_ndvi_p10": 0.6822,
+        "sentinel_ndvi_p90": 0.737,
+        "sentinel_ndvi_spread_p90_p10": 0.0548,
+        "sentinel_ndmi_median": 0.1475,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 314.03,
+        "slope_deg": 5.59,
+        "dominant_aspect_deg": 224.3,
+        "aspect_coherence": 0.996,
+        "tpi_300m_m": -7.23,
+        "tpi_900m_m": -18.86,
+        "twi": 7.84,
+        "wetness_score": 67.38,
+        "drying_score": 29.62,
+        "cold_pool_score": 81.68,
+        "candidate_rank": 6,
+        "display_label": "L6",
+        "id": "NH-OPEN-V3-L06",
+        "name": "Nízká poloha · varianta 6",
+        "class": "open_land_target_candidate_v3",
+        "screening_version": 3,
+        "center_lat": 51.032278,
+        "center_lon": 14.454398,
+        "distance_rule": ">=260 m from every v2 candidate center",
+        "review_label": "L6",
+        "review_version": "visual-review-v3.1",
+        "reviewed_at_local": "2026-08-20T13:00:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4539719,
+              51.0319233
+            ],
+            [
+              14.4549604,
+              51.0320087
+            ],
+            [
+              14.4548249,
+              51.0326321
+            ],
+            [
+              14.4538363,
+              51.0325466
+            ],
+            [
+              14.4539719,
+              51.0319233
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "low_position",
+        "selection_score": 0.8796,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 0.986,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.6657,
+        "sentinel_ndvi_p10": 0.6163,
+        "sentinel_ndvi_p90": 0.6997,
+        "sentinel_ndvi_spread_p90_p10": 0.0834,
+        "sentinel_ndmi_median": 0.0907,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 338.83,
+        "slope_deg": 5.52,
+        "dominant_aspect_deg": 164.2,
+        "aspect_coherence": 0.954,
+        "tpi_300m_m": -7.97,
+        "tpi_900m_m": -20.48,
+        "twi": 6.84,
+        "wetness_score": 58.97,
+        "drying_score": 36.36,
+        "cold_pool_score": 81.01,
+        "candidate_rank": 7,
+        "display_label": "L7",
+        "id": "NH-OPEN-V3-L07",
+        "name": "Nízká poloha · varianta 7",
+        "class": "open_land_target_candidate_v3",
+        "screening_version": 3,
+        "center_lat": 51.024415,
+        "center_lon": 14.43482,
+        "distance_rule": ">=260 m from every v2 candidate center",
+        "review_label": "L7",
+        "review_version": "visual-review-v3.1",
+        "reviewed_at_local": "2026-08-20T13:00:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4343939,
+              51.0240609
+            ],
+            [
+              14.4353823,
+              51.0241465
+            ],
+            [
+              14.4352465,
+              51.0247699
+            ],
+            [
+              14.4342581,
+              51.0246843
+            ],
+            [
+              14.4343939,
+              51.0240609
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "south_facing_slope",
+        "selection_score": 0.8992,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 1.0,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.6361,
+        "sentinel_ndvi_p10": 0.5938,
+        "sentinel_ndvi_p90": 0.6833,
+        "sentinel_ndvi_spread_p90_p10": 0.0895,
+        "sentinel_ndmi_median": 0.0603,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 387.89,
+        "slope_deg": 7.02,
+        "dominant_aspect_deg": 186.8,
+        "aspect_coherence": 0.982,
+        "tpi_300m_m": 7.73,
+        "tpi_900m_m": 14.41,
+        "twi": 4.99,
+        "wetness_score": 25.13,
+        "drying_score": 54.91,
+        "cold_pool_score": 42.24,
+        "candidate_rank": 6,
+        "display_label": "S6",
+        "id": "NH-OPEN-V3-S06",
+        "name": "Jižní svah · varianta 6",
+        "class": "open_land_target_candidate_v3",
+        "screening_version": 3,
+        "center_lat": 51.008711,
+        "center_lon": 14.433638,
+        "distance_rule": ">=260 m from every v2 candidate center",
+        "review_label": "S6",
+        "review_version": "visual-review-v3.1",
+        "reviewed_at_local": "2026-08-20T13:00:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4332118,
+              51.0083561
+            ],
+            [
+              14.4341999,
+              51.0084417
+            ],
+            [
+              14.4340642,
+              51.009065
+            ],
+            [
+              14.4330761,
+              51.0089794
+            ],
+            [
+              14.4332118,
+              51.0083561
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "south_facing_slope",
+        "selection_score": 0.8008,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 0.981,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.6825,
+        "sentinel_ndvi_p10": 0.6599,
+        "sentinel_ndvi_p90": 0.7498,
+        "sentinel_ndvi_spread_p90_p10": 0.0899,
+        "sentinel_ndmi_median": 0.1115,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 328.97,
+        "slope_deg": 8.43,
+        "dominant_aspect_deg": 202.2,
+        "aspect_coherence": 0.997,
+        "tpi_300m_m": -6.97,
+        "tpi_900m_m": -8.56,
+        "twi": 6.64,
+        "wetness_score": 56.04,
+        "drying_score": 41.49,
+        "cold_pool_score": 69.27,
+        "candidate_rank": 7,
+        "display_label": "S7",
+        "id": "NH-OPEN-V3-S07",
+        "name": "Jižní svah · varianta 7",
+        "class": "open_land_target_candidate_v3",
+        "screening_version": 3,
+        "center_lat": 51.032601,
+        "center_lon": 14.45814,
+        "distance_rule": ">=260 m from every v2 candidate center",
+        "review_label": "S7",
+        "review_version": "visual-review-v3.1",
+        "reviewed_at_local": "2026-08-20T13:00:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4577137,
+              51.0322466
+            ],
+            [
+              14.4587022,
+              51.032332
+            ],
+            [
+              14.4585668,
+              51.0329554
+            ],
+            [
+              14.4575782,
+              51.03287
+            ],
+            [
+              14.4577137,
+              51.0322466
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "high_twi",
+        "selection_score": 0.9777,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 0.986,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.8319,
+        "sentinel_ndvi_p10": 0.7992,
+        "sentinel_ndvi_p90": 0.8738,
+        "sentinel_ndvi_spread_p90_p10": 0.0746,
+        "sentinel_ndmi_median": 0.2561,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 355.95,
+        "slope_deg": 3.88,
+        "dominant_aspect_deg": 43.7,
+        "aspect_coherence": 0.497,
+        "tpi_300m_m": -6.59,
+        "tpi_900m_m": -3.43,
+        "twi": 7.68,
+        "wetness_score": 61.77,
+        "drying_score": 27.16,
+        "cold_pool_score": 71.59,
+        "candidate_rank": 8,
+        "display_label": "T+8",
+        "id": "NH-OPEN-V3-TP08",
+        "name": "Vysoké TWI – záloha · varianta 8",
+        "class": "open_land_target_candidate_v3",
+        "screening_version": 3,
+        "center_lat": 51.009832,
+        "center_lon": 14.441877,
+        "distance_rule": ">=260 m from every v2 candidate center",
+        "review_label": "T+8",
+        "review_version": "visual-review-v3.1",
+        "reviewed_at_local": "2026-08-20T13:00:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4414511,
+              51.009478
+            ],
+            [
+              14.4424391,
+              51.0095635
+            ],
+            [
+              14.4423035,
+              51.0101869
+            ],
+            [
+              14.4413154,
+              51.0101013
+            ],
+            [
+              14.4414511,
+              51.009478
             ]
           ]
         ]

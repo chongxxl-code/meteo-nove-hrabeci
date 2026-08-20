@@ -1,30 +1,37 @@
 {
   "ok": true,
   "quality_status": "stable_experimental_network_ready",
-  "generated_at_local": "2026-08-20T12:39:06.898023+02:00",
-  "review_version": "visual-review-v2.3",
-  "approved_count": 7,
-  "rejected_count": 11,
+  "generated_at_local": "2026-08-20T13:06:45.666363+02:00",
+  "network": "nove-hrabeci-open-land-experimental-v2",
+  "sample_count": 14,
   "role_counts": {
     "high_position": 2,
     "north_facing_slope": 1,
-    "high_twi": 1,
-    "low_twi": 3
+    "high_twi": 2,
+    "low_twi": 3,
+    "low_position": 4,
+    "south_facing_slope": 2
   },
-  "approved_labels": [
-    "H1",
-    "H2",
-    "N2",
-    "T+3",
-    "T-1",
-    "T-2",
-    "T-3"
+  "approved_v3_labels": [
+    "L4",
+    "L5",
+    "L6",
+    "L7",
+    "S6",
+    "S7",
+    "T+8"
   ],
-  "known_gaps": [
-    "low_position",
-    "south_facing_slope",
-    "high_twi_backup"
+  "rejected_v3_labels": [
+    "L8",
+    "S4",
+    "S5",
+    "S8",
+    "T+4",
+    "T+5",
+    "T+6",
+    "T+7"
   ],
+  "missing_roles": [],
   "output_file": "config/open-land-experimental.geojson",
-  "next_step": "Backfill Sentinel NDVI/NDMI for the seasonal scene set and compare high-TWI versus low-TWI grassland response; continue targeted search for missing roles."
+  "next_step": "Recompute seasonal Sentinel NDVI/NDMI response for the expanded stable network and compare replicated terrain classes."
 }
