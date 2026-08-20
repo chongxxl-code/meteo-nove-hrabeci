@@ -1,0 +1,429 @@
+{
+  "ok": true,
+  "quality_status": "exploratory_not_causal",
+  "computed_at": "2026-08-20T09:30:43.381997+00:00",
+  "scene_count": 10,
+  "zones_version": "nove-hrabeci-landscape-zones-v0.5",
+  "method_note": "Exploratory relationships from 10 seasonal Sentinel scenes. Phenology, land cover and other confounders remain; correlations are not causal validation.",
+  "terrain_scores": {
+    "NH-OPEN-01": {
+      "wetness_median": 46.3,
+      "drying_median": 37.3,
+      "cold_pool_median": 56.1
+    },
+    "NH-FOREST-01": {
+      "wetness_median": 41.6,
+      "drying_median": 46.1,
+      "cold_pool_median": 63.4
+    },
+    "NH-RIDGE-01": {
+      "wetness_median": 5.6,
+      "drying_median": 76.8,
+      "cold_pool_median": 0.0
+    },
+    "NH-VALLEY-01": {
+      "wetness_median": 46.1,
+      "drying_median": 45.4,
+      "cold_pool_median": 72.0
+    }
+  },
+  "correlations": {
+    "NH-OPEN-01": {
+      "rain_7d_vs_ndmi": {
+        "n": 9,
+        "pearson_r": -0.685,
+        "spearman_rho": -0.817
+      },
+      "rain_14d_vs_ndmi": {
+        "n": 9,
+        "pearson_r": -0.443,
+        "spearman_rho": -0.55
+      },
+      "rain_30d_vs_ndmi": {
+        "n": 9,
+        "pearson_r": -0.364,
+        "spearman_rho": -0.576
+      }
+    },
+    "NH-FOREST-01": {
+      "rain_7d_vs_ndmi": {
+        "n": 9,
+        "pearson_r": 0.487,
+        "spearman_rho": 0.55
+      },
+      "rain_14d_vs_ndmi": {
+        "n": 9,
+        "pearson_r": 0.294,
+        "spearman_rho": 0.417
+      },
+      "rain_30d_vs_ndmi": {
+        "n": 9,
+        "pearson_r": 0.681,
+        "spearman_rho": 0.661
+      }
+    },
+    "NH-RIDGE-01": {
+      "rain_7d_vs_ndmi": {
+        "n": 10,
+        "pearson_r": 0.176,
+        "spearman_rho": 0.2
+      },
+      "rain_14d_vs_ndmi": {
+        "n": 10,
+        "pearson_r": 0.341,
+        "spearman_rho": 0.345
+      },
+      "rain_30d_vs_ndmi": {
+        "n": 10,
+        "pearson_r": 0.755,
+        "spearman_rho": 0.742
+      }
+    },
+    "NH-VALLEY-01": {
+      "rain_7d_vs_ndmi": {
+        "n": 8,
+        "pearson_r": -0.097,
+        "spearman_rho": -0.262
+      },
+      "rain_14d_vs_ndmi": {
+        "n": 8,
+        "pearson_r": -0.253,
+        "spearman_rho": -0.262
+      },
+      "rain_30d_vs_ndmi": {
+        "n": 8,
+        "pearson_r": 0.246,
+        "spearman_rho": 0.311
+      }
+    }
+  },
+  "contrasts": {
+    "valley_minus_ridge": {
+      "valid_scenes": 8,
+      "positive_scenes": 7,
+      "positive_fraction": 0.875,
+      "median_ndmi_difference": 0.107,
+      "mean_ndmi_difference": 0.092
+    },
+    "forest_minus_open": {
+      "valid_scenes": 9,
+      "positive_scenes": 5,
+      "positive_fraction": 0.556,
+      "median_ndmi_difference": 0.071,
+      "mean_ndmi_difference": 0.056
+    },
+    "dry_vs_wet_thirds_by_rain14d": {
+      "dry_rain14d_range_mm": [
+        4.5,
+        14.8
+      ],
+      "wet_rain14d_range_mm": [
+        22.4,
+        77.4
+      ],
+      "dry_valley_minus_ridge": {
+        "n": 3,
+        "median": 0.101,
+        "mean": 0.109
+      },
+      "wet_valley_minus_ridge": {
+        "n": 1,
+        "median": -0.071,
+        "mean": -0.071
+      },
+      "dry_forest_minus_open": {
+        "n": 3,
+        "median": -0.187,
+        "mean": -0.173
+      },
+      "wet_forest_minus_open": {
+        "n": 2,
+        "median": 0.236,
+        "mean": 0.236
+      }
+    }
+  },
+  "scenes": [
+    {
+      "scene_id": "S2B_T33UVS_20260409T100023_L2A",
+      "scene_datetime": "2026-04-09T10:06:38.025000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 1.7,
+      "rain_14d_mm": 5.6,
+      "rain_30d_mm": 17.6,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": 0.2009,
+          "ndvi": 0.7182
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.063,
+          "ndvi": 0.5636
+        },
+        "NH-RIDGE-01": {
+          "ndmi": -0.1108,
+          "ndvi": 0.3485
+        },
+        "NH-VALLEY-01": {
+          "ndmi": -0.0415,
+          "ndvi": 0.4459
+        }
+      },
+      "valley_minus_ridge_ndmi": 0.0693,
+      "forest_minus_open_ndmi": -0.1379
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260422T101019_L2A",
+      "scene_datetime": "2026-04-22T10:16:33.260000Z",
+      "quality_status": "partial",
+      "rain_7d_mm": 19.1,
+      "rain_14d_mm": 22.4,
+      "rain_30d_mm": 31.2,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": null,
+          "ndvi": null
+        },
+        "NH-FOREST-01": {
+          "ndmi": null,
+          "ndvi": null
+        },
+        "NH-RIDGE-01": {
+          "ndmi": -0.0533,
+          "ndvi": 0.4601
+        },
+        "NH-VALLEY-01": {
+          "ndmi": null,
+          "ndvi": null
+        }
+      },
+      "valley_minus_ridge_ndmi": null,
+      "forest_minus_open_ndmi": null
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260502T101020_L2A",
+      "scene_datetime": "2026-05-02T10:16:34.339000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 0.1,
+      "rain_14d_mm": 19.2,
+      "rain_30d_mm": 24.2,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": 0.3768,
+          "ndvi": 0.8578
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.1623,
+          "ndvi": 0.6933
+        },
+        "NH-RIDGE-01": {
+          "ndmi": -0.0139,
+          "ndvi": 0.5213
+        },
+        "NH-VALLEY-01": {
+          "ndmi": 0.077,
+          "ndvi": 0.5839
+        }
+      },
+      "valley_minus_ridge_ndmi": 0.0909,
+      "forest_minus_open_ndmi": -0.21450000000000002
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260526T100129_L2A",
+      "scene_datetime": "2026-05-26T10:06:56.193000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 1.6,
+      "rain_14d_mm": 14.8,
+      "rain_30d_mm": 52.3,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": 0.49,
+          "ndvi": 0.8875
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.2975,
+          "ndvi": 0.7842
+        },
+        "NH-RIDGE-01": {
+          "ndmi": 0.1451,
+          "ndvi": 0.7329
+        },
+        "NH-VALLEY-01": {
+          "ndmi": 0.2464,
+          "ndvi": 0.744
+        }
+      },
+      "valley_minus_ridge_ndmi": 0.1013,
+      "forest_minus_open_ndmi": -0.1925
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260529T101354_L2A",
+      "scene_datetime": "2026-05-29T10:16:53.979000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 0.0,
+      "rain_14d_mm": 4.5,
+      "rain_30d_mm": 52.3,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": 0.5256,
+          "ndvi": 0.9148
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.3384,
+          "ndvi": 0.8233
+        },
+        "NH-RIDGE-01": {
+          "ndmi": 0.1157,
+          "ndvi": 0.7431
+        },
+        "NH-VALLEY-01": {
+          "ndmi": 0.2731,
+          "ndvi": 0.7762
+        }
+      },
+      "valley_minus_ridge_ndmi": 0.1574,
+      "forest_minus_open_ndmi": -0.18719999999999998
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260621T101021_L2A",
+      "scene_datetime": "2026-06-21T10:16:35.791000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 9.0,
+      "rain_14d_mm": 22.3,
+      "rain_30d_mm": 56.6,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": -0.0008,
+          "ndvi": 0.3213
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.3475,
+          "ndvi": 0.833
+        },
+        "NH-RIDGE-01": {
+          "ndmi": 0.1279,
+          "ndvi": 0.7422
+        },
+        "NH-VALLEY-01": {
+          "ndmi": 0.2567,
+          "ndvi": 0.7791
+        }
+      },
+      "valley_minus_ridge_ndmi": 0.12879999999999997,
+      "forest_minus_open_ndmi": 0.3483
+    },
+    {
+      "scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "scene_datetime": "2026-06-26T10:16:36.604000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 7.2,
+      "rain_14d_mm": 17.2,
+      "rain_30d_mm": 59.4,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": -0.0064,
+          "ndvi": 0.5464
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.3407,
+          "ndvi": 0.8434
+        },
+        "NH-RIDGE-01": {
+          "ndmi": 0.1173,
+          "ndvi": 0.7298
+        },
+        "NH-VALLEY-01": {
+          "ndmi": 0.2307,
+          "ndvi": 0.7616
+        }
+      },
+      "valley_minus_ridge_ndmi": 0.11339999999999999,
+      "forest_minus_open_ndmi": 0.3471
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260708T100031_L2A",
+      "scene_datetime": "2026-07-08T10:06:38.249000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 16.6,
+      "rain_14d_mm": 27.2,
+      "rain_30d_mm": 52.3,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": 0.139,
+          "ndvi": 0.6878
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.3553,
+          "ndvi": 0.8202
+        },
+        "NH-RIDGE-01": {
+          "ndmi": 0.15,
+          "ndvi": 0.5089
+        },
+        "NH-VALLEY-01": {
+          "ndmi": null,
+          "ndvi": null
+        }
+      },
+      "valley_minus_ridge_ndmi": null,
+      "forest_minus_open_ndmi": 0.2163
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "scene_datetime": "2026-07-25T10:06:57.551000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 17.7,
+      "rain_14d_mm": 77.4,
+      "rain_30d_mm": 104.6,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": 0.0678,
+          "ndvi": 0.6395
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.3243,
+          "ndvi": 0.8367
+        },
+        "NH-RIDGE-01": {
+          "ndmi": 0.1363,
+          "ndvi": 0.7255
+        },
+        "NH-VALLEY-01": {
+          "ndmi": 0.0652,
+          "ndvi": 0.6035
+        }
+      },
+      "valley_minus_ridge_ndmi": -0.07110000000000001,
+      "forest_minus_open_ndmi": 0.25649999999999995
+    },
+    {
+      "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+      "scene_datetime": "2026-08-15T10:16:35.791000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 3.2,
+      "rain_14d_mm": 17.6,
+      "rain_30d_mm": 42.7,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": 0.2413,
+          "ndvi": 0.822
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.3119,
+          "ndvi": 0.8286
+        },
+        "NH-RIDGE-01": {
+          "ndmi": 0.0224,
+          "ndvi": 0.5769
+        },
+        "NH-VALLEY-01": {
+          "ndmi": 0.1704,
+          "ndvi": 0.7375
+        }
+      },
+      "valley_minus_ridge_ndmi": 0.148,
+      "forest_minus_open_ndmi": 0.07060000000000002
+    }
+  ],
+  "next_step": "Increase comparable open-land sampling zones and continue the time series; then test terrain wetness/drying scores within the same land-cover class rather than across mixed surfaces."
+}
