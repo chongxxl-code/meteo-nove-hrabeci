@@ -1,0 +1,32 @@
+{
+  "review_version": "disturbance-visual-review-v1",
+  "reviewed_at_local": "2026-08-20T13:50:00+02:00",
+  "status": "partial_manual_review",
+  "interpretation_rule": "visual_change_confirmed means a real vegetation-state change is visible in the historical Sentinel before/event/after chips. It does not identify the cause as mowing, grazing, drought, cloud artifact, or another mechanism.",
+  "assumption": "User label T1 interpreted as T-1 because T1 is not a valid disturbance sample label.",
+  "confirmed_change": [
+    {
+      "event_index": 5,
+      "label": "T-1",
+      "sample_id": "NH-OPEN-V2-16",
+      "classification": "visual_change_confirmed",
+      "cause": "unknown"
+    },
+    {
+      "event_index": 1,
+      "label": "H1",
+      "sample_id": "NH-OPEN-V2-04",
+      "classification": "visual_change_confirmed",
+      "cause": "unknown"
+    },
+    {
+      "event_index": 4,
+      "label": "T+3",
+      "sample_id": "NH-OPEN-V2-15",
+      "classification": "visual_change_confirmed",
+      "cause": "unknown"
+    }
+  ],
+  "unreviewed_labels": ["H2", "N2", "T-2", "T-3", "L4", "L5", "L7", "S7", "T+8"],
+  "next_step": "Continue manual review of the remaining historical before/event/after chips. Keep confirmed changes separate from causal attribution."
+}
