@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-08-20T16:31:32.293968+02:00",
+  "computed_at_local": "2026-08-20T16:51:26.494213+02:00",
   "alerts": [
     {
       "id": "storm",
@@ -53,9 +53,11 @@
       "reasons": [
         "30denní vodní bilance P−ET₀ -89.9 mm",
         "kořenová půdní vlhkost je na 13. percentilu posledního roku",
-        "vlastní ČHMÚ 30denní archiv má zatím 2 % pokrytí; používá se reanalýzní vodní bilance jako most"
+        "vlastní ČHMÚ 30denní archiv má zatím 2 % pokrytí; používá se reanalýzní vodní bilance jako most",
+        "Copernicus SSM 1 km: povrchová vlhkost 14.5 %",
+        "Copernicus SWI T60 1 km: profilový vláhový index 32.0 %"
       ],
-      "confidence": "medium",
+      "confidence": "medium_high",
       "note": "Lokální provozní index kombinuje P−ET₀, půdní vlhkost a Sentinel NDMI. Nejde o oficiální klasifikaci sucha."
     },
     {
@@ -121,16 +123,16 @@
       "rain_7d_mm": 0.0,
       "rain_14d_mm": 0.0,
       "rain_30d_mm": 0.0,
-      "latest_observation_utc": "2026-08-20T12:50:00+00:00",
+      "latest_observation_utc": "2026-08-20T14:00:00+00:00",
       "interval_counts": {
-        "7": 78,
-        "14": 78,
-        "30": 78
+        "7": 85,
+        "14": 85,
+        "30": 85
       },
       "coverage_fraction": {
-        "7": 0.077,
-        "14": 0.039,
-        "30": 0.018
+        "7": 0.084,
+        "14": 0.042,
+        "30": 0.02
       }
     },
     "sentinel": {
@@ -144,37 +146,17 @@
       "ok": true,
       "provider": "RainViewer",
       "latest": {
-        "time_unix": 1787236200,
-        "time_local": "2026-08-20T16:30:00+02:00",
+        "time_unix": 1787237400,
+        "time_local": "2026-08-20T16:50:00+02:00",
         "max_dbz": {
           "10km": -32,
-          "25km": -3,
-          "50km": 15
+          "25km": -1,
+          "50km": 20
         },
         "nearest_35dbz_km": null
       },
       "trend_30m": "unknown",
       "frames": [
-        {
-          "time_unix": 1787234400,
-          "time_local": "2026-08-20T16:00:00+02:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -6,
-            "50km": 7
-          },
-          "nearest_35dbz_km": null
-        },
-        {
-          "time_unix": 1787235000,
-          "time_local": "2026-08-20T16:10:00+02:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -5,
-            "50km": 9
-          },
-          "nearest_35dbz_km": null
-        },
         {
           "time_unix": 1787235600,
           "time_local": "2026-08-20T16:20:00+02:00",
@@ -192,6 +174,26 @@
             "10km": -32,
             "25km": -3,
             "50km": 15
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787236800,
+          "time_local": "2026-08-20T16:40:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -2,
+            "50km": 11
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787237400,
+          "time_local": "2026-08-20T16:50:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -1,
+            "50km": 20
           },
           "nearest_35dbz_km": null
         }
@@ -228,7 +230,7 @@
         "lat": 51.0162,
         "lon": 14.4398
       },
-      "computed_at_utc": "2026-08-20T14:22:06.302779+00:00",
+      "computed_at_utc": "2026-08-20T14:49:28.797944+00:00",
       "quality_status": "operational_local_drought_v1",
       "state": {
         "rank": 1,
@@ -238,9 +240,11 @@
         "reasons": [
           "30denní vodní bilance P−ET₀ -89.9 mm",
           "kořenová půdní vlhkost je na 13. percentilu posledního roku",
-          "vlastní ČHMÚ 30denní archiv má zatím 2 % pokrytí; používá se reanalýzní vodní bilance jako most"
+          "vlastní ČHMÚ 30denní archiv má zatím 2 % pokrytí; používá se reanalýzní vodní bilance jako most",
+          "Copernicus SSM 1 km: povrchová vlhkost 14.5 %",
+          "Copernicus SWI T60 1 km: profilový vláhový index 32.0 %"
         ],
-        "confidence": "medium"
+        "confidence": "medium_high"
       },
       "background": {
         "provider": "Open-Meteo historical Best Match / ERA5-family background",
@@ -279,11 +283,11 @@
         }
       },
       "chmi_local_rain": {
-        "latest_observation_utc": "2026-08-20T12:50:00+00:00",
+        "latest_observation_utc": "2026-08-20T14:00:00+00:00",
         "coverage_fraction": {
-          "7": 0.077,
-          "14": 0.039,
-          "30": 0.018
+          "7": 0.084,
+          "14": 0.042,
+          "30": 0.02
         },
         "rain_mm": {
           "7": 0.0,
@@ -298,16 +302,27 @@
         "seasonal_percentile": 50.0,
         "scene_count": 10
       },
-      "method_note": "Operational local drought signal: P-ET0 water balance + soil-moisture percentiles + Sentinel NDMI. It is not an official drought classification.",
+      "method_note": "Operational local drought signal: P-ET0 water balance + reanalysis soil-moisture percentiles + Sentinel-2 NDMI + independent Copernicus CLMS 1 km SSM/SWI control. It is not an official drought classification.",
       "known_limitations": [
         "Reanalysis soil moisture is coarser than the local terrain; Sentinel and the reviewed landscape network provide the local spatial refinement.",
         "The first-year percentile is an operational baseline, not yet a long-term local climatology.",
-        "Copernicus 1 km Surface Soil Moisture / Soil Water Index is planned as an additional independent satellite layer."
+        "Copernicus SSM/SWI has 1 km resolution; it strengthens independent validation but cannot by itself resolve field-scale differences inside Nové Hraběcí."
       ],
+      "copernicus_1km": {
+        "ok": true,
+        "quality_status": "operational_copernicus_soil_1km",
+        "nominal_date_ssm": "2026-08-17T00:00:00.000",
+        "nominal_date_swi": "2026-08-17T12:00:00.000",
+        "surface_soil_moisture_percent": 14.5,
+        "soil_water_index_t20_percent": 33.0,
+        "soil_water_index_t60_percent": 32.0,
+        "independent_evidence": "supports_drying",
+        "note": "CLMS 1 km satellite control; kept as independent evidence and does not change the warning rank until a local archive is calibrated."
+      },
       "ok": true
     }
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "b509832b11e3219d2c028b80730c9d157dbac32e1ba40e50f79e337a498d6676"
+  "_fingerprint": "b7ee219e14a0d20bf8a977614574bafd2c8d764a1473591585aea01cc5628b0d"
 }
