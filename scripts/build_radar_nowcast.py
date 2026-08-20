@@ -4,6 +4,7 @@ from __future__ import annotations
 import io
 import json
 import math
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -14,14 +15,17 @@ from PIL import Image
 LAT = 51.0162
 LON = 14.4398
 ZOOM = 7
-FRAME_SIZE = 512
+TILE = 256
+GRID = 3
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data' / 'radar-nowcast.json'
-UA = 'nove-hrabeci-radar-nowcast/0.3 (+github-actions)'
-MAX_SHIFT_PX = 70
+UA = 'nove-hrabeci-radar-nowcast/0.4 (+github-actions)'
+MAX_SHIFT_PX = 55
 TARGET_RADIUS_KM = 7.0
 MAX_ETA_MIN = 120.0
 MIN_RAIN_PIXELS = 120
+MIN_GOOD_TILES = 5
+MIN_GOOD_FRAMES = 4
 
 
 def get_bytes(url: str, timeout: int = 25) -> bytes:
@@ -34,24 +38,49 @@ def get_json(url: str):
     return json.loads(get_bytes(url).decode('utf-8'))
 
 
+def lonlat_to_tile_px(lat: float, lon: float, z: int):
+    n = 2 ** z
+    x = (lon + 180.0) / 360.0 * n
+    latr = math.radians(lat)
+    y = (1.0 - math.asinh(math.tan(latr)) / math.pi) / 2.0 * n
+    return x, y
+
+
 def meters_per_pixel(lat: float, z: int) -> float:
     return 156543.03392 * math.cos(math.radians(lat)) / (2 ** z)
 
 
 def fetch_frame(host: str, path: str):
-    # RainViewer supports coordinate-centred radar frames directly. Using one
-    # 512px image per timestamp is substantially more robust than stitching a
-    # 3x3 tile mosaic and cuts each run from 54 tile requests to 6.
-    url = f'{host}{path}/{FRAME_SIZE}/{ZOOM}/{LAT}/{LON}/2/1_1.png'
-    img = Image.open(io.BytesIO(get_bytes(url))).convert('RGBA')
-    arr = np.asarray(img, dtype=np.float32)
+    tx, ty = lonlat_to_tile_px(LAT, LON, ZOOM)
+    cx, cy = int(math.floor(tx)), int(math.floor(ty))
+    x0, y0 = cx - 1, cy - 1
+    canvas = Image.new('RGBA', (GRID * TILE, GRID * TILE), (0, 0, 0, 0))
+    good_tiles = 0
+    failed_tiles = []
+
+    for gy in range(GRID):
+        for gx in range(GRID):
+            x, y = x0 + gx, y0 + gy
+            url = f'{host}{path}/256/{ZOOM}/{x}/{y}/2/1_1.png'
+            try:
+                tile = Image.open(io.BytesIO(get_bytes(url))).convert('RGBA')
+                canvas.paste(tile, (gx * TILE, gy * TILE))
+                good_tiles += 1
+            except Exception as exc:
+                failed_tiles.append({'x': x, 'y': y, 'error': str(exc)[:120]})
+
+    if good_tiles < MIN_GOOD_TILES:
+        raise RuntimeError(f'frame má jen {good_tiles}/{GRID*GRID} platných radarových dlaždic')
+
+    arr = np.asarray(canvas, dtype=np.float32)
     alpha = arr[:, :, 3] / 255.0
     rgb = arr[:, :, :3]
     chroma = np.max(rgb, axis=2) - np.min(rgb, axis=2)
     intensity = alpha * np.clip((chroma + 20.0) / 180.0, 0.0, 1.0)
     intensity[intensity < 0.08] = 0.0
-    target = FRAME_SIZE / 2.0
-    return intensity, target, target
+    target_x = (tx - x0) * TILE
+    target_y = (ty - y0) * TILE
+    return intensity, float(target_x), float(target_y), good_tiles, failed_tiles
 
 
 def phase_shift(a: np.ndarray, b: np.ndarray):
@@ -124,25 +153,32 @@ def main():
         'computed_at_utc': now.isoformat().replace('+00:00', 'Z'),
         'location': {'lat': LAT, 'lon': LON},
         'status': 'insufficient_data',
-        'confidence': 'low',
+        'confidence': None,
         'eta_min': None,
         'relation': 'neurceno',
         'note': 'ETA se zveřejní jen při stabilním radarovém pohybu.'
     }
+
     try:
         meta = get_json('https://api.rainviewer.com/public/weather-maps.json')
         host = meta.get('host') or 'https://tilecache.rainviewer.com'
-        frames = ((meta.get('radar') or {}).get('past') or [])[-6:]
-        if len(frames) < 4:
-            raise RuntimeError('méně než 4 radarové snímky')
+        source_frames = ((meta.get('radar') or {}).get('past') or [])[-6:]
+        if len(source_frames) < MIN_GOOD_FRAMES:
+            raise RuntimeError('RainViewer poskytl méně než 4 radarové snímky')
 
-        imgs = []
-        times = []
+        imgs, times, frame_diag = [], [], []
         tx = ty = None
-        for frame in frames:
-            img, tx, ty = fetch_frame(host, frame['path'])
-            imgs.append(img)
-            times.append(int(frame['time']))
+        for frame in source_frames:
+            try:
+                img, tx, ty, good_tiles, failed_tiles = fetch_frame(host, frame['path'])
+                imgs.append(img)
+                times.append(int(frame['time']))
+                frame_diag.append({'time': int(frame['time']), 'good_tiles': good_tiles, 'failed_tiles': len(failed_tiles)})
+            except Exception as exc:
+                frame_diag.append({'time': int(frame.get('time', 0)), 'skipped': True, 'error': str(exc)[:180]})
+
+        if len(imgs) < MIN_GOOD_FRAMES:
+            raise RuntimeError(f'použitelné jen {len(imgs)}/{len(source_frames)} radarových snímků')
 
         latest_rain_pixels = int(np.count_nonzero(imgs[-1] > 0.08))
         if latest_rain_pixels < MIN_RAIN_PIXELS:
@@ -153,7 +189,8 @@ def main():
                 eta_min=None,
                 nearest_precip_km=None,
                 motion=None,
-                frames={'count': len(frames), 'first_unix': times[0], 'latest_unix': times[-1]},
+                frames={'count': len(imgs), 'first_unix': times[0], 'latest_unix': times[-1]},
+                diagnostics={'source_frames': len(source_frames), 'usable_frames': len(imgs), 'frame_tiles': frame_diag},
                 note='V analyzovaném okolí není dostatečný srážkový signál; pohyb ani ETA se neurčují.'
             )
         else:
@@ -174,8 +211,10 @@ def main():
                     status='no_reliable_motion',
                     confidence='low',
                     relation='pohyb_neurcity',
-                    note='Radar je načtený, ale zatím není dost stabilních dvojic snímků pro spolehlivý pohyb.',
-                    frames={'count': len(frames), 'first_unix': times[0], 'latest_unix': times[-1]}
+                    motion=None,
+                    frames={'count': len(imgs), 'first_unix': times[0], 'latest_unix': times[-1]},
+                    diagnostics={'source_frames': len(source_frames), 'usable_frames': len(imgs), 'frame_tiles': frame_diag, 'motion_pairs': len(shifts)},
+                    note='Radar je načtený, ale zatím není dost stabilních dvojic snímků pro spolehlivý pohyb.'
                 )
             else:
                 vx = np.array([s['dx'] / s['dt_min'] for s in shifts])
@@ -192,6 +231,7 @@ def main():
                 speed_kmh = math.hypot(mvx, mvy) * mpp * 60.0 / 1000.0
                 bearing, compass = compass_from_vector(mvx, mvy)
                 relation = classify(imgs[-1], tx, ty, mvx, mvy, mpp)
+
                 score = 0
                 if float(np.median(ratios)) >= 1.08: score += 1
                 if angle_spread <= 25.0: score += 1
@@ -200,6 +240,7 @@ def main():
                 confidence = 'high' if score == 4 else ('medium' if score >= 3 else 'low')
                 reliable = confidence in ('medium', 'high')
                 eta = relation['eta_min'] if reliable and relation['relation'] == 'miri_na_lokalitu' else None
+
                 out.update(
                     status='operational' if reliable else 'motion_uncertain',
                     confidence=confidence,
@@ -215,11 +256,20 @@ def main():
                         'speed_spread_px_min': round(speed_spread, 3),
                         'phase_peak_ratio_median': round(float(np.median(ratios)), 3),
                     },
-                    frames={'count': len(frames), 'first_unix': times[0], 'latest_unix': times[-1]},
+                    frames={'count': len(imgs), 'first_unix': times[0], 'latest_unix': times[-1]},
+                    diagnostics={'source_frames': len(source_frames), 'usable_frames': len(imgs), 'frame_tiles': frame_diag},
                     note='ETA je zobrazena jen při stabilním směru a rychlosti.' if reliable else 'Pohyb je zatím příliš proměnlivý; ETA se nezobrazuje.'
                 )
+
     except Exception as exc:
-        out.update(status='error', confidence=None, relation='neurceno', motion=None, error=str(exc), note='Nowcast se nepodařilo spočítat; veřejný radar na webu zůstává nezávisle funkční.')
+        out.update(
+            status='error',
+            confidence=None,
+            relation='neurceno',
+            motion=None,
+            error=str(exc),
+            note='Nowcast se nepodařilo spočítat; veřejný radar na webu zůstává nezávisle funkční.'
+        )
 
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(out, ensure_ascii=False))
