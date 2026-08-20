@@ -1,0 +1,73 @@
+/* Conservative UI polish — presentation only, no functional selectors or data logic changed. */
+.grid{gap:10px;margin-top:14px}
+.card{border-radius:15px;padding:15px}
+h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
+.temp{font-size:58px;margin:11px 0 7px}
+.temp small{font-size:24px}
+.aitxt{font-size:19px;line-height:1.38;margin:10px 0}
+.chips{margin-top:11px}
+.kpi{margin-top:11px}
+.kpi div,.stat{border-radius:10px;padding:9px}
+.kpi b,.stat b{font-size:16px}
+.sect h2{font-size:17px}
+.model{padding:10px 0}
+.hourstrip{grid-template-columns:repeat(12,minmax(78px,1fr));gap:6px;padding:9px 0 1px}
+.hour{border-radius:11px;padding:8px}
+.hour .t{font-size:19px;margin:6px 0}
+svg{height:245px}
+.note{font-size:11px;line-height:1.45;margin-top:7px}
+
+/* System collection remains available, but behaves as a quiet service/status layer. */
+.central{padding:10px 14px;background:rgba(8,23,30,.78);border-color:#18333d}
+.central .sect h2{font-size:13px;color:var(--mu);font-weight:800}
+.central .sect>span{font-size:10px}
+.central .centralgrid{display:flex;flex-wrap:wrap;align-items:center;gap:5px 18px;margin-top:6px}
+.central .stat{background:transparent;border:0;border-radius:0;padding:0;white-space:nowrap}
+.central .stat b{display:inline;font-size:12px;color:var(--tx)}
+.central .stat span{font-size:10px;margin-left:4px}
+.central .note{font-size:10px;margin:5px 0 0;opacity:.82}
+
+/* Landscape tools stay complete, but secondary actions no longer dominate. */
+.landgrid{margin-top:9px}
+.landactions{gap:6px;margin-top:9px}
+.action{border-radius:9px;padding:8px 10px;font-size:12px}
+.action.secondary{font-weight:700}
+
+/* Risks and near-term weather keep visual priority. */
+.risks{border-color:#28505a}
+.risks .sect h2{font-size:18px}
+.riskgrid{gap:6px;margin-top:9px}
+.riskitem{border-radius:10px;padding:9px}
+
+/* Radar keeps its canvas; surrounding UI gets quieter. */
+.radarlead{margin:9px 0}
+.headline{border-radius:11px;padding:11px;font-size:17px;line-height:1.4}
+.btn{padding:7px 9px;font-size:12px}
+#map{height:400px;border-radius:12px}
+
+@media(max-width:850px){
+  .temp{font-size:52px}
+  svg{height:225px}
+  .central .centralgrid{display:flex;grid-template-columns:none}
+}
+@media(max-width:520px){
+  main{padding:10px}
+  .grid{gap:8px;margin-top:11px}
+  .card{padding:11px;border-radius:13px}
+  h1{font-size:32px}
+  .sub{font-size:12px;line-height:1.35}
+  .temp{font-size:46px;margin:8px 0 6px}
+  .temp small{font-size:20px}
+  .aitxt{font-size:17px}
+  .sect{align-items:flex-start}
+  .sect h2{font-size:16px}
+  .hourstrip{grid-template-columns:repeat(12,minmax(72px,1fr))}
+  .central{padding:9px 11px}
+  .central .sect{align-items:center}
+  .central .sect h2{font-size:12px}
+  .central .centralgrid{gap:4px 12px}
+  .central .stat{width:auto}
+  .central .note{font-size:9px}
+  .action{width:auto;justify-content:flex-start;padding:7px 9px}
+  #map{height:320px}
+}
