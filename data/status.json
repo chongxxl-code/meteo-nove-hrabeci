@@ -1,8 +1,8 @@
 {
-  "schema": 1,
-  "collected_at_utc": "2026-08-20T05:59:01.464377Z",
-  "collected_at_local": "2026-08-20T07:59:01.464377+02:00",
-  "total_snapshots": 1,
+  "schema": 2,
+  "collected_at_utc": "2026-08-20T06:07:24.628795Z",
+  "collected_at_local": "2026-08-20T08:07:24.628795+02:00",
+  "total_snapshots": 2,
   "archive_file": "data/archive/2026-08.jsonl",
   "models": {
     "dwd": {
@@ -19,21 +19,52 @@
     }
   },
   "current": {
-    "time": "2026-08-20T07:45",
+    "time": "2026-08-20T08:00",
     "interval": 900,
-    "temperature_2m": 17.3,
-    "relative_humidity_2m": 87,
+    "temperature_2m": 17.4,
+    "relative_humidity_2m": 86,
     "precipitation": 0.0,
-    "cloud_cover": 94,
-    "pressure_msl": 1007.6,
-    "wind_speed_10m": 7.9,
-    "wind_gusts_10m": 15.8
+    "cloud_cover": 100,
+    "pressure_msl": 1007.8,
+    "wind_speed_10m": 8.4,
+    "wind_gusts_10m": 16.9
+  },
+  "observations": {
+    "dwd": {
+      "tu": {
+        "provider": "DWD CDC",
+        "element": "tu",
+        "station_id": "06129",
+        "station_name": "Sohland/Spree                            Sachsen                                  Frei",
+        "latitude": 51.0594,
+        "longitude": 14.4266,
+        "elevation_m": 291.0,
+        "distance_km": 4.89,
+        "source_url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/hourly/air_temperature/recent/stundenwerte_TU_06129_akt.zip",
+        "observed_at_utc": "2026-08-18T23:00:00Z",
+        "temperature_c": 15.0,
+        "relative_humidity_pct": 95.0
+      },
+      "rr": {
+        "provider": "DWD CDC",
+        "element": "rr",
+        "station_id": "06129",
+        "station_name": "Sohland/Spree                            Sachsen                                  Frei",
+        "latitude": 51.0594,
+        "longitude": 14.4266,
+        "elevation_m": 291.0,
+        "distance_km": 4.89,
+        "source_url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/hourly/precipitation/recent/stundenwerte_RR_06129_akt.zip",
+        "observed_at_utc": "2026-08-18T23:00:00Z",
+        "precipitation_1h_mm": 0.2
+      }
+    }
   },
   "radar": {
     "rainviewer_frames": 12,
-    "rainviewer_latest_unix": 1787205000,
-    "rainviewer_latest_local": "20.08.2026 07:50"
+    "rainviewer_latest_unix": 1787205600,
+    "rainviewer_latest_local": "20.08.2026 08:00"
   },
   "errors": [],
-  "note": "Forecast snapshots only; no local ground-truth station is connected yet."
+  "note": "Forecasts plus nearest active official DWD observations. ČHMÚ Šluknov rain gauge integration is next."
 }
