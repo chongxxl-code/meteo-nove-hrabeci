@@ -1,0 +1,35 @@
+name: Analyze landscape response
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/analyze_landscape_response.py'
+      - '.github/workflows/analyze-landscape-response.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Analyze existing Sentinel + rain + terrain data
+        run: python scripts/analyze_landscape_response.py
+      - name: Commit response summary
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/validation/landscape-response-*.json
+          if git diff --cached --quiet; then
+            echo "No response-analysis changes."
+            exit 0
+          fi
+          git commit -m "data: landscape response analysis $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
