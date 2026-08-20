@@ -9,8 +9,8 @@
   "tile_cloud_cover_percent": 0.000783,
   "platform": "sentinel-2c",
   "mgrs_tile": null,
-  "computed_at_local": "2026-08-20T09:57:20.723051+02:00",
-  "zones_version": "nove-hrabeci-landscape-zones-v0.4",
+  "computed_at_local": "2026-08-20T10:08:52.752750+02:00",
+  "zones_version": "nove-hrabeci-landscape-zones-v0.5",
   "ndvi_formula": "(NIR B08 - Red B04) / (NIR B08 + Red B04)",
   "ndmi_formula": "(nir08 - SWIR16 B11) / (nir08 + SWIR16 B11)",
   "cloud_mask": "SCL classes 0,1,3,8,9,10,11 excluded when SCL is available",
@@ -119,7 +119,7 @@
       "id": "NH-RIDGE-01",
       "name": "Partyzánský vrch – vrcholová kontrola",
       "class": "ridge_highland",
-      "zone_status": "location_confirmed_pending_dem_extent",
+      "zone_status": "dem_confirmed",
       "ndvi": {
         "valid_pixels": 492,
         "mean": 0.4933,
@@ -142,9 +142,9 @@
     },
     {
       "id": "NH-VALLEY-01",
-      "name": "Nízká poloha / údolí – pracovní terénní vzorek",
+      "name": "Nízká poloha / údolí – Rožany",
       "class": "valley_lowland",
-      "zone_status": "pending_dem",
+      "zone_status": "dem_confirmed",
       "ndvi": {
         "valid_pixels": 467,
         "mean": 0.7214,
