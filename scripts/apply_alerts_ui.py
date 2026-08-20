@@ -15,3 +15,4 @@ if 'load();central();landscape();localAlerts();initMap();' not in s:
     s=s.replace('load();central();landscape();initMap();','load();central();landscape();localAlerts();initMap();',1)
 p.write_text(s,encoding='utf-8')
 print('local risk UI applied')
+# trigger v1
