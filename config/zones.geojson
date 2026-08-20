@@ -1,0 +1,100 @@
+{
+  "type": "FeatureCollection",
+  "name": "nove-hrabeci-landscape-zones-v0.1",
+  "properties": {
+    "status": "draft sampling cores; refine against satellite imagery before scientific use",
+    "reference_scene": "S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913",
+    "reference_scene_date": "2026-08-15",
+    "purpose": "Compare representative land-cover and terrain environments through Sentinel-2 NDVI/NDMI and meteorological context"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NH-REF",
+        "name": "Nové Hraběcí – meteorologická reference",
+        "class": "reference",
+        "status": "fixed",
+        "note": "Modelová a databázová reference; není to fyzická meteostanice."
+      },
+      "geometry": {"type": "Point", "coordinates": [14.4398, 51.0162]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NH-OPEN-01",
+        "name": "Otevřená krajina – pracovní vzorek 01",
+        "class": "open_land",
+        "status": "draft",
+        "note": "Malá reprezentativní plocha otevřené krajiny; před výpočty NDVI/NDMI ověřit na satelitním podkladu, že neobsahuje zástavbu nebo les."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4395,51.0103],[14.4425,51.0103],[14.4425,51.0123],[14.4395,51.0123],[14.4395,51.0103]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NH-FOREST-01",
+        "name": "Les – pracovní vzorek 01",
+        "class": "forest",
+        "status": "draft",
+        "note": "Lesní kontrolní plocha v západní/severozápadní části okolí Nového Hraběcí; doladit podle satelitu."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4280,51.0190],[14.4320,51.0190],[14.4320,51.0210],[14.4280,51.0210],[14.4280,51.0190]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NH-WET-01",
+        "name": "Voda / mokřad – Hraničář",
+        "class": "water_wetland",
+        "status": "anchor",
+        "note": "Kontrolní vodní/mokřadní prostředí u rybníka Hraničář; samotná vodní plocha nebude interpretována jako vegetace při NDVI."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4539,51.0132],[14.4561,51.0132],[14.4561,51.0146],[14.4539,51.0146],[14.4539,51.0132]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NH-QUARRY-01",
+        "name": "Kamenolom Císařský",
+        "class": "quarry",
+        "status": "anchor",
+        "note": "Antropogenní kontrolní zóna pro pozdější porovnání povrchové teploty, vegetace a okolního mikroklimatu."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4038,50.9990],[14.4092,50.9990],[14.4092,51.0021],[14.4038,51.0021],[14.4038,50.9990]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NH-RIDGE-01",
+        "name": "Vyšší poloha – Partyzánský vrch",
+        "class": "ridge_highland",
+        "status": "anchor",
+        "note": "Vyšší terénní reference kolem Partyzánského vrchu (~543 m); vhodná pro srovnání s níže položeným údolím."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4045,50.9955],[14.4076,50.9955],[14.4076,50.9975],[14.4045,50.9975],[14.4045,50.9955]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NH-VALLEY-01",
+        "name": "Nízká poloha / údolí – Rožany",
+        "class": "valley_lowland",
+        "status": "anchor",
+        "note": "Níže položená referenční oblast kolem Rožan (~322 m); bude sloužit k porovnání s vyššími polohami."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4518,51.0259],[14.4550,51.0259],[14.4550,51.0278],[14.4518,51.0278],[14.4518,51.0259]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NH-URBAN-01",
+        "name": "Zastavěné prostředí – Šluknov",
+        "class": "urban",
+        "status": "anchor",
+        "note": "Městská kontrolní plocha pro srovnání s otevřenou krajinou, lesem a lomem."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4508,51.0018],[14.4550,51.0018],[14.4550,51.0048],[14.4508,51.0048],[14.4508,51.0018]]]}
+    }
+  ]
+}
