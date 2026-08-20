@@ -1,0 +1,44 @@
+name: Collect Sentinel-2 scenes
+
+on:
+  schedule:
+    - cron: '23 7 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_sentinel.py'
+      - '.github/workflows/collect-sentinel.yml'
+      - 'config/study-area.geojson'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sentinel-scene-collector
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Collect Sentinel-2 scene metadata
+        run: python scripts/collect_sentinel.py
+      - name: Commit Sentinel metadata
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/sentinel-status.json data/sentinel/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No Sentinel metadata changes."
+            exit 0
+          fi
+          git commit -m "data: Sentinel-2 scenes $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
