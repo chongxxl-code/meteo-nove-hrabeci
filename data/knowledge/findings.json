@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "generated_at_local": "2026-08-20T13:20:35.969667+02:00",
+  "status": "living_exploratory_knowledge_base",
+  "scope": "Nové Hraběcí open-land experimental network",
+  "sample_count": 14,
+  "scene_count": 10,
+  "source_analyses": [
+    "data/validation/open-land-experiment-status.json",
+    "data/validation/open-land-gradient-status.json"
+  ],
+  "warning": "Poznatky jsou pracovní a explorační. Sentinel NDMI není přímá půdní vlhkost; korelace nejsou kauzalita. Stav a confidence se mají měnit s novými daty.",
+  "findings": [
+    {
+      "id": "open-slope-drainage",
+      "title": "Strmější travní plochy se opakovaně jeví sušší / méně vitální",
+      "state": "emerging_supported",
+      "confidence": "moderate",
+      "claim": "Napříč kontrolovanými travními plochami má vyšší sklon ve většině Sentinel termínů záporný vztah k NDMI i NDVI.",
+      "evidence": [
+        "NDMI: očekávaný záporný směr v 90.0 % použitelných scén; medián Pearson r = -0.2292.",
+        "NDVI: očekávaný záporný směr v 90.0 % scén; medián Pearson r = -0.3013.",
+        "Síla NDMI vztahu sklonu se s 14denním deštěm mění korelací r = -0.52 (explorační)."
+      ],
+      "interpretation": "Pracovní mechanismus: po srážkách strmější místa rychleji odvádějí vodu a plošší místa ji déle drží. Zatím nejde o důkaz odtoku ani půdní vlhkosti.",
+      "next_test": "Sledovat, zda se záporný vztah opakuje po dalších výrazných deštích a v dalších vegetačních sezonách."
+    },
+    {
+      "id": "twi-context-dependent",
+      "title": "TWI nevypadá jako stálé pořadí vlhkosti — spíš jako podmíněný efekt",
+      "state": "emerging_hypothesis",
+      "confidence": "low_to_moderate",
+      "claim": "Vyšší TWI samo o sobě není ve všech termínech spojeno s vyšším NDMI, ale vztah se zesiluje po delším vlhkém období.",
+      "evidence": [
+        "Medián vztahu TWI–NDMI přes jednotlivé dny: Pearson r = 0.0976; kladný směr v 50.0 % scén.",
+        "Korelace 30denního deště se sílou denního TWI–NDMI vztahu: r = 0.4977.",
+        "Skupinový TWI+ − TWI− medián NDMI = 0.0358."
+      ],
+      "interpretation": "Možný mechanismus: topografická predispozice k akumulaci vody se projeví hlavně tehdy, když je v krajině dostatek vody k redistribuci.",
+      "next_test": "Zvýšit počet scén po výrazně mokrých a výrazně suchých obdobích a porovnat velikost TWI efektu."
+    },
+    {
+      "id": "southness-drying",
+      "title": "Jižní expozice má zatím slabý, ale poměrně konzistentní sušší signál",
+      "state": "emerging_hypothesis",
+      "confidence": "low_to_moderate",
+      "claim": "U dostatečně sklonitých a směrově koherentních travních ploch je vyšší southness většinou spojena s nižším NDMI.",
+      "evidence": [
+        "Očekávaný záporný směr southness–NDMI v 77.8 % scén; medián Pearson r = -0.0653.",
+        "Skupinový jih − sever medián NDMI = -0.0914."
+      ],
+      "interpretation": "Směr odpovídá vyššímu oslunění a potenciálnímu výparu na jižních svazích, ale dedicated severní skupina má zatím jen jeden vzorek.",
+      "next_test": "Přidat další čisté severní svahy a sledovat rozdíl zejména během teplých suchých epizod."
+    },
+    {
+      "id": "low-position-simple-rule",
+      "title": "Jednoduché pravidlo „nízko = vlhčeji“ se v současné síti nepotvrzuje",
+      "state": "simple_hypothesis_not_supported",
+      "confidence": "moderate_for_current_sample",
+      "claim": "Níže položené travní vzorky nejsou v této sezoně systematicky vlhčí/zelenejší než vyšší vzorky.",
+      "evidence": [
+        "Nízká − vyšší poloha: medián NDMI kontrastu = -0.1284; nízká skupina měla vyšší NDMI jen v 22.2 % srovnatelných scén.",
+        "Kontinuální TPI900–NDMI medián Pearson r = 0.4027 (kladná hodnota zde znamená, že vyšší relativní poloha často vyšla s vyšším NDMI).",
+        "Výška–NDMI medián Pearson r = 0.4818."
+      ],
+      "interpretation": "Neznamená to, že vyšší terén způsobuje větší vlhkost. Výsledek může být silně ovlivněn půdou, sečí/pastvou, fenologií, expozicí a místní drenáží.",
+      "next_test": "Použít více sezon a případně terénní informace o hospodaření/půdě; nevyvozovat kauzalitu z výšky samotné."
+    }
+  ]
+}
