@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/collect_weather.py'
+      - 'scripts/verify_forecasts.py'
       - '.github/workflows/collect-weather.yml'
 
 permissions:
@@ -29,7 +30,9 @@ jobs:
           python-version: '3.13'
       - name: Collect Nové Hraběcí forecast snapshot
         run: python scripts/collect_weather.py
-      - name: Commit collected forecast data
+      - name: Verify matured forecasts against observations
+        run: python scripts/verify_forecasts.py
+      - name: Commit collected forecast and verification data
         run: |
           if git diff --quiet -- data/; then
             echo "No data changes."
