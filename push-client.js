@@ -53,7 +53,7 @@
         try {
           await OneSignal.init({
             appId: cfg.app_id,
-            serviceWorkerPath: `${base}OneSignalSDKWorker.js`,
+            serviceWorkerPath: `${base}sw.js`,
             serviceWorkerParam: { scope: base },
             notifyButton: { enable: false },
             welcomeNotification: { disable: true }
