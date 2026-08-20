@@ -1,54 +1,34 @@
 {
   "schema": 1,
-  "computed_at_utc": "2026-08-20T22:01:59.949599Z",
+  "computed_at_utc": "2026-08-20T22:41:31.632285Z",
   "location": {
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "status": "motion_uncertain",
-  "confidence": "low",
+  "status": "operational",
+  "confidence": "medium",
   "eta_min": null,
-  "relation": "miri_na_lokalitu",
-  "note": "Pohyb je zatím příliš proměnlivý; ETA se nezobrazuje.",
-  "nearest_precip_km": 22.8,
+  "relation": "pohyb_neurcity",
+  "note": "ETA je zobrazena jen při stabilním směru a rychlosti.",
+  "nearest_precip_km": 36.5,
   "motion": {
-    "bearing_deg": 90.0,
-    "compass": "V",
-    "speed_kmh": 34.6,
-    "pair_count": 4,
-    "angle_spread_deg": 29.5,
-    "speed_spread_px_min": 0.808,
-    "phase_peak_ratio_median": 1.1
+    "bearing_deg": 180.0,
+    "compass": "J",
+    "speed_kmh": 0.0,
+    "pair_count": 5,
+    "angle_spread_deg": 0.0,
+    "speed_spread_px_min": 0.0,
+    "phase_peak_ratio_median": 1.725
   },
   "frames": {
-    "count": 5,
-    "first_unix": 1787260200,
-    "latest_unix": 1787263200
+    "count": 6,
+    "first_unix": 1787262600,
+    "latest_unix": 1787265600
   },
   "diagnostics": {
     "source_frames": 6,
-    "usable_frames": 5,
+    "usable_frames": 6,
     "frame_tiles": [
-      {
-        "time": 1787260200,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1787260800,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1787261400,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1787262000,
-        "skipped": true,
-        "error": "frame má jen 0/9 platných radarových dlaždic"
-      },
       {
         "time": 1787262600,
         "good_tiles": 9,
@@ -56,6 +36,26 @@
       },
       {
         "time": 1787263200,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1787263800,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1787264400,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1787265000,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1787265600,
         "good_tiles": 9,
         "failed_tiles": 0
       }
