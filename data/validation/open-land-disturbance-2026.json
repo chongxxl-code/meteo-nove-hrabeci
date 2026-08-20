@@ -1,0 +1,416 @@
+{
+  "ok": true,
+  "quality_status": "candidate_disturbance_flags_only",
+  "computed_at_local": "2026-08-20T13:23:01.599813+02:00",
+  "source_network": "nove-hrabeci-open-land-experimental-v2",
+  "scene_count": 10,
+  "sample_count": 14,
+  "method": {
+    "minimum_previous_ndvi": 0.5,
+    "drop_threshold": -0.12,
+    "strong_drop_threshold": -0.2,
+    "recovery_gain": 0.1,
+    "max_recovery_scenes": 2
+  },
+  "warning": "Flags are candidate disturbances, not verified mowing/grazing events. Drought, cloud-mask edge effects, crop/phenology changes or other causes can produce abrupt NDVI changes.",
+  "event_count": 12,
+  "strong_event_count": 5,
+  "events": [
+    {
+      "sample_id": "NH-OPEN-V2-04",
+      "label": "H1",
+      "role": "high_position",
+      "previous_scene_id": "S2A_T33UVS_20260529T101354_L2A",
+      "previous_datetime": "2026-05-29T10:16:53.979000Z",
+      "previous_ndvi": 0.8666,
+      "event_scene_id": "S2B_T33UVS_20260621T101021_L2A",
+      "event_datetime": "2026-06-21T10:16:35.791000Z",
+      "event_ndvi": 0.7243,
+      "delta_ndvi": -0.1423,
+      "severity": "moderate",
+      "recovery_within_2_scenes": null,
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V2-05",
+      "label": "H2",
+      "role": "high_position",
+      "previous_scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "previous_datetime": "2026-06-26T10:16:36.604000Z",
+      "previous_ndvi": 0.7168,
+      "event_scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "event_datetime": "2026-07-25T10:06:57.551000Z",
+      "event_ndvi": 0.5842,
+      "delta_ndvi": -0.1326,
+      "severity": "moderate",
+      "recovery_within_2_scenes": {
+        "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "ndvi": 0.7365,
+        "gain_from_drop": 0.1523
+      },
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V2-08",
+      "label": "N2",
+      "role": "north_facing_slope",
+      "previous_scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "previous_datetime": "2026-06-26T10:16:36.604000Z",
+      "previous_ndvi": 0.7808,
+      "event_scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "event_datetime": "2026-07-25T10:06:57.551000Z",
+      "event_ndvi": 0.5519,
+      "delta_ndvi": -0.2289,
+      "severity": "strong",
+      "recovery_within_2_scenes": {
+        "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "ndvi": 0.7821,
+        "gain_from_drop": 0.2302
+      },
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V2-15",
+      "label": "T+3",
+      "role": "high_twi",
+      "previous_scene_id": "S2B_T33UVS_20260621T101021_L2A",
+      "previous_datetime": "2026-06-21T10:16:35.791000Z",
+      "previous_ndvi": 0.8327,
+      "event_scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "event_datetime": "2026-06-26T10:16:36.604000Z",
+      "event_ndvi": 0.6706,
+      "delta_ndvi": -0.1621,
+      "severity": "moderate",
+      "recovery_within_2_scenes": null,
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V2-16",
+      "label": "T-1",
+      "role": "low_twi",
+      "previous_scene_id": "S2A_T33UVS_20260529T101354_L2A",
+      "previous_datetime": "2026-05-29T10:16:53.979000Z",
+      "previous_ndvi": 0.8708,
+      "event_scene_id": "S2B_T33UVS_20260621T101021_L2A",
+      "event_datetime": "2026-06-21T10:16:35.791000Z",
+      "event_ndvi": 0.4697,
+      "delta_ndvi": -0.4011,
+      "severity": "strong",
+      "recovery_within_2_scenes": {
+        "scene_id": "S2A_T33UVS_20260725T100043_L2A",
+        "scene_datetime": "2026-07-25T10:06:57.551000Z",
+        "ndvi": 0.6784,
+        "gain_from_drop": 0.2087
+      },
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V2-17",
+      "label": "T-2",
+      "role": "low_twi",
+      "previous_scene_id": "S2A_T33UVS_20260529T101354_L2A",
+      "previous_datetime": "2026-05-29T10:16:53.979000Z",
+      "previous_ndvi": 0.8023,
+      "event_scene_id": "S2B_T33UVS_20260621T101021_L2A",
+      "event_datetime": "2026-06-21T10:16:35.791000Z",
+      "event_ndvi": 0.5583,
+      "delta_ndvi": -0.244,
+      "severity": "strong",
+      "recovery_within_2_scenes": null,
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V2-18",
+      "label": "T-3",
+      "role": "low_twi",
+      "previous_scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "previous_datetime": "2026-06-26T10:16:36.604000Z",
+      "previous_ndvi": 0.738,
+      "event_scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "event_datetime": "2026-07-25T10:06:57.551000Z",
+      "event_ndvi": 0.4896,
+      "delta_ndvi": -0.2484,
+      "severity": "strong",
+      "recovery_within_2_scenes": {
+        "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "ndvi": 0.6918,
+        "gain_from_drop": 0.2022
+      },
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L04",
+      "label": "L4",
+      "role": "low_position",
+      "previous_scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "previous_datetime": "2026-06-26T10:16:36.604000Z",
+      "previous_ndvi": 0.7758,
+      "event_scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "event_datetime": "2026-07-25T10:06:57.551000Z",
+      "event_ndvi": 0.5457,
+      "delta_ndvi": -0.2301,
+      "severity": "strong",
+      "recovery_within_2_scenes": {
+        "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "ndvi": 0.7752,
+        "gain_from_drop": 0.2295
+      },
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L05",
+      "label": "L5",
+      "role": "low_position",
+      "previous_scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "previous_datetime": "2026-06-26T10:16:36.604000Z",
+      "previous_ndvi": 0.7279,
+      "event_scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "event_datetime": "2026-07-25T10:06:57.551000Z",
+      "event_ndvi": 0.5434,
+      "delta_ndvi": -0.1845,
+      "severity": "moderate",
+      "recovery_within_2_scenes": {
+        "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "ndvi": 0.7587,
+        "gain_from_drop": 0.2153
+      },
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L07",
+      "label": "L7",
+      "role": "low_position",
+      "previous_scene_id": "S2B_T33UVS_20260708T100031_L2A",
+      "previous_datetime": "2026-07-08T10:06:38.249000Z",
+      "previous_ndvi": 0.6972,
+      "event_scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "event_datetime": "2026-07-25T10:06:57.551000Z",
+      "event_ndvi": 0.5267,
+      "delta_ndvi": -0.1705,
+      "severity": "moderate",
+      "recovery_within_2_scenes": {
+        "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "ndvi": 0.6657,
+        "gain_from_drop": 0.139
+      },
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V3-S07",
+      "label": "S7",
+      "role": "south_facing_slope",
+      "previous_scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "previous_datetime": "2026-06-26T10:16:36.604000Z",
+      "previous_ndvi": 0.7599,
+      "event_scene_id": "S2B_T33UVS_20260708T100031_L2A",
+      "event_datetime": "2026-07-08T10:06:38.249000Z",
+      "event_ndvi": 0.5955,
+      "delta_ndvi": -0.1644,
+      "severity": "moderate",
+      "recovery_within_2_scenes": null,
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    },
+    {
+      "sample_id": "NH-OPEN-V3-TP08",
+      "label": "T+8",
+      "role": "high_twi",
+      "previous_scene_id": "S2B_T33UVS_20260621T101021_L2A",
+      "previous_datetime": "2026-06-21T10:16:35.791000Z",
+      "previous_ndvi": 0.8394,
+      "event_scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "event_datetime": "2026-06-26T10:16:36.604000Z",
+      "event_ndvi": 0.6935,
+      "delta_ndvi": -0.1459,
+      "severity": "moderate",
+      "recovery_within_2_scenes": null,
+      "classification": "possible_management_or_disturbance",
+      "interpretation": "Abrupt NDVI decline; may reflect mowing/grazing or another vegetation disturbance. It is not proof of management."
+    }
+  ],
+  "disturbed_observations_for_sensitivity_test": [
+    {
+      "sample_id": "NH-OPEN-V2-04",
+      "scene_id": "S2B_T33UVS_20260621T101021_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V2-05",
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V2-08",
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V2-15",
+      "scene_id": "S2C_T33UVS_20260626T101022_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V2-16",
+      "scene_id": "S2B_T33UVS_20260621T101021_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V2-16",
+      "scene_id": "S2C_T33UVS_20260626T101022_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V2-17",
+      "scene_id": "S2B_T33UVS_20260621T101021_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V2-18",
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L04",
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L05",
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L07",
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V3-S07",
+      "scene_id": "S2B_T33UVS_20260708T100031_L2A"
+    },
+    {
+      "sample_id": "NH-OPEN-V3-TP08",
+      "scene_id": "S2C_T33UVS_20260626T101022_L2A"
+    }
+  ],
+  "samples": [
+    {
+      "sample_id": "NH-OPEN-V2-04",
+      "label": "H1",
+      "role": "high_position",
+      "valid_observations": 9,
+      "event_count": 1,
+      "strong_event_count": 0
+    },
+    {
+      "sample_id": "NH-OPEN-V2-05",
+      "label": "H2",
+      "role": "high_position",
+      "valid_observations": 8,
+      "event_count": 1,
+      "strong_event_count": 0
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L04",
+      "label": "L4",
+      "role": "low_position",
+      "valid_observations": 8,
+      "event_count": 1,
+      "strong_event_count": 1
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L05",
+      "label": "L5",
+      "role": "low_position",
+      "valid_observations": 8,
+      "event_count": 1,
+      "strong_event_count": 0
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L07",
+      "label": "L7",
+      "role": "low_position",
+      "valid_observations": 9,
+      "event_count": 1,
+      "strong_event_count": 0
+    },
+    {
+      "sample_id": "NH-OPEN-V2-08",
+      "label": "N2",
+      "role": "north_facing_slope",
+      "valid_observations": 8,
+      "event_count": 1,
+      "strong_event_count": 1
+    },
+    {
+      "sample_id": "NH-OPEN-V3-S07",
+      "label": "S7",
+      "role": "south_facing_slope",
+      "valid_observations": 10,
+      "event_count": 1,
+      "strong_event_count": 0
+    },
+    {
+      "sample_id": "NH-OPEN-V2-15",
+      "label": "T+3",
+      "role": "high_twi",
+      "valid_observations": 9,
+      "event_count": 1,
+      "strong_event_count": 0
+    },
+    {
+      "sample_id": "NH-OPEN-V3-TP08",
+      "label": "T+8",
+      "role": "high_twi",
+      "valid_observations": 9,
+      "event_count": 1,
+      "strong_event_count": 0
+    },
+    {
+      "sample_id": "NH-OPEN-V2-16",
+      "label": "T-1",
+      "role": "low_twi",
+      "valid_observations": 9,
+      "event_count": 1,
+      "strong_event_count": 1
+    },
+    {
+      "sample_id": "NH-OPEN-V2-17",
+      "label": "T-2",
+      "role": "low_twi",
+      "valid_observations": 9,
+      "event_count": 1,
+      "strong_event_count": 1
+    },
+    {
+      "sample_id": "NH-OPEN-V2-18",
+      "label": "T-3",
+      "role": "low_twi",
+      "valid_observations": 8,
+      "event_count": 1,
+      "strong_event_count": 1
+    },
+    {
+      "sample_id": "NH-OPEN-V3-L06",
+      "label": "L6",
+      "role": "low_position",
+      "valid_observations": 9,
+      "event_count": 0,
+      "strong_event_count": 0
+    },
+    {
+      "sample_id": "NH-OPEN-V3-S06",
+      "label": "S6",
+      "role": "south_facing_slope",
+      "valid_observations": 9,
+      "event_count": 0,
+      "strong_event_count": 0
+    }
+  ],
+  "next_step": "Recompute terrain-gradient relationships after excluding flagged observations as a sensitivity test; compare with the full-data result rather than treating the filtered result as truth."
+}
