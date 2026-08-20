@@ -50,47 +50,53 @@
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       window.OneSignalDeferred.push(async function(OneSignal) {
         const base = basePath();
-        await OneSignal.init({
-          appId: cfg.app_id,
-          serviceWorkerPath: `${base}push/onesignal/OneSignalSDKWorker.js`,
-          serviceWorkerParam: { scope: `${base}push/onesignal/` },
-          notifyButton: { enable: false },
-          welcomeNotification: { disable: true }
-        });
+        try {
+          await OneSignal.init({
+            appId: cfg.app_id,
+            serviceWorkerPath: `${base}OneSignalSDKWorker.js`,
+            serviceWorkerParam: { scope: base },
+            notifyButton: { enable: false },
+            welcomeNotification: { disable: true }
+          });
 
-        const refresh = () => {
-          const on = !!OneSignal.User.PushSubscription.optedIn;
-          btn.disabled = false;
-          btn.textContent = on ? '🔔 Kritické push: zapnuto' : '🔔 Zapnout kritické push';
-          btn.style.borderColor = on ? '#70e2a1' : '#2c5962';
-        };
-        refresh();
-        OneSignal.User.PushSubscription.addEventListener('change', refresh);
+          const refresh = () => {
+            const on = !!OneSignal.User.PushSubscription.optedIn;
+            btn.disabled = false;
+            btn.textContent = on ? '🔔 Kritické push: zapnuto' : '🔔 Zapnout kritické push';
+            btn.style.borderColor = on ? '#70e2a1' : '#2c5962';
+          };
+          refresh();
+          OneSignal.User.PushSubscription.addEventListener('change', refresh);
 
-        btn.addEventListener('click', async () => {
-          const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-          const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-          if (isiOS && !standalone) {
-            alert('Na iPhonu musí být observatoř nejdřív přidaná na plochu a otevřená z ikony. Potom lze upozornění povolit.');
-            return;
-          }
-          try {
-            if (OneSignal.User.PushSubscription.optedIn) {
-              const off = confirm('Kritická upozornění jsou zapnutá. Chceš je vypnout?');
-              if (off) await OneSignal.User.PushSubscription.optOut();
-            } else {
-              await OneSignal.User.PushSubscription.optIn();
+          btn.addEventListener('click', async () => {
+            const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            if (isiOS && !standalone) {
+              alert('Na iPhonu musí být observatoř nejdřív přidaná na plochu a otevřená z ikony. Potom lze upozornění povolit.');
+              return;
             }
-            refresh();
-          } catch (e) {
-            alert('Upozornění se nepodařilo nastavit: ' + (e?.message || e));
-          }
-        });
+            try {
+              if (OneSignal.User.PushSubscription.optedIn) {
+                const off = confirm('Kritická upozornění jsou zapnutá. Chceš je vypnout?');
+                if (off) await OneSignal.User.PushSubscription.optOut();
+              } else {
+                await OneSignal.User.PushSubscription.optIn();
+              }
+              refresh();
+            } catch (e) {
+              alert('Upozornění se nepodařilo nastavit: ' + (e?.message || e));
+            }
+          });
+        } catch (e) {
+          btn.disabled = true;
+          btn.textContent = '🔕 Push není dostupný';
+          console.warn('OneSignal init failed', e);
+        }
       });
     } catch (e) {
       btn.disabled = true;
       btn.textContent = '🔕 Push není dostupný';
-      console.warn('Push init failed', e);
+      console.warn('Push SDK load failed', e);
     }
   }
 
