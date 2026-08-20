@@ -1,8 +1,8 @@
 {
-  "review_version": "disturbance-visual-review-v2",
-  "reviewed_at_local": "2026-08-20T13:54:00+02:00",
+  "review_version": "disturbance-visual-review-v3",
+  "reviewed_at_local": "2026-08-20T13:58:00+02:00",
   "status": "partial_manual_review",
-  "interpretation_rule": "visual_change_confirmed means a real vegetation-state change is visible in the historical Sentinel before/event/after chips. visual_change_possible means a weaker visible change that should not be weighted the same as a clear confirmation. Neither class identifies the cause as mowing, grazing, drought, cloud artifact, or another mechanism.",
+  "interpretation_rule": "visual_change_confirmed means a real vegetation-state change is visible in the historical Sentinel before/event/after chips. no_visible_change means the manual review did not find a convincing visible change despite the algorithmic NDVI flag. Neither class identifies the cause of any confirmed change as mowing, grazing, drought, cloud artifact, or another mechanism.",
   "assumption": "User label T1 interpreted as T-1 because T1 is not a valid disturbance sample label.",
   "confirmed_change": [
     {
@@ -46,17 +46,16 @@
       "cause": "unknown"
     }
   ],
-  "possible_change": [
+  "no_visible_change": [
     {
       "event_index": 3,
       "label": "N2",
       "sample_id": "NH-OPEN-V2-08",
-      "classification": "visual_change_possible",
-      "visual_confidence": "weak",
-      "cause": "unknown",
-      "note": "User described the change as slight / 'lehce vypadá'."
+      "classification": "no_visible_change",
+      "visual_confidence": "clear",
+      "note": "Manual review correction: user judged the historical triplet essentially unchanged."
     }
   ],
   "unreviewed_labels": ["T-3", "L4", "L5", "L7", "S7", "T+8"],
-  "next_step": "Continue manual review of the remaining historical before/event/after chips. Keep clear and weak visual changes separate from causal attribution."
+  "next_step": "Continue manual review of the remaining historical before/event/after chips. Use visually confirmed changes as a stricter sensitivity subset and keep algorithm-only flags separate."
 }
