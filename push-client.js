@@ -2,12 +2,6 @@
   const CONFIG = './data/push-config.json';
   const SDK = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';
 
-  function basePath() {
-    const p = location.pathname;
-    const marker = '/meteo-nove-hrabeci/';
-    return p.includes(marker) ? marker : '/';
-  }
-
   function addButton() {
     const sect = document.querySelector('.risks .sect');
     if (!sect || document.getElementById('pushCriticalBtn')) return null;
@@ -65,12 +59,11 @@
       await loadSdk();
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       window.OneSignalDeferred.push(async function(OneSignal) {
-        const base = basePath();
         try {
           await OneSignal.init({
             appId: cfg.app_id,
-            serviceWorkerPath: `${base}sw.js`,
-            serviceWorkerParam: { scope: base },
+            serviceWorkerPath: 'meteo-nove-hrabeci/push/onesignal/OneSignalSDKWorker.js',
+            serviceWorkerParam: { scope: '/meteo-nove-hrabeci/push/onesignal/' },
             notifyButton: { enable: false },
             welcomeNotification: { disable: true }
           });
