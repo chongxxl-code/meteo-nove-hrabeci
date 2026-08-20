@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import json
+import math
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+
+import numpy as np
+import pyflwdir
+from rasterio.features import geometry_mask
+from rasterio.warp import transform, transform_geom
+
+import generate_open_land_candidates as base
+from analyze_terrain_cuzk import ROOT, ZONES_FILE, SRC_CRS, STUDY_BBOX, fetch_dmr4g, box_mean
+from analyze_sentinel_zones import find_scene
+
+TZ = ZoneInfo('Europe/Prague')
+OUT_FILE = ROOT / 'config' / 'open-land-north-candidates-v4.geojson'
+STATUS_FILE = ROOT / 'data' / 'validation' / 'open-land-north-candidates-v4-status.json'
+V2_CANDIDATES = ROOT / 'config' / 'open-land-candidates.geojson'
+V3_CANDIDATES = ROOT / 'config' / 'open-land-target-candidates-v3.geojson'
+EXPERIMENTAL = ROOT / 'config' / 'open-land-experimental.geojson'
+
+CANDIDATES_PER_ROLE = 5
+FIRST_DISPLAY_RANK = 4
+SAMPLE_HALF_M = 35.0
+CORE_HALF_M = 20.0
+GUARD_HALF_M = 85.0
+MIN_OLD_CENTER_DISTANCE_M = 260.0
+
+base.HALF_SIZE_M = SAMPLE_HALF_M
+base.CORE_HALF_SIZE_M = CORE_HALF_M
+base.GUARD_HALF_SIZE_M = GUARD_HALF_M
+base.MIN_CORE_GRASS_FRACTION = 1.00
+base.MIN_SAMPLE_GRASS_FRACTION = 1.00
+base.MIN_GUARD_GRASS_FRACTION = 0.98
+base.MIN_SENTINEL_NDVI = 0.60
+base.MIN_SENTINEL_NDVI_P10 = 0.50
+base.MAX_SENTINEL_NDVI_SPREAD = 0.18
+base.MIN_SENTINEL_VALID = 0.98
+base.MIN_CENTER_SPACING_M = MIN_OLD_CENTER_DISTANCE_M
+base.EXISTING_OPEN_EXCLUSION_M = 220.0
+base.MIN_ASPECT_SLOPE_DEG = 5.0
+base.MAX_ASPECT_SECTOR_ERROR_DEG = 35.0
+base.MIN_ASPECT_COHERENCE = 0.75
+
+
+def square_geom_jtsk_v4(x: float, y: float, half: float = SAMPLE_HALF_M) -> dict:
+    return {'type':'Polygon','coordinates':[[[x-half,y-half],[x+half,y-half],[x+half,y+half],[x-half,y+half],[x-half,y-half]]]}
+base.square_geom_jtsk = square_geom_jtsk_v4
+
+
+def centers_from(path) -> list[tuple[float,float]]:
+    if not path.exists():
+        return []
+    doc = json.loads(path.read_text(encoding='utf-8'))
+    lons=[]; lats=[]
+    for f in doc.get('features') or []:
+        p=f.get('properties') or {}
+        lon=p.get('center_lon'); lat=p.get('center_lat')
+        if lon is None or lat is None:
+            g=f.get('geometry') or {}
+            if g.get('type')=='Polygon':
+                pts=(g.get('coordinates') or [[]])[0][:-1]
+                if pts:
+                    lon=sum(float(q[0]) for q in pts)/len(pts)
+                    lat=sum(float(q[1]) for q in pts)/len(pts)
+        if lon is not None and lat is not None:
+            lons.append(float(lon)); lats.append(float(lat))
+    if not lons:
+        return []
+    xs,ys=transform('EPSG:4326',SRC_CRS,lons,lats)
+    return [(float(x),float(y)) for x,y in zip(xs,ys)]
+
+
+def exclusion_centers() -> list[tuple[float,float]]:
+    allc=[]
+    for p in (V2_CANDIDATES,V3_CANDIDATES,EXPERIMENTAL):
+        allc.extend(centers_from(p))
+    unique=[]
+    for x,y in allc:
+        if not any(math.hypot(x-a,y-b)<2.0 for a,b in unique):
+            unique.append((x,y))
+    return unique
+
+
+def main():
+    STATUS_FILE.parent.mkdir(parents=True,exist_ok=True)
+    now=datetime.now(TZ)
+    zones=json.loads(ZONES_FILE.read_text(encoding='utf-8'))
+    dem,tr,export_info=fetch_dmr4g()
+    valid=np.isfinite(dem)
+    px=(abs(float(tr.a))+abs(float(tr.e)))/2.0
+
+    west,south,east,north=STUDY_BBOX
+    study={'type':'Polygon','coordinates':[[[west,south],[east,south],[east,north],[west,north],[west,south]]]}
+    study_jtsk=transform_geom('EPSG:4326',SRC_CRS,study,precision=3)
+    study_mask=geometry_mask([study_jtsk],out_shape=dem.shape,transform=tr,invert=True)&valid
+
+    grad_south,grad_east=np.gradient(dem,abs(float(tr.e)),abs(float(tr.a)))
+    grad_north=-grad_south
+    slope_rad=np.arctan(np.hypot(grad_east,grad_north)).astype('float32')
+    slope=np.degrees(slope_rad).astype('float32')
+    aspect=((np.degrees(np.arctan2(-grad_east,-grad_north))+360.0)%360.0).astype('float32')
+
+    r300=max(1,round(300/px)); r900=max(1,round(900/px))
+    tpi300=(dem-box_mean(dem,r300)).astype('float32')
+    tpi900=(dem-box_mean(dem,r900)).astype('float32')
+
+    dem_flow=np.where(valid,dem,base.NODATA).astype('float32')
+    flw=pyflwdir.from_dem(dem_flow,nodata=base.NODATA,max_depth=-1.0,transform=tr,latlon=False,outlets='edge')
+    upstream=flw.upstream_area(unit='m2').astype('float32'); upstream[~valid]=np.nan
+    slope_for_twi=np.maximum(slope_rad,math.radians(0.5))
+    specific=upstream/max(px,1e-6)
+    twi=np.full(dem.shape,np.nan,dtype='float32')
+    ok=valid&np.isfinite(upstream)&(upstream>0)
+    twi[ok]=np.log(np.maximum(specific[ok],1e-6)/np.maximum(np.tan(slope_for_twi[ok]),1e-6))
+
+    wet_twi=base.robust01(twi,study_mask)
+    valley300=base.robust01(-tpi300,study_mask)
+    valley900=base.robust01(-tpi900,study_mask)
+    convex300=base.robust01(tpi300,study_mask)
+    slope_norm=base.robust01(slope,study_mask,lo=2,hi=95)
+    low_elev=base.robust01(dem,study_mask,invert=True)
+    flatness=1.0-slope_norm
+    southness=(1.0-np.cos(np.deg2rad(aspect)))/2.0
+    solar=np.clip(southness*np.sin(np.minimum(slope_rad,math.radians(45)))/math.sin(math.radians(45)),0,1).astype('float32')
+    wetness=100*(0.60*wet_twi+0.25*valley300+0.15*valley900)
+    drying=100*(0.45*(1-wet_twi)+0.30*solar+0.15*convex300+0.10*slope_norm)
+    cold=100*(0.35*valley900+0.30*valley300+0.20*flatness+0.15*low_elev)
+
+    wc=base.worldcover_on_dem(dem.shape,tr)
+    grass=study_mask&(wc==base.WORLD_COVER_CLASS_GRASSLAND)
+    scene=find_scene(datetime.now(timezone.utc))
+    northness=(1.0+np.cos(np.deg2rad(aspect)))/2.0
+    score=northness*slope_norm
+    mask=grass&(slope>=base.MIN_ASPECT_SLOPE_DEG)
+
+    excluded=exclusion_centers()
+    selected_centers=list(excluded)
+    existing_open=base.centroid_existing_open(zones)
+    selected=[]
+    for idx in base.top_indices(score,mask,n=90000):
+        r,c=np.unravel_index(int(idx),dem.shape)
+        found=base.candidate_entry('north_facing_slope',r,c,score[r,c],dem=dem,slope=slope,aspect=aspect,tpi300=tpi300,tpi900=tpi900,twi=twi,wetness=wetness,drying=drying,cold=cold,wc=wc,transform_affine=tr,scene=scene,selected_centers=selected_centers,existing_open_center=existing_open)
+        if not found:
+            continue
+        x=found.pop('center_x_jtsk'); y=found.pop('center_y_jtsk'); selected_centers.append((x,y))
+        props=found.pop('properties')
+        rank=FIRST_DISPLAY_RANK+len(selected)
+        props['candidate_rank']=rank
+        props['display_label']=f'N{rank}'
+        props['id']=f'NH-OPEN-V4-N{rank:02d}'
+        props['name']=f'Severní svah · varianta {rank}'
+        props['class']='open_land_north_candidate_v4'
+        props['screening_version']=4
+        props['center_lat']=found.pop('center_lat'); props['center_lon']=found.pop('center_lon')
+        props['distance_rule']=f'>={MIN_OLD_CENTER_DISTANCE_M:.0f} m from every v2/v3 reviewed candidate center'
+        selected.append({'type':'Feature','properties':props,'geometry':found['geometry']})
+        if len(selected)>=CANDIDATES_PER_ROLE:
+            break
+
+    fc={'type':'FeatureCollection','name':'nove-hrabeci-open-land-north-candidates-v4','properties':{'status':'north_candidates_need_visual_check','generated_at_local':now.isoformat(),'purpose':'Add independent north-facing grassland controls after aspect signal strengthened in disturbance-filtered sensitivity analysis.','selection_rules':{'core_square_m':CORE_HALF_M*2,'sampling_square_m':SAMPLE_HALF_M*2,'guard_square_m':GUARD_HALF_M*2,'minimum_core_grassland_fraction':base.MIN_CORE_GRASS_FRACTION,'minimum_sample_grassland_fraction':base.MIN_SAMPLE_GRASS_FRACTION,'minimum_guard_grassland_fraction':base.MIN_GUARD_GRASS_FRACTION,'minimum_ndvi_median':base.MIN_SENTINEL_NDVI,'minimum_ndvi_p10':base.MIN_SENTINEL_NDVI_P10,'maximum_ndvi_p90_p10_spread':base.MAX_SENTINEL_NDVI_SPREAD,'minimum_sentinel_valid_fraction':base.MIN_SENTINEL_VALID,'minimum_distance_from_previous_candidates_m':MIN_OLD_CENTER_DISTANCE_M,'north_aspect_max_error_deg':base.MAX_ASPECT_SECTOR_ERROR_DEG,'minimum_aspect_coherence':base.MIN_ASPECT_COHERENCE,'candidates_target':CANDIDATES_PER_ROLE},'excluded_previous_centers':len(excluded),'note':'Manual satellite approval remains mandatory.'},'features':selected}
+    OUT_FILE.write_text(json.dumps(fc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    status={'ok':bool(selected),'quality_status':'north_candidates_v4_ready_for_visual_check' if len(selected)==CANDIDATES_PER_ROLE else 'north_candidates_v4_partial','generated_at_local':now.isoformat(),'candidate_count':len(selected),'labels':[f.get('properties',{}).get('display_label') for f in selected],'excluded_previous_centers':len(excluded),'sentinel_scene_id':scene.get('id'),'output_file':str(OUT_FILE.relative_to(ROOT)).replace('\\','/'),'next_step':'Inspect north-candidates.html and approve only fully homogeneous north-facing meadow/pasture samples.'}
+    STATUS_FILE.write_text(json.dumps(status,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    print(json.dumps(status,ensure_ascii=False))
+
+if __name__=='__main__':
+    main()
