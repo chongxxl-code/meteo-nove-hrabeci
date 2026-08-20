@@ -1,21 +1,88 @@
 {
   "ok": true,
-  "quality_status": "valid_exploratory_series",
-  "computed_at_local": "2026-08-20T12:41:04.443771+02:00",
-  "network": "nove-hrabeci-open-land-experimental-v1",
-  "network_review_version": "visual-review-v2.3",
+  "quality_status": "valid_exploratory_series_v2",
+  "analysis_version": 2,
+  "computed_at_local": "2026-08-20T13:14:48.957311+02:00",
+  "network": "nove-hrabeci-open-land-experimental-v2",
+  "network_status": "stable_after_v3_visual_review",
+  "network_review_versions": [
+    "visual-review-v2.3",
+    "visual-review-v3.1"
+  ],
   "provider": "Sentinel-2 Collection 1 L2A via Earth Search / AWS Open Data COG + ČHMÚ antecedent rainfall",
-  "interpretation_warning": "NDMI is a spectral moisture signal, not direct soil-moisture measurement. Correlations are exploratory and do not establish causality.",
+  "interpretation_warning": "NDMI is a spectral vegetation/water-content signal, not direct soil-moisture measurement. Group contrasts are exploratory; land management, phenology and sample imbalance can confound them. Correlations do not establish causality.",
   "summary": {
     "scene_count": 10,
-    "valid_scene_count": 8,
-    "twi_contrast_scene_count": 9,
-    "high_twi_wetter_ndmi_count": 4,
-    "high_twi_wetter_ndmi_fraction": 0.444,
-    "median_high_twi_minus_low_twi_ndmi": -0.0336,
-    "corr_rain_7d_vs_twi_ndmi_contrast": 0.1678,
-    "corr_rain_14d_vs_twi_ndmi_contrast": 0.3285,
-    "corr_rain_30d_vs_twi_ndmi_contrast": 0.6188
+    "fully_valid_scene_count": 8,
+    "sample_count": 14,
+    "role_counts": {
+      "high_position": 2,
+      "north_facing_slope": 1,
+      "high_twi": 2,
+      "low_twi": 3,
+      "low_position": 4,
+      "south_facing_slope": 2
+    },
+    "twi_ndmi": {
+      "scene_count": 10,
+      "positive_count": 5,
+      "positive_fraction": 0.5,
+      "median_contrast": 0.0358,
+      "positive_means": "high-TWI group has higher NDMI",
+      "corr_rain_7d_vs_contrast": 0.1389,
+      "corr_rain_14d_vs_contrast": 0.3283,
+      "corr_rain_30d_vs_contrast": 0.5441
+    },
+    "position_ndmi": {
+      "scene_count": 9,
+      "positive_count": 2,
+      "positive_fraction": 0.222,
+      "median_contrast": -0.1284,
+      "positive_means": "low-position group has higher NDMI",
+      "corr_rain_7d_vs_contrast": 0.1627,
+      "corr_rain_14d_vs_contrast": -0.0149,
+      "corr_rain_30d_vs_contrast": 0.2202
+    },
+    "aspect_ndmi": {
+      "scene_count": 8,
+      "positive_count": 3,
+      "positive_fraction": 0.375,
+      "median_contrast": -0.0914,
+      "positive_means": "south-facing group has higher NDMI",
+      "corr_rain_7d_vs_contrast": -0.0847,
+      "corr_rain_14d_vs_contrast": 0.1441,
+      "corr_rain_30d_vs_contrast": -0.337
+    },
+    "twi_ndvi": {
+      "scene_count": 10,
+      "positive_count": 6,
+      "positive_fraction": 0.6,
+      "median_contrast": 0.0534,
+      "positive_means": "high-TWI group has higher NDVI",
+      "corr_rain_7d_vs_contrast": 0.0759,
+      "corr_rain_14d_vs_contrast": 0.2995,
+      "corr_rain_30d_vs_contrast": 0.583
+    },
+    "position_ndvi": {
+      "scene_count": 9,
+      "positive_count": 2,
+      "positive_fraction": 0.222,
+      "median_contrast": -0.0887,
+      "positive_means": "low-position group has higher NDVI",
+      "corr_rain_7d_vs_contrast": 0.084,
+      "corr_rain_14d_vs_contrast": -0.1131,
+      "corr_rain_30d_vs_contrast": 0.3016
+    },
+    "aspect_ndvi": {
+      "scene_count": 8,
+      "positive_count": 2,
+      "positive_fraction": 0.25,
+      "median_contrast": -0.0575,
+      "positive_means": "south-facing group has higher NDVI",
+      "corr_rain_7d_vs_contrast": -0.1336,
+      "corr_rain_14d_vs_contrast": -0.0275,
+      "corr_rain_30d_vs_contrast": -0.45
+    }
   },
   "scenes": [
     {
@@ -221,16 +288,222 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.4311,
+            "median": 0.4166,
+            "p10": 0.3709,
+            "p90": 0.5129,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": -0.0167,
+            "median": -0.0186,
+            "p10": -0.038,
+            "p90": 0.0072,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.3714,
+            "median": 0.3701,
+            "p10": 0.3512,
+            "p90": 0.3915,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": -0.0549,
+            "median": -0.0557,
+            "p10": -0.0598,
+            "p90": -0.0497,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.6274,
+            "median": 0.6322,
+            "p10": 0.5856,
+            "p90": 0.6656,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.0905,
+            "median": 0.0913,
+            "p10": 0.0548,
+            "p90": 0.1213,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.4313,
+            "median": 0.4336,
+            "p10": 0.4085,
+            "p90": 0.4452,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": -0.0331,
+            "median": -0.0325,
+            "p10": -0.047,
+            "p90": -0.0231,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.694,
+            "median": 0.6906,
+            "p10": 0.6522,
+            "p90": 0.7347,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.1698,
+            "median": 0.1686,
+            "p10": 0.1379,
+            "p90": 0.2019,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.4559,
+            "median": 0.4552,
+            "p10": 0.4275,
+            "p90": 0.4854,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": -0.0137,
+            "median": -0.0132,
+            "p10": -0.0337,
+            "p90": -0.0003,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.5753,
+            "median": 0.5747,
+            "p10": 0.5134,
+            "p90": 0.6471,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1032,
+            "median": 0.093,
+            "p10": 0.0637,
+            "p90": 0.1465,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.0306,
+          "ndvi_median": 0.5
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": 0.0777,
+          "ndvi_median": 0.5656
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": -0.02555,
+          "ndvi_median": 0.42510000000000003
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.11155,
+          "ndvi_median": 0.6065
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.0777,
+          "ndvi_median": 0.5729
+        },
+        "north_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": -0.0243,
+          "ndvi_median": 0.4072
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": -0.0318,
-        "low_twi_ndmi_median": 0.0777,
-        "high_twi_ndvi_median": 0.4253,
-        "low_twi_ndvi_median": 0.5656,
-        "high_position_ndmi_median": 0.11155,
-        "high_twi_minus_low_twi_ndmi": -0.1095,
-        "high_twi_minus_low_twi_ndvi": -0.1403
+        "high_twi_minus_low_twi_ndmi": -0.0471,
+        "high_twi_minus_low_twi_ndvi": -0.0656,
+        "low_minus_high_position_ndmi": -0.1371,
+        "low_minus_high_position_ndvi": -0.1814,
+        "south_minus_north_ndmi": 0.102,
+        "south_minus_north_ndvi": 0.1657
       },
       "quality_status": "valid"
     },
@@ -437,16 +710,222 @@
             "valid_fraction": 0.0
           },
           "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 50,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 11,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 49,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 14,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 29,
+            "mean": 0.696,
+            "median": 0.6959,
+            "p10": 0.6634,
+            "p90": 0.7256,
+            "total_inside_pixels": 49,
+            "valid_fraction": 0.592
+          },
+          "ndmi": {
+            "valid_pixels": 8,
+            "mean": 0.1593,
+            "median": 0.1793,
+            "p10": 0.1138,
+            "p90": 0.1883,
+            "total_inside_pixels": 13,
+            "valid_fraction": 0.615
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 48,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 12,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 50,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 11,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.5446,
+            "median": 0.5448,
+            "p10": 0.5147,
+            "p90": 0.573,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.0553,
+            "median": 0.0496,
+            "p10": 0.0412,
+            "p90": 0.0722,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 49,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 12,
+            "valid_fraction": 0.0
+          },
+          "ok": false
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 1,
+          "ndmi_median": 0.0226,
+          "ndvi_median": 0.5238
+        },
+        "low_twi": {
+          "valid_samples": 1,
+          "ndmi_median": 0.2034,
+          "ndvi_median": 0.7045
+        },
+        "low_position": {
+          "valid_samples": 1,
+          "ndmi_median": 0.1793,
+          "ndvi_median": 0.6959
+        },
+        "high_position": {
+          "valid_samples": 1,
+          "ndmi_median": 0.3077,
+          "ndvi_median": 0.8
+        },
+        "south_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": 0.0496,
+          "ndvi_median": 0.5448
+        },
+        "north_facing_slope": {
+          "valid_samples": 0,
+          "ndmi_median": null,
+          "ndvi_median": null
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": 0.0226,
-        "low_twi_ndmi_median": 0.2034,
-        "high_twi_ndvi_median": 0.5238,
-        "low_twi_ndvi_median": 0.7045,
-        "high_position_ndmi_median": 0.3077,
         "high_twi_minus_low_twi_ndmi": -0.1808,
-        "high_twi_minus_low_twi_ndvi": -0.1807
+        "high_twi_minus_low_twi_ndvi": -0.1807,
+        "low_minus_high_position_ndmi": -0.1284,
+        "low_minus_high_position_ndvi": -0.1041,
+        "south_minus_north_ndmi": null,
+        "south_minus_north_ndvi": null
       },
       "quality_status": "partial"
     },
@@ -653,16 +1132,222 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.5951,
+            "median": 0.5879,
+            "p10": 0.515,
+            "p90": 0.6991,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.1005,
+            "median": 0.0909,
+            "p10": 0.0689,
+            "p90": 0.139,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.5171,
+            "median": 0.5192,
+            "p10": 0.4858,
+            "p90": 0.5425,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": 0.0289,
+            "median": 0.0281,
+            "p10": 0.016,
+            "p90": 0.0411,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7498,
+            "median": 0.7548,
+            "p10": 0.7047,
+            "p90": 0.7848,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.2176,
+            "median": 0.2197,
+            "p10": 0.1853,
+            "p90": 0.247,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.5393,
+            "median": 0.5372,
+            "p10": 0.5174,
+            "p90": 0.5574,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.0395,
+            "median": 0.0381,
+            "p10": 0.0264,
+            "p90": 0.0588,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7655,
+            "median": 0.7739,
+            "p10": 0.7061,
+            "p90": 0.815,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2519,
+            "median": 0.2433,
+            "p10": 0.208,
+            "p90": 0.2872,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.6006,
+            "median": 0.5979,
+            "p10": 0.5625,
+            "p90": 0.6415,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.0936,
+            "median": 0.0881,
+            "p10": 0.0801,
+            "p90": 0.1108,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7821,
+            "median": 0.7881,
+            "p10": 0.7309,
+            "p90": 0.8226,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.2816,
+            "median": 0.2736,
+            "p10": 0.2323,
+            "p90": 0.3273,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.17,
+          "ndvi_median": 0.6814
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": 0.1939,
+          "ndvi_median": 0.7156
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": 0.0645,
+          "ndvi_median": 0.56255
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.2409,
+          "ndvi_median": 0.7377
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.1657,
+          "ndvi_median": 0.6859
+        },
+        "north_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": 0.0986,
+          "ndvi_median": 0.5978
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": 0.0664,
-        "low_twi_ndmi_median": 0.1939,
-        "high_twi_ndvi_median": 0.5747,
-        "low_twi_ndvi_median": 0.7156,
-        "high_position_ndmi_median": 0.2409,
-        "high_twi_minus_low_twi_ndmi": -0.1275,
-        "high_twi_minus_low_twi_ndvi": -0.1409
+        "high_twi_minus_low_twi_ndmi": -0.0239,
+        "high_twi_minus_low_twi_ndvi": -0.0342,
+        "low_minus_high_position_ndmi": -0.1764,
+        "low_minus_high_position_ndvi": -0.1752,
+        "south_minus_north_ndmi": 0.0671,
+        "south_minus_north_ndvi": 0.0881
       },
       "quality_status": "valid"
     },
@@ -869,16 +1554,222 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7537,
+            "median": 0.7535,
+            "p10": 0.6931,
+            "p90": 0.825,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2609,
+            "median": 0.2482,
+            "p10": 0.218,
+            "p90": 0.3136,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.6729,
+            "median": 0.674,
+            "p10": 0.6385,
+            "p90": 0.7051,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": 0.1748,
+            "median": 0.1742,
+            "p10": 0.1464,
+            "p90": 0.1975,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8132,
+            "median": 0.813,
+            "p10": 0.7929,
+            "p90": 0.8339,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.3389,
+            "median": 0.3321,
+            "p10": 0.3175,
+            "p90": 0.363,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.6789,
+            "median": 0.6826,
+            "p10": 0.6417,
+            "p90": 0.7041,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1681,
+            "median": 0.1668,
+            "p10": 0.1507,
+            "p90": 0.1896,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7439,
+            "median": 0.7443,
+            "p10": 0.7104,
+            "p90": 0.7774,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2399,
+            "median": 0.2342,
+            "p10": 0.2215,
+            "p90": 0.2697,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7456,
+            "median": 0.7478,
+            "p10": 0.7217,
+            "p90": 0.7727,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2335,
+            "median": 0.2241,
+            "p10": 0.2181,
+            "p90": 0.2443,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7901,
+            "median": 0.7914,
+            "p10": 0.7767,
+            "p90": 0.8005,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.28,
+            "median": 0.2777,
+            "p10": 0.2706,
+            "p90": 0.2866,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.26305,
+          "ndvi_median": 0.7743
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": 0.3153,
+          "ndvi_median": 0.7912
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": 0.2112,
+          "ndvi_median": 0.71805
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.36795,
+          "ndvi_median": 0.8068
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.22915,
+          "ndvi_median": 0.74605
+        },
+        "north_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": 0.3084,
+          "ndvi_median": 0.8095
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": 0.2484,
-        "low_twi_ndmi_median": 0.3153,
-        "high_twi_ndvi_median": 0.7572,
-        "low_twi_ndvi_median": 0.7912,
-        "high_position_ndmi_median": 0.36795,
-        "high_twi_minus_low_twi_ndmi": -0.0669,
-        "high_twi_minus_low_twi_ndvi": -0.034
+        "high_twi_minus_low_twi_ndmi": -0.0523,
+        "high_twi_minus_low_twi_ndvi": -0.0169,
+        "low_minus_high_position_ndmi": -0.1568,
+        "low_minus_high_position_ndvi": -0.0887,
+        "south_minus_north_ndmi": -0.0793,
+        "south_minus_north_ndvi": -0.0635
       },
       "quality_status": "valid"
     },
@@ -1085,16 +1976,222 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7866,
+            "median": 0.7867,
+            "p10": 0.7156,
+            "p90": 0.8583,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.287,
+            "median": 0.2668,
+            "p10": 0.2433,
+            "p90": 0.3468,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7118,
+            "median": 0.7128,
+            "p10": 0.6698,
+            "p90": 0.7462,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": 0.1954,
+            "median": 0.1962,
+            "p10": 0.1654,
+            "p90": 0.2251,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8415,
+            "median": 0.8419,
+            "p10": 0.8193,
+            "p90": 0.8625,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.3639,
+            "median": 0.3564,
+            "p10": 0.3449,
+            "p90": 0.3914,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.7065,
+            "median": 0.7121,
+            "p10": 0.6661,
+            "p90": 0.7397,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1827,
+            "median": 0.1815,
+            "p10": 0.1618,
+            "p90": 0.2052,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7472,
+            "median": 0.7442,
+            "p10": 0.7093,
+            "p90": 0.7786,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2058,
+            "median": 0.2075,
+            "p10": 0.1853,
+            "p90": 0.2296,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7753,
+            "median": 0.7772,
+            "p10": 0.7431,
+            "p90": 0.8102,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2532,
+            "median": 0.2428,
+            "p10": 0.2317,
+            "p90": 0.2654,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8319,
+            "median": 0.8332,
+            "p10": 0.8228,
+            "p90": 0.8448,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.3126,
+            "median": 0.3097,
+            "p10": 0.3,
+            "p90": 0.3263,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.29259999999999997,
+          "ndvi_median": 0.8146500000000001
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": 0.3091,
+          "ndvi_median": 0.8023
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": 0.23149999999999998,
+          "ndvi_median": 0.7497499999999999
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.38555,
+          "ndvi_median": 0.8234
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.22515,
+          "ndvi_median": 0.7606999999999999
+        },
+        "north_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": 0.3286,
+          "ndvi_median": 0.8359
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": 0.2755,
-        "low_twi_ndmi_median": 0.3091,
-        "high_twi_ndvi_median": 0.7961,
-        "low_twi_ndvi_median": 0.8023,
-        "high_position_ndmi_median": 0.38555,
-        "high_twi_minus_low_twi_ndmi": -0.0336,
-        "high_twi_minus_low_twi_ndvi": -0.0062
+        "high_twi_minus_low_twi_ndmi": -0.0165,
+        "high_twi_minus_low_twi_ndvi": 0.0124,
+        "low_minus_high_position_ndmi": -0.1541,
+        "low_minus_high_position_ndvi": -0.0737,
+        "south_minus_north_ndmi": -0.1035,
+        "south_minus_north_ndvi": -0.0752
       },
       "quality_status": "valid"
     },
@@ -1301,16 +2398,222 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7866,
+            "median": 0.786,
+            "p10": 0.7567,
+            "p90": 0.8107,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2885,
+            "median": 0.2831,
+            "p10": 0.247,
+            "p90": 0.3338,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7439,
+            "median": 0.7399,
+            "p10": 0.724,
+            "p90": 0.7711,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": 0.2056,
+            "median": 0.202,
+            "p10": 0.1841,
+            "p90": 0.2372,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8274,
+            "median": 0.829,
+            "p10": 0.8137,
+            "p90": 0.8406,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.3454,
+            "median": 0.3406,
+            "p10": 0.3314,
+            "p90": 0.3646,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.7316,
+            "median": 0.7384,
+            "p10": 0.6931,
+            "p90": 0.7636,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1755,
+            "median": 0.1655,
+            "p10": 0.1556,
+            "p90": 0.2089,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7346,
+            "median": 0.7367,
+            "p10": 0.6905,
+            "p90": 0.7695,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.1597,
+            "median": 0.1638,
+            "p10": 0.1299,
+            "p90": 0.1716,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7862,
+            "median": 0.7782,
+            "p10": 0.757,
+            "p90": 0.8193,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2387,
+            "median": 0.2312,
+            "p10": 0.2178,
+            "p90": 0.2747,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8372,
+            "median": 0.8394,
+            "p10": 0.821,
+            "p90": 0.8562,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.3241,
+            "median": 0.3257,
+            "p10": 0.2897,
+            "p90": 0.354,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.3277,
+          "ndvi_median": 0.83605
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": 0.0544,
+          "ndvi_median": 0.5583
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": 0.24255000000000002,
+          "ndvi_median": 0.76295
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.21445,
+          "ndvi_median": 0.73485
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.1975,
+          "ndvi_median": 0.75745
+        },
+        "north_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": 0.3168,
+          "ndvi_median": 0.8088
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": 0.3297,
-        "low_twi_ndmi_median": 0.0544,
-        "high_twi_ndvi_median": 0.8327,
-        "low_twi_ndvi_median": 0.5583,
-        "high_position_ndmi_median": 0.21445,
-        "high_twi_minus_low_twi_ndmi": 0.2753,
-        "high_twi_minus_low_twi_ndvi": 0.2744
+        "high_twi_minus_low_twi_ndmi": 0.2733,
+        "high_twi_minus_low_twi_ndvi": 0.2777,
+        "low_minus_high_position_ndmi": 0.0281,
+        "low_minus_high_position_ndvi": 0.0281,
+        "south_minus_north_ndmi": -0.1193,
+        "south_minus_north_ndvi": -0.0514
       },
       "quality_status": "valid"
     },
@@ -1517,16 +2820,222 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7741,
+            "median": 0.7758,
+            "p10": 0.747,
+            "p90": 0.7976,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2617,
+            "median": 0.2543,
+            "p10": 0.2251,
+            "p90": 0.3048,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7307,
+            "median": 0.7279,
+            "p10": 0.709,
+            "p90": 0.7565,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": 0.1932,
+            "median": 0.192,
+            "p10": 0.163,
+            "p90": 0.225,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8001,
+            "median": 0.8032,
+            "p10": 0.7821,
+            "p90": 0.8141,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.2995,
+            "median": 0.3026,
+            "p10": 0.2737,
+            "p90": 0.3212,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.7176,
+            "median": 0.7215,
+            "p10": 0.6769,
+            "p90": 0.7521,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1554,
+            "median": 0.1534,
+            "p10": 0.1217,
+            "p90": 0.1946,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.6614,
+            "median": 0.6632,
+            "p10": 0.592,
+            "p90": 0.7158,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.0828,
+            "median": 0.0928,
+            "p10": 0.0468,
+            "p90": 0.1076,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7618,
+            "median": 0.7599,
+            "p10": 0.7268,
+            "p90": 0.8043,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2065,
+            "median": 0.1941,
+            "p10": 0.1773,
+            "p90": 0.2376,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.6956,
+            "median": 0.6935,
+            "p10": 0.6382,
+            "p90": 0.7605,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1493,
+            "median": 0.1563,
+            "p10": 0.0962,
+            "p90": 0.1971,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.13555,
+          "ndvi_median": 0.68205
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": -0.0052,
+          "ndvi_median": 0.5327
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": 0.22315000000000002,
+          "ndvi_median": 0.75185
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.17570000000000002,
+          "ndvi_median": 0.6962999999999999
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.14345,
+          "ndvi_median": 0.71155
+        },
+        "north_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": 0.2835,
+          "ndvi_median": 0.7808
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": 0.1148,
-        "low_twi_ndmi_median": -0.0052,
-        "high_twi_ndvi_median": 0.6706,
-        "low_twi_ndvi_median": 0.5327,
-        "high_position_ndmi_median": 0.17570000000000002,
-        "high_twi_minus_low_twi_ndmi": 0.12,
-        "high_twi_minus_low_twi_ndvi": 0.1379
+        "high_twi_minus_low_twi_ndmi": 0.1408,
+        "high_twi_minus_low_twi_ndvi": 0.1494,
+        "low_minus_high_position_ndmi": 0.0474,
+        "low_minus_high_position_ndvi": 0.0556,
+        "south_minus_north_ndmi": -0.14,
+        "south_minus_north_ndvi": -0.0693
       },
       "quality_status": "valid"
     },
@@ -1733,16 +3242,222 @@
             "valid_fraction": 0.0
           },
           "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 50,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 11,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 49,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 14,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 49,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 13,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.6937,
+            "median": 0.6972,
+            "p10": 0.6628,
+            "p90": 0.725,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.16,
+            "median": 0.1521,
+            "p10": 0.1314,
+            "p90": 0.2025,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.5732,
+            "median": 0.5852,
+            "p10": 0.5086,
+            "p90": 0.6254,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.0136,
+            "median": 0.0262,
+            "p10": -0.0286,
+            "p90": 0.04,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.5946,
+            "median": 0.5955,
+            "p10": 0.4756,
+            "p90": 0.7179,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2147,
+            "median": 0.2126,
+            "p10": 0.1908,
+            "p90": 0.2473,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.5883,
+            "median": 0.5752,
+            "p10": 0.5398,
+            "p90": 0.6627,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.0831,
+            "median": 0.0773,
+            "p10": 0.0562,
+            "p90": 0.1169,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 1,
+          "ndmi_median": 0.0773,
+          "ndvi_median": 0.5752
+        },
+        "low_twi": {
+          "valid_samples": 1,
+          "ndmi_median": -0.0557,
+          "ndvi_median": 0.474
+        },
+        "low_position": {
+          "valid_samples": 1,
+          "ndmi_median": 0.1521,
+          "ndvi_median": 0.6972
+        },
+        "high_position": {
+          "valid_samples": 0,
+          "ndmi_median": null,
+          "ndvi_median": null
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.1194,
+          "ndvi_median": 0.59035
+        },
+        "north_facing_slope": {
+          "valid_samples": 0,
+          "ndmi_median": null,
+          "ndvi_median": null
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": null,
-        "low_twi_ndmi_median": -0.0557,
-        "high_twi_ndvi_median": null,
-        "low_twi_ndvi_median": 0.474,
-        "high_position_ndmi_median": null,
-        "high_twi_minus_low_twi_ndmi": null,
-        "high_twi_minus_low_twi_ndvi": null
+        "high_twi_minus_low_twi_ndmi": 0.133,
+        "high_twi_minus_low_twi_ndvi": 0.1012,
+        "low_minus_high_position_ndmi": null,
+        "low_minus_high_position_ndvi": null,
+        "south_minus_north_ndmi": null,
+        "south_minus_north_ndvi": null
       },
       "quality_status": "partial"
     },
@@ -1949,16 +3664,222 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.547,
+            "median": 0.5457,
+            "p10": 0.5213,
+            "p90": 0.5804,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": -0.0078,
+            "median": -0.01,
+            "p10": -0.0192,
+            "p90": 0.0059,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.5387,
+            "median": 0.5434,
+            "p10": 0.5057,
+            "p90": 0.5683,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": -0.0148,
+            "median": -0.015,
+            "p10": -0.0337,
+            "p90": -0.0011,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.733,
+            "median": 0.7393,
+            "p10": 0.6954,
+            "p90": 0.7569,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.1877,
+            "median": 0.2002,
+            "p10": 0.1593,
+            "p90": 0.2152,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.5239,
+            "median": 0.5267,
+            "p10": 0.4916,
+            "p90": 0.5506,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": -0.0055,
+            "median": -0.0053,
+            "p10": -0.0148,
+            "p90": 0.004,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.5979,
+            "median": 0.5966,
+            "p10": 0.573,
+            "p90": 0.6247,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.0313,
+            "median": 0.0328,
+            "p10": 0.009,
+            "p90": 0.0489,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.5083,
+            "median": 0.5021,
+            "p10": 0.4808,
+            "p90": 0.5268,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": -0.0176,
+            "median": -0.0229,
+            "p10": -0.0266,
+            "p90": -0.0075,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7407,
+            "median": 0.7409,
+            "p10": 0.7072,
+            "p90": 0.7755,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1731,
+            "median": 0.1741,
+            "p10": 0.1545,
+            "p90": 0.1908,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.1485,
+          "ndvi_median": 0.7253000000000001
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": 0.0191,
+          "ndvi_median": 0.5978
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": -0.0076500000000000005,
+          "ndvi_median": 0.54455
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.1165,
+          "ndvi_median": 0.6714
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.004950000000000001,
+          "ndvi_median": 0.54935
+        },
+        "north_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": -0.0018,
+          "ndvi_median": 0.5519
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": 0.1229,
-        "low_twi_ndmi_median": 0.0191,
-        "high_twi_ndvi_median": 0.7097,
-        "low_twi_ndvi_median": 0.5978,
-        "high_position_ndmi_median": 0.1165,
-        "high_twi_minus_low_twi_ndmi": 0.1038,
-        "high_twi_minus_low_twi_ndvi": 0.1119
+        "high_twi_minus_low_twi_ndmi": 0.1294,
+        "high_twi_minus_low_twi_ndvi": 0.1275,
+        "low_minus_high_position_ndmi": -0.1242,
+        "low_minus_high_position_ndvi": -0.1269,
+        "south_minus_north_ndmi": 0.0068,
+        "south_minus_north_ndvi": -0.0025
       },
       "quality_status": "valid"
     },
@@ -2165,16 +4086,222 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7727,
+            "median": 0.7752,
+            "p10": 0.7356,
+            "p90": 0.814,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.1906,
+            "median": 0.1952,
+            "p10": 0.149,
+            "p90": 0.2311,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.757,
+            "median": 0.7587,
+            "p10": 0.7213,
+            "p90": 0.7908,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": 0.1913,
+            "median": 0.1806,
+            "p10": 0.1549,
+            "p90": 0.2349,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7159,
+            "median": 0.7215,
+            "p10": 0.6822,
+            "p90": 0.737,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.1458,
+            "median": 0.1475,
+            "p10": 0.1175,
+            "p90": 0.1745,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.6611,
+            "median": 0.6657,
+            "p10": 0.6163,
+            "p90": 0.6997,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.0905,
+            "median": 0.0907,
+            "p10": 0.0721,
+            "p90": 0.1114,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.6374,
+            "median": 0.6361,
+            "p10": 0.5938,
+            "p90": 0.6833,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.0593,
+            "median": 0.0603,
+            "p10": 0.0387,
+            "p90": 0.0842,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.6946,
+            "median": 0.6825,
+            "p10": 0.6599,
+            "p90": 0.7498,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.1212,
+            "median": 0.1115,
+            "p10": 0.0962,
+            "p90": 0.1649,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.831,
+            "median": 0.8319,
+            "p10": 0.7992,
+            "p90": 0.8738,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.2622,
+            "median": 0.2561,
+            "p10": 0.2286,
+            "p90": 0.2998,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.2015,
+          "ndvi_median": 0.7863
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": 0.1133,
+          "ndvi_median": 0.6918
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": 0.16405,
+          "ndvi_median": 0.7401
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.18419999999999997,
+          "ndvi_median": 0.7551000000000001
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.0859,
+          "ndvi_median": 0.6593
+        },
+        "north_facing_slope": {
+          "valid_samples": 1,
+          "ndmi_median": 0.2061,
+          "ndvi_median": 0.7821
+        }
+      },
       "groups": {
-        "high_twi_ndmi_median": 0.1469,
-        "low_twi_ndmi_median": 0.1133,
-        "high_twi_ndvi_median": 0.7407,
-        "low_twi_ndvi_median": 0.6918,
-        "high_position_ndmi_median": 0.18419999999999997,
-        "high_twi_minus_low_twi_ndmi": 0.0336,
-        "high_twi_minus_low_twi_ndvi": 0.0489
+        "high_twi_minus_low_twi_ndmi": 0.0882,
+        "high_twi_minus_low_twi_ndvi": 0.0945,
+        "low_minus_high_position_ndmi": -0.0201,
+        "low_minus_high_position_ndvi": -0.015,
+        "south_minus_north_ndmi": -0.1202,
+        "south_minus_north_ndvi": -0.1228
       },
       "quality_status": "valid"
     }
