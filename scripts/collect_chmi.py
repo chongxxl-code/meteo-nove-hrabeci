@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 import time
 import urllib.request
@@ -13,18 +14,15 @@ TZ = ZoneInfo('Europe/Prague')
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data'
 OBS = DATA / 'observations'
-WSI = '0-203-0-11501049001'
-STATION_ID = 'U2SLUK01'
-STATION_NAME = 'Šluknov'
-STATION_LAT = 51.002722
-STATION_LON = 14.45525
-STATION_ELEV = 352.0
-DISTANCE_KM = 1.85
-BASE = 'https://opendata.chmi.cz/meteorology/climate/now/data/10min'
-UA = 'nove-hrabeci-meteo/0.8 (+github-actions)'
+TARGET_LAT = 51.0162
+TARGET_LON = 14.4398
+PREFERRED_WSI = '0-203-0-11501049001'
+PREFERRED_NAME = 'Šluknov'
+BASE = 'https://opendata.chmi.cz/meteorology/climate'
+UA = 'nove-hrabeci-meteo/0.9 (+github-actions)'
 
 
-def get_json(url: str, tries: int = 3):
+def get_json(url: str, tries: int = 2):
     err = None
     for i in range(tries):
         try:
@@ -34,18 +32,11 @@ def get_json(url: str, tries: int = 3):
         except Exception as exc:
             err = exc
             if i + 1 < tries:
-                time.sleep(2 + i * 2)
-    raise RuntimeError(f'ČHMÚ OpenData fetch failed: {err}')
-
-
-def source_urls(now_utc: datetime):
-    # Around local midnight the current UTC data file can still be the previous date.
-    days = [now_utc.date(), (now_utc - timedelta(days=1)).date()]
-    return [f'{BASE}/10m-{WSI}-{d:%Y%m%d}.json' for d in days]
+                time.sleep(2)
+    raise RuntimeError(f'GET failed: {err}')
 
 
 def find_table(obj):
-    """Find CHMI's nested {header, values} data table without hard-coding wrapper keys."""
     if isinstance(obj, dict):
         if isinstance(obj.get('header'), str) and isinstance(obj.get('values'), list):
             return obj['header'], obj['values']
@@ -61,11 +52,44 @@ def find_table(obj):
     return None
 
 
-def parse_dt(value):
-    if not isinstance(value, str):
+def table_rows(payload):
+    table = find_table(payload)
+    if not table:
+        raise RuntimeError('JSON table {header, values} not found')
+    header, values = table
+    cols = [c.strip() for c in header.split(',')]
+    rows = []
+    for raw in values:
+        if isinstance(raw, list):
+            padded = raw + [None] * max(0, len(cols) - len(raw))
+            rows.append(dict(zip(cols, padded)))
+    return cols, rows
+
+
+def haversine_km(lat1, lon1, lat2, lon2):
+    r = 6371.0088
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dp = math.radians(lat2 - lat1)
+    dl = math.radians(lon2 - lon1)
+    a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * r * math.asin(math.sqrt(a))
+
+
+def as_float(v):
+    if isinstance(v, (int, float)) and not isinstance(v, bool):
+        return float(v)
+    if isinstance(v, str):
+        try:
+            return float(v.strip().replace(',', '.'))
+        except Exception:
+            return None
+    return None
+
+
+def parse_dt(v):
+    if not isinstance(v, str):
         return None
-    s = value.strip()
-    # ISO timestamps used by CHMI; accept Z and explicit offset.
+    s = v.strip()
     if not re.match(r'^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}', s):
         return None
     try:
@@ -77,57 +101,74 @@ def parse_dt(value):
         return None
 
 
-def as_float(value):
-    if isinstance(value, (int, float)) and not isinstance(value, bool):
-        return float(value)
-    if isinstance(value, str):
+def fetch_station_metadata(now_utc):
+    errors = []
+    for d in (now_utc.date(), (now_utc - timedelta(days=1)).date()):
+        url = f'{BASE}/now/metadata/meta1-{d:%Y%m%d}.json'
         try:
-            return float(value.strip().replace(',', '.'))
-        except Exception:
-            return None
-    return None
+            return get_json(url), url
+        except Exception as exc:
+            errors.append(f'{url}: {exc}')
+    # Static fallback. It contains historical intervals, so we keep only rows active now.
+    url = f'{BASE}/historical/metadata/meta1.json'
+    try:
+        return get_json(url), url
+    except Exception as exc:
+        errors.append(f'{url}: {exc}')
+    raise RuntimeError('; '.join(errors))
+
+
+def metadata_stations(payload, now_utc):
+    _, rows = table_rows(payload)
+    stations = {}
+    for row in rows:
+        # tolerate current and historical meta1 variants
+        wsi = row.get('WSI')
+        name = row.get('FULL_NAME')
+        lon = as_float(row.get('GEOGR1'))
+        lat = as_float(row.get('GEOGR2'))
+        elev = as_float(row.get('ELEVATION'))
+        if not wsi or not name or lat is None or lon is None:
+            continue
+        end = row.get('END_DATE')
+        if end:
+            edt = parse_dt(end)
+            if edt and edt < now_utc:
+                continue
+        dist = haversine_km(TARGET_LAT, TARGET_LON, lat, lon)
+        candidate = {
+            'wsi': str(wsi), 'name': str(name), 'lat': lat, 'lon': lon,
+            'elevation_m': elev, 'distance_km': round(dist, 2)
+        }
+        # multiple historical intervals can share WSI; retain the nearest/current representation
+        stations[str(wsi)] = candidate
+    out = list(stations.values())
+    out.sort(key=lambda s: (0 if s['wsi'] == PREFERRED_WSI else 1, s['distance_km']))
+    return out
 
 
 def extract_sra10m(payload):
-    table = find_table(payload)
-    if not table:
-        raise RuntimeError('ČHMÚ JSON table {header, values} not found')
-    header, values = table
-    cols = [c.strip() for c in header.split(',')]
-    rows = []
-    for raw in values:
-        if not isinstance(raw, list):
-            continue
-        padded = raw + [None] * max(0, len(cols) - len(raw))
-        row = dict(zip(cols, padded))
+    cols, rows = table_rows(payload)
+    out = []
+    for row in rows:
+        raw = list(row.values())
         if not any(str(v).strip().upper() == 'SRA10M' for v in raw if v is not None):
             continue
-
-        observed = None
-        for v in raw:
-            observed = parse_dt(v)
-            if observed:
-                break
+        observed = next((parse_dt(v) for v in raw if parse_dt(v)), None)
         if not observed:
             continue
-
-        # Prefer an explicitly named value column. Keep broad fallbacks for schema revisions.
         value = None
-        preferred = []
         for c in cols:
             key = re.sub(r'[^A-Z0-9]', '', c.upper())
             if key in ('VALUE', 'HODNOTA', 'VAL') or 'VALUE' in key:
-                preferred.append(c)
-        for c in preferred:
-            value = as_float(row.get(c))
-            if value is not None:
-                break
-
+                value = as_float(row.get(c))
+                if value is not None:
+                    break
         if value is None:
-            # Fallback: choose a numeric field that is not a flag/time/station identifier.
+            # Fallback for schema variants: pick numeric measurement field, skipping metadata/flags.
             for c in cols:
                 key = c.upper()
-                if any(x in key for x in ('FLAG', 'QUALITY', 'WSI', 'DATE', 'TIME', 'INTERVAL')):
+                if any(x in key for x in ('FLAG', 'QUALITY', 'WSI', 'DATE', 'TIME', 'INTERVAL', 'HEIGHT')):
                     continue
                 v = row.get(c)
                 if isinstance(v, str) and v.strip().upper() == 'SRA10M':
@@ -136,19 +177,28 @@ def extract_sra10m(payload):
                 if n is not None:
                     value = n
                     break
-
         if value is not None:
-            rows.append({'observed_at_utc': observed.isoformat().replace('+00:00', 'Z'), 'precipitation_10m_mm': value})
-
-    if not rows:
-        raise RuntimeError(f'No SRA10M rows parsed; header={header!r}; values_count={len(values)}')
-
-    # Deduplicate identical timestamps and sort chronologically.
-    unique = {r['observed_at_utc']: r for r in rows}
-    return [unique[k] for k in sorted(unique)]
+            out.append({'observed_at_utc': observed.isoformat().replace('+00:00', 'Z'), 'precipitation_10m_mm': value})
+    if not out:
+        raise RuntimeError(f'No SRA10M rows parsed; columns={cols!r}; row_count={len(rows)}')
+    return [dict(t) for t in {r['observed_at_utc']: r for r in out}.values()]
 
 
-def existing_times(archive: Path):
+def try_station(station, now_utc):
+    errors = []
+    for d in (now_utc.date(), (now_utc - timedelta(days=1)).date()):
+        url = f"{BASE}/now/data/10min/10m-{station['wsi']}-{d:%Y%m%d}.json"
+        try:
+            payload = get_json(url)
+            points = extract_sra10m(payload)
+            points.sort(key=lambda x: x['observed_at_utc'])
+            return points, url
+        except Exception as exc:
+            errors.append(f'{url}: {exc}')
+    raise RuntimeError(' | '.join(errors))
+
+
+def existing_times(archive):
     out = set()
     if not archive.exists():
         return out
@@ -168,24 +218,32 @@ def main():
     now_utc = datetime.now(timezone.utc)
     now_local = now_utc.astimezone(TZ)
 
-    payload = None
-    used_url = None
-    errors = []
-    for url in source_urls(now_utc):
+    meta, meta_url = fetch_station_metadata(now_utc)
+    candidates = metadata_stations(meta, now_utc)
+    if not candidates:
+        raise RuntimeError('No ČHMÚ stations parsed from metadata')
+
+    chosen = None
+    points = None
+    source_url = None
+    attempts = []
+    # 25 nearest/current candidates is enough for the region; preferred Šluknov is forced first.
+    for station in candidates[:25]:
+        if station['distance_km'] > 80:
+            continue
         try:
-            payload = get_json(url)
-            used_url = url
+            p, url = try_station(station, now_utc)
+            chosen, points, source_url = station, p, url
             break
         except Exception as exc:
-            errors.append(f'{url}: {exc}')
-    if payload is None:
-        raise RuntimeError('; '.join(errors))
+            attempts.append({'station': station['name'], 'wsi': station['wsi'], 'distance_km': station['distance_km'], 'error': str(exc)[:500]})
 
-    points = extract_sra10m(payload)
+    if not chosen or not points:
+        raise RuntimeError('No nearby ČHMÚ station with current SRA10M; attempts=' + json.dumps(attempts[:8], ensure_ascii=False))
+
     latest = points[-1]
     latest_dt = datetime.fromisoformat(latest['observed_at_utc'].replace('Z', '+00:00'))
-
-    archive = OBS / f'chmi-sluknov-{now_local:%Y-%m}.jsonl'
+    archive = OBS / f'chmi-rain-{chosen["wsi"].replace("-", "_")}-{now_local:%Y-%m}.jsonl'
     known = existing_times(archive)
     new_points = [p for p in points if p['observed_at_utc'] not in known]
     if new_points:
@@ -193,13 +251,12 @@ def main():
             for p in new_points:
                 rec = {
                     'provider': 'ČHMÚ OpenData',
-                    'station_name': STATION_NAME,
-                    'station_id': STATION_ID,
-                    'station_wsi': WSI,
-                    'latitude': STATION_LAT,
-                    'longitude': STATION_LON,
-                    'elevation_m': STATION_ELEV,
-                    'distance_to_nove_hrabeci_km': DISTANCE_KM,
+                    'station_name': chosen['name'],
+                    'station_wsi': chosen['wsi'],
+                    'latitude': chosen['lat'],
+                    'longitude': chosen['lon'],
+                    'elevation_m': chosen['elevation_m'],
+                    'distance_to_nove_hrabeci_km': chosen['distance_km'],
                     **p,
                 }
                 f.write(json.dumps(rec, ensure_ascii=False, separators=(',', ':')) + '\n')
@@ -210,14 +267,16 @@ def main():
     status = {
         'ok': True,
         'provider': 'ČHMÚ OpenData',
-        'station_name': STATION_NAME,
-        'station_id': STATION_ID,
-        'station_wsi': WSI,
-        'latitude': STATION_LAT,
-        'longitude': STATION_LON,
-        'elevation_m': STATION_ELEV,
-        'distance_to_nove_hrabeci_km': DISTANCE_KM,
-        'source_url': used_url,
+        'preferred_station': PREFERRED_NAME,
+        'preferred_station_available': chosen['wsi'] == PREFERRED_WSI,
+        'station_name': chosen['name'],
+        'station_wsi': chosen['wsi'],
+        'latitude': chosen['lat'],
+        'longitude': chosen['lon'],
+        'elevation_m': chosen['elevation_m'],
+        'distance_to_nove_hrabeci_km': chosen['distance_km'],
+        'metadata_url': meta_url,
+        'source_url': source_url,
         'checked_at_local': now_local.isoformat(),
         'observed_at_utc': latest['observed_at_utc'],
         'observed_at_local': latest_dt.astimezone(TZ).isoformat(),
@@ -227,6 +286,7 @@ def main():
         'new_points_saved': len(new_points),
         'available_points_today': len(points),
         'archive_file': f'data/observations/{archive.name}',
+        'fallback_attempts_before_success': attempts[:8],
     }
     (DATA / 'chmi-status.json').write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(status, ensure_ascii=False))
@@ -237,15 +297,12 @@ def safe_main():
         main()
     except Exception as exc:
         DATA.mkdir(exist_ok=True)
-        now = datetime.now(TZ)
         payload = {
             'ok': False,
             'provider': 'ČHMÚ OpenData',
-            'station_name': STATION_NAME,
-            'station_id': STATION_ID,
-            'station_wsi': WSI,
-            'distance_to_nove_hrabeci_km': DISTANCE_KM,
-            'checked_at_local': now.isoformat(),
+            'preferred_station': PREFERRED_NAME,
+            'preferred_station_wsi': PREFERRED_WSI,
+            'checked_at_local': datetime.now(TZ).isoformat(),
             'error': str(exc),
         }
         (DATA / 'chmi-status.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
