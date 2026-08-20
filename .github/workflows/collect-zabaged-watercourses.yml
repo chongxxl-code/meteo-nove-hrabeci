@@ -1,0 +1,56 @@
+name: Collect ZABAGED watercourses
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_zabaged_watercourses.py'
+      - '.github/workflows/collect-zabaged-watercourses.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: zabaged-watercourses
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect official ZABAGED watercourses
+        id: collect
+        continue-on-error: true
+        run: python scripts/collect_zabaged_watercourses.py
+      - name: Commit reference or diagnostic
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/terrain/zabaged-watercourses.geojson data/terrain/zabaged-watercourses-status.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No ZABAGED watercourse changes."
+            exit 0
+          fi
+          git commit -m "data: ZABAGED watercourses $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
+      - name: Verify official reference
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/terrain/zabaged-watercourses-status.json')
+          if not p.exists(): raise SystemExit('ZABAGED status missing')
+          s=json.loads(p.read_text(encoding='utf-8'))
+          if not s.get('ok'): raise SystemExit('ZABAGED watercourse collection failed: '+str(s.get('error')))
+          print('ZABAGED watercourses:', s.get('features_found'))
+          PY
