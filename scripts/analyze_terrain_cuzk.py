@@ -166,6 +166,11 @@ def fetch_dmr4g() -> tuple[np.ndarray, object, dict]:
             nodata = ds.nodata
             if nodata is not None:
                 dem[dem == nodata] = np.nan
+            # The image service returns exact zeros outside Czech DMR coverage near the state border,
+            # but does not tag them as TIFF NoData. In this study area real terrain is > 300 m,
+            # so exact zeros are unambiguously service background and must not enter TPI/slope.
+            zero_background_pixels = int(np.count_nonzero(np.isfinite(dem) & np.isclose(dem, 0.0, atol=1e-6)))
+            dem[np.isclose(dem, 0.0, atol=1e-6)] = np.nan
             if crs is None:
                 raise RuntimeError('CUZK output TIFF has no CRS')
             epsg = crs.to_epsg()
@@ -178,6 +183,8 @@ def fetch_dmr4g() -> tuple[np.ndarray, object, dict]:
                 'returned_size_px': [ds.width, ds.height],
                 'actual_pixel_m': round(actual_px, 3),
                 'reported_crs': str(crs),
+                'zero_background_pixels_masked': zero_background_pixels,
+                'border_nodata_policy': 'exact zero from service background is masked as NoData for this high-elevation study area',
                 'export_href_host': urllib.parse.urlparse(href).netloc,
             }
             return dem, transform, info
