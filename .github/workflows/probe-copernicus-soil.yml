@@ -1,0 +1,30 @@
+name: Probe Copernicus soil catalogue
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/probe_copernicus_soil_catalog.py'
+      - '.github/workflows/probe-copernicus-soil.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/probe_copernicus_soil_catalog.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/copernicus-soil-probe.json
+          git commit -m "data: probe Copernicus soil catalogue" || exit 0
+          git pull --rebase origin main
+          git push
