@@ -10,6 +10,7 @@ on:
       - 'scripts/build_local_alerts.py'
       - 'scripts/send_critical_push.py'
       - 'scripts/sync_push_config.py'
+      - 'scripts/check_onesignal_health.py'
       - '.github/workflows/build-local-alerts.yml'
       - 'data/drought-context.json'
       - 'data/push-config.json'
@@ -43,6 +44,11 @@ jobs:
         env:
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
         run: python scripts/sync_push_config.py
+      - name: Check OneSignal API credentials without sending
+        env:
+          ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
+        run: python scripts/check_onesignal_health.py
       - name: Send critical-only push if a new red alert starts
         env:
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
@@ -52,7 +58,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/alerts.json data/push-state.json data/push-config.json 2>/dev/null || true
+          git add data/alerts.json data/push-state.json data/push-config.json data/push-health.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Local risk and push state unchanged."
             exit 0
@@ -60,4 +66,4 @@ jobs:
           git commit -m "data: local risk state $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push
-# trigger OneSignal secret verification
+# OneSignal health check enabled
