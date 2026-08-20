@@ -1,9 +1,9 @@
 {
   "ok": true,
-  "generated_at_local": "2026-08-20T14:05:43.345103+02:00",
+  "generated_at_local": "2026-08-20T14:18:11.072637+02:00",
   "status": "living_exploratory_knowledge_base",
   "scope": "Nové Hraběcí open-land experimental network",
-  "sample_count": 14,
+  "sample_count": 17,
   "scene_count": 10,
   "source_analyses": [
     "data/validation/open-land-experiment-status.json",
@@ -22,10 +22,10 @@
       "confidence": "moderate",
       "claim": "Napříč kontrolovanými travními plochami má vyšší sklon ve většině Sentinel termínů záporný vztah k NDMI i NDVI a tento signál zůstává i po vyřazení pouze ručně potvrzených vegetačních změn.",
       "evidence": [
-        "Raw NDMI: očekávaný záporný směr v 90.0 % použitelných scén; medián Pearson r = -0.2292.",
+        "Raw NDMI: očekávaný záporný směr v 60.0 % použitelných scén; medián Pearson r = -0.1041.",
         "Po ručním filtru 5 potvrzených změn: NDMI medián r = -0.2292; očekávaný směr 90.0 %.",
         "NDVI po ručním filtru: medián r = -0.3013.",
-        "Síla NDMI vztahu sklonu se s 14denním deštěm mění korelací r = -0.52 (explorační)."
+        "Síla NDMI vztahu sklonu se s 14denním deštěm mění korelací r = -0.6992 (explorační)."
       ],
       "interpretation": "Pracovní mechanismus: po srážkách strmější místa mohou rychleji odvádět vodu a plošší místa ji déle držet. Ručně ověřený filtr tento vztah neoslabuje, což zvyšuje jeho věrohodnost, ale stále nejde o přímé měření půdní vlhkosti ani důkaz mechanismu.",
       "next_test": "Sledovat vztah po dalších výrazných deštích a v další sezoně; ideálně přidat terénní měření půdní vlhkosti."
@@ -37,9 +37,9 @@
       "confidence": "low_to_moderate",
       "claim": "Vyšší TWI samo o sobě není ve všech termínech spojeno s vyšším NDMI; statický signál je slabý i po ručním filtru, ale vztah se zesiluje po delším vlhkém období.",
       "evidence": [
-        "Raw TWI–NDMI: medián Pearson r = 0.0976; kladný směr v 50.0 % scén.",
+        "Raw TWI–NDMI: medián Pearson r = 0.0484; kladný směr v 50.0 % scén.",
         "Po ručním filtru: medián r = 0.0398; očekávaný kladný směr 50.0 %.",
-        "Korelace 30denního deště se sílou denního TWI–NDMI vztahu: r = 0.4977.",
+        "Korelace 30denního deště se sílou denního TWI–NDMI vztahu: r = 0.5232.",
         "Skupinový TWI+ − TWI− medián NDMI = 0.0358."
       ],
       "interpretation": "TWI zatím není univerzální žebříček „mokré–suché“. Možná se topografická akumulace projeví hlavně tehdy, když je v krajině dost vody k redistribuci.",
@@ -52,10 +52,10 @@
       "confidence": "moderate",
       "claim": "U dostatečně sklonitých a směrově koherentních travních ploch je vyšší southness většinou spojena s nižším NDMI; po vyřazení pouze ručně potvrzených změn vztah zůstává zřetelně záporný.",
       "evidence": [
-        "Raw southness–NDMI: očekávaný záporný směr v 77.8 % scén; medián Pearson r = -0.0653.",
+        "Raw southness–NDMI: očekávaný záporný směr v 80.0 % scén; medián Pearson r = -0.4065.",
         "Po ručním filtru: NDMI medián r = -0.3074; očekávaný záporný směr 77.8 %.",
         "NDVI po ručním filtru: medián r = -0.1807; očekávaný směr 66.7 %.",
-        "Skupinový jih − sever medián NDMI = -0.0914."
+        "Skupinový jih − sever medián NDMI = -0.0955."
       ],
       "interpretation": "Směr odpovídá vyššímu oslunění a potenciálnímu výparu na jižních svazích. Dedicated severní skupina ale zatím obsahuje jen jeden schválený vzorek; nové N4–N8 čekají na ruční kontrolu.",
       "next_test": "Schválit další čisté severní kontrolní plochy a znovu přepočítat sever × jih, zejména během teplých suchých epizod."
@@ -68,8 +68,8 @@
       "claim": "Níže položené travní vzorky nejsou v této sezoně systematicky vlhčí/zelenejší než vyšší vzorky. Ruční filtr potvrzených vegetačních změn tento překvapivý opačný signál neodstranil.",
       "evidence": [
         "Nízká − vyšší poloha: medián NDMI kontrastu = -0.1284; nízká skupina měla vyšší NDMI jen v 22.2 % srovnatelných scén.",
-        "TPI900–NDMI: raw medián r = 0.4027, po ručním filtru 0.4575.",
-        "Výška–NDMI: raw medián r = 0.4818, po ručním filtru 0.4904."
+        "TPI900–NDMI: raw medián r = 0.3712, po ručním filtru 0.4575.",
+        "Výška–NDMI: raw medián r = 0.5203, po ručním filtru 0.4904."
       ],
       "interpretation": "Neznamená to, že vyšší terén způsobuje větší vlhkost. Naopak to říká, že samotná kategorie „nízká/vysoká poloha“ je pro naše plochy příliš jednoduchá. Rozdíl může souviset s půdou, lokální drenáží, hospodařením mimo zachycené termíny, fenologií nebo kombinací terénních vlastností.",
       "next_test": "Použít více sezon, případně půdní mapy a terénní měření; jednoduchou výškovou hypotézu nepovyšovat na kauzální vysvětlení."
@@ -83,7 +83,7 @@
       "evidence": [
         "Detektor označil 12 kandidátních událostí; ruční kontrola potvrdila 5 a u 7 nenašla přesvědčivou viditelnou změnu.",
         "Ručně ověřený citlivostní test proto vyřazuje jen 5 sample×datum pozorování, zatímco široký algoritmický filtr vyřazoval 13.",
-        "Například TPI900–NDMI je raw 0.4027, po širokém algoritmickém filtru 0.2676, ale po ručním filtru 0.4575."
+        "Například TPI900–NDMI je raw 0.3712, po širokém algoritmickém filtru 0.2676, ale po ručním filtru 0.4575."
       ],
       "interpretation": "Spektrální NDVI změna může být reálná i bez nápadné změny v RGB, takže sedm případů neoznačujeme za definitivní falešné poplachy. Pro kauzální interpretaci ale budeme jako přísnější kontrolu používat ručně potvrzené změny a automatické flagy držet odděleně.",
       "next_test": "Při dalších událostech kombinovat NDVI/NDMI, true-colour snímek a pokud možno místní záznam o seči, pastvě nebo jiném zásahu."

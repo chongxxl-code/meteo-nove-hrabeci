@@ -2,9 +2,9 @@
   "ok": true,
   "quality_status": "valid_within_scene_gradient_analysis",
   "analysis_version": 1,
-  "computed_at_local": "2026-08-20T14:05:43.298000+02:00",
-  "network": "nove-hrabeci-open-land-experimental-v2",
-  "sample_count": 14,
+  "computed_at_local": "2026-08-20T14:18:11.010525+02:00",
+  "network": "nove-hrabeci-open-land-experimental-v3",
+  "sample_count": 17,
   "scene_count": 10,
   "method": "For each Sentinel acquisition independently, correlate cross-sectional NDMI/NDVI across reviewed grassland samples with static terrain predictors. This removes the common seasonal/weather level for that date. Then summarize the per-scene correlations and explore whether their strength changes with antecedent rainfall.",
   "interpretation_warning": "Exploratory associations only. Predictors are correlated with one another and management/soil differences remain possible confounders. Southness uses only samples with slope >=4° and aspect coherence >=0.65.",
@@ -19,105 +19,105 @@
     "ndmi": {
       "twi": {
         "scene_count": 10,
-        "median_pearson_r": 0.0976,
+        "median_pearson_r": 0.0484,
         "positive_fraction": 0.5,
         "expected_direction": 1,
         "expected_direction_fraction": 0.5,
-        "corr_rain_7d_vs_scene_pearson": 0.3653,
-        "corr_rain_14d_vs_scene_pearson": 0.3895,
-        "corr_rain_30d_vs_scene_pearson": 0.4977
+        "corr_rain_7d_vs_scene_pearson": 0.3248,
+        "corr_rain_14d_vs_scene_pearson": 0.3907,
+        "corr_rain_30d_vs_scene_pearson": 0.5232
       },
       "tpi900": {
         "scene_count": 10,
-        "median_pearson_r": 0.4027,
+        "median_pearson_r": 0.3712,
         "positive_fraction": 0.6,
         "expected_direction": -1,
         "expected_direction_fraction": 0.4,
-        "corr_rain_7d_vs_scene_pearson": -0.2889,
-        "corr_rain_14d_vs_scene_pearson": -0.1254,
-        "corr_rain_30d_vs_scene_pearson": -0.3547
+        "corr_rain_7d_vs_scene_pearson": -0.2195,
+        "corr_rain_14d_vs_scene_pearson": -0.1087,
+        "corr_rain_30d_vs_scene_pearson": -0.3855
       },
       "elevation": {
         "scene_count": 10,
-        "median_pearson_r": 0.4818,
-        "positive_fraction": 0.6,
+        "median_pearson_r": 0.5203,
+        "positive_fraction": 0.7,
         "expected_direction": 0,
         "expected_direction_fraction": null,
-        "corr_rain_7d_vs_scene_pearson": -0.3306,
-        "corr_rain_14d_vs_scene_pearson": -0.0351,
-        "corr_rain_30d_vs_scene_pearson": -0.2359
+        "corr_rain_7d_vs_scene_pearson": -0.3017,
+        "corr_rain_14d_vs_scene_pearson": -0.033,
+        "corr_rain_30d_vs_scene_pearson": -0.2643
       },
       "slope": {
         "scene_count": 10,
-        "median_pearson_r": -0.2292,
-        "positive_fraction": 0.1,
+        "median_pearson_r": -0.1041,
+        "positive_fraction": 0.4,
         "expected_direction": -1,
-        "expected_direction_fraction": 0.9,
-        "corr_rain_7d_vs_scene_pearson": -0.2453,
-        "corr_rain_14d_vs_scene_pearson": -0.52,
-        "corr_rain_30d_vs_scene_pearson": -0.0976
+        "expected_direction_fraction": 0.6,
+        "corr_rain_7d_vs_scene_pearson": -0.333,
+        "corr_rain_14d_vs_scene_pearson": -0.6992,
+        "corr_rain_30d_vs_scene_pearson": -0.3179
       },
       "southness": {
-        "scene_count": 9,
-        "median_pearson_r": -0.0653,
-        "positive_fraction": 0.222,
+        "scene_count": 10,
+        "median_pearson_r": -0.4065,
+        "positive_fraction": 0.2,
         "expected_direction": -1,
-        "expected_direction_fraction": 0.778,
-        "corr_rain_7d_vs_scene_pearson": -0.3022,
-        "corr_rain_14d_vs_scene_pearson": 0.0297,
-        "corr_rain_30d_vs_scene_pearson": -0.1534
+        "expected_direction_fraction": 0.8,
+        "corr_rain_7d_vs_scene_pearson": -0.0364,
+        "corr_rain_14d_vs_scene_pearson": 0.12,
+        "corr_rain_30d_vs_scene_pearson": 0.2141
       }
     },
     "ndvi": {
       "twi": {
         "scene_count": 10,
-        "median_pearson_r": 0.103,
+        "median_pearson_r": 0.0446,
         "positive_fraction": 0.5,
         "expected_direction": 1,
         "expected_direction_fraction": 0.5,
-        "corr_rain_7d_vs_scene_pearson": 0.3306,
-        "corr_rain_14d_vs_scene_pearson": 0.3598,
-        "corr_rain_30d_vs_scene_pearson": 0.5125
+        "corr_rain_7d_vs_scene_pearson": 0.2498,
+        "corr_rain_14d_vs_scene_pearson": 0.3636,
+        "corr_rain_30d_vs_scene_pearson": 0.5444
       },
       "tpi900": {
         "scene_count": 10,
-        "median_pearson_r": 0.3371,
+        "median_pearson_r": 0.3464,
         "positive_fraction": 0.6,
         "expected_direction": -1,
         "expected_direction_fraction": 0.4,
-        "corr_rain_7d_vs_scene_pearson": -0.2498,
-        "corr_rain_14d_vs_scene_pearson": -0.0775,
-        "corr_rain_30d_vs_scene_pearson": -0.3529
+        "corr_rain_7d_vs_scene_pearson": -0.1474,
+        "corr_rain_14d_vs_scene_pearson": -0.0591,
+        "corr_rain_30d_vs_scene_pearson": -0.3878
       },
       "elevation": {
         "scene_count": 10,
-        "median_pearson_r": 0.4284,
-        "positive_fraction": 0.6,
+        "median_pearson_r": 0.5041,
+        "positive_fraction": 0.7,
         "expected_direction": 0,
         "expected_direction_fraction": null,
-        "corr_rain_7d_vs_scene_pearson": -0.2638,
-        "corr_rain_14d_vs_scene_pearson": 0.0455,
-        "corr_rain_30d_vs_scene_pearson": -0.2099
+        "corr_rain_7d_vs_scene_pearson": -0.1857,
+        "corr_rain_14d_vs_scene_pearson": 0.0589,
+        "corr_rain_30d_vs_scene_pearson": -0.233
       },
       "slope": {
         "scene_count": 10,
-        "median_pearson_r": -0.3013,
-        "positive_fraction": 0.1,
+        "median_pearson_r": -0.1663,
+        "positive_fraction": 0.4,
         "expected_direction": -1,
-        "expected_direction_fraction": 0.9,
-        "corr_rain_7d_vs_scene_pearson": -0.5731,
-        "corr_rain_14d_vs_scene_pearson": -0.6679,
-        "corr_rain_30d_vs_scene_pearson": -0.2004
+        "expected_direction_fraction": 0.6,
+        "corr_rain_7d_vs_scene_pearson": -0.4489,
+        "corr_rain_14d_vs_scene_pearson": -0.7662,
+        "corr_rain_30d_vs_scene_pearson": -0.3776
       },
       "southness": {
-        "scene_count": 9,
-        "median_pearson_r": -0.1321,
-        "positive_fraction": 0.444,
+        "scene_count": 10,
+        "median_pearson_r": -0.4393,
+        "positive_fraction": 0.3,
         "expected_direction": -1,
-        "expected_direction_fraction": 0.556,
-        "corr_rain_7d_vs_scene_pearson": -0.1583,
-        "corr_rain_14d_vs_scene_pearson": -0.0842,
-        "corr_rain_30d_vs_scene_pearson": -0.2613
+        "expected_direction_fraction": 0.7,
+        "corr_rain_7d_vs_scene_pearson": -0.1706,
+        "corr_rain_14d_vs_scene_pearson": -0.049,
+        "corr_rain_30d_vs_scene_pearson": 0.0412
       }
     }
   },
@@ -151,9 +151,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 14,
-          "pearson_r": -0.1923,
-          "spearman_rho": -0.2659,
+          "n": 17,
+          "pearson_r": -0.2099,
+          "spearman_rho": -0.2892,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -170,13 +170,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.7155,
-          "spearman_rho": 0.8066,
+          "n": 17,
+          "pearson_r": 0.6737,
+          "spearman_rho": 0.7794,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -193,13 +196,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.6969,
-          "spearman_rho": 0.5297,
+          "n": 17,
+          "pearson_r": 0.7092,
+          "spearman_rho": 0.6299,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -216,13 +222,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.3539,
-          "spearman_rho": -0.1297,
+          "n": 17,
+          "pearson_r": -0.2313,
+          "spearman_rho": -0.0049,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -239,13 +248,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": 0.2932,
-          "spearman_rho": 0.3455,
+          "n": 14,
+          "pearson_r": -0.1178,
+          "spearman_rho": -0.0066,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -259,15 +271,18 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 14,
-          "pearson_r": -0.1969,
-          "spearman_rho": -0.1604,
+          "n": 17,
+          "pearson_r": -0.2172,
+          "spearman_rho": -0.1716,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -284,13 +299,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.6954,
-          "spearman_rho": 0.7582,
+          "n": 17,
+          "pearson_r": 0.6688,
+          "spearman_rho": 0.7108,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -307,13 +325,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.6457,
-          "spearman_rho": 0.5912,
+          "n": 17,
+          "pearson_r": 0.6711,
+          "spearman_rho": 0.6078,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -330,13 +351,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.3249,
-          "spearman_rho": -0.178,
+          "n": 17,
+          "pearson_r": -0.2159,
+          "spearman_rho": -0.0711,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -353,13 +377,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": 0.4475,
-          "spearman_rho": 0.5636,
+          "n": 14,
+          "pearson_r": 0.0519,
+          "spearman_rho": 0.1736,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -373,7 +400,10 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       }
@@ -407,8 +437,8 @@
       },
       "ndmi": {
         "twi": {
-          "n": 5,
-          "pearson_r": -0.3164,
+          "n": 6,
+          "pearson_r": -0.4098,
           "spearman_rho": -0.6,
           "x_min": 4.86,
           "x_max": 7.84,
@@ -417,13 +447,14 @@
             "T+3",
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 5,
-          "pearson_r": 0.814,
-          "spearman_rho": 0.9,
+          "n": 6,
+          "pearson_r": 0.7998,
+          "spearman_rho": 0.8857,
           "x_min": -19.88,
           "x_max": 30.16,
           "labels": [
@@ -431,13 +462,14 @@
             "T+3",
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 5,
-          "pearson_r": 0.54,
-          "spearman_rho": 0.3,
+          "n": 6,
+          "pearson_r": 0.5817,
+          "spearman_rho": 0.6,
           "x_min": 314.03,
           "x_max": 442.93,
           "labels": [
@@ -445,13 +477,14 @@
             "T+3",
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         },
         "slope": {
-          "n": 5,
-          "pearson_r": -0.4384,
-          "spearman_rho": -0.3,
+          "n": 6,
+          "pearson_r": -0.2494,
+          "spearman_rho": -0.2,
           "x_min": 2.72,
           "x_max": 8.43,
           "labels": [
@@ -459,26 +492,28 @@
             "T+3",
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         },
         "southness": {
-          "n": 3,
-          "pearson_r": null,
-          "spearman_rho": null,
+          "n": 4,
+          "pearson_r": -0.7858,
+          "spearman_rho": -0.8,
           "x_min": -0.99,
           "x_max": 0.926,
           "labels": [
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 5,
-          "pearson_r": -0.2803,
+          "n": 6,
+          "pearson_r": -0.3789,
           "spearman_rho": -0.6,
           "x_min": 4.86,
           "x_max": 7.84,
@@ -487,13 +522,14 @@
             "T+3",
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 5,
-          "pearson_r": 0.7663,
-          "spearman_rho": 0.9,
+          "n": 6,
+          "pearson_r": 0.7549,
+          "spearman_rho": 0.8857,
           "x_min": -19.88,
           "x_max": 30.16,
           "labels": [
@@ -501,13 +537,14 @@
             "T+3",
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 5,
-          "pearson_r": 0.4884,
-          "spearman_rho": 0.3,
+          "n": 6,
+          "pearson_r": 0.5345,
+          "spearman_rho": 0.6,
           "x_min": 314.03,
           "x_max": 442.93,
           "labels": [
@@ -515,13 +552,14 @@
             "T+3",
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         },
         "slope": {
-          "n": 5,
-          "pearson_r": -0.4319,
-          "spearman_rho": -0.3,
+          "n": 6,
+          "pearson_r": -0.2446,
+          "spearman_rho": -0.2,
           "x_min": 2.72,
           "x_max": 8.43,
           "labels": [
@@ -529,19 +567,21 @@
             "T+3",
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         },
         "southness": {
-          "n": 3,
-          "pearson_r": null,
-          "spearman_rho": null,
+          "n": 4,
+          "pearson_r": -0.7247,
+          "spearman_rho": -0.8,
           "x_min": -0.99,
           "x_max": 0.926,
           "labels": [
             "T-1",
             "L6",
-            "S7"
+            "S7",
+            "N6"
           ]
         }
       }
@@ -575,9 +615,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 14,
-          "pearson_r": -0.1409,
-          "spearman_rho": -0.2484,
+          "n": 17,
+          "pearson_r": -0.1749,
+          "spearman_rho": -0.2451,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -594,13 +634,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.6984,
-          "spearman_rho": 0.7495,
+          "n": 17,
+          "pearson_r": 0.6374,
+          "spearman_rho": 0.7157,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -617,13 +660,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.6463,
-          "spearman_rho": 0.4857,
+          "n": 17,
+          "pearson_r": 0.6729,
+          "spearman_rho": 0.6029,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -640,13 +686,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.3596,
-          "spearman_rho": -0.1824,
+          "n": 17,
+          "pearson_r": -0.1837,
+          "spearman_rho": -0.0245,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -663,13 +712,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": 0.1477,
-          "spearman_rho": 0.1,
+          "n": 14,
+          "pearson_r": -0.3131,
+          "spearman_rho": -0.2791,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -683,15 +735,18 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 14,
-          "pearson_r": -0.1619,
-          "spearman_rho": -0.2088,
+          "n": 17,
+          "pearson_r": -0.1945,
+          "spearman_rho": -0.2108,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -708,13 +763,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.678,
-          "spearman_rho": 0.789,
+          "n": 17,
+          "pearson_r": 0.641,
+          "spearman_rho": 0.7402,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -731,13 +789,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.6041,
-          "spearman_rho": 0.4813,
+          "n": 17,
+          "pearson_r": 0.6474,
+          "spearman_rho": 0.5931,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -754,13 +815,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.3212,
-          "spearman_rho": -0.1385,
+          "n": 17,
+          "pearson_r": -0.1689,
+          "spearman_rho": 0.0196,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -777,13 +841,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": 0.2091,
-          "spearman_rho": 0.2636,
+          "n": 14,
+          "pearson_r": -0.2189,
+          "spearman_rho": -0.1824,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -797,7 +864,10 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       }
@@ -831,9 +901,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 14,
-          "pearson_r": -0.2589,
-          "spearman_rho": -0.2484,
+          "n": 17,
+          "pearson_r": -0.2697,
+          "spearman_rho": -0.2647,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -850,13 +920,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.6038,
-          "spearman_rho": 0.5253,
+          "n": 17,
+          "pearson_r": 0.5244,
+          "spearman_rho": 0.5196,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -873,13 +946,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.5998,
-          "spearman_rho": 0.4022,
+          "n": 17,
+          "pearson_r": 0.6321,
+          "spearman_rho": 0.5588,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -896,13 +972,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.1659,
-          "spearman_rho": -0.1516,
+          "n": 17,
+          "pearson_r": 0.0211,
+          "spearman_rho": 0.0637,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -919,13 +998,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.3081,
-          "spearman_rho": -0.2455,
+          "n": 14,
+          "pearson_r": -0.5895,
+          "spearman_rho": -0.4769,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -939,15 +1021,18 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 14,
-          "pearson_r": -0.2549,
-          "spearman_rho": -0.1956,
+          "n": 17,
+          "pearson_r": -0.2764,
+          "spearman_rho": -0.2083,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -964,13 +1049,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.4987,
-          "spearman_rho": 0.4549,
+          "n": 17,
+          "pearson_r": 0.4814,
+          "spearman_rho": 0.4583,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -987,13 +1075,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.4886,
-          "spearman_rho": 0.3275,
+          "n": 17,
+          "pearson_r": 0.5641,
+          "spearman_rho": 0.5049,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -1010,13 +1101,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.0796,
-          "spearman_rho": -0.2088,
+          "n": 17,
+          "pearson_r": 0.0517,
+          "spearman_rho": 0.0368,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -1033,13 +1127,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.2801,
-          "spearman_rho": -0.3364,
+          "n": 14,
+          "pearson_r": -0.5364,
+          "spearman_rho": -0.5297,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -1053,7 +1150,10 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       }
@@ -1087,9 +1187,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 14,
-          "pearson_r": -0.1448,
-          "spearman_rho": -0.222,
+          "n": 17,
+          "pearson_r": -0.1859,
+          "spearman_rho": -0.2328,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -1106,13 +1206,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.515,
-          "spearman_rho": 0.4637,
+          "n": 17,
+          "pearson_r": 0.4505,
+          "spearman_rho": 0.451,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -1129,13 +1232,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.5207,
-          "spearman_rho": 0.2835,
+          "n": 17,
+          "pearson_r": 0.5717,
+          "spearman_rho": 0.4534,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -1152,13 +1258,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.204,
-          "spearman_rho": -0.156,
+          "n": 17,
+          "pearson_r": 0.0069,
+          "spearman_rho": 0.1029,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -1175,13 +1284,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.3812,
-          "spearman_rho": -0.3727,
+          "n": 14,
+          "pearson_r": -0.629,
+          "spearman_rho": -0.5648,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -1195,15 +1307,18 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 14,
-          "pearson_r": -0.1178,
-          "spearman_rho": -0.1824,
+          "n": 17,
+          "pearson_r": -0.1649,
+          "spearman_rho": -0.201,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -1220,13 +1335,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.3627,
-          "spearman_rho": 0.3626,
+          "n": 17,
+          "pearson_r": 0.3683,
+          "spearman_rho": 0.3775,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -1243,13 +1361,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.3684,
-          "spearman_rho": 0.2308,
+          "n": 17,
+          "pearson_r": 0.4737,
+          "spearman_rho": 0.4167,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -1266,13 +1387,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.1142,
-          "spearman_rho": -0.1604,
+          "n": 17,
+          "pearson_r": 0.0381,
+          "spearman_rho": 0.1005,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -1289,13 +1413,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.3645,
-          "spearman_rho": -0.4,
+          "n": 14,
+          "pearson_r": -0.6017,
+          "spearman_rho": -0.578,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -1309,7 +1436,10 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       }
@@ -1343,9 +1473,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 14,
-          "pearson_r": 0.4672,
-          "spearman_rho": 0.4374,
+          "n": 17,
+          "pearson_r": 0.2717,
+          "spearman_rho": 0.2966,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -1362,13 +1492,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": -0.4725,
-          "spearman_rho": -0.4242,
+          "n": 17,
+          "pearson_r": -0.3778,
+          "spearman_rho": -0.3824,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -1385,13 +1518,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": -0.4808,
-          "spearman_rho": -0.5121,
+          "n": 17,
+          "pearson_r": -0.3425,
+          "spearman_rho": -0.3113,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -1408,13 +1544,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.0454,
-          "spearman_rho": -0.2176,
+          "n": 17,
+          "pearson_r": -0.0845,
+          "spearman_rho": -0.1961,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -1431,13 +1570,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.0585,
-          "spearman_rho": -0.3909,
+          "n": 14,
+          "pearson_r": 0.099,
+          "spearman_rho": -0.0374,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -1451,15 +1593,18 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 14,
-          "pearson_r": 0.5274,
-          "spearman_rho": 0.4681,
+          "n": 17,
+          "pearson_r": 0.2834,
+          "spearman_rho": 0.3652,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -1476,12 +1621,15 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": -0.4549,
+          "n": 17,
+          "pearson_r": -0.3394,
           "spearman_rho": -0.4681,
           "x_min": -22.59,
           "x_max": 30.16,
@@ -1499,13 +1647,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": -0.4157,
-          "spearman_rho": -0.5165,
+          "n": 17,
+          "pearson_r": -0.3415,
+          "spearman_rho": -0.4142,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -1522,13 +1673,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.1044,
-          "spearman_rho": -0.178,
+          "n": 17,
+          "pearson_r": -0.1676,
+          "spearman_rho": -0.2132,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -1545,13 +1699,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": 0.1791,
-          "spearman_rho": -0.3091,
+          "n": 14,
+          "pearson_r": 0.3913,
+          "spearman_rho": 0.0505,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -1565,7 +1722,10 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       }
@@ -1599,9 +1759,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 14,
-          "pearson_r": 0.336,
-          "spearman_rho": 0.2,
+          "n": 17,
+          "pearson_r": 0.3477,
+          "spearman_rho": 0.3039,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -1618,13 +1778,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": -0.4583,
-          "spearman_rho": -0.433,
+          "n": 17,
+          "pearson_r": -0.4424,
+          "spearman_rho": -0.4902,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -1641,13 +1804,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": -0.6661,
-          "spearman_rho": -0.8022,
+          "n": 17,
+          "pearson_r": -0.6961,
+          "spearman_rho": -0.777,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -1664,13 +1830,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": 0.1949,
-          "spearman_rho": 0.1824,
+          "n": 17,
+          "pearson_r": 0.0614,
+          "spearman_rho": -0.0319,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -1687,13 +1856,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.0653,
-          "spearman_rho": -0.3091,
+          "n": 14,
+          "pearson_r": 0.2487,
+          "spearman_rho": 0.0549,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -1707,15 +1879,18 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 14,
-          "pearson_r": 0.4298,
-          "spearman_rho": 0.2659,
+          "n": 17,
+          "pearson_r": 0.4369,
+          "spearman_rho": 0.3627,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -1732,13 +1907,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": -0.4899,
-          "spearman_rho": -0.5692,
+          "n": 17,
+          "pearson_r": -0.467,
+          "spearman_rho": -0.5907,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -1755,13 +1933,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": -0.6076,
-          "spearman_rho": -0.8725,
+          "n": 17,
+          "pearson_r": -0.6388,
+          "spearman_rho": -0.8235,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -1778,13 +1959,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": 0.1031,
-          "spearman_rho": 0.1824,
+          "n": 17,
+          "pearson_r": 0.022,
+          "spearman_rho": -0.0245,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -1801,13 +1985,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": 0.1326,
-          "spearman_rho": -0.3,
+          "n": 14,
+          "pearson_r": 0.3139,
+          "spearman_rho": 0.0549,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -1821,7 +2008,10 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       }
@@ -1855,9 +2045,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 5,
-          "pearson_r": 0.6438,
-          "spearman_rho": 0.5,
+          "n": 7,
+          "pearson_r": 0.5313,
+          "spearman_rho": 0.3571,
           "x_min": 4.99,
           "x_max": 7.68,
           "labels": [
@@ -1865,13 +2055,15 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5"
           ]
         },
         "tpi900": {
-          "n": 5,
-          "pearson_r": -0.7686,
-          "spearman_rho": -0.8,
+          "n": 7,
+          "pearson_r": -0.4415,
+          "spearman_rho": -0.4286,
           "x_min": -20.48,
           "x_max": 14.41,
           "labels": [
@@ -1879,13 +2071,15 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5"
           ]
         },
         "elevation": {
-          "n": 5,
-          "pearson_r": -0.9759,
-          "spearman_rho": -1.0,
+          "n": 7,
+          "pearson_r": -0.5741,
+          "spearman_rho": -0.5357,
           "x_min": 328.97,
           "x_max": 400.32,
           "labels": [
@@ -1893,13 +2087,15 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5"
           ]
         },
         "slope": {
-          "n": 5,
-          "pearson_r": -0.0875,
-          "spearman_rho": 0.1,
+          "n": 7,
+          "pearson_r": 0.1185,
+          "spearman_rho": 0.5357,
           "x_min": 3.88,
           "x_max": 8.43,
           "labels": [
@@ -1907,28 +2103,32 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5"
           ]
         },
         "southness": {
-          "n": 4,
-          "pearson_r": -0.9532,
-          "spearman_rho": -1.0,
-          "x_min": 0.926,
+          "n": 6,
+          "pearson_r": -0.5,
+          "spearman_rho": -0.7714,
+          "x_min": -0.954,
           "x_max": 1.0,
           "labels": [
             "T-2",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 5,
-          "pearson_r": 0.5001,
-          "spearman_rho": 0.2,
+          "n": 7,
+          "pearson_r": 0.2988,
+          "spearman_rho": 0.0714,
           "x_min": 4.99,
           "x_max": 7.68,
           "labels": [
@@ -1936,13 +2136,15 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5"
           ]
         },
         "tpi900": {
-          "n": 5,
-          "pearson_r": -0.742,
-          "spearman_rho": -0.7,
+          "n": 7,
+          "pearson_r": -0.223,
+          "spearman_rho": -0.1786,
           "x_min": -20.48,
           "x_max": 14.41,
           "labels": [
@@ -1950,13 +2152,15 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5"
           ]
         },
         "elevation": {
-          "n": 5,
-          "pearson_r": -0.7303,
-          "spearman_rho": -0.8,
+          "n": 7,
+          "pearson_r": -0.1541,
+          "spearman_rho": -0.1429,
           "x_min": 328.97,
           "x_max": 400.32,
           "labels": [
@@ -1964,13 +2168,15 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5"
           ]
         },
         "slope": {
-          "n": 5,
-          "pearson_r": -0.4196,
-          "spearman_rho": 0.0,
+          "n": 7,
+          "pearson_r": 0.0292,
+          "spearman_rho": 0.2857,
           "x_min": 3.88,
           "x_max": 8.43,
           "labels": [
@@ -1978,20 +2184,24 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5"
           ]
         },
         "southness": {
-          "n": 4,
-          "pearson_r": -0.5034,
-          "spearman_rho": -0.8,
-          "x_min": 0.926,
+          "n": 6,
+          "pearson_r": -0.7458,
+          "spearman_rho": -0.8857,
+          "x_min": -0.954,
           "x_max": 1.0,
           "labels": [
             "T-2",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5"
           ]
         }
       }
@@ -2025,9 +2235,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 14,
-          "pearson_r": 0.3442,
-          "spearman_rho": 0.1341,
+          "n": 17,
+          "pearson_r": 0.2754,
+          "spearman_rho": 0.1373,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -2044,13 +2254,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.2903,
-          "spearman_rho": 0.4418,
+          "n": 17,
+          "pearson_r": 0.292,
+          "spearman_rho": 0.424,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -2067,13 +2280,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.4428,
-          "spearman_rho": 0.5121,
+          "n": 17,
+          "pearson_r": 0.469,
+          "spearman_rho": 0.5172,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -2090,13 +2306,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.634,
-          "spearman_rho": -0.5912,
+          "n": 17,
+          "pearson_r": -0.5723,
+          "spearman_rho": -0.4975,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -2113,13 +2332,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.0311,
-          "spearman_rho": -0.0636,
+          "n": 14,
+          "pearson_r": -0.2241,
+          "spearman_rho": -0.3055,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -2133,15 +2355,18 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 14,
-          "pearson_r": 0.3238,
-          "spearman_rho": 0.178,
+          "n": 17,
+          "pearson_r": 0.2541,
+          "spearman_rho": 0.1863,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -2158,13 +2383,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": 0.3115,
-          "spearman_rho": 0.4286,
+          "n": 17,
+          "pearson_r": 0.3245,
+          "spearman_rho": 0.3971,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -2181,13 +2409,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": 0.5048,
-          "spearman_rho": 0.5077,
+          "n": 17,
+          "pearson_r": 0.5408,
+          "spearman_rho": 0.5098,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -2204,13 +2435,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.6511,
-          "spearman_rho": -0.578,
+          "n": 17,
+          "pearson_r": -0.5731,
+          "spearman_rho": -0.5025,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -2227,13 +2461,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.1321,
-          "spearman_rho": -0.1,
+          "n": 14,
+          "pearson_r": -0.3421,
+          "spearman_rho": -0.3275,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -2247,7 +2484,10 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       }
@@ -2281,9 +2521,9 @@
       },
       "ndmi": {
         "twi": {
-          "n": 14,
-          "pearson_r": 0.4455,
-          "spearman_rho": 0.2747,
+          "n": 17,
+          "pearson_r": 0.306,
+          "spearman_rho": 0.1765,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -2300,13 +2540,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": -0.1237,
-          "spearman_rho": -0.1209,
+          "n": 17,
+          "pearson_r": -0.0382,
+          "spearman_rho": 0.0245,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -2323,13 +2566,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": -0.1847,
-          "spearman_rho": -0.2967,
+          "n": 17,
+          "pearson_r": 0.0193,
+          "spearman_rho": 0.0221,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -2346,13 +2592,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.2543,
-          "spearman_rho": -0.3758,
+          "n": 17,
+          "pearson_r": -0.1237,
+          "spearman_rho": -0.1348,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -2369,13 +2618,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.6832,
-          "spearman_rho": -0.8091,
+          "n": 14,
+          "pearson_r": -0.7801,
+          "spearman_rho": -0.7538,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -2389,15 +2641,18 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       },
       "ndvi": {
         "twi": {
-          "n": 14,
-          "pearson_r": 0.452,
-          "spearman_rho": 0.3011,
+          "n": 17,
+          "pearson_r": 0.3374,
+          "spearman_rho": 0.2083,
           "x_min": 4.84,
           "x_max": 8.12,
           "labels": [
@@ -2414,13 +2669,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "tpi900": {
-          "n": 14,
-          "pearson_r": -0.1323,
-          "spearman_rho": -0.2132,
+          "n": 17,
+          "pearson_r": -0.0619,
+          "spearman_rho": -0.0711,
           "x_min": -22.59,
           "x_max": 30.16,
           "labels": [
@@ -2437,13 +2695,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "elevation": {
-          "n": 14,
-          "pearson_r": -0.1332,
-          "spearman_rho": -0.2835,
+          "n": 17,
+          "pearson_r": 0.033,
+          "spearman_rho": -0.0025,
           "x_min": 309.26,
           "x_max": 442.93,
           "labels": [
@@ -2460,13 +2721,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "slope": {
-          "n": 14,
-          "pearson_r": -0.2814,
-          "spearman_rho": -0.4066,
+          "n": 17,
+          "pearson_r": -0.165,
+          "spearman_rho": -0.1765,
           "x_min": 2.72,
           "x_max": 12.73,
           "labels": [
@@ -2483,13 +2747,16 @@
             "L7",
             "S6",
             "S7",
-            "T+8"
+            "T+8",
+            "N4",
+            "N5",
+            "N6"
           ]
         },
         "southness": {
-          "n": 11,
-          "pearson_r": -0.7667,
-          "spearman_rho": -0.8636,
+          "n": 14,
+          "pearson_r": -0.8343,
+          "spearman_rho": -0.7802,
           "x_min": -0.998,
           "x_max": 1.0,
           "labels": [
@@ -2503,7 +2770,10 @@
             "L6",
             "L7",
             "S6",
-            "S7"
+            "S7",
+            "N4",
+            "N5",
+            "N6"
           ]
         }
       }
