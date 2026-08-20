@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/build_local_alerts.py'
       - 'scripts/send_critical_push.py'
+      - 'scripts/sync_push_config.py'
       - '.github/workflows/build-local-alerts.yml'
       - 'data/drought-context.json'
       - 'data/push-config.json'
@@ -38,6 +39,10 @@ jobs:
           METEOMATICS_USER: ${{ secrets.METEOMATICS_USER }}
           METEOMATICS_PASSWORD: ${{ secrets.METEOMATICS_PASSWORD }}
         run: python scripts/build_local_alerts.py
+      - name: Sync public OneSignal App ID into client config
+        env:
+          ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
+        run: python scripts/sync_push_config.py
       - name: Send critical-only push if a new red alert starts
         env:
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
@@ -47,7 +52,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/alerts.json data/push-state.json 2>/dev/null || true
+          git add data/alerts.json data/push-state.json data/push-config.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Local risk and push state unchanged."
             exit 0
