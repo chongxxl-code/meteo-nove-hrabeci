@@ -1,25 +1,26 @@
 {
   "type": "FeatureCollection",
-  "name": "nove-hrabeci-open-land-experimental-v2",
+  "name": "nove-hrabeci-open-land-experimental-v3",
   "properties": {
-    "status": "stable_after_v3_visual_review",
-    "generated_at_local": "2026-08-20T13:06:45.666363+02:00",
+    "status": "stable_after_v4_visual_review",
+    "generated_at_local": "2026-08-20T14:15:13.813373+02:00",
     "review_versions": [
       "visual-review-v2.3",
-      "visual-review-v3.1"
+      "visual-review-v3.1",
+      "visual-review-v4.1"
     ],
     "purpose": "Stable visually reviewed matched open-land network for Sentinel/terrain response experiments.",
     "role_counts": {
       "high_position": 2,
-      "north_facing_slope": 1,
+      "north_facing_slope": 4,
       "high_twi": 2,
       "low_twi": 3,
       "low_position": 4,
       "south_facing_slope": 2
     },
     "known_gaps": [],
-    "sample_count": 14,
-    "note": "Network combines the seven v2 samples surviving two visual checks with seven newly approved targeted v3 samples."
+    "sample_count": 17,
+    "note": "Network extends experimental v2 with three manually approved independent north-facing controls N4-N6; N7-N8 remain rejected."
   },
   "features": [
     {
@@ -990,6 +991,219 @@
             [
               14.4414511,
               51.009478
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "north_facing_slope",
+        "selection_score": 0.9059,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 1.0,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.7984,
+        "sentinel_ndvi_p10": 0.7298,
+        "sentinel_ndvi_p90": 0.8587,
+        "sentinel_ndvi_spread_p90_p10": 0.1289,
+        "sentinel_ndmi_median": 0.225,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 368.27,
+        "slope_deg": 7.43,
+        "dominant_aspect_deg": 17.5,
+        "aspect_coherence": 0.969,
+        "tpi_300m_m": -1.71,
+        "tpi_900m_m": -5.69,
+        "twi": 6.48,
+        "wetness_score": 47.39,
+        "drying_score": 39.1,
+        "cold_pool_score": 59.48,
+        "candidate_rank": 4,
+        "display_label": "N4",
+        "id": "NH-OPEN-V4-N04",
+        "name": "Severní svah · varianta 4",
+        "class": "open_land_north_candidate_v4",
+        "screening_version": 4,
+        "center_lat": 51.013436,
+        "center_lon": 14.434263,
+        "distance_rule": ">=260 m from every v2/v3 reviewed candidate center",
+        "review_label": "N4",
+        "review_version": "visual-review-v4.1",
+        "reviewed_at_local": "2026-08-20T14:13:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4338365,
+              51.0130819
+            ],
+            [
+              14.4348246,
+              51.0131675
+            ],
+            [
+              14.4346889,
+              51.0137908
+            ],
+            [
+              14.4337007,
+              51.0137052
+            ],
+            [
+              14.4338365,
+              51.0130819
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "north_facing_slope",
+        "selection_score": 0.9052,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 0.993,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.7688,
+        "sentinel_ndvi_p10": 0.7288,
+        "sentinel_ndvi_p90": 0.8076,
+        "sentinel_ndvi_spread_p90_p10": 0.0788,
+        "sentinel_ndmi_median": 0.2032,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 394.71,
+        "slope_deg": 8.28,
+        "dominant_aspect_deg": 22.5,
+        "aspect_coherence": 0.994,
+        "tpi_300m_m": 3.78,
+        "tpi_900m_m": 13.14,
+        "twi": 5.96,
+        "wetness_score": 36.05,
+        "drying_score": 45.6,
+        "cold_pool_score": 39.87,
+        "candidate_rank": 5,
+        "display_label": "N5",
+        "id": "NH-OPEN-V4-N05",
+        "name": "Severní svah · varianta 5",
+        "class": "open_land_north_candidate_v4",
+        "screening_version": 4,
+        "center_lat": 51.013255,
+        "center_lon": 14.429557,
+        "distance_rule": ">=260 m from every v2/v3 reviewed candidate center",
+        "review_label": "N5",
+        "review_version": "visual-review-v4.1",
+        "reviewed_at_local": "2026-08-20T14:13:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4291305,
+              51.0129008
+            ],
+            [
+              14.4301186,
+              51.0129864
+            ],
+            [
+              14.4299828,
+              51.0136098
+            ],
+            [
+              14.4289947,
+              51.0135241
+            ],
+            [
+              14.4291305,
+              51.0129008
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "north_facing_slope",
+        "selection_score": 0.8182,
+        "status": "approved_after_visual_check",
+        "worldcover_core_grassland_fraction": 1.0,
+        "worldcover_sample_grassland_fraction": 1.0,
+        "worldcover_guard_grassland_fraction": 0.998,
+        "sample_square_m": 70.0,
+        "guard_square_m": 170.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.7994,
+        "sentinel_ndvi_p10": 0.7658,
+        "sentinel_ndvi_p90": 0.8384,
+        "sentinel_ndvi_spread_p90_p10": 0.0726,
+        "sentinel_ndmi_median": 0.2433,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 403.11,
+        "slope_deg": 7.81,
+        "dominant_aspect_deg": 31.2,
+        "aspect_coherence": 0.975,
+        "tpi_300m_m": 6.56,
+        "tpi_900m_m": 3.37,
+        "twi": 5.33,
+        "wetness_score": 31.07,
+        "drying_score": 52.18,
+        "cold_pool_score": 42.0,
+        "candidate_rank": 6,
+        "display_label": "N6",
+        "id": "NH-OPEN-V4-N06",
+        "name": "Severní svah · varianta 6",
+        "class": "open_land_north_candidate_v4",
+        "screening_version": 4,
+        "center_lat": 51.004026,
+        "center_lon": 14.418843,
+        "distance_rule": ">=260 m from every v2/v3 reviewed candidate center",
+        "review_label": "N6",
+        "review_version": "visual-review-v4.1",
+        "reviewed_at_local": "2026-08-20T14:13:00+02:00",
+        "experimental_use": "stable_open_land_network"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4184168,
+              51.0036711
+            ],
+            [
+              14.4194047,
+              51.0037568
+            ],
+            [
+              14.4192688,
+              51.0043802
+            ],
+            [
+              14.4182808,
+              51.0042944
+            ],
+            [
+              14.4184168,
+              51.0036711
             ]
           ]
         ]
