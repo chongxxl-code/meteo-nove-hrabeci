@@ -30,6 +30,8 @@ jobs:
         run: pip install --disable-pip-version-check numpy pillow
       - name: Analyze recent radar motion
         run: python scripts/build_radar_nowcast.py
+      - name: Show resulting nowcast status
+        run: cat data/radar-nowcast.json
       - name: Commit nowcast state
         run: |
           if git diff --quiet -- data/radar-nowcast.json; then
