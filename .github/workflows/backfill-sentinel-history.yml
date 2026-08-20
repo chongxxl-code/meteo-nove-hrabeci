@@ -9,9 +9,11 @@ on:
     paths:
       - 'scripts/backfill_sentinel_history.py'
       - 'scripts/build_sentinel_rain_context.py'
+      - 'scripts/analyze_landscape_response.py'
       - 'scripts/analyze_sentinel_zones.py'
       - 'scripts/collect_chmi.py'
       - 'config/zones.geojson'
+      - 'data/terrain/predisposition/layers.json'
       - '.github/workflows/backfill-sentinel-history.yml'
 
 permissions:
@@ -38,15 +40,17 @@ jobs:
         run: python scripts/backfill_sentinel_history.py
       - name: Add antecedent CHMI rainfall context
         run: python scripts/build_sentinel_rain_context.py
-      - name: Commit seasonal history and rain context
+      - name: Analyze terrain versus landscape response
+        run: python scripts/analyze_landscape_response.py
+      - name: Commit seasonal validation data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/sentinel/history-v3-*.jsonl data/sentinel/history-status.json data/validation/sentinel-rain-context-*.json
+          git add data/sentinel/history-v3-*.jsonl data/sentinel/history-status.json data/validation/sentinel-rain-context-*.json data/validation/landscape-response-*.json
           if git diff --cached --quiet; then
-            echo "No Sentinel history changes."
+            echo "No seasonal validation changes."
             exit 0
           fi
-          git commit -m "data: Sentinel history with CHMI rain context $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "data: Sentinel terrain-response validation $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push
