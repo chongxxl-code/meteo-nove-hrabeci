@@ -18,7 +18,7 @@ TILE = 256
 GRID = 3
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data' / 'radar-nowcast.json'
-UA = 'nove-hrabeci-radar-nowcast/0.2 (+github-actions)'
+UA = 'nove-hrabeci-radar-nowcast/0.3 (+github-actions)'
 MAX_SHIFT_PX = 55
 TARGET_RADIUS_KM = 7.0
 MAX_ETA_MIN = 120.0
@@ -188,32 +188,44 @@ def main():
             speed_kmh = math.hypot(mvx, mvy) * mpp * 60.0 / 1000.0
             bearing, compass = compass_from_vector(mvx, mvy)
             relation = classify(imgs[-1], tx, ty, mvx, mvy, mpp)
-            score = 0
-            if float(np.median(ratios)) >= 1.08: score += 1
-            if angle_spread <= 25.0: score += 1
-            if speed_spread <= max(0.18 * speed_med, 0.08): score += 1
-            if 3.0 <= speed_kmh <= 120.0: score += 1
-            confidence = 'high' if score == 4 else ('medium' if score >= 3 else 'low')
-            reliable = confidence in ('medium', 'high')
-            eta = relation['eta_min'] if reliable and relation['relation'] == 'miri_na_lokalitu' else None
-            out.update(
-                status='operational' if reliable else 'motion_uncertain',
-                confidence=confidence,
-                relation=relation['relation'],
-                eta_min=eta,
-                nearest_precip_km=relation['nearest_km'],
-                motion={
-                    'bearing_deg': round(bearing, 1),
-                    'compass': compass,
-                    'speed_kmh': round(speed_kmh, 1),
-                    'pair_count': len(shifts),
-                    'angle_spread_deg': round(angle_spread, 1),
-                    'speed_spread_px_min': round(speed_spread, 3),
-                    'phase_peak_ratio_median': round(float(np.median(ratios)), 3),
-                },
-                frames={'count': len(frames), 'first_unix': times[0], 'latest_unix': times[-1]},
-                note='ETA je zobrazena jen při stabilním směru a rychlosti.' if reliable else 'Pohyb je zatím příliš proměnlivý; ETA se nezobrazuje.'
-            )
+
+            if relation['relation'] == 'bez_srazek_v_dosahu':
+                out.update(
+                    status='operational',
+                    confidence=None,
+                    relation='bez_srazek_v_dosahu',
+                    eta_min=None,
+                    nearest_precip_km=None,
+                    frames={'count': len(frames), 'first_unix': times[0], 'latest_unix': times[-1]},
+                    note='V analyzovaném okolí není dostatečný srážkový signál; směr ani ETA se proto neurčují.'
+                )
+            else:
+                score = 0
+                if float(np.median(ratios)) >= 1.08: score += 1
+                if angle_spread <= 25.0: score += 1
+                if speed_spread <= max(0.18 * speed_med, 0.08): score += 1
+                if 3.0 <= speed_kmh <= 120.0: score += 1
+                confidence = 'high' if score == 4 else ('medium' if score >= 3 else 'low')
+                reliable = confidence in ('medium', 'high')
+                eta = relation['eta_min'] if reliable and relation['relation'] == 'miri_na_lokalitu' else None
+                out.update(
+                    status='operational' if reliable else 'motion_uncertain',
+                    confidence=confidence,
+                    relation=relation['relation'],
+                    eta_min=eta,
+                    nearest_precip_km=relation['nearest_km'],
+                    motion={
+                        'bearing_deg': round(bearing, 1),
+                        'compass': compass,
+                        'speed_kmh': round(speed_kmh, 1),
+                        'pair_count': len(shifts),
+                        'angle_spread_deg': round(angle_spread, 1),
+                        'speed_spread_px_min': round(speed_spread, 3),
+                        'phase_peak_ratio_median': round(float(np.median(ratios)), 3),
+                    },
+                    frames={'count': len(frames), 'first_unix': times[0], 'latest_unix': times[-1]},
+                    note='ETA je zobrazena jen při stabilním směru a rychlosti.' if reliable else 'Pohyb je zatím příliš proměnlivý; ETA se nezobrazuje.'
+                )
     except Exception as exc:
         out.update(status='error', relation='neurceno', error=str(exc), note='Nowcast se nepodařilo spočítat; veřejný radar na webu zůstává nezávisle funkční.')
 
