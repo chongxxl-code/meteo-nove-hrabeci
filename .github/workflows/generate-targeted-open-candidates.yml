@@ -1,0 +1,45 @@
+name: Generate targeted open-land candidates v3
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/generate_targeted_open_candidates.py'
+      - '.github/workflows/generate-targeted-open-candidates.yml'
+      - 'config/open-land-experimental.geojson'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: targeted-open-candidates-v3
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geospatial dependencies
+        run: python -m pip install --disable-pip-version-check numpy rasterio pyflwdir
+      - name: Generate targeted candidates
+        run: python scripts/generate_targeted_open_candidates.py
+      - name: Commit targeted candidates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/open-land-target-candidates-v3.geojson data/validation/open-land-target-candidates-v3-status.json
+          if git diff --cached --quiet; then
+            echo "No targeted candidate changes."
+            exit 0
+          fi
+          git commit -m "data: targeted open-land candidates v3 $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
