@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "quality_status": "valid_manual_confirmed_disturbance_sensitivity_test",
+  "computed_at_local": "2026-08-20T14:04:01.395288+02:00",
+  "network": "nove-hrabeci-open-land-experimental-v2",
+  "scene_count": 10,
+  "sample_count": 14,
+  "manual_review_status": "complete_manual_review",
+  "algorithmic_candidate_count": 12,
+  "manual_confirmed_change_count": 5,
+  "manual_no_visible_change_count": 7,
+  "excluded_observation_count": 5,
+  "warning": "Sensitivity test excludes only observations whose vegetation-state change was manually visible in historical Sentinel chips. This still does not prove mowing/grazing or any specific cause.",
+  "comparison": {
+    "ndmi": {
+      "twi": {
+        "raw_median_r": 0.0976,
+        "algorithm_filtered_median_r": 0.0398,
+        "manual_confirmed_filtered_median_r": 0.0398,
+        "manual_expected_direction_fraction": 0.5
+      },
+      "tpi900": {
+        "raw_median_r": 0.4027,
+        "algorithm_filtered_median_r": 0.2676,
+        "manual_confirmed_filtered_median_r": 0.4575,
+        "manual_expected_direction_fraction": 0.4
+      },
+      "elevation": {
+        "raw_median_r": 0.4818,
+        "algorithm_filtered_median_r": 0.3177,
+        "manual_confirmed_filtered_median_r": 0.4904,
+        "manual_expected_direction_fraction": null
+      },
+      "slope": {
+        "raw_median_r": -0.2292,
+        "algorithm_filtered_median_r": -0.3041,
+        "manual_confirmed_filtered_median_r": -0.2292,
+        "manual_expected_direction_fraction": 0.9
+      },
+      "southness": {
+        "raw_median_r": -0.0653,
+        "algorithm_filtered_median_r": -0.3447,
+        "manual_confirmed_filtered_median_r": -0.3074,
+        "manual_expected_direction_fraction": 0.778
+      }
+    },
+    "ndvi": {
+      "twi": {
+        "raw_median_r": 0.103,
+        "algorithm_filtered_median_r": 0.1211,
+        "manual_confirmed_filtered_median_r": 0.0983,
+        "manual_expected_direction_fraction": 0.5
+      },
+      "tpi900": {
+        "raw_median_r": 0.3371,
+        "algorithm_filtered_median_r": 0.1948,
+        "manual_confirmed_filtered_median_r": 0.3841,
+        "manual_expected_direction_fraction": 0.4
+      },
+      "elevation": {
+        "raw_median_r": 0.4284,
+        "algorithm_filtered_median_r": 0.2923,
+        "manual_confirmed_filtered_median_r": 0.4284,
+        "manual_expected_direction_fraction": null
+      },
+      "slope": {
+        "raw_median_r": -0.3013,
+        "algorithm_filtered_median_r": -0.3013,
+        "manual_confirmed_filtered_median_r": -0.3013,
+        "manual_expected_direction_fraction": 0.9
+      },
+      "southness": {
+        "raw_median_r": -0.1321,
+        "algorithm_filtered_median_r": -0.3223,
+        "manual_confirmed_filtered_median_r": -0.1807,
+        "manual_expected_direction_fraction": 0.667
+      }
+    }
+  },
+  "output_file": "data/validation/open-land-manual-sensitivity-2026.json",
+  "next_step": "Use the manual-confirmed filter as the stricter sensitivity test; compare raw, algorithm-filtered and manually-filtered results before changing finding confidence."
+}
