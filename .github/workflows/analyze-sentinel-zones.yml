@@ -1,0 +1,46 @@
+name: Analyze Sentinel-2 landscape zones
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '27 11 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/analyze_sentinel_zones.py'
+      - 'config/zones.geojson'
+      - '.github/workflows/analyze-sentinel-zones.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sentinel-zone-analysis
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geospatial dependencies
+        run: python -m pip install --disable-pip-version-check numpy rasterio
+      - name: Compute Sentinel-2 NDVI and NDMI by zone
+        run: python scripts/analyze_sentinel_zones.py
+      - name: Commit zone statistics
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/sentinel/zone-status.json data/sentinel/zone-stats-*.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No Sentinel zone-analysis changes."
+            exit 0
+          fi
+          git commit -m "data: Sentinel landscape indices $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
