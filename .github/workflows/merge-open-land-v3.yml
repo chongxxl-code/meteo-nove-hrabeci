@@ -1,0 +1,43 @@
+name: Merge targeted v3 experimental network
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'config/open-land-review-v3.json'
+      - 'config/open-land-target-candidates-v3.geojson'
+      - 'scripts/merge_open_land_v3.py'
+      - '.github/workflows/merge-open-land-v3.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: merge-open-land-v3
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Merge reviewed v3 samples
+        run: python scripts/merge_open_land_v3.py
+      - name: Commit stable network
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/open-land-experimental.geojson data/validation/open-land-experimental-status.json
+          if git diff --cached --quiet; then
+            echo "No experimental network changes."
+            exit 0
+          fi
+          git commit -m "data: merge reviewed v3 open-land samples $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
