@@ -1,0 +1,37 @@
+{
+  "review_version": "visual-review-v2.1",
+  "reviewed_at_local": "2026-08-20T12:31:00+02:00",
+  "status": "provisional_pending_second_visual_check",
+  "note": "Manual visual screening from satellite imagery. Provisionally approved candidates are usable for exploratory analysis but are not yet promoted into the permanent experimental zone network until a second visual check.",
+  "provisionally_approved": [
+    {"label":"H1","id":"NH-OPEN-V2-04","role":"high_position"},
+    {"label":"H2","id":"NH-OPEN-V2-05","role":"high_position"},
+    {"label":"N2","id":"NH-OPEN-V2-08","role":"north_facing_slope"},
+    {"label":"T+1","id":"NH-OPEN-V2-13","role":"high_twi"},
+    {"label":"T+3","id":"NH-OPEN-V2-15","role":"high_twi"},
+    {"label":"T-1","id":"NH-OPEN-V2-16","role":"low_twi"},
+    {"label":"T-2","id":"NH-OPEN-V2-17","role":"low_twi"},
+    {"label":"T-3","id":"NH-OPEN-V2-18","role":"low_twi"}
+  ],
+  "visually_rejected": [
+    {"label":"L1","id":"NH-OPEN-V2-01","role":"low_position"},
+    {"label":"L2","id":"NH-OPEN-V2-02","role":"low_position"},
+    {"label":"L3","id":"NH-OPEN-V2-03","role":"low_position"},
+    {"label":"H3","id":"NH-OPEN-V2-06","role":"high_position"},
+    {"label":"N1","id":"NH-OPEN-V2-07","role":"north_facing_slope"},
+    {"label":"N3","id":"NH-OPEN-V2-09","role":"north_facing_slope"},
+    {"label":"S1","id":"NH-OPEN-V2-10","role":"south_facing_slope"},
+    {"label":"S2","id":"NH-OPEN-V2-11","role":"south_facing_slope"},
+    {"label":"S3","id":"NH-OPEN-V2-12","role":"south_facing_slope"},
+    {"label":"T+2","id":"NH-OPEN-V2-14","role":"high_twi"}
+  ],
+  "role_summary": {
+    "low_position": {"approved":0,"rejected":3,"state":"missing"},
+    "high_position": {"approved":2,"rejected":1,"state":"usable"},
+    "north_facing_slope": {"approved":1,"rejected":2,"state":"usable_single"},
+    "south_facing_slope": {"approved":0,"rejected":3,"state":"missing"},
+    "high_twi": {"approved":2,"rejected":1,"state":"usable"},
+    "low_twi": {"approved":3,"rejected":0,"state":"usable"}
+  },
+  "next_step": "Second visual check. After confirmation, promote approved candidates into a stable experimental network; separately search new low-position and south-facing candidates."
+}
