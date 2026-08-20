@@ -1,0 +1,49 @@
+name: Build Nové Hraběcí local alerts
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_local_alerts.py'
+      - '.github/workflows/build-local-alerts.yml'
+      - 'data/validation/open-land-experiment-2026.json'
+      - 'data/observations/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: local-alerts
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install radar image dependency
+        run: python -m pip install --disable-pip-version-check pillow
+      - name: Build deterministic local warning state
+        env:
+          METEOMATICS_USER: ${{ secrets.METEOMATICS_USER }}
+          METEOMATICS_PASSWORD: ${{ secrets.METEOMATICS_PASSWORD }}
+        run: python scripts/build_local_alerts.py
+      - name: Commit only meaningful alert changes / hourly heartbeat
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/alerts.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Local risk state unchanged."
+            exit 0
+          fi
+          git commit -m "data: local risk state $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
