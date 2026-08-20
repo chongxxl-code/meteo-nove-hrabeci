@@ -114,7 +114,8 @@ def main():
     dist=json.loads(DISTURBANCE_FILE.read_text(encoding='utf-8'))
     raw=json.loads(RAW_GRADIENT_FILE.read_text(encoding='utf-8'))
     algo=json.loads(ALGO_SENSITIVITY_FILE.read_text(encoding='utf-8')) if ALGO_SENSITIVITY_FILE.exists() else {}
-    if review.get('status')!='complete_manual_review':
+    review_status=str(review.get('status') or '')
+    if not review_status.startswith('complete_manual_review'):
         raise RuntimeError('Manual disturbance review is not complete.')
     terrain=terrain_by_id(network)
     excluded,details=confirmed_exclusions(review,dist)
