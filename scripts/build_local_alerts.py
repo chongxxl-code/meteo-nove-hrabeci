@@ -226,7 +226,29 @@ def get_json_auth(url,token):
 def level(rank): return ['green','yellow','orange','red'][max(0,min(3,rank))]
 
 
-def build_alerts(models,rain,sat,radar,cap,lightning):
+def drought_context():
+    p = ROOT / 'data' / 'drought-context.json'
+    if not p.exists():
+        return {'ok': False, 'status': 'not_built'}
+    try:
+        d = json.loads(p.read_text(encoding='utf-8'))
+        d['ok'] = d.get('quality_status') == 'operational_local_drought_v1'
+        return d
+    except Exception as e:
+        return {'ok': False, 'status': 'read_error', 'error': str(e)[:180]}
+
+
+def chmi_lightning_public():
+    return {
+        'ok': True,
+        'provider': 'ČHMÚ / LINET public visualization',
+        'url': 'https://produkty.chmi.cz/radar/',
+        'automated_decision_input': False,
+        'note': 'ČHMÚ veřejně zobrazuje aktuální detekci blesků LINET s přibližně kilometrovou přesností. Kvůli licencovanému původu LINET dat ji zatím používáme jako oficiální živou kontrolní vrstvu, ne jako strojově parsovaný feed.'
+    }
+
+
+def build_alerts(models,rain,sat,radar,cap,lightning,drought):
     good=[m for m in models if m.get('ok')]
     def cons(field,mode='max'):
         vals=[m[field] for m in good if finite(m.get(field))]
@@ -269,15 +291,16 @@ def build_alerts(models,rain,sat,radar,cap,lightning):
     if 'vítr' in official_text: rank=max(rank,2); reasons.append('aktivní výstraha ČHMÚ pro bod')
     out.append({'id':'wind','name':'Silný vítr','icon':'🌬️','level':level(rank),'rank':rank,'headline':['bez zvýšeného rizika','zesílený vítr','silný vítr','velmi silný vítr'][rank],'reasons':reasons or ['modely nyní neukazují nebezpečné nárazy'],'confidence':'high' if 'vítr' in official_text else 'medium'})
 
-    # Drying / drought memory
-    rank=0; reasons=[]; perc=sat.get('seasonal_percentile') if sat.get('ok') else None
-    cov=(rain.get('coverage_fraction') or {}); cov14=float(cov.get(14,0)); cov30=float(cov.get(30,0))
-    if cov14>=0.80 and rain['rain_14d_mm']<8: rank=1; reasons.append(f'jen {rain["rain_14d_mm"]:.1f} mm / 14 dní')
-    if cov30>=0.80 and rain['rain_30d_mm']<20: rank=max(rank,2); reasons.append(f'jen {rain["rain_30d_mm"]:.1f} mm / 30 dní')
-    if finite(perc) and perc<=25: rank=max(rank,1); reasons.append(f'aktuální NDMI travních ploch je v dolní čtvrtině letošních scén ({perc:.0f}. percentil)')
-    if finite(perc) and perc<=15 and cov30>=0.80 and rain['rain_30d_mm']<25: rank=max(rank,2)
-    if cov30<0.80: reasons.append(f'30denní surová srážková historie zatím pokrývá jen {cov30*100:.0f} % období — dlouhodobý srážkový práh se proto nepoužívá')
-    out.append({'id':'dry','name':'Vysychání krajiny','icon':'🔥','level':level(rank),'rank':rank,'headline':['bez potvrzeného výrazného signálu','zvýšené vysychání','výrazné vysychání','extrémní lokální vysychání'][rank],'reasons':reasons or ['srážková historie a Sentinel zatím nedávají výrazný lokální signál'],'confidence':'medium' if cov30>=0.80 else 'low_to_medium','note':'Nejde o oficiální klasifikaci sucha; je to lokální stav observatoře. Dlouhodobé prahy se aktivují až při dostatečném datovém pokrytí.'})
+    # Drying / drought memory: dedicated daily local drought context first.
+    if drought.get('ok') and isinstance(drought.get('state'), dict):
+        ds=drought['state']; rank=int(ds.get('rank') or 0)
+        out.append({'id':'dry','name':'Vysychání krajiny','icon':'🔥','level':ds.get('level') or level(rank),'rank':rank,'headline':ds.get('headline') or 'stav sucha','reasons':ds.get('reasons') or ['lokální drought-context je dostupný'],'confidence':ds.get('confidence') or 'medium','note':'Lokální provozní index kombinuje P−ET₀, půdní vlhkost a Sentinel NDMI. Nejde o oficiální klasifikaci sucha.'})
+    else:
+        rank=0; reasons=[]; perc=sat.get('seasonal_percentile') if sat.get('ok') else None
+        cov=(rain.get('coverage_fraction') or {}); cov30=float(cov.get(30,0))
+        if finite(perc) and perc<=25: rank=1; reasons.append(f'aktuální NDMI travních ploch je v dolní čtvrtině letošních scén ({perc:.0f}. percentil)')
+        reasons.append('dedikovaný drought-context zatím není dostupný; používá se pouze konzervativní Sentinel fallback')
+        out.append({'id':'dry','name':'Vysychání krajiny','icon':'🔥','level':level(rank),'rank':rank,'headline':['bez potvrzeného výrazného signálu','zvýšené vysychání','výrazné vysychání','extrémní lokální vysychání'][rank],'reasons':reasons,'confidence':'low_to_medium','note':'Nejde o oficiální klasifikaci sucha.'})
 
     # Heat
     rank=0; reasons=[]
@@ -302,11 +325,11 @@ def build_alerts(models,rain,sat,radar,cap,lightning):
 
 def main():
     now=datetime.now(TZ)
-    models=model_forecasts(); rain=rain_totals(); sat=sentinel_context(); radar=radar_local(); cap=cap_official(); lightning=lightning_optional()
-    alerts=build_alerts(models,rain,sat,radar,cap,lightning)
-    payload={'schema':1,'location':{'name':'Nové Hraběcí','lat':LAT,'lon':LON},'computed_at_local':now.isoformat(),'alerts':alerts,'sources':{'models':models,'rain':rain,'sentinel':sat,'radar':radar,'official_warnings':cap,'lightning':lightning},'method_note':'Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.','safety_note':'This is an experimental local observatory, not a replacement for official emergency warnings.'}
+    models=model_forecasts(); rain=rain_totals(); sat=sentinel_context(); radar=radar_local(); cap=cap_official(); lightning=lightning_optional(); drought=drought_context(); chmi_lightning=chmi_lightning_public()
+    alerts=build_alerts(models,rain,sat,radar,cap,lightning,drought)
+    payload={'schema':1,'location':{'name':'Nové Hraběcí','lat':LAT,'lon':LON},'computed_at_local':now.isoformat(),'alerts':alerts,'sources':{'models':models,'rain':rain,'sentinel':sat,'radar':radar,'official_warnings':cap,'lightning':lightning,'chmi_lightning':chmi_lightning,'drought':drought},'method_note':'Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.','safety_note':'This is an experimental local observatory, not a replacement for official emergency warnings.'}
     # Avoid noisy commits: persist immediately when alert levels/reasons change, otherwise at least hourly.
-    normalized=json.dumps({'alerts':alerts,'radar_state':{'r10':((radar.get('latest') or {}).get('max_dbz') or {}).get('10km'),'r25':((radar.get('latest') or {}).get('max_dbz') or {}).get('25km'),'trend':radar.get('trend_30m')},'official':cap.get('active_for_point'),'lightning':lightning.get('status')},sort_keys=True,ensure_ascii=False)
+    normalized=json.dumps({'alerts':alerts,'radar_state':{'r10':((radar.get('latest') or {}).get('max_dbz') or {}).get('10km'),'r25':((radar.get('latest') or {}).get('max_dbz') or {}).get('25km'),'trend':radar.get('trend_30m')},'official':cap.get('active_for_point'),'lightning':lightning.get('status'),'drought':(drought.get('state') or {}).get('rank')},sort_keys=True,ensure_ascii=False)
     old=None
     if OUT.exists():
         try: old=json.loads(OUT.read_text(encoding='utf-8'))
