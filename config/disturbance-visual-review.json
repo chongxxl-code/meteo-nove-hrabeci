@@ -1,61 +1,31 @@
 {
-  "review_version": "disturbance-visual-review-v3",
-  "reviewed_at_local": "2026-08-20T13:58:00+02:00",
-  "status": "partial_manual_review",
-  "interpretation_rule": "visual_change_confirmed means a real vegetation-state change is visible in the historical Sentinel before/event/after chips. no_visible_change means the manual review did not find a convincing visible change despite the algorithmic NDVI flag. Neither class identifies the cause of any confirmed change as mowing, grazing, drought, cloud artifact, or another mechanism.",
+  "review_version": "disturbance-visual-review-v4",
+  "reviewed_at_local": "2026-08-20T14:01:00+02:00",
+  "status": "complete_manual_review",
+  "interpretation_rule": "visual_change_confirmed means a convincing vegetation-state change is visible in the historical Sentinel before/event/after chips. no_visible_change means the manual review did not find a convincing visible change despite the algorithmic NDVI flag. Neither class identifies the cause of any confirmed change as mowing, grazing, drought, cloud artifact, or another mechanism.",
   "assumption": "User label T1 interpreted as T-1 because T1 is not a valid disturbance sample label.",
   "confirmed_change": [
-    {
-      "event_index": 5,
-      "label": "T-1",
-      "sample_id": "NH-OPEN-V2-16",
-      "classification": "visual_change_confirmed",
-      "visual_confidence": "clear",
-      "cause": "unknown"
-    },
-    {
-      "event_index": 1,
-      "label": "H1",
-      "sample_id": "NH-OPEN-V2-04",
-      "classification": "visual_change_confirmed",
-      "visual_confidence": "clear",
-      "cause": "unknown"
-    },
-    {
-      "event_index": 4,
-      "label": "T+3",
-      "sample_id": "NH-OPEN-V2-15",
-      "classification": "visual_change_confirmed",
-      "visual_confidence": "clear",
-      "cause": "unknown"
-    },
-    {
-      "event_index": 6,
-      "label": "T-2",
-      "sample_id": "NH-OPEN-V2-17",
-      "classification": "visual_change_confirmed",
-      "visual_confidence": "clear",
-      "cause": "unknown"
-    },
-    {
-      "event_index": 2,
-      "label": "H2",
-      "sample_id": "NH-OPEN-V2-05",
-      "classification": "visual_change_confirmed",
-      "visual_confidence": "clear",
-      "cause": "unknown"
-    }
+    {"event_index":5,"label":"T-1","sample_id":"NH-OPEN-V2-16","classification":"visual_change_confirmed","visual_confidence":"clear","cause":"unknown"},
+    {"event_index":1,"label":"H1","sample_id":"NH-OPEN-V2-04","classification":"visual_change_confirmed","visual_confidence":"clear","cause":"unknown"},
+    {"event_index":4,"label":"T+3","sample_id":"NH-OPEN-V2-15","classification":"visual_change_confirmed","visual_confidence":"clear","cause":"unknown"},
+    {"event_index":6,"label":"T-2","sample_id":"NH-OPEN-V2-17","classification":"visual_change_confirmed","visual_confidence":"clear","cause":"unknown"},
+    {"event_index":2,"label":"H2","sample_id":"NH-OPEN-V2-05","classification":"visual_change_confirmed","visual_confidence":"clear","cause":"unknown"}
   ],
   "no_visible_change": [
-    {
-      "event_index": 3,
-      "label": "N2",
-      "sample_id": "NH-OPEN-V2-08",
-      "classification": "no_visible_change",
-      "visual_confidence": "clear",
-      "note": "Manual review correction: user judged the historical triplet essentially unchanged."
-    }
+    {"event_index":3,"label":"N2","sample_id":"NH-OPEN-V2-08","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":7,"label":"T-3","sample_id":"NH-OPEN-V2-18","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":8,"label":"L4","sample_id":"NH-OPEN-V3-L04","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":9,"label":"L5","sample_id":"NH-OPEN-V3-L05","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":10,"label":"L7","sample_id":"NH-OPEN-V3-L07","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":11,"label":"S7","sample_id":"NH-OPEN-V3-S07","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":12,"label":"T+8","sample_id":"NH-OPEN-V3-TP08","classification":"no_visible_change","visual_confidence":"clear"}
   ],
-  "unreviewed_labels": ["T-3", "L4", "L5", "L7", "S7", "T+8"],
-  "next_step": "Continue manual review of the remaining historical before/event/after chips. Use visually confirmed changes as a stricter sensitivity subset and keep algorithm-only flags separate."
+  "unreviewed_labels": [],
+  "summary": {
+    "algorithmic_candidates": 12,
+    "visual_change_confirmed": 5,
+    "no_visible_change": 7,
+    "visual_confirmation_fraction": 0.4167
+  },
+  "next_step": "Run a stricter sensitivity analysis excluding only manually confirmed vegetation-change observations, and compare it with both raw data and the broader algorithm-only disturbance filter."
 }
