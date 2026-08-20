@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_radar_nowcast.py'
+      - 'scripts/archive_radar_observation.py'
       - '.github/workflows/build-radar-nowcast.yml'
 
 permissions:
@@ -30,17 +31,19 @@ jobs:
         run: pip install --disable-pip-version-check numpy pillow
       - name: Analyze recent radar motion
         run: python scripts/build_radar_nowcast.py
+      - name: Archive local radar observation
+        run: python scripts/archive_radar_observation.py
       - name: Show resulting nowcast status
         run: cat data/radar-nowcast.json
-      - name: Commit nowcast state
+      - name: Commit nowcast and observation state
         run: |
-          if git diff --quiet -- data/radar-nowcast.json; then
-            echo "No nowcast changes."
+          if git diff --quiet -- data/; then
+            echo "No radar data changes."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/radar-nowcast.json
+          git add data/radar-nowcast.json data/radar-observations/
           git commit -m "data: radar nowcast $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push
