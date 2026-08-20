@@ -1,11 +1,12 @@
 {
   "type": "FeatureCollection",
-  "name": "nove-hrabeci-landscape-zones-v0.1",
+  "name": "nove-hrabeci-landscape-zones-v0.2",
   "properties": {
-    "status": "draft sampling cores; refine against satellite imagery before scientific use",
+    "status": "working sampling cores; visually refined against satellite basemap, not cadastral boundaries",
     "reference_scene": "S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913",
     "reference_scene_date": "2026-08-15",
-    "purpose": "Compare representative land-cover and terrain environments through Sentinel-2 NDVI/NDMI and meteorological context"
+    "purpose": "Compare representative land-cover and terrain environments through Sentinel-2 NDVI/NDMI and meteorological context",
+    "updated_from_visual_check": "2026-08-20"
   },
   "features": [
     {
@@ -23,21 +24,21 @@
       "type": "Feature",
       "properties": {
         "id": "NH-OPEN-01",
-        "name": "Otevřená krajina – pracovní vzorek 01",
+        "name": "Otevřená krajina / pastvina – vzorek 01",
         "class": "open_land",
-        "status": "draft",
-        "note": "Malá reprezentativní plocha otevřené krajiny; před výpočty NDVI/NDMI ověřit na satelitním podkladu, že neobsahuje zástavbu nebo les."
+        "status": "visually_refined",
+        "note": "Posunuto do homogennější otevřené plochy bez zástavby a lesa. Pracovní vzorek pro NDVI/NDMI, nikoli hranice celé pastviny."
       },
-      "geometry": {"type": "Polygon", "coordinates": [[[14.4395,51.0103],[14.4425,51.0103],[14.4425,51.0123],[14.4395,51.0123],[14.4395,51.0103]]]}
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4325,51.0102],[14.4367,51.0102],[14.4367,51.0123],[14.4325,51.0123],[14.4325,51.0102]]]}
     },
     {
       "type": "Feature",
       "properties": {
         "id": "NH-FOREST-01",
-        "name": "Les – pracovní vzorek 01",
+        "name": "Les – vzorek 01",
         "class": "forest",
-        "status": "draft",
-        "note": "Lesní kontrolní plocha v západní/severozápadní části okolí Nového Hraběcí; doladit podle satelitu."
+        "status": "visually_refined",
+        "note": "Homogenní lesní kontrolní plocha severozápadně od Nového Hraběcí."
       },
       "geometry": {"type": "Polygon", "coordinates": [[[14.4280,51.0190],[14.4320,51.0190],[14.4320,51.0210],[14.4280,51.0210],[14.4280,51.0190]]]}
     },
@@ -47,30 +48,30 @@
         "id": "NH-WET-01",
         "name": "Voda / mokřad – Hraničář",
         "class": "water_wetland",
-        "status": "anchor",
-        "note": "Kontrolní vodní/mokřadní prostředí u rybníka Hraničář; samotná vodní plocha nebude interpretována jako vegetace při NDVI."
+        "status": "visually_refined",
+        "note": "Přesunuto na skutečnou vodní plochu / bezprostřední mokřadní okolí. Voda nebude interpretována jako vegetace při NDVI; slouží i jako spektrální kontrola."
       },
-      "geometry": {"type": "Polygon", "coordinates": [[[14.4539,51.0132],[14.4561,51.0132],[14.4561,51.0146],[14.4539,51.0146],[14.4539,51.0132]]]}
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4650,51.0089],[14.4680,51.0089],[14.4680,51.0105],[14.4650,51.0105],[14.4650,51.0089]]]}
     },
     {
       "type": "Feature",
       "properties": {
         "id": "NH-QUARRY-01",
-        "name": "Kamenolom Císařský",
+        "name": "Kamenolom – odkrytý povrch",
         "class": "quarry",
-        "status": "anchor",
-        "note": "Antropogenní kontrolní zóna pro pozdější porovnání povrchové teploty, vegetace a okolního mikroklimatu."
+        "status": "visually_refined",
+        "note": "Posunuto přímo do odkryté těžební plochy. Kontrolní zóna pro vegetační indexy a později Landsat povrchovou teplotu."
       },
-      "geometry": {"type": "Polygon", "coordinates": [[[14.4038,50.9990],[14.4092,50.9990],[14.4092,51.0021],[14.4038,51.0021],[14.4038,50.9990]]]}
+      "geometry": {"type": "Polygon", "coordinates": [[[14.4089,51.0033],[14.4148,51.0033],[14.4148,51.0052],[14.4089,51.0052],[14.4089,51.0033]]]}
     },
     {
       "type": "Feature",
       "properties": {
         "id": "NH-RIDGE-01",
-        "name": "Vyšší poloha – Partyzánský vrch",
+        "name": "Vyšší poloha – pracovní terénní vzorek",
         "class": "ridge_highland",
-        "status": "anchor",
-        "note": "Vyšší terénní reference kolem Partyzánského vrchu (~543 m); vhodná pro srovnání s níže položeným údolím."
+        "status": "pending_dem",
+        "note": "Poloha je zatím terénní kotva. Přesnou hřebenovou zónu určíme až z digitálního modelu reliéfu, ne pouze z optického satelitu."
       },
       "geometry": {"type": "Polygon", "coordinates": [[[14.4045,50.9955],[14.4076,50.9955],[14.4076,50.9975],[14.4045,50.9975],[14.4045,50.9955]]]}
     },
@@ -78,10 +79,10 @@
       "type": "Feature",
       "properties": {
         "id": "NH-VALLEY-01",
-        "name": "Nízká poloha / údolí – Rožany",
+        "name": "Nízká poloha / údolí – pracovní terénní vzorek",
         "class": "valley_lowland",
-        "status": "anchor",
-        "note": "Níže položená referenční oblast kolem Rožan (~322 m); bude sloužit k porovnání s vyššími polohami."
+        "status": "pending_dem",
+        "note": "Poloha je zatím terénní kotva. Údolní jádro a tok studeného vzduchu upřesníme z DEM."
       },
       "geometry": {"type": "Polygon", "coordinates": [[[14.4518,51.0259],[14.4550,51.0259],[14.4550,51.0278],[14.4518,51.0278],[14.4518,51.0259]]]}
     },
