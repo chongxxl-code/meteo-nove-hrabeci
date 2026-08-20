@@ -1,7 +1,398 @@
 {
-  "ok": false,
+  "ok": true,
+  "quality_status": "valid",
   "provider": "ČÚZK DMR 4G ImageServer",
   "service_url": "https://ags.cuzk.gov.cz/arcgis2/rest/services/dmr4g/ImageServer",
-  "computed_at_local": "2026-08-20T10:23:36.750476+02:00",
-  "error": "Unexpected CUZK output CRS: LOCAL_CS[\"S-JTSK / Krovak East North\",UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"5514\"]]"
+  "source_type": "DMR/terrain relief model from airborne laser scanning; regular 5 x 5 m grid",
+  "vertical_reference": "Balt po vyrovnání (Bpv)",
+  "nominal_resolution_m": 5.0,
+  "analysis_crs": "EPSG:5514",
+  "study_bbox_wgs84": [
+    14.38,
+    50.98,
+    14.5,
+    51.06
+  ],
+  "computed_at_local": "2026-08-20T10:25:01.975185+02:00",
+  "export": {
+    "requested_size_px": [
+      2351,
+      2433
+    ],
+    "returned_size_px": [
+      2351,
+      2433
+    ],
+    "actual_pixel_m": 4.999,
+    "reported_crs": "LOCAL_CS[\"S-JTSK / Krovak East North\",UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"5514\"]]",
+    "export_href_host": "ags.cuzk.gov.cz"
+  },
+  "study_area": {
+    "elevation_m_bpv": {
+      "pixels": 2998901,
+      "mean": 238.64,
+      "median": 354.72,
+      "min": 0.0,
+      "max": 530.95,
+      "p10": 0.0,
+      "p90": 420.51
+    },
+    "relief_range_m": 530.95,
+    "strongest_tpi_ridge_candidate": {
+      "lat": 51.039353,
+      "lon": 14.383795,
+      "elevation_m_bpv": 464.6,
+      "slope_deg": 89.1,
+      "tpi_900m_m": 324.7
+    },
+    "strongest_tpi_valley_candidate": {
+      "lat": 51.024608,
+      "lon": 14.486916,
+      "elevation_m_bpv": 0.0,
+      "slope_deg": 88.9,
+      "tpi_900m_m": -280.1
+    }
+  },
+  "tpi": {
+    "local_radius_m": 299.9,
+    "broad_radius_m": 899.8,
+    "interpretation": "positive = above surrounding terrain; negative = below surrounding terrain"
+  },
+  "zones_version": "nove-hrabeci-landscape-zones-v0.5",
+  "zones": [
+    {
+      "id": "NH-REF",
+      "name": "Nové Hraběcí – meteorologická reference",
+      "class": "reference",
+      "geometry": "Point",
+      "elevation_m_bpv": 349.87,
+      "slope_deg": 4.4,
+      "aspect_deg": 224.5,
+      "tpi_300m_m": -6.17,
+      "tpi_900m_m": -12.21
+    },
+    {
+      "id": "NH-OPEN-01",
+      "name": "Otevřená krajina / pastvina – vzorek 01",
+      "class": "open_land",
+      "zone_status": "visually_refined",
+      "geometry": "Polygon",
+      "elevation_m_bpv": {
+        "pixels": 2758,
+        "mean": 379.14,
+        "median": 378.9,
+        "min": 361.95,
+        "max": 393.63,
+        "p10": 369.94,
+        "p90": 388.6
+      },
+      "slope_deg": {
+        "pixels": 2758,
+        "mean": 4.87,
+        "median": 4.97,
+        "min": 1.46,
+        "max": 7.82,
+        "p10": 3.41,
+        "p90": 6.1
+      },
+      "dominant_aspect_deg": 67.9,
+      "dominant_aspect_sector": "E",
+      "tpi_300m_m": {
+        "pixels": 2758,
+        "mean": 0.39,
+        "median": 0.53,
+        "min": -4.78,
+        "max": 5.73,
+        "p10": -2.58,
+        "p90": 3.07
+      },
+      "tpi_900m_m": {
+        "pixels": 2758,
+        "mean": 6.47,
+        "median": 6.86,
+        "min": -8.43,
+        "max": 18.03,
+        "p10": -1.44,
+        "p90": 13.77
+      },
+      "terrain_position": "neutral/rolling terrain"
+    },
+    {
+      "id": "NH-FOREST-01",
+      "name": "Les – vzorek 01",
+      "class": "forest",
+      "zone_status": "visually_refined",
+      "geometry": "Polygon",
+      "elevation_m_bpv": {
+        "pixels": 2498,
+        "mean": 364.23,
+        "median": 362.71,
+        "min": 349.89,
+        "max": 388.95,
+        "p10": 354.88,
+        "p90": 376.09
+      },
+      "slope_deg": {
+        "pixels": 2498,
+        "mean": 7.94,
+        "median": 7.62,
+        "min": 0.54,
+        "max": 19.99,
+        "p10": 4.01,
+        "p90": 12.03
+      },
+      "dominant_aspect_deg": 355.4,
+      "dominant_aspect_sector": "N",
+      "tpi_300m_m": {
+        "pixels": 2498,
+        "mean": 0.92,
+        "median": -0.24,
+        "min": -9.31,
+        "max": 26.13,
+        "p10": -7.62,
+        "p90": 11.67
+      },
+      "tpi_900m_m": {
+        "pixels": 2498,
+        "mean": 71.97,
+        "median": 69.38,
+        "min": 61.77,
+        "max": 107.13,
+        "p10": 65.15,
+        "p90": 84.96
+      },
+      "terrain_position": "ridge/high position"
+    },
+    {
+      "id": "NH-WET-01",
+      "name": "Vodní kontrola – Hraničář",
+      "class": "water_wetland",
+      "zone_status": "visually_refined",
+      "geometry": "Polygon",
+      "elevation_m_bpv": {
+        "pixels": 449,
+        "mean": 333.59,
+        "median": 333.59,
+        "min": 333.51,
+        "max": 333.64,
+        "p10": 333.54,
+        "p90": 333.62
+      },
+      "slope_deg": {
+        "pixels": 449,
+        "mean": 0.06,
+        "median": 0.07,
+        "min": 0.0,
+        "max": 0.14,
+        "p10": 0.03,
+        "p90": 0.08
+      },
+      "dominant_aspect_deg": null,
+      "dominant_aspect_sector": null,
+      "tpi_300m_m": {
+        "pixels": 449,
+        "mean": -3.52,
+        "median": -3.47,
+        "min": -5.38,
+        "max": -2.14,
+        "p10": -4.51,
+        "p90": -2.61
+      },
+      "tpi_900m_m": {
+        "pixels": 449,
+        "mean": -16.79,
+        "median": -16.76,
+        "min": -17.92,
+        "max": -15.87,
+        "p10": -17.44,
+        "p90": -16.19
+      },
+      "terrain_position": "valley/low position"
+    },
+    {
+      "id": "NH-QUARRY-01",
+      "name": "Kamenolom Císařský – těžební jádro",
+      "class": "quarry",
+      "zone_status": "location_confirmed",
+      "geometry": "Polygon",
+      "elevation_m_bpv": {
+        "pixels": 5232,
+        "mean": 476.6,
+        "median": 483.29,
+        "min": 441.28,
+        "max": 507.43,
+        "p10": 452.12,
+        "p90": 487.33
+      },
+      "slope_deg": {
+        "pixels": 5232,
+        "mean": 11.81,
+        "median": 4.86,
+        "min": 0.02,
+        "max": 62.81,
+        "p10": 0.92,
+        "p90": 33.47
+      },
+      "dominant_aspect_deg": 61.6,
+      "dominant_aspect_sector": "NE",
+      "tpi_300m_m": {
+        "pixels": 5232,
+        "mean": 14.51,
+        "median": 14.38,
+        "min": -15.58,
+        "max": 41.59,
+        "p10": -3.14,
+        "p90": 32.58
+      },
+      "tpi_900m_m": {
+        "pixels": 5232,
+        "mean": 61.91,
+        "median": 68.59,
+        "min": 27.77,
+        "max": 92.77,
+        "p10": 35.82,
+        "p90": 73.3
+      },
+      "terrain_position": "ridge/high position"
+    },
+    {
+      "id": "NH-RIDGE-01",
+      "name": "Partyzánský vrch – vrcholová kontrola",
+      "class": "ridge_highland",
+      "zone_status": "dem_confirmed",
+      "geometry": "Polygon",
+      "elevation_m_bpv": {
+        "pixels": 1938,
+        "mean": 504.97,
+        "median": 508.13,
+        "min": 466.38,
+        "max": 530.95,
+        "p10": 477.25,
+        "p90": 525.62
+      },
+      "slope_deg": {
+        "pixels": 1938,
+        "mean": 21.62,
+        "median": 23.07,
+        "min": 0.1,
+        "max": 61.32,
+        "p10": 3.73,
+        "p90": 34.2
+      },
+      "dominant_aspect_deg": 169.6,
+      "dominant_aspect_sector": "S",
+      "tpi_300m_m": {
+        "pixels": 1938,
+        "mean": 32.22,
+        "median": 34.41,
+        "min": 3.01,
+        "max": 54.24,
+        "p10": 11.58,
+        "p90": 49.35
+      },
+      "tpi_900m_m": {
+        "pixels": 1938,
+        "mean": 83.81,
+        "median": 87.14,
+        "min": 41.76,
+        "max": 110.03,
+        "p10": 54.58,
+        "p90": 105.22
+      },
+      "terrain_position": "ridge/high position"
+    },
+    {
+      "id": "NH-VALLEY-01",
+      "name": "Nízká poloha / údolí – Rožany",
+      "class": "valley_lowland",
+      "zone_status": "dem_confirmed",
+      "geometry": "Polygon",
+      "elevation_m_bpv": {
+        "pixels": 1898,
+        "mean": 320.64,
+        "median": 322.48,
+        "min": 305.84,
+        "max": 332.76,
+        "p10": 309.43,
+        "p90": 327.59
+      },
+      "slope_deg": {
+        "pixels": 1898,
+        "mean": 6.64,
+        "median": 4.87,
+        "min": 0.03,
+        "max": 36.32,
+        "p10": 2.08,
+        "p90": 14.0
+      },
+      "dominant_aspect_deg": 184.2,
+      "dominant_aspect_sector": "S",
+      "tpi_300m_m": {
+        "pixels": 1898,
+        "mean": 0.46,
+        "median": 1.82,
+        "min": -13.22,
+        "max": 14.22,
+        "p10": -11.41,
+        "p90": 8.38
+      },
+      "tpi_900m_m": {
+        "pixels": 1898,
+        "mean": -8.14,
+        "median": -7.43,
+        "min": -29.59,
+        "max": 18.43,
+        "p10": -23.66,
+        "p90": 5.99
+      },
+      "terrain_position": "neutral/rolling terrain"
+    },
+    {
+      "id": "NH-URBAN-01",
+      "name": "Zastavěné prostředí – Šluknov",
+      "class": "urban",
+      "zone_status": "anchor",
+      "geometry": "Polygon",
+      "elevation_m_bpv": {
+        "pixels": 3939,
+        "mean": 350.56,
+        "median": 350.49,
+        "min": 339.72,
+        "max": 362.09,
+        "p10": 344.05,
+        "p90": 357.47
+      },
+      "slope_deg": {
+        "pixels": 3939,
+        "mean": 3.68,
+        "median": 3.39,
+        "min": 0.06,
+        "max": 17.37,
+        "p10": 1.43,
+        "p90": 6.15
+      },
+      "dominant_aspect_deg": 350.2,
+      "dominant_aspect_sector": "N",
+      "tpi_300m_m": {
+        "pixels": 3939,
+        "mean": 0.09,
+        "median": 0.47,
+        "min": -5.57,
+        "max": 3.08,
+        "p10": -1.61,
+        "p90": 1.25
+      },
+      "tpi_900m_m": {
+        "pixels": 3939,
+        "mean": -5.87,
+        "median": -6.27,
+        "min": -15.31,
+        "max": 4.89,
+        "p10": -10.97,
+        "p90": -0.24
+      },
+      "terrain_position": "neutral/rolling terrain"
+    }
+  ],
+  "next_step": "If DMR4G validation is plausible, add depression handling, D8 flow direction/accumulation and TWI on the 5 m terrain grid."
 }
