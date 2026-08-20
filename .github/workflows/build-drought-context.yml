@@ -1,0 +1,44 @@
+name: Build Nové Hraběcí drought context
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 5 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_drought_context.py'
+      - '.github/workflows/build-drought-context.yml'
+      - 'data/validation/open-land-experiment-2026.json'
+      - 'data/observations/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: local-drought-context
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build operational drought context
+        run: python scripts/build_drought_context.py
+      - name: Commit drought context
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/drought-context.json
+          if git diff --cached --quiet; then
+            echo "No drought-context changes."
+            exit 0
+          fi
+          git commit -m "data: local drought context $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
