@@ -1,9 +1,9 @@
 {
-  "review_version": "disturbance-visual-review-v5",
-  "reviewed_at_local": "2026-08-20T14:20:00+02:00",
-  "status": "partial_manual_review_new_north_controls",
+  "review_version": "disturbance-visual-review-v6",
+  "reviewed_at_local": "2026-08-20T15:23:00+02:00",
+  "status": "complete_manual_review_17_samples",
   "interpretation_rule": "visual_change_confirmed means a convincing vegetation-state change is visible in the historical Sentinel before/event/after chips. no_visible_change means the manual review did not find a convincing visible change despite the algorithmic NDVI flag. Neither class identifies the cause of any confirmed change as mowing, grazing, drought, cloud artifact, or another mechanism.",
-  "assumption": "Previous 12-event manual review remains valid. Expanded 17-sample network added three new algorithmic candidates N4, N5 and N6 that require visual review.",
+  "assumption": "Previous 12-event manual review remains valid. The three new north-facing candidates N4, N5 and N6 were visually reviewed and judged to show no convincing visible vegetation-state change.",
   "confirmed_change": [
     {"event_index":5,"label":"T-1","sample_id":"NH-OPEN-V2-16","classification":"visual_change_confirmed","visual_confidence":"clear","cause":"unknown"},
     {"event_index":1,"label":"H1","sample_id":"NH-OPEN-V2-04","classification":"visual_change_confirmed","visual_confidence":"clear","cause":"unknown"},
@@ -18,19 +18,19 @@
     {"event_index":9,"label":"L5","sample_id":"NH-OPEN-V3-L05","classification":"no_visible_change","visual_confidence":"clear"},
     {"event_index":10,"label":"L7","sample_id":"NH-OPEN-V3-L07","classification":"no_visible_change","visual_confidence":"clear"},
     {"event_index":11,"label":"S7","sample_id":"NH-OPEN-V3-S07","classification":"no_visible_change","visual_confidence":"clear"},
-    {"event_index":12,"label":"T+8","sample_id":"NH-OPEN-V3-TP08","classification":"no_visible_change","visual_confidence":"clear"}
+    {"event_index":12,"label":"T+8","sample_id":"NH-OPEN-V3-TP08","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":13,"label":"N4","sample_id":"NH-OPEN-V4-N04","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":14,"label":"N5","sample_id":"NH-OPEN-V4-N05","classification":"no_visible_change","visual_confidence":"clear"},
+    {"event_index":15,"label":"N6","sample_id":"NH-OPEN-V4-N06","classification":"no_visible_change","visual_confidence":"clear"}
   ],
-  "unreviewed": [
-    {"event_index":13,"label":"N4","sample_id":"NH-OPEN-V4-N04"},
-    {"event_index":14,"label":"N5","sample_id":"NH-OPEN-V4-N05"},
-    {"event_index":15,"label":"N6","sample_id":"NH-OPEN-V4-N06"}
-  ],
-  "unreviewed_labels": ["N4","N5","N6"],
+  "unreviewed": [],
+  "unreviewed_labels": [],
   "summary": {
     "algorithmic_candidates": 15,
     "visual_change_confirmed": 5,
-    "no_visible_change": 7,
-    "unreviewed": 3
+    "no_visible_change": 10,
+    "unreviewed": 0,
+    "visual_confirmation_fraction": 0.3333
   },
-  "next_step": "Generate historical before/event/after chips for N4, N5 and N6 and complete their manual review before treating the 17-sample manual sensitivity test as complete."
+  "next_step": "Run the 17-sample manual sensitivity analysis excluding only the five visually confirmed vegetation-change observations, and update the living findings with the replicated north-versus-south result."
 }
