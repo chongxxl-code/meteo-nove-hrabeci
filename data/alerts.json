@@ -1,0 +1,215 @@
+{
+  "schema": 1,
+  "location": {
+    "name": "Nové Hraběcí",
+    "lat": 51.0162,
+    "lon": 14.4398
+  },
+  "computed_at_local": "2026-08-20T15:56:16.558097+02:00",
+  "alerts": [
+    {
+      "id": "storm",
+      "name": "Bouřky",
+      "icon": "⛈️",
+      "level": "green",
+      "rank": 0,
+      "headline": "bez lokálního signálu",
+      "reasons": [
+        "radar/modely nyní nedávají silný lokální signál"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "runoff",
+      "name": "Přívalový déšť / odtok",
+      "icon": "🌧️",
+      "level": "green",
+      "rank": 0,
+      "headline": "bez zvýšeného rizika",
+      "reasons": [
+        "radar ani krátkodobé modely nyní neukazují výraznou srážkovou zátěž"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "wind",
+      "name": "Silný vítr",
+      "icon": "🌬️",
+      "level": "green",
+      "rank": 0,
+      "headline": "bez zvýšeného rizika",
+      "reasons": [
+        "modelový konsenzus nárazů do 12 h ~36 km/h"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "dry",
+      "name": "Vysychání krajiny",
+      "icon": "🔥",
+      "level": "orange",
+      "rank": 2,
+      "headline": "výrazné vysychání",
+      "reasons": [
+        "jen 0.0 mm / 14 dní",
+        "jen 0.0 mm / 30 dní"
+      ],
+      "confidence": "medium",
+      "note": "Nejde zatím o oficiální klasifikaci sucha; je to lokální stav observatoře."
+    },
+    {
+      "id": "heat",
+      "name": "Horko",
+      "icon": "🌡️",
+      "level": "green",
+      "rank": 0,
+      "headline": "bez zvýšeného rizika",
+      "reasons": [
+        "modelový konsenzus maxima do 12 h ~24.8 °C"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "frost",
+      "name": "Mráz",
+      "icon": "❄️",
+      "level": "green",
+      "rank": 0,
+      "headline": "bez rizika",
+      "reasons": [
+        "nejnižší modelový scénář do 12 h ~15.3 °C"
+      ],
+      "confidence": "medium",
+      "note": "Později se práh upraví podle lokální chladové predispozice NH-REF."
+    }
+  ],
+  "sources": {
+    "models": [
+      {
+        "name": "ICON-D2",
+        "ok": true,
+        "max_temp_12h": 24.8,
+        "min_temp_12h": 15.3,
+        "max_precip_1h_12h": 0.0,
+        "precip_sum_6h": 0.0,
+        "max_gust_12h": 35.6,
+        "max_cape_12h": 160.0
+      },
+      {
+        "name": "ALADIN",
+        "ok": true,
+        "max_temp_12h": 23.0,
+        "min_temp_12h": 15.4,
+        "max_precip_1h_12h": 0.0,
+        "precip_sum_6h": 0.0,
+        "max_gust_12h": 26.6,
+        "max_cape_12h": 910.0
+      },
+      {
+        "name": "ECMWF",
+        "ok": true,
+        "max_temp_12h": 24.4,
+        "min_temp_12h": 15.4,
+        "max_precip_1h_12h": 0.1,
+        "precip_sum_6h": 0.30000000000000004,
+        "max_gust_12h": 32.8,
+        "max_cape_12h": 250.0
+      }
+    ],
+    "rain": {
+      "rain_7d_mm": 0.0,
+      "rain_14d_mm": 0.0,
+      "rain_30d_mm": 0.0,
+      "latest_observation_utc": "2026-08-20T11:50:00+00:00",
+      "interval_counts": {
+        "7": 72,
+        "14": 72,
+        "30": 72
+      }
+    },
+    "sentinel": {
+      "ok": true,
+      "latest_scene": "2026-08-15T10:16:35.791000Z",
+      "current_open_land_median_ndmi": 0.1649,
+      "seasonal_percentile": 50.0,
+      "scene_count": 10
+    },
+    "radar": {
+      "ok": true,
+      "provider": "RainViewer",
+      "latest": {
+        "time_unix": 1787233800,
+        "time_local": "2026-08-20T15:50:00+02:00",
+        "max_dbz": {
+          "10km": -32,
+          "25km": -32,
+          "50km": 14
+        },
+        "nearest_35dbz_km": null
+      },
+      "trend_30m": "unknown",
+      "frames": [
+        {
+          "time_unix": 1787232000,
+          "time_local": "2026-08-20T15:20:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -1,
+            "50km": 15
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787232600,
+          "time_local": "2026-08-20T15:30:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -2,
+            "50km": 14
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787233200,
+          "time_local": "2026-08-20T15:40:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -1,
+            "50km": 17
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787233800,
+          "time_local": "2026-08-20T15:50:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -32,
+            "50km": 14
+          },
+          "nearest_35dbz_km": null
+        }
+      ]
+    },
+    "official_warnings": {
+      "ok": true,
+      "provider": "ČHMÚ CAP",
+      "active_for_point": [],
+      "inspected_files": [
+        "alert_cap_50_201329.xml",
+        "alert_cap_50_200906.xml",
+        "alert_cap_50_190838.xml",
+        "alert_cap_50_180807.xml"
+      ]
+    },
+    "lightning": {
+      "ok": false,
+      "status": "not_configured",
+      "provider": "none",
+      "note": "Blitzortung is excluded from warning decisions by its terms. Optional licensed lightning provider slot is ready."
+    }
+  },
+  "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
+  "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
+  "_fingerprint": "-6642790772708186586"
+}
