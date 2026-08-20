@@ -1,13 +1,15 @@
 {
   "ok": true,
-  "generated_at_local": "2026-08-20T13:20:35.969667+02:00",
+  "generated_at_local": "2026-08-20T13:26:23.091484+02:00",
   "status": "living_exploratory_knowledge_base",
   "scope": "Nové Hraběcí open-land experimental network",
   "sample_count": 14,
   "scene_count": 10,
   "source_analyses": [
     "data/validation/open-land-experiment-status.json",
-    "data/validation/open-land-gradient-status.json"
+    "data/validation/open-land-gradient-status.json",
+    "data/validation/open-land-disturbance-status.json",
+    "data/validation/open-land-sensitivity-status.json"
   ],
   "warning": "Poznatky jsou pracovní a explorační. Sentinel NDMI není přímá půdní vlhkost; korelace nejsou kauzalita. Stav a confidence se mají měnit s novými daty.",
   "findings": [
@@ -16,40 +18,44 @@
       "title": "Strmější travní plochy se opakovaně jeví sušší / méně vitální",
       "state": "emerging_supported",
       "confidence": "moderate",
-      "claim": "Napříč kontrolovanými travními plochami má vyšší sklon ve většině Sentinel termínů záporný vztah k NDMI i NDVI.",
+      "claim": "Napříč kontrolovanými travními plochami má vyšší sklon ve většině Sentinel termínů záporný vztah k NDMI i NDVI a tento signál přežil citlivostní filtr možných sečí/pastvy.",
       "evidence": [
         "NDMI: očekávaný záporný směr v 90.0 % použitelných scén; medián Pearson r = -0.2292.",
-        "NDVI: očekávaný záporný směr v 90.0 % scén; medián Pearson r = -0.3013.",
+        "Po odfiltrování kandidátních narušení: NDMI medián r = -0.3041 (raw -0.2292); očekávaný směr zůstává 90.0 %.",
+        "NDVI po filtrování: medián r = -0.3013.",
         "Síla NDMI vztahu sklonu se s 14denním deštěm mění korelací r = -0.52 (explorační)."
       ],
-      "interpretation": "Pracovní mechanismus: po srážkách strmější místa rychleji odvádějí vodu a plošší místa ji déle drží. Zatím nejde o důkaz odtoku ani půdní vlhkosti.",
-      "next_test": "Sledovat, zda se záporný vztah opakuje po dalších výrazných deštích a v dalších vegetačních sezonách."
+      "interpretation": "Pracovní mechanismus: po srážkách strmější místa rychleji odvádějí vodu a plošší místa ji déle drží. To, že efekt po odstranění podezřelých vegetačních skoků nezeslábl, zvyšuje jeho věrohodnost, ale stále nejde o přímé měření půdní vlhkosti.",
+      "next_test": "Sledovat, zda se záporný vztah opakuje po dalších výrazných deštích, a v budoucnu přidat terénní půdní/vlhkostní měření."
     },
     {
       "id": "twi-context-dependent",
       "title": "TWI nevypadá jako stálé pořadí vlhkosti — spíš jako podmíněný efekt",
       "state": "emerging_hypothesis",
       "confidence": "low_to_moderate",
-      "claim": "Vyšší TWI samo o sobě není ve všech termínech spojeno s vyšším NDMI, ale vztah se zesiluje po delším vlhkém období.",
+      "claim": "Vyšší TWI samo o sobě není ve všech termínech spojeno s vyšším NDMI; statický signál je slabý, ale vztah se zesiluje po delším vlhkém období.",
       "evidence": [
         "Medián vztahu TWI–NDMI přes jednotlivé dny: Pearson r = 0.0976; kladný směr v 50.0 % scén.",
+        "Po odfiltrování kandidátních narušení klesá medián TWI–NDMI na r = 0.0398 a směr zůstává 50/50.",
         "Korelace 30denního deště se sílou denního TWI–NDMI vztahu: r = 0.4977.",
         "Skupinový TWI+ − TWI− medián NDMI = 0.0358."
       ],
-      "interpretation": "Možný mechanismus: topografická predispozice k akumulaci vody se projeví hlavně tehdy, když je v krajině dostatek vody k redistribuci.",
-      "next_test": "Zvýšit počet scén po výrazně mokrých a výrazně suchých obdobích a porovnat velikost TWI efektu."
+      "interpretation": "TWI zatím nevypadá jako univerzální žebříček „mokré–suché“. Možný mechanismus: topografická akumulace se projeví hlavně tehdy, když je v krajině dostatek vody k redistribuci.",
+      "next_test": "Zvýšit počet scén po výrazně mokrých a výrazně suchých obdobích a testovat TWI efekt odděleně podle antecedentních srážek."
     },
     {
       "id": "southness-drying",
-      "title": "Jižní expozice má zatím slabý, ale poměrně konzistentní sušší signál",
-      "state": "emerging_hypothesis",
-      "confidence": "low_to_moderate",
-      "claim": "U dostatečně sklonitých a směrově koherentních travních ploch je vyšší southness většinou spojena s nižším NDMI.",
+      "title": "Jižní expozice má po kontrole narušení výraznější sušší signál",
+      "state": "emerging_supported",
+      "confidence": "moderate",
+      "claim": "U dostatečně sklonitých a směrově koherentních travních ploch je vyšší southness většinou spojena s nižším NDMI; po odstranění podezřelých vegetačních skoků vztah zesílil.",
       "evidence": [
-        "Očekávaný záporný směr southness–NDMI v 77.8 % scén; medián Pearson r = -0.0653.",
+        "Raw southness–NDMI: očekávaný záporný směr v 77.8 % scén; medián Pearson r = -0.0653.",
+        "Po disturbance filtru: NDMI medián r = -0.3447; očekávaný záporný směr 75.0 %.",
+        "NDVI po filtrování: medián r = -0.3223; očekávaný směr 75.0 %.",
         "Skupinový jih − sever medián NDMI = -0.0914."
       ],
-      "interpretation": "Směr odpovídá vyššímu oslunění a potenciálnímu výparu na jižních svazích, ale dedicated severní skupina má zatím jen jeden vzorek.",
+      "interpretation": "Směr odpovídá vyššímu oslunění a potenciálnímu výparu na jižních svazích. Dedicated severní skupina má ale stále jen jeden vzorek, takže confidence zůstává pouze střední.",
       "next_test": "Přidat další čisté severní svahy a sledovat rozdíl zejména během teplých suchých epizod."
     },
     {
@@ -57,14 +63,28 @@
       "title": "Jednoduché pravidlo „nízko = vlhčeji“ se v současné síti nepotvrzuje",
       "state": "simple_hypothesis_not_supported",
       "confidence": "moderate_for_current_sample",
-      "claim": "Níže položené travní vzorky nejsou v této sezoně systematicky vlhčí/zelenejší než vyšší vzorky.",
+      "claim": "Níže položené travní vzorky nejsou v této sezoně systematicky vlhčí/zelenejší než vyšší vzorky. Část opačného signálu ale slábne po odfiltrování možného hospodaření.",
       "evidence": [
         "Nízká − vyšší poloha: medián NDMI kontrastu = -0.1284; nízká skupina měla vyšší NDMI jen v 22.2 % srovnatelných scén.",
-        "Kontinuální TPI900–NDMI medián Pearson r = 0.4027 (kladná hodnota zde znamená, že vyšší relativní poloha často vyšla s vyšším NDMI).",
-        "Výška–NDMI medián Pearson r = 0.4818."
+        "TPI900–NDMI: raw medián r = 0.4027, po disturbance filtru 0.2676.",
+        "Výška–NDMI: raw medián r = 0.4818, po filtru 0.3177."
       ],
-      "interpretation": "Neznamená to, že vyšší terén způsobuje větší vlhkost. Výsledek může být silně ovlivněn půdou, sečí/pastvou, fenologií, expozicí a místní drenáží.",
-      "next_test": "Použít více sezon a případně terénní informace o hospodaření/půdě; nevyvozovat kauzalitu z výšky samotné."
+      "interpretation": "Neznamená to, že vyšší terén způsobuje větší vlhkost. Oslabení po filtrování ukazuje, že seč/pastva nebo jiná fenologie pravděpodobně část původního vztahu skutečně zkreslovala.",
+      "next_test": "Použít více sezon a případně informace o hospodaření/půdě; nevyvozovat kauzalitu z výšky samotné."
+    },
+    {
+      "id": "management-confounding",
+      "title": "Hospodaření / vegetační narušení je měřitelný rušivý faktor",
+      "state": "emerging_supported",
+      "confidence": "moderate",
+      "claim": "Časová řada obsahuje několik prudkých NDVI propadů, které mohou odpovídat seči, pastvě nebo jinému narušení a dokážou posunovat zdánlivé terénní vztahy.",
+      "evidence": [
+        "Detektor označil 12 kandidátních narušení, z toho 5 silných.",
+        "Citlivostní test vyřadil 13 sample×datum pozorování.",
+        "Po filtraci se TPI900–NDMI změnilo z 0.4027 na 0.2676, zatímco sklon se z -0.2292 změnil na -0.3041."
+      ],
+      "interpretation": "To je důležité metodicky: některé zdánlivé „mikroklimatické“ rozdíly mohou být ve skutečnosti zásah člověka nebo fenologie. Proto budeme vždy porovnávat raw a disturbance-filtered výsledek.",
+      "next_test": "U největších NDVI propadů vizuálně ověřit Sentinel/letecký kontext a případně vést ruční záznam seče/pastvy, pokud bude dostupný."
     }
   ]
 }
