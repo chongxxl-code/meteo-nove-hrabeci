@@ -8,7 +8,9 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_drought_context.py'
+      - 'scripts/merge_copernicus_into_drought.py'
       - '.github/workflows/build-drought-context.yml'
+      - 'data/copernicus-soil.json'
       - 'data/validation/open-land-experiment-2026.json'
       - 'data/observations/**'
 
@@ -30,6 +32,8 @@ jobs:
           python-version: '3.12'
       - name: Build operational drought context
         run: python scripts/build_drought_context.py
+      - name: Add independent Copernicus 1 km soil evidence
+        run: python scripts/merge_copernicus_into_drought.py
       - name: Commit drought context
         run: |
           git config user.name "github-actions[bot]"
