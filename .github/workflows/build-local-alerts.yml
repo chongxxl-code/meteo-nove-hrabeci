@@ -8,8 +8,10 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_local_alerts.py'
+      - 'scripts/send_critical_push.py'
       - '.github/workflows/build-local-alerts.yml'
       - 'data/drought-context.json'
+      - 'data/push-config.json'
       - 'data/validation/open-land-experiment-2026.json'
       - 'data/observations/**'
 
@@ -36,16 +38,20 @@ jobs:
           METEOMATICS_USER: ${{ secrets.METEOMATICS_USER }}
           METEOMATICS_PASSWORD: ${{ secrets.METEOMATICS_PASSWORD }}
         run: python scripts/build_local_alerts.py
-      - name: Commit only meaningful alert changes / hourly heartbeat
+      - name: Send critical-only push if a new red alert starts
+        env:
+          ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
+        run: python scripts/send_critical_push.py || echo "::warning::Critical push delivery failed; next scheduled run will retry."
+      - name: Commit only meaningful alert / push-state changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/alerts.json 2>/dev/null || true
+          git add data/alerts.json data/push-state.json 2>/dev/null || true
           if git diff --cached --quiet; then
-            echo "Local risk state unchanged."
+            echo "Local risk and push state unchanged."
             exit 0
           fi
           git commit -m "data: local risk state $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push
-# Copernicus integration verification
