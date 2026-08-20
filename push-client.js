@@ -21,6 +21,22 @@
     return b;
   }
 
+  function showError(btn, prefix, err) {
+    const msg = String(err?.message || err || 'Neznámá chyba');
+    btn.disabled = false;
+    btn.textContent = '🔕 ' + prefix;
+    btn.title = msg;
+    let d = document.getElementById('pushCriticalError');
+    if (!d) {
+      d = document.createElement('div');
+      d.id = 'pushCriticalError';
+      d.style.cssText = 'margin-top:8px;color:#ff9d55;font-size:12px;line-height:1.4;word-break:break-word';
+      btn.closest('.risks')?.appendChild(d);
+    }
+    d.textContent = 'Push chyba: ' + msg;
+    console.warn(prefix, err);
+  }
+
   function loadSdk() {
     return new Promise((resolve, reject) => {
       if (document.querySelector(`script[src="${SDK}"]`)) return resolve();
@@ -28,7 +44,7 @@
       s.src = SDK;
       s.defer = true;
       s.onload = resolve;
-      s.onerror = reject;
+      s.onerror = () => reject(new Error('OneSignal SDK se nepodařilo načíst'));
       document.head.appendChild(s);
     });
   }
@@ -88,15 +104,11 @@
             }
           });
         } catch (e) {
-          btn.disabled = true;
-          btn.textContent = '🔕 Push není dostupný';
-          console.warn('OneSignal init failed', e);
+          showError(btn, 'Push init selhal', e);
         }
       });
     } catch (e) {
-      btn.disabled = true;
-      btn.textContent = '🔕 Push není dostupný';
-      console.warn('Push SDK load failed', e);
+      showError(btn, 'Push SDK selhal', e);
     }
   }
 
