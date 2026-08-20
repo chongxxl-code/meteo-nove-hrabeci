@@ -1,7 +1,280 @@
 {
-  "ok": false,
+  "ok": true,
+  "quality_status": "valid_with_border_limitation",
   "provider": "ČÚZK DMR 4G 5 m + pyflwdir D8",
-  "computed_at_local": "2026-08-20T10:32:45.319216+02:00",
+  "computed_at_local": "2026-08-20T10:34:22.384407+02:00",
+  "analysis_crs": "EPSG:5514",
+  "vertical_reference": "Balt po vyrovnání (Bpv)",
+  "cell_size_m": 4.999,
+  "source_export": {
+    "requested_size_px": [
+      2351,
+      2433
+    ],
+    "returned_size_px": [
+      2351,
+      2433
+    ],
+    "actual_pixel_m": 4.999,
+    "reported_crs": "LOCAL_CS[\"S-JTSK / Krovak East North\",UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"5514\"]]",
+    "zero_background_pixels_masked": 2258970,
+    "border_nodata_policy": "exact zero from service background is masked as NoData for this high-elevation study area",
+    "export_href_host": "ags.cuzk.gov.cz"
+  },
+  "flow_method": {
+    "routing": "D8 steepest-gradient flow direction",
+    "depression_handling": "all inland depressions filled to lowest pour point for routing (max_depth=-1)",
+    "outlets": "valid-data edge",
+    "upstream_area_unit": "m2"
+  },
+  "twi_method": {
+    "formula": "ln((upstream_area_m2 / cell_width_m) / tan(slope_rad))",
+    "slope_source": "original DMR4G surface before depression filling",
+    "minimum_slope_deg": 0.5,
+    "interpretation": "terrain wetness predisposition only; not observed soil moisture"
+  },
   "coverage_limitation": "ČÚZK DMR 4G covers Czech territory only. The study bbox reaches the German border, so upstream contributions originating in Germany are absent and flow accumulation near the state/data edge can be truncated. Derived drainage is a Czech-side terrain model, not an official hydrographic network.",
-  "error": "Object of type bool is not JSON serializable"
+  "edge_truncation_warning": true,
+  "study_area": {
+    "valid_pixels": 1854003,
+    "upstream_area_m2": {
+      "pixels": 1854003,
+      "mean": 32084.27,
+      "median": 199.93,
+      "min": 24.99,
+      "max": 45408860.0,
+      "p10": 24.99,
+      "p90": 1574.44
+    },
+    "twi": {
+      "pixels": 1851444,
+      "mean": 6.4,
+      "median": 6.21,
+      "min": 1.0,
+      "max": 20.76,
+      "p10": 4.32,
+      "p90": 8.48
+    },
+    "derived_drainage_threshold_km2": 0.25,
+    "derived_drainage_segments": 107
+  },
+  "zones_version": "nove-hrabeci-landscape-zones-v0.5",
+  "zones": [
+    {
+      "id": "NH-REF",
+      "name": "Nové Hraběcí – meteorologická reference",
+      "class": "reference",
+      "zone_status": "fixed",
+      "geometry": "Point",
+      "upstream_area_m2": 100.0,
+      "upstream_area_ha": 0.01,
+      "twi": 5.559,
+      "twi_study_percentile": 34.3
+    },
+    {
+      "id": "NH-OPEN-01",
+      "name": "Otevřená krajina / pastvina – vzorek 01",
+      "class": "open_land",
+      "zone_status": "visually_refined",
+      "geometry": "Polygon",
+      "pixels": 2758,
+      "upstream_area_m2": {
+        "pixels": 2758,
+        "mean": 2239.86,
+        "median": 349.88,
+        "min": 24.99,
+        "max": 106212.44,
+        "p10": 49.98,
+        "p90": 1174.58
+      },
+      "twi": {
+        "pixels": 2758,
+        "mean": 6.63,
+        "median": 6.69,
+        "min": 3.73,
+        "max": 12.7,
+        "p10": 4.69,
+        "p90": 8.08
+      },
+      "twi_median_study_percentile": 61.6,
+      "channel_fraction_ge_1ha": 0.0337,
+      "channel_fraction_ge_10ha": 0.0018
+    },
+    {
+      "id": "NH-FOREST-01",
+      "name": "Les – vzorek 01",
+      "class": "forest",
+      "zone_status": "visually_refined",
+      "geometry": "Polygon",
+      "pixels": 2498,
+      "upstream_area_m2": {
+        "pixels": 2498,
+        "mean": 7378.57,
+        "median": 174.94,
+        "min": 24.99,
+        "max": 491501.56,
+        "p10": 24.99,
+        "p90": 1282.05
+      },
+      "twi": {
+        "pixels": 2498,
+        "mean": 5.79,
+        "median": 5.5,
+        "min": 2.94,
+        "max": 15.07,
+        "p10": 3.96,
+        "p90": 7.78
+      },
+      "twi_median_study_percentile": 32.9,
+      "channel_fraction_ge_1ha": 0.0356,
+      "channel_fraction_ge_10ha": 0.0144
+    },
+    {
+      "id": "NH-WET-01",
+      "name": "Vodní kontrola – Hraničář",
+      "class": "water_wetland",
+      "zone_status": "visually_refined",
+      "geometry": "Polygon",
+      "pixels": 449,
+      "upstream_area_m2": {
+        "pixels": 449,
+        "mean": 11928.51,
+        "median": 174.94,
+        "min": 24.99,
+        "max": 590640.81,
+        "p10": 49.98,
+        "p90": 399.86
+      },
+      "twi": {
+        "pixels": 449,
+        "mean": 8.42,
+        "median": 8.3,
+        "min": 6.35,
+        "max": 16.42,
+        "p10": 7.04,
+        "p90": 9.12
+      },
+      "twi_median_study_percentile": 88.5,
+      "channel_fraction_ge_1ha": 0.0334,
+      "channel_fraction_ge_10ha": 0.029
+    },
+    {
+      "id": "NH-QUARRY-01",
+      "name": "Kamenolom Císařský – těžební jádro",
+      "class": "quarry",
+      "zone_status": "location_confirmed",
+      "geometry": "Polygon",
+      "pixels": 5232,
+      "upstream_area_m2": {
+        "pixels": 5232,
+        "mean": 2124.98,
+        "median": 74.97,
+        "min": 24.99,
+        "max": 123006.51,
+        "p10": 24.99,
+        "p90": 724.74
+      },
+      "twi": {
+        "pixels": 5232,
+        "mean": 5.34,
+        "median": 5.03,
+        "min": 1.11,
+        "max": 14.84,
+        "p10": 2.86,
+        "p90": 8.07
+      },
+      "twi_median_study_percentile": 22.6,
+      "channel_fraction_ge_1ha": 0.0396,
+      "channel_fraction_ge_10ha": 0.0036
+    },
+    {
+      "id": "NH-RIDGE-01",
+      "name": "Partyzánský vrch – vrcholová kontrola",
+      "class": "ridge_highland",
+      "zone_status": "dem_confirmed",
+      "geometry": "Polygon",
+      "pixels": 1938,
+      "upstream_area_m2": {
+        "pixels": 1938,
+        "mean": 228.02,
+        "median": 124.96,
+        "min": 24.99,
+        "max": 9696.57,
+        "p10": 24.99,
+        "p90": 399.86
+      },
+      "twi": {
+        "pixels": 1938,
+        "mean": 4.31,
+        "median": 4.17,
+        "min": 1.67,
+        "max": 10.46,
+        "p10": 2.7,
+        "p90": 5.88
+      },
+      "twi_median_study_percentile": 8.0,
+      "channel_fraction_ge_1ha": 0.0,
+      "channel_fraction_ge_10ha": 0.0
+    },
+    {
+      "id": "NH-VALLEY-01",
+      "name": "Nízká poloha / údolí – Rožany",
+      "class": "valley_lowland",
+      "zone_status": "dem_confirmed",
+      "geometry": "Polygon",
+      "pixels": 1898,
+      "upstream_area_m2": {
+        "pixels": 1898,
+        "mean": 263825.62,
+        "median": 174.94,
+        "min": 24.99,
+        "max": 41521320.0,
+        "p10": 24.99,
+        "p90": 1024.64
+      },
+      "twi": {
+        "pixels": 1898,
+        "mean": 6.15,
+        "median": 5.67,
+        "min": 2.43,
+        "max": 20.12,
+        "p10": 4.34,
+        "p90": 8.05
+      },
+      "twi_median_study_percentile": 36.9,
+      "channel_fraction_ge_1ha": 0.03,
+      "channel_fraction_ge_10ha": 0.0063
+    },
+    {
+      "id": "NH-URBAN-01",
+      "name": "Zastavěné prostředí – Šluknov",
+      "class": "urban",
+      "zone_status": "anchor",
+      "geometry": "Polygon",
+      "pixels": 3939,
+      "upstream_area_m2": {
+        "pixels": 3939,
+        "mean": 1400.59,
+        "median": 74.97,
+        "min": 24.99,
+        "max": 89918.16,
+        "p10": 24.99,
+        "p90": 1174.58
+      },
+      "twi": {
+        "pixels": 3939,
+        "mean": 6.1,
+        "median": 5.7,
+        "min": 3.03,
+        "max": 14.52,
+        "p10": 4.33,
+        "p90": 8.63
+      },
+      "twi_median_study_percentile": 37.7,
+      "channel_fraction_ge_1ha": 0.0373,
+      "channel_fraction_ge_10ha": 0.0
+    }
+  ],
+  "derived_drainage_file": "data/terrain/derived-drainage.geojson",
+  "next_step": "Validate terrain-derived drainage against mapped watercourses/wet areas, then derive practical wetness/drying and cold-air terrain predisposition layers."
 }
