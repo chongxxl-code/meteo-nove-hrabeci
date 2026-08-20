@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nové Hraběcí – krajinné zóny</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{color-scheme:dark;--bg:#071117;--panel:#0d2028;--line:#23414c;--tx:#eef8fb;--mu:#9ab0b8;--a:#64d7ce}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);font:14px Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--tx)}
+body{display:grid;grid-template-rows:auto 1fr}.top{padding:14px 16px;background:linear-gradient(180deg,#102832,#08171d);border-bottom:1px solid var(--line);display:flex;gap:18px;justify-content:space-between;align-items:flex-start}.eye{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);font-weight:800}.top h1{font-size:22px;margin:4px 0}.top p{margin:0;color:var(--mu);max-width:900px;line-height:1.45}.status{color:var(--mu);font-size:12px;white-space:nowrap}.wrap{position:relative;min-height:0}#map{height:100%;min-height:560px}.legend{position:absolute;z-index:1000;left:12px;bottom:20px;background:rgba(7,17,23,.92);border:1px solid var(--line);border-radius:13px;padding:10px 12px;max-width:310px;box-shadow:0 8px 30px #0007}.legend b{display:block;margin-bottom:5px}.legend small{color:var(--mu);line-height:1.4}.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 7px;margin:4px 3px 0 0;font-size:10px}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#0d2028;color:#eef8fb}.leaflet-popup-content{line-height:1.4}.leaflet-control-layers{background:#0d2028!important;color:#eef8fb!important;border-color:#23414c!important}@media(max-width:650px){.top{display:block}.status{margin-top:8px}.legend{max-width:260px}}
+</style>
+</head>
+<body>
+<header class="top"><div><div class="eye">lokální observatoř · pracovní mapa</div><h1>Krajinné zóny Nového Hraběcí</h1><p>První verze reprezentativních kontrolních ploch. Nejsou to ještě definitivní hranice biotopů. Teď kontrolujeme, zda jednotlivé vzorky opravdu leží v čistém typu prostředí; následně nad nimi začneme počítat Sentinel‑2 NDVI/NDMI.</p></div><div class="status" id="status">načítám zóny…</div></header>
+<div class="wrap"><div id="map"></div><div class="legend"><b>Jak mapu číst</b><small>Přepínačem vpravo nahoře lze porovnat klasickou mapu a satelitní podklad. Kliknutím na zónu uvidíš její účel a stav. Zóny označené <i>draft</i> ještě doladíme.</small><div><span class="tag">reference</span><span class="tag">otevřená krajina</span><span class="tag">les</span><span class="tag">voda/mokřad</span><span class="tag">lom</span><span class="tag">výška</span><span class="tag">údolí</span><span class="tag">město</span></div></div></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map=L.map('map',{zoomControl:true}).setView([51.0162,14.4398],13);
+const osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
+const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'});
+L.control.layers({'Mapa':osm,'Satelitní podklad':sat},null,{collapsed:false}).addTo(map);
+const styles={
+ reference:{color:'#ffffff',fillColor:'#ff6363'},open_land:{color:'#d5f56a',fillColor:'#b9df4a'},forest:{color:'#70e2a1',fillColor:'#277a4c'},water_wetland:{color:'#76b7ff',fillColor:'#3385ce'},quarry:{color:'#ff9a62',fillColor:'#96523a'},ridge_highland:{color:'#e3b7ff',fillColor:'#735095'},valley_lowland:{color:'#64d7ce',fillColor:'#267a78'},urban:{color:'#ffc36b',fillColor:'#8b6a31'}
+};
+function style(f){const s=styles[f.properties?.class]||{color:'#fff',fillColor:'#888'};return {...s,weight:2,fillOpacity:.25}}
+function popup(f){const p=f.properties||{};return `<b>${p.id||''} · ${p.name||''}</b><br><span style="color:#9ab0b8">${p.class||''} · ${p.status||''}</span><br><br>${p.note||''}`}
+fetch('./config/zones.geojson?_='+Date.now()).then(r=>r.json()).then(g=>{
+ const layer=L.geoJSON(g,{style,pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:7,...style(f),fillOpacity:.9}),onEachFeature:(f,l)=>l.bindPopup(popup(f))}).addTo(map);
+ map.fitBounds(layer.getBounds().pad(.08));document.getElementById('status').textContent=`${g.features.length} zón · v0.1`;
+}).catch(e=>document.getElementById('status').textContent='zóny se nepodařilo načíst');
+</script>
+</body></html>
