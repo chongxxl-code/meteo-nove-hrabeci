@@ -2,22 +2,24 @@
   "ok": true,
   "quality_status": "valid_exploratory_series_v2",
   "analysis_version": 2,
-  "computed_at_local": "2026-08-20T13:14:48.957311+02:00",
-  "network": "nove-hrabeci-open-land-experimental-v2",
-  "network_status": "stable_after_v3_visual_review",
+  "computed_at_local": "2026-08-20T14:16:47.390975+02:00",
+  "network": "nove-hrabeci-open-land-experimental-v3",
+  "network_status": "stable_after_v4_visual_review",
   "network_review_versions": [
     "visual-review-v2.3",
-    "visual-review-v3.1"
+    "visual-review-v3.1",
+    "visual-review-v4.1",
+    "visual-review-v4.1"
   ],
   "provider": "Sentinel-2 Collection 1 L2A via Earth Search / AWS Open Data COG + ČHMÚ antecedent rainfall",
   "interpretation_warning": "NDMI is a spectral vegetation/water-content signal, not direct soil-moisture measurement. Group contrasts are exploratory; land management, phenology and sample imbalance can confound them. Correlations do not establish causality.",
   "summary": {
     "scene_count": 10,
     "fully_valid_scene_count": 8,
-    "sample_count": 14,
+    "sample_count": 17,
     "role_counts": {
       "high_position": 2,
-      "north_facing_slope": 1,
+      "north_facing_slope": 4,
       "high_twi": 2,
       "low_twi": 3,
       "low_position": 4,
@@ -44,14 +46,14 @@
       "corr_rain_30d_vs_contrast": 0.2202
     },
     "aspect_ndmi": {
-      "scene_count": 8,
-      "positive_count": 3,
-      "positive_fraction": 0.375,
-      "median_contrast": -0.0914,
+      "scene_count": 10,
+      "positive_count": 2,
+      "positive_fraction": 0.2,
+      "median_contrast": -0.0955,
       "positive_means": "south-facing group has higher NDMI",
-      "corr_rain_7d_vs_contrast": -0.0847,
-      "corr_rain_14d_vs_contrast": 0.1441,
-      "corr_rain_30d_vs_contrast": -0.337
+      "corr_rain_7d_vs_contrast": 0.2405,
+      "corr_rain_14d_vs_contrast": 0.2205,
+      "corr_rain_30d_vs_contrast": 0.203
     },
     "twi_ndvi": {
       "scene_count": 10,
@@ -74,14 +76,14 @@
       "corr_rain_30d_vs_contrast": 0.3016
     },
     "aspect_ndvi": {
-      "scene_count": 8,
+      "scene_count": 10,
       "positive_count": 2,
-      "positive_fraction": 0.25,
-      "median_contrast": -0.0575,
+      "positive_fraction": 0.2,
+      "median_contrast": -0.1111,
       "positive_means": "south-facing group has higher NDVI",
-      "corr_rain_7d_vs_contrast": -0.1336,
-      "corr_rain_14d_vs_contrast": -0.0275,
-      "corr_rain_30d_vs_contrast": -0.45
+      "corr_rain_7d_vs_contrast": -0.1276,
+      "corr_rain_14d_vs_contrast": -0.0485,
+      "corr_rain_30d_vs_contrast": 0.1865
     }
   },
   "scenes": [
@@ -463,6 +465,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.64,
+            "median": 0.6476,
+            "p10": 0.5689,
+            "p90": 0.6915,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.1564,
+            "median": 0.1553,
+            "p10": 0.1292,
+            "p90": 0.184,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.6097,
+            "median": 0.6118,
+            "p10": 0.5947,
+            "p90": 0.6223,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1159,
+            "median": 0.1132,
+            "p10": 0.1021,
+            "p90": 0.1281,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.6254,
+            "median": 0.6183,
+            "p10": 0.5849,
+            "p90": 0.6749,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1278,
+            "median": 0.122,
+            "p10": 0.1011,
+            "p90": 0.1529,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -492,9 +569,9 @@
           "ndvi_median": 0.5729
         },
         "north_facing_slope": {
-          "valid_samples": 1,
-          "ndmi_median": -0.0243,
-          "ndvi_median": 0.4072
+          "valid_samples": 4,
+          "ndmi_median": 0.1176,
+          "ndvi_median": 0.61505
         }
       },
       "groups": {
@@ -502,8 +579,8 @@
         "high_twi_minus_low_twi_ndvi": -0.0656,
         "low_minus_high_position_ndmi": -0.1371,
         "low_minus_high_position_ndvi": -0.1814,
-        "south_minus_north_ndmi": 0.102,
-        "south_minus_north_ndvi": 0.1657
+        "south_minus_north_ndmi": -0.0399,
+        "south_minus_north_ndvi": -0.0422
       },
       "quality_status": "valid"
     },
@@ -885,6 +962,81 @@
             "valid_fraction": 0.0
           },
           "ok": false
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 49,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 10,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 49,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 12,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7418,
+            "median": 0.7359,
+            "p10": 0.701,
+            "p90": 0.7805,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.2419,
+            "median": 0.2353,
+            "p10": 0.2124,
+            "p90": 0.2698,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -914,9 +1066,9 @@
           "ndvi_median": 0.5448
         },
         "north_facing_slope": {
-          "valid_samples": 0,
-          "ndmi_median": null,
-          "ndvi_median": null
+          "valid_samples": 1,
+          "ndmi_median": 0.2353,
+          "ndvi_median": 0.7359
         }
       },
       "groups": {
@@ -924,8 +1076,8 @@
         "high_twi_minus_low_twi_ndvi": -0.1807,
         "low_minus_high_position_ndmi": -0.1284,
         "low_minus_high_position_ndvi": -0.1041,
-        "south_minus_north_ndmi": null,
-        "south_minus_north_ndvi": null
+        "south_minus_north_ndmi": -0.1857,
+        "south_minus_north_ndvi": -0.1911
       },
       "quality_status": "partial"
     },
@@ -1307,6 +1459,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8072,
+            "median": 0.8112,
+            "p10": 0.7577,
+            "p90": 0.8433,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.325,
+            "median": 0.3253,
+            "p10": 0.2828,
+            "p90": 0.3626,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7931,
+            "median": 0.7983,
+            "p10": 0.7643,
+            "p90": 0.8114,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.2912,
+            "median": 0.2903,
+            "p10": 0.2657,
+            "p90": 0.3109,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7971,
+            "median": 0.7939,
+            "p10": 0.7643,
+            "p90": 0.8278,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.3006,
+            "median": 0.2954,
+            "p10": 0.2743,
+            "p90": 0.3272,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -1336,9 +1563,9 @@
           "ndvi_median": 0.6859
         },
         "north_facing_slope": {
-          "valid_samples": 1,
-          "ndmi_median": 0.0986,
-          "ndvi_median": 0.5978
+          "valid_samples": 4,
+          "ndmi_median": 0.29285,
+          "ndvi_median": 0.7961
         }
       },
       "groups": {
@@ -1346,8 +1573,8 @@
         "high_twi_minus_low_twi_ndvi": -0.0342,
         "low_minus_high_position_ndmi": -0.1764,
         "low_minus_high_position_ndvi": -0.1752,
-        "south_minus_north_ndmi": 0.0671,
-        "south_minus_north_ndvi": 0.0881
+        "south_minus_north_ndmi": -0.1272,
+        "south_minus_north_ndvi": -0.1102
       },
       "quality_status": "valid"
     },
@@ -1729,6 +1956,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8606,
+            "median": 0.8609,
+            "p10": 0.848,
+            "p90": 0.8719,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.4648,
+            "median": 0.4632,
+            "p10": 0.4441,
+            "p90": 0.494,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8553,
+            "median": 0.8549,
+            "p10": 0.8438,
+            "p90": 0.8662,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.4481,
+            "median": 0.4497,
+            "p10": 0.4349,
+            "p90": 0.457,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8632,
+            "median": 0.8641,
+            "p10": 0.8528,
+            "p90": 0.8724,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.467,
+            "median": 0.4695,
+            "p10": 0.4557,
+            "p90": 0.4744,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -1758,9 +2060,9 @@
           "ndvi_median": 0.74605
         },
         "north_facing_slope": {
-          "valid_samples": 1,
-          "ndmi_median": 0.3084,
-          "ndvi_median": 0.8095
+          "valid_samples": 4,
+          "ndmi_median": 0.45645,
+          "ndvi_median": 0.8579
         }
       },
       "groups": {
@@ -1768,8 +2070,8 @@
         "high_twi_minus_low_twi_ndvi": -0.0169,
         "low_minus_high_position_ndmi": -0.1568,
         "low_minus_high_position_ndvi": -0.0887,
-        "south_minus_north_ndmi": -0.0793,
-        "south_minus_north_ndvi": -0.0635
+        "south_minus_north_ndmi": -0.2273,
+        "south_minus_north_ndvi": -0.1119
       },
       "quality_status": "valid"
     },
@@ -2151,6 +2453,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8941,
+            "median": 0.8964,
+            "p10": 0.8791,
+            "p90": 0.9044,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.5061,
+            "median": 0.5054,
+            "p10": 0.4819,
+            "p90": 0.5328,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8895,
+            "median": 0.8886,
+            "p10": 0.879,
+            "p90": 0.8992,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.4834,
+            "median": 0.4863,
+            "p10": 0.4677,
+            "p90": 0.4981,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.888,
+            "median": 0.8902,
+            "p10": 0.8717,
+            "p90": 0.8984,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.4964,
+            "median": 0.4991,
+            "p10": 0.4795,
+            "p90": 0.507,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -2180,9 +2557,9 @@
           "ndvi_median": 0.7606999999999999
         },
         "north_facing_slope": {
-          "valid_samples": 1,
-          "ndmi_median": 0.3286,
-          "ndvi_median": 0.8359
+          "valid_samples": 4,
+          "ndmi_median": 0.4927,
+          "ndvi_median": 0.8894
         }
       },
       "groups": {
@@ -2190,8 +2567,8 @@
         "high_twi_minus_low_twi_ndvi": 0.0124,
         "low_minus_high_position_ndmi": -0.1541,
         "low_minus_high_position_ndvi": -0.0737,
-        "south_minus_north_ndmi": -0.1035,
-        "south_minus_north_ndvi": -0.0752
+        "south_minus_north_ndmi": -0.2676,
+        "south_minus_north_ndvi": -0.1287
       },
       "quality_status": "valid"
     },
@@ -2573,6 +2950,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.3402,
+            "median": 0.3349,
+            "p10": 0.3024,
+            "p90": 0.3789,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.0149,
+            "median": 0.0154,
+            "p10": 0.0047,
+            "p90": 0.0279,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.424,
+            "median": 0.4208,
+            "p10": 0.3884,
+            "p90": 0.4755,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.0431,
+            "median": 0.0432,
+            "p10": 0.0314,
+            "p90": 0.053,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8057,
+            "median": 0.8049,
+            "p10": 0.787,
+            "p90": 0.8201,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.3807,
+            "median": 0.381,
+            "p10": 0.3676,
+            "p90": 0.3914,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -2602,9 +3054,9 @@
           "ndvi_median": 0.75745
         },
         "north_facing_slope": {
-          "valid_samples": 1,
-          "ndmi_median": 0.3168,
-          "ndvi_median": 0.8088
+          "valid_samples": 4,
+          "ndmi_median": 0.18000000000000002,
+          "ndvi_median": 0.61285
         }
       },
       "groups": {
@@ -2612,8 +3064,8 @@
         "high_twi_minus_low_twi_ndvi": 0.2777,
         "low_minus_high_position_ndmi": 0.0281,
         "low_minus_high_position_ndvi": 0.0281,
-        "south_minus_north_ndmi": -0.1193,
-        "south_minus_north_ndvi": -0.0514
+        "south_minus_north_ndmi": 0.0175,
+        "south_minus_north_ndvi": 0.1446
       },
       "quality_status": "valid"
     },
@@ -2995,6 +3447,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.5754,
+            "median": 0.5787,
+            "p10": 0.5441,
+            "p90": 0.607,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.0141,
+            "median": 0.0163,
+            "p10": -0.0035,
+            "p90": 0.0262,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.65,
+            "median": 0.6485,
+            "p10": 0.6297,
+            "p90": 0.6754,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.0629,
+            "median": 0.0627,
+            "p10": 0.0467,
+            "p90": 0.0769,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.5516,
+            "median": 0.5555,
+            "p10": 0.5054,
+            "p90": 0.5881,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": -0.0001,
+            "median": 0.0012,
+            "p10": -0.0293,
+            "p90": 0.0251,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -3024,9 +3551,9 @@
           "ndvi_median": 0.71155
         },
         "north_facing_slope": {
-          "valid_samples": 1,
-          "ndmi_median": 0.2835,
-          "ndvi_median": 0.7808
+          "valid_samples": 4,
+          "ndmi_median": 0.0395,
+          "ndvi_median": 0.6135999999999999
         }
       },
       "groups": {
@@ -3034,8 +3561,8 @@
         "high_twi_minus_low_twi_ndvi": 0.1494,
         "low_minus_high_position_ndmi": 0.0474,
         "low_minus_high_position_ndvi": 0.0556,
-        "south_minus_north_ndmi": -0.14,
-        "south_minus_north_ndvi": -0.0693
+        "south_minus_north_ndmi": 0.1039,
+        "south_minus_north_ndvi": 0.098
       },
       "quality_status": "valid"
     },
@@ -3417,6 +3944,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7171,
+            "median": 0.7244,
+            "p10": 0.6722,
+            "p90": 0.7455,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.1645,
+            "median": 0.1699,
+            "p10": 0.1374,
+            "p90": 0.1928,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7476,
+            "median": 0.7535,
+            "p10": 0.7266,
+            "p90": 0.7624,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.19,
+            "median": 0.1967,
+            "p10": 0.1611,
+            "p90": 0.2072,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 49,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 12,
+            "valid_fraction": 0.0
+          },
+          "ok": false
         }
       ],
       "role_stats": {
@@ -3446,9 +4048,9 @@
           "ndvi_median": 0.59035
         },
         "north_facing_slope": {
-          "valid_samples": 0,
-          "ndmi_median": null,
-          "ndvi_median": null
+          "valid_samples": 2,
+          "ndmi_median": 0.18330000000000002,
+          "ndvi_median": 0.73895
         }
       },
       "groups": {
@@ -3456,8 +4058,8 @@
         "high_twi_minus_low_twi_ndvi": 0.1012,
         "low_minus_high_position_ndmi": null,
         "low_minus_high_position_ndvi": null,
-        "south_minus_north_ndmi": null,
-        "south_minus_north_ndvi": null
+        "south_minus_north_ndmi": -0.0639,
+        "south_minus_north_ndvi": -0.1486
       },
       "quality_status": "partial"
     },
@@ -3839,6 +4441,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.6336,
+            "median": 0.6382,
+            "p10": 0.6104,
+            "p90": 0.6496,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.0667,
+            "median": 0.0668,
+            "p10": 0.0526,
+            "p90": 0.0809,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.6407,
+            "median": 0.6378,
+            "p10": 0.6232,
+            "p90": 0.6609,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.06,
+            "median": 0.059,
+            "p10": 0.039,
+            "p90": 0.0823,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.6954,
+            "median": 0.7036,
+            "p10": 0.647,
+            "p90": 0.7311,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.1348,
+            "median": 0.1426,
+            "p10": 0.0931,
+            "p90": 0.163,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -3868,9 +4545,9 @@
           "ndvi_median": 0.54935
         },
         "north_facing_slope": {
-          "valid_samples": 1,
-          "ndmi_median": -0.0018,
-          "ndvi_median": 0.5519
+          "valid_samples": 4,
+          "ndmi_median": 0.0629,
+          "ndvi_median": 0.638
         }
       },
       "groups": {
@@ -3878,8 +4555,8 @@
         "high_twi_minus_low_twi_ndvi": 0.1275,
         "low_minus_high_position_ndmi": -0.1242,
         "low_minus_high_position_ndvi": -0.1269,
-        "south_minus_north_ndmi": 0.0068,
-        "south_minus_north_ndvi": -0.0025
+        "south_minus_north_ndmi": -0.0579,
+        "south_minus_north_ndvi": -0.0887
       },
       "quality_status": "valid"
     },
@@ -4261,6 +4938,81 @@
             "valid_fraction": 1.0
           },
           "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7969,
+            "median": 0.7984,
+            "p10": 0.7298,
+            "p90": 0.8587,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.2305,
+            "median": 0.225,
+            "p10": 0.1792,
+            "p90": 0.2907,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7683,
+            "median": 0.7688,
+            "p10": 0.7288,
+            "p90": 0.8076,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.2,
+            "median": 0.2032,
+            "p10": 0.1614,
+            "p90": 0.2291,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8002,
+            "median": 0.7994,
+            "p10": 0.7658,
+            "p90": 0.8384,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.2388,
+            "median": 0.2433,
+            "p10": 0.1974,
+            "p90": 0.2618,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
         }
       ],
       "role_stats": {
@@ -4290,9 +5042,9 @@
           "ndvi_median": 0.6593
         },
         "north_facing_slope": {
-          "valid_samples": 1,
-          "ndmi_median": 0.2061,
-          "ndvi_median": 0.7821
+          "valid_samples": 4,
+          "ndmi_median": 0.21555000000000002,
+          "ndvi_median": 0.79025
         }
       },
       "groups": {
@@ -4300,8 +5052,8 @@
         "high_twi_minus_low_twi_ndvi": 0.0945,
         "low_minus_high_position_ndmi": -0.0201,
         "low_minus_high_position_ndvi": -0.015,
-        "south_minus_north_ndmi": -0.1202,
-        "south_minus_north_ndvi": -0.1228
+        "south_minus_north_ndmi": -0.1297,
+        "south_minus_north_ndvi": -0.131
       },
       "quality_status": "valid"
     }
