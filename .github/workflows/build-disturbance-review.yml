@@ -1,0 +1,45 @@
+name: Build historical Sentinel disturbance review
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_disturbance_review_chips.py'
+      - 'data/validation/open-land-disturbance-2026.json'
+      - 'data/validation/open-land-experiment-2026.json'
+      - 'config/open-land-experimental.geojson'
+      - '.github/workflows/build-disturbance-review.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: disturbance-review-chips
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check numpy rasterio pillow
+      - name: Build historical true-colour chips
+        run: python scripts/build_disturbance_review_chips.py
+      - name: Commit review assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/validation/disturbance-chips data/validation/disturbance-review-manifest.json data/validation/disturbance-review-status.json
+          if git diff --cached --quiet; then
+            echo "No disturbance review changes."
+            exit 0
+          fi
+          git commit -m "data: historical Sentinel disturbance review $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
