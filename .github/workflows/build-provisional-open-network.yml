@@ -1,0 +1,43 @@
+name: Build provisional open-land network
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'config/open-land-review-v2.json'
+      - 'config/open-land-candidates.geojson'
+      - 'scripts/build_provisional_open_network.py'
+      - '.github/workflows/build-provisional-open-network.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: provisional-open-network
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build provisional network
+        run: python scripts/build_provisional_open_network.py
+      - name: Commit provisional network
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/open-land-provisional.geojson data/validation/open-land-provisional-status.json
+          if git diff --cached --quiet; then
+            echo "No provisional network changes."
+            exit 0
+          fi
+          git commit -m "data: provisional open-land network $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
