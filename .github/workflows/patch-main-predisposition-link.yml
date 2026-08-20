@@ -1,0 +1,34 @@
+name: Patch main predisposition link
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_main_predisposition_link.py'
+      - '.github/workflows/patch-main-predisposition-link.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/patch_main_predisposition_link.py
+      - name: Commit patched main page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No patch needed."
+            exit 0
+          fi
+          git commit -m "Add predisposition map to main observatory"
+          git pull --rebase origin main
+          git push
