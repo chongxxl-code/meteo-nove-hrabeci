@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-08-20T16:24:32.361465+02:00",
+  "computed_at_local": "2026-08-20T16:31:32.293968+02:00",
   "alerts": [
     {
       "id": "storm",
@@ -144,27 +144,17 @@
       "ok": true,
       "provider": "RainViewer",
       "latest": {
-        "time_unix": 1787235600,
-        "time_local": "2026-08-20T16:20:00+02:00",
+        "time_unix": 1787236200,
+        "time_local": "2026-08-20T16:30:00+02:00",
         "max_dbz": {
           "10km": -32,
-          "25km": -32,
-          "50km": -32
+          "25km": -3,
+          "50km": 15
         },
         "nearest_35dbz_km": null
       },
       "trend_30m": "unknown",
       "frames": [
-        {
-          "time_unix": 1787233800,
-          "time_local": "2026-08-20T15:50:00+02:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -32,
-            "50km": 14
-          },
-          "nearest_35dbz_km": null
-        },
         {
           "time_unix": 1787234400,
           "time_local": "2026-08-20T16:00:00+02:00",
@@ -192,6 +182,16 @@
             "10km": -32,
             "25km": -32,
             "50km": -32
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787236200,
+          "time_local": "2026-08-20T16:30:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -3,
+            "50km": 15
           },
           "nearest_35dbz_km": null
         }
@@ -309,5 +309,5 @@
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "0d58eb18aa08104c6a28dbc11432571f21a0e5b781e76c6ccf60300061603dc2"
+  "_fingerprint": "b509832b11e3219d2c028b80730c9d157dbac32e1ba40e50f79e337a498d6676"
 }
