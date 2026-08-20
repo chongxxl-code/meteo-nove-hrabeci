@@ -10,12 +10,25 @@ h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
 .kpi div,.stat{border-radius:10px;padding:9px}
 .kpi b,.stat b{font-size:16px}
 .sect h2{font-size:17px}
-.model{padding:10px 0}
+.model{padding:10px 0;border-top-color:#17343d}
 .hourstrip{grid-template-columns:repeat(12,minmax(78px,1fr));gap:6px;padding:9px 0 1px}
 .hour{border-radius:11px;padding:8px}
 .hour .t{font-size:19px;margin:6px 0}
-svg{height:245px}
 .note{font-size:11px;line-height:1.45;margin-top:7px}
+
+/* Model comparison is useful, but secondary: keep data, reduce visual weight. */
+.chart{padding-bottom:11px}
+.chart svg{height:170px;margin-top:2px}
+.chart .sect{margin-bottom:0}
+.chart>.muted:last-child{font-size:10px;margin-top:-2px;opacity:.78}
+.models{padding:13px 14px}
+.models .sect{margin-bottom:2px}
+.models .sect h2{font-size:16px}
+.models .sect>span{font-size:10px}
+.models .model{padding:7px 0}
+.models .model strong{font-size:13px;align-items:baseline}
+.models .model strong span:last-child{font-size:13px}
+.models .model small{font-size:10px}
 
 /* System collection remains available, but behaves as a quiet service/status layer. */
 .central{padding:10px 14px;background:rgba(8,23,30,.78);border-color:#18333d}
@@ -47,7 +60,7 @@ svg{height:245px}
 
 @media(max-width:850px){
   .temp{font-size:52px}
-  svg{height:225px}
+  .chart svg{height:160px}
   .central .centralgrid{display:flex;grid-template-columns:none}
 }
 @media(max-width:520px){
@@ -61,6 +74,10 @@ svg{height:245px}
   .aitxt{font-size:17px}
   .sect{align-items:flex-start}
   .sect h2{font-size:16px}
+  .chart svg{height:145px}
+  .chart>.muted:last-child{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .models{padding:10px 11px}
+  .models .model{padding:6px 0}
   .hourstrip{grid-template-columns:repeat(12,minmax(72px,1fr))}
   .central{padding:9px 11px}
   .central .sect{align-items:center}
