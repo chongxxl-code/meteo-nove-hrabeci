@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data'
 OBS = DATA / 'observations'
 URL = 'https://hydro.chmi.cz/hpps/srz/objekt/20189995'
-UA = 'nove-hrabeci-meteo/0.6 (+github-actions)'
+UA = 'nove-hrabeci-meteo/0.7 (+github-actions)'
 
 
 class TableParser(HTMLParser):
@@ -78,7 +78,6 @@ def parse_date(text, now):
         return None
     day, month = int(m.group(1)), int(m.group(2))
     year = now.year
-    # New-year rollover safety for a seven-day table.
     candidate = datetime(year, month, day, tzinfo=TZ)
     if candidate - now > timedelta(days=180):
         candidate = candidate.replace(year=year - 1)
@@ -95,14 +94,13 @@ def main():
     parser.feed(raw)
     now = datetime.now(TZ)
 
-    # Locate the seven-day header row. The first dated column is the current day.
     date_row = None
     for row in parser.rows:
         if sum(bool(re.search(r'\d{1,2}\.\s*\d{1,2}\.', c)) for c in row) >= 2:
             date_row = row
             break
     if not date_row:
-        raise RuntimeError('ČHMÚ table date header not found')
+        raise RuntimeError(f'ČHMÚ table date header not found; parsed_rows={len(parser.rows)}')
 
     dates = [parse_date(c, now) for c in date_row]
     dates = [d for d in dates if d is not None]
@@ -125,12 +123,12 @@ def main():
             dt = datetime.combine(current_date + timedelta(days=1), datetime.min.time(), TZ)
         else:
             dt = datetime(current_date.year, current_date.month, current_date.day, hh, mm, tzinfo=TZ)
-        # Ignore accidental future cells; current-day column should normally be blank there.
         if dt <= now + timedelta(minutes=10):
             points.append((dt, value))
 
     if not points:
-        raise RuntimeError('No current-day ČHMÚ 10-minute precipitation values found')
+        preview = parser.rows[:8]
+        raise RuntimeError(f'No current-day ČHMÚ 10-minute precipitation values found; date_row={date_row!r}; rows_preview={preview!r}')
     points.sort(key=lambda x: x[0])
     latest_dt, latest_val = points[-1]
     last_hour_start = latest_dt - timedelta(minutes=50)
@@ -139,7 +137,7 @@ def main():
 
     text = ' '.join(html.unescape(re.sub(r'<[^>]+>', ' ', raw)).replace('\xa0', ' ').split())
     state = None
-    m = re.search(r'Aktuální data\s*-\s*([^<]{1,60}?)(?:Název stanice|Detail stanice|$)', text, re.I)
+    m = re.search(r'Aktuální data\s*-\s*(.{1,60}?)(?:Název stanice|Detail stanice|$)', text, re.I)
     if m:
         state = ' '.join(m.group(1).split())[:60]
     if not state:
@@ -149,6 +147,7 @@ def main():
             state = 'déšť'
 
     payload = {
+        'ok': True,
         'provider': 'ČHMÚ HPPS',
         'station_name': 'Šluknov',
         'station_id': 'U2SLUK01',
@@ -172,5 +171,24 @@ def main():
     print(json.dumps(payload, ensure_ascii=False))
 
 
+def safe_main():
+    try:
+        main()
+    except Exception as exc:
+        DATA.mkdir(exist_ok=True)
+        now = datetime.now(TZ)
+        payload = {
+            'ok': False,
+            'provider': 'ČHMÚ HPPS',
+            'station_name': 'Šluknov',
+            'station_id': 'U2SLUK01',
+            'source_url': URL,
+            'collected_at_local': now.isoformat(),
+            'error': str(exc),
+        }
+        (DATA / 'chmi-status.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        print(json.dumps(payload, ensure_ascii=False))
+
+
 if __name__ == '__main__':
-    main()
+    safe_main()
