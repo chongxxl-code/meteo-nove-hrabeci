@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-08-20T16:00:53.737841+02:00",
+  "computed_at_local": "2026-08-20T16:24:32.361465+02:00",
   "alerts": [
     {
       "id": "storm",
@@ -47,14 +47,16 @@
       "id": "dry",
       "name": "Vysychání krajiny",
       "icon": "🔥",
-      "level": "green",
-      "rank": 0,
-      "headline": "bez potvrzeného výrazného signálu",
+      "level": "yellow",
+      "rank": 1,
+      "headline": "zvýšené vysychání",
       "reasons": [
-        "30denní surová srážková historie zatím pokrývá jen 2 % období — dlouhodobý srážkový práh se proto nepoužívá"
+        "30denní vodní bilance P−ET₀ -89.9 mm",
+        "kořenová půdní vlhkost je na 13. percentilu posledního roku",
+        "vlastní ČHMÚ 30denní archiv má zatím 2 % pokrytí; používá se reanalýzní vodní bilance jako most"
       ],
-      "confidence": "low_to_medium",
-      "note": "Nejde o oficiální klasifikaci sucha; je to lokální stav observatoře. Dlouhodobé prahy se aktivují až při dostatečném datovém pokrytí."
+      "confidence": "medium",
+      "note": "Lokální provozní index kombinuje P−ET₀, půdní vlhkost a Sentinel NDMI. Nejde o oficiální klasifikaci sucha."
     },
     {
       "id": "heat",
@@ -142,47 +144,17 @@
       "ok": true,
       "provider": "RainViewer",
       "latest": {
-        "time_unix": 1787233800,
-        "time_local": "2026-08-20T15:50:00+02:00",
+        "time_unix": 1787235600,
+        "time_local": "2026-08-20T16:20:00+02:00",
         "max_dbz": {
           "10km": -32,
           "25km": -32,
-          "50km": 14
+          "50km": -32
         },
         "nearest_35dbz_km": null
       },
       "trend_30m": "unknown",
       "frames": [
-        {
-          "time_unix": 1787232000,
-          "time_local": "2026-08-20T15:20:00+02:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -1,
-            "50km": 15
-          },
-          "nearest_35dbz_km": null
-        },
-        {
-          "time_unix": 1787232600,
-          "time_local": "2026-08-20T15:30:00+02:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -2,
-            "50km": 14
-          },
-          "nearest_35dbz_km": null
-        },
-        {
-          "time_unix": 1787233200,
-          "time_local": "2026-08-20T15:40:00+02:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -1,
-            "50km": 17
-          },
-          "nearest_35dbz_km": null
-        },
         {
           "time_unix": 1787233800,
           "time_local": "2026-08-20T15:50:00+02:00",
@@ -190,6 +162,36 @@
             "10km": -32,
             "25km": -32,
             "50km": 14
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787234400,
+          "time_local": "2026-08-20T16:00:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -6,
+            "50km": 7
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787235000,
+          "time_local": "2026-08-20T16:10:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -5,
+            "50km": 9
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1787235600,
+          "time_local": "2026-08-20T16:20:00+02:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -32,
+            "50km": -32
           },
           "nearest_35dbz_km": null
         }
@@ -211,9 +213,101 @@
       "status": "not_configured",
       "provider": "none",
       "note": "Blitzortung is excluded from warning decisions by its terms. Optional licensed lightning provider slot is ready."
+    },
+    "chmi_lightning": {
+      "ok": true,
+      "provider": "ČHMÚ / LINET public visualization",
+      "url": "https://produkty.chmi.cz/radar/",
+      "automated_decision_input": false,
+      "note": "ČHMÚ veřejně zobrazuje aktuální detekci blesků LINET s přibližně kilometrovou přesností. Kvůli licencovanému původu LINET dat ji zatím používáme jako oficiální živou kontrolní vrstvu, ne jako strojově parsovaný feed."
+    },
+    "drought": {
+      "schema": 1,
+      "location": {
+        "name": "Nové Hraběcí",
+        "lat": 51.0162,
+        "lon": 14.4398
+      },
+      "computed_at_utc": "2026-08-20T14:22:06.302779+00:00",
+      "quality_status": "operational_local_drought_v1",
+      "state": {
+        "rank": 1,
+        "level": "yellow",
+        "headline": "zvýšené vysychání",
+        "score": 3,
+        "reasons": [
+          "30denní vodní bilance P−ET₀ -89.9 mm",
+          "kořenová půdní vlhkost je na 13. percentilu posledního roku",
+          "vlastní ČHMÚ 30denní archiv má zatím 2 % pokrytí; používá se reanalýzní vodní bilance jako most"
+        ],
+        "confidence": "medium"
+      },
+      "background": {
+        "provider": "Open-Meteo historical Best Match / ERA5-family background",
+        "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
+        "period_start": "2025-08-14",
+        "period_end": "2026-08-18",
+        "data_age_days": 2,
+        "windows": {
+          "7": {
+            "days": 7,
+            "precip_mm": 26.4,
+            "et0_mm": 30.1,
+            "p_minus_et0_mm": -3.7,
+            "record_days": 7
+          },
+          "14": {
+            "days": 14,
+            "precip_mm": 29.3,
+            "et0_mm": 67.9,
+            "p_minus_et0_mm": -38.6,
+            "record_days": 14
+          },
+          "30": {
+            "days": 30,
+            "precip_mm": 51.2,
+            "et0_mm": 141.1,
+            "p_minus_et0_mm": -89.9,
+            "record_days": 30
+          }
+        },
+        "latest_soil": {
+          "surface_m3m3": 0.329,
+          "rootzone_0_100cm_m3m3": 0.1652,
+          "surface_percentile_1y": 53.0,
+          "rootzone_percentile_1y": 13.2
+        }
+      },
+      "chmi_local_rain": {
+        "latest_observation_utc": "2026-08-20T12:50:00+00:00",
+        "coverage_fraction": {
+          "7": 0.077,
+          "14": 0.039,
+          "30": 0.018
+        },
+        "rain_mm": {
+          "7": 0.0,
+          "14": 0.0,
+          "30": 0.0
+        }
+      },
+      "sentinel_local_landscape": {
+        "ok": true,
+        "latest_scene_date": "2026-08-15",
+        "median_open_land_ndmi": 0.1649,
+        "seasonal_percentile": 50.0,
+        "scene_count": 10
+      },
+      "method_note": "Operational local drought signal: P-ET0 water balance + soil-moisture percentiles + Sentinel NDMI. It is not an official drought classification.",
+      "known_limitations": [
+        "Reanalysis soil moisture is coarser than the local terrain; Sentinel and the reviewed landscape network provide the local spatial refinement.",
+        "The first-year percentile is an operational baseline, not yet a long-term local climatology.",
+        "Copernicus 1 km Surface Soil Moisture / Soil Water Index is planned as an additional independent satellite layer."
+      ],
+      "ok": true
     }
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "6999c15daedc7b9b7d1d90b46dbe075793f221c2a7ca5846276676ed62bbc600"
+  "_fingerprint": "0d58eb18aa08104c6a28dbc11432571f21a0e5b781e76c6ccf60300061603dc2"
 }
