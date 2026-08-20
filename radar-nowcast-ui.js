@@ -12,8 +12,19 @@
     neurceno: 'pohyb zatím nelze spolehlivě určit'
   };
 
+  let last = null;
+
   function render(n) {
-    if (!n || n.status === 'error') return;
+    if (!n) return;
+    last = n;
+    if (n.status === 'error') {
+      headline.innerHTML = '<b style="color:var(--a)">Radarový nowcast:</b> serverový výpočet je dočasně nedostupný. <span class="muted">Radarová mapa zůstává funkční.</span>';
+      return;
+    }
+    if (n.status === 'initializing') {
+      headline.innerHTML = '<b style="color:var(--a)">Radarový nowcast:</b> serverová analýza se inicializuje. <span class="muted">ETA zatím není k dispozici.</span>';
+      return;
+    }
     const relation = relationText[n.relation] || relationText.neurceno;
     const motion = n.motion || {};
     const bits = [];
@@ -33,8 +44,26 @@
     headline.innerHTML = main + suffix;
   }
 
-  fetch('./data/radar-nowcast.json?ts=' + Date.now(), {cache:'no-store'})
-    .then(r => r.ok ? r.json() : Promise.reject(new Error('nowcast unavailable')))
-    .then(render)
-    .catch(() => {});
+  function load() {
+    fetch('./data/radar-nowcast.json?ts=' + Date.now(), {cache:'no-store'})
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('nowcast unavailable')))
+      .then(render)
+      .catch(() => {});
+  }
+
+  // The original radar loader also writes into #headline asynchronously.
+  // Re-apply the server result after it finishes, then refresh periodically.
+  load();
+  setTimeout(load, 1500);
+  setTimeout(load, 5000);
+  setInterval(load, 60000);
+
+  // If another script overwrites the headline later, restore the last server result once.
+  const observer = new MutationObserver(() => {
+    if (!last) return;
+    observer.disconnect();
+    setTimeout(() => render(last), 0);
+    setTimeout(() => observer.observe(headline, {childList:true, subtree:true, characterData:true}), 50);
+  });
+  observer.observe(headline, {childList:true, subtree:true, characterData:true});
 })();
