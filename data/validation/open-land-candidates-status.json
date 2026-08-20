@@ -1,22 +1,24 @@
 {
   "ok": true,
-  "quality_status": "candidate_network_ready_for_visual_check",
-  "generated_at_local": "2026-08-20T11:49:48.109434+02:00",
-  "candidate_count": 6,
+  "quality_status": "candidate_network_v2_ready_for_visual_check",
+  "generated_at_local": "2026-08-20T12:08:21.485970+02:00",
+  "candidate_count": 18,
+  "role_counts": {
+    "low_position": 3,
+    "high_position": 3,
+    "north_facing_slope": 3,
+    "south_facing_slope": 3,
+    "high_twi": 3,
+    "low_twi": 3
+  },
   "missing_roles": [],
-  "roles": [
-    "low_position",
-    "high_position",
-    "north_facing_slope",
-    "south_facing_slope",
-    "high_twi",
-    "low_twi"
-  ],
   "zones_file": "config/open-land-candidates.geojson",
   "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
   "worldcover": "ESA WorldCover 2021 v200 class 30 grassland",
   "terrain": "ČÚZK DMR 4G 5 m + derived TPI/TWI",
-  "aspect_rule": "north/south candidate uses circular mean aspect across the whole 120 m sample, with coherence >=0.45 and sector error <=45 degrees",
+  "screening_version": 2,
+  "sample_square_m": 80.0,
+  "guard_square_m": 140.0,
   "dmr_export": {
     "requested_size_px": [
       2351,
@@ -32,5 +34,5 @@
     "border_nodata_policy": "exact zero from service background is masked as NoData for this high-elevation study area",
     "export_href_host": "ags.cuzk.gov.cz"
   },
-  "next_step": "Inspect open-candidates.html over satellite imagery; promote only visually plausible homogeneous grassland candidates."
+  "next_step": "Inspect all v2 alternatives in open-candidates.html; visually approve only candidates fully inside homogeneous meadow/pasture."
 }
