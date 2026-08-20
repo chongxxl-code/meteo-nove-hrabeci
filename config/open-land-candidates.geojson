@@ -1,0 +1,351 @@
+{
+  "type": "FeatureCollection",
+  "name": "nove-hrabeci-open-land-candidates-v1",
+  "properties": {
+    "status": "candidate_needs_visual_check",
+    "generated_at_local": "2026-08-20T11:47:19.291449+02:00",
+    "purpose": "Matched open-land sampling network for testing terrain effects while holding land-cover type more constant.",
+    "worldcover_source": "ESA WorldCover 2021 v200, class 30 grassland, 10 m",
+    "worldcover_url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N51E012_Map.tif",
+    "selection_rules": {
+      "minimum_worldcover_grassland_fraction": 0.85,
+      "minimum_current_sentinel_ndvi_median": 0.55,
+      "minimum_sentinel_valid_fraction": 0.8,
+      "sampling_square_m": 120.0,
+      "minimum_center_spacing_m": 350.0
+    },
+    "note": "Candidates are algorithmically screened but must be visually checked on satellite imagery before promotion into config/zones.geojson."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "low_position",
+        "selection_score": 1.0,
+        "status": "candidate_needs_visual_check",
+        "worldcover_2021_grassland_fraction": 0.936,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.709,
+        "sentinel_ndmi_median": 0.1939,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 373.96,
+        "slope_deg": 2.5,
+        "aspect_deg": 151.56,
+        "tpi_300m_m": -6.82,
+        "tpi_900m_m": -31.06,
+        "twi": 6.41,
+        "wetness_score": 58.27,
+        "drying_score": 33.5,
+        "cold_pool_score": 85.82,
+        "id": "NH-OPEN-C01",
+        "name": "Kandidát – nízká poloha",
+        "class": "open_land_candidate",
+        "center_lat": 51.003774,
+        "center_lon": 14.394024
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.3932939,
+              51.0031659
+            ],
+            [
+              14.3949873,
+              51.0033133
+            ],
+            [
+              14.3947538,
+              51.0043818
+            ],
+            [
+              14.3930603,
+              51.0042345
+            ],
+            [
+              14.3932939,
+              51.0031659
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "high_position",
+        "selection_score": 0.8982,
+        "status": "candidate_needs_visual_check",
+        "worldcover_2021_grassland_fraction": 0.862,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.78,
+        "sentinel_ndmi_median": 0.2259,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 443.76,
+        "slope_deg": 2.1,
+        "aspect_deg": 131.49,
+        "tpi_300m_m": 9.33,
+        "tpi_900m_m": 30.63,
+        "twi": 6.35,
+        "wetness_score": 31.23,
+        "drying_score": 41.52,
+        "cold_pool_score": 32.68,
+        "id": "NH-OPEN-C02",
+        "name": "Kandidát – vyšší poloha",
+        "class": "open_land_candidate",
+        "center_lat": 51.011498,
+        "center_lon": 14.388956
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.3882259,
+              51.0108897
+            ],
+            [
+              14.3899197,
+              51.0110371
+            ],
+            [
+              14.389686,
+              51.0121056
+            ],
+            [
+              14.3879922,
+              51.0119582
+            ],
+            [
+              14.3882259,
+              51.0108897
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "north_facing_slope",
+        "selection_score": 1.0,
+        "status": "candidate_needs_visual_check",
+        "worldcover_2021_grassland_fraction": 1.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.6855,
+        "sentinel_ndmi_median": 0.1532,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 322.24,
+        "slope_deg": 11.45,
+        "aspect_deg": 203.1,
+        "tpi_300m_m": -1.2,
+        "tpi_900m_m": -13.52,
+        "twi": 4.43,
+        "wetness_score": 33.25,
+        "drying_score": 54.34,
+        "cold_pool_score": 62.5,
+        "id": "NH-OPEN-C03",
+        "name": "Kandidát – severní svah",
+        "class": "open_land_candidate",
+        "center_lat": 51.029971,
+        "center_lon": 14.45605
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4553193,
+              51.0293638
+            ],
+            [
+              14.4570139,
+              51.0295103
+            ],
+            [
+              14.4567817,
+              51.0305789
+            ],
+            [
+              14.455087,
+              51.0304324
+            ],
+            [
+              14.4553193,
+              51.0293638
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "south_facing_slope",
+        "selection_score": 1.0,
+        "status": "candidate_needs_visual_check",
+        "worldcover_2021_grassland_fraction": 0.89,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.7949,
+        "sentinel_ndmi_median": 0.2339,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 314.45,
+        "slope_deg": 6.93,
+        "aspect_deg": 152.32,
+        "tpi_300m_m": -11.09,
+        "tpi_900m_m": -27.19,
+        "twi": 6.76,
+        "wetness_score": 63.47,
+        "drying_score": 34.75,
+        "cold_pool_score": 86.44,
+        "id": "NH-OPEN-C04",
+        "name": "Kandidát – jižní svah",
+        "class": "open_land_candidate",
+        "center_lat": 51.025629,
+        "center_lon": 14.447789
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4470579,
+              51.0250211
+            ],
+            [
+              14.4487523,
+              51.0251677
+            ],
+            [
+              14.4485199,
+              51.0262363
+            ],
+            [
+              14.4468255,
+              51.0260897
+            ],
+            [
+              14.4470579,
+              51.0250211
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "high_twi",
+        "selection_score": 1.0,
+        "status": "candidate_needs_visual_check",
+        "worldcover_2021_grassland_fraction": 1.0,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.7859,
+        "sentinel_ndmi_median": 0.1898,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 393.24,
+        "slope_deg": 3.25,
+        "aspect_deg": 108.52,
+        "tpi_300m_m": 0.73,
+        "tpi_900m_m": -9.6,
+        "twi": 7.58,
+        "wetness_score": 56.59,
+        "drying_score": 32.01,
+        "cold_pool_score": 65.03,
+        "id": "NH-OPEN-C05",
+        "name": "Kandidát – vysoké TWI",
+        "class": "open_land_candidate",
+        "center_lat": 51.011054,
+        "center_lon": 14.398976
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.3982454,
+              51.010446
+            ],
+            [
+              14.3999392,
+              51.0105932
+            ],
+            [
+              14.3997057,
+              51.0116618
+            ],
+            [
+              14.3980119,
+              51.0115145
+            ],
+            [
+              14.3982454,
+              51.010446
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "selection_role": "low_twi",
+        "selection_score": 1.0,
+        "status": "candidate_needs_visual_check",
+        "worldcover_2021_grassland_fraction": 0.954,
+        "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+        "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
+        "sentinel_ndvi_median": 0.6431,
+        "sentinel_ndmi_median": 0.0887,
+        "sentinel_valid_fraction": 1.0,
+        "elevation_m_bpv": 350.52,
+        "slope_deg": 9.31,
+        "aspect_deg": 181.0,
+        "tpi_300m_m": 1.13,
+        "tpi_900m_m": 1.9,
+        "twi": 5.09,
+        "wetness_score": 35.31,
+        "drying_score": 56.22,
+        "cold_pool_score": 51.5,
+        "id": "NH-OPEN-C06",
+        "name": "Kandidát – nízké TWI",
+        "class": "open_land_candidate",
+        "center_lat": 51.025912,
+        "center_lon": 14.439529
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              14.4387978,
+              51.025304
+            ],
+            [
+              14.4404922,
+              51.0254507
+            ],
+            [
+              14.4402596,
+              51.0265193
+            ],
+            [
+              14.4385652,
+              51.0263726
+            ],
+            [
+              14.4387978,
+              51.025304
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

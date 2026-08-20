@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "quality_status": "candidate_network_ready_for_visual_check",
+  "generated_at_local": "2026-08-20T11:47:19.291449+02:00",
+  "candidate_count": 6,
+  "missing_roles": [],
+  "roles": [
+    "low_position",
+    "high_position",
+    "north_facing_slope",
+    "south_facing_slope",
+    "high_twi",
+    "low_twi"
+  ],
+  "zones_file": "config/open-land-candidates.geojson",
+  "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
+  "worldcover": "ESA WorldCover 2021 v200 class 30 grassland",
+  "terrain": "ČÚZK DMR 4G 5 m + derived TPI/TWI",
+  "dmr_export": {
+    "requested_size_px": [
+      2351,
+      2433
+    ],
+    "returned_size_px": [
+      2351,
+      2433
+    ],
+    "actual_pixel_m": 4.999,
+    "reported_crs": "LOCAL_CS[\"S-JTSK / Krovak East North\",UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"5514\"]]",
+    "zero_background_pixels_masked": 2258970,
+    "border_nodata_policy": "exact zero from service background is masked as NoData for this high-elevation study area",
+    "export_href_host": "ags.cuzk.gov.cz"
+  },
+  "next_step": "Inspect open-candidates.html over satellite imagery; promote only visually plausible homogeneous grassland candidates."
+}
