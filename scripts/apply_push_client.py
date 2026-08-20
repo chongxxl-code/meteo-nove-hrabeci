@@ -16,8 +16,16 @@ for tag in remove:
         s = s.replace(tag, '')
         changed = True
 
+ui_tag = '<link rel="stylesheet" href="./ui-tune.css?v=1">'
+if ui_tag not in s:
+    if '</head>' not in s:
+        raise SystemExit('index.html has no </head> marker')
+    s = s.replace('</head>', ui_tag + '</head>', 1)
+    changed = True
+    print('UI polish stylesheet attached')
+
 if changed:
     p.write_text(s, encoding='utf-8')
-    print('push client and OneSignal SDK removed from index.html')
+    print('index.html updated')
 else:
-    print('push integration already absent from index.html')
+    print('push integration absent and UI polish already attached')
