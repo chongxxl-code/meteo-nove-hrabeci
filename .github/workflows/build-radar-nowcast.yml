@@ -1,0 +1,44 @@
+name: Build radar nowcast
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_radar_nowcast.py'
+      - '.github/workflows/build-radar-nowcast.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: radar-nowcast
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install radar analysis dependencies
+        run: pip install --disable-pip-version-check numpy pillow
+      - name: Analyze recent radar motion
+        run: python scripts/build_radar_nowcast.py
+      - name: Commit nowcast state
+        run: |
+          if git diff --quiet -- data/radar-nowcast.json; then
+            echo "No nowcast changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/radar-nowcast.json
+          git commit -m "data: radar nowcast $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
