@@ -15,7 +15,7 @@ STATUS = DATA / 'sentinel-status.json'
 STAC_URL = 'https://stac.dataspace.copernicus.eu/v1/search'
 COLLECTION = 'sentinel-2-l2a'
 BBOX = [14.38, 50.98, 14.50, 51.06]
-UA = 'nove-hrabeci-observatory/1.0 (+github-actions)'
+UA = 'nove-hrabeci-observatory/1.1 (+github-actions)'
 
 
 def post_json(url: str, payload: dict):
@@ -68,6 +68,34 @@ def compact_item(feature: dict):
     }
 
 
+def compact_assets(feature: dict):
+    """Preserve enough STAC asset metadata to locate imagery/bands later.
+
+    This deliberately stays generic because CDSE may revise asset keys while
+    retaining STAC band metadata and roles.
+    """
+    out = {}
+    for key, asset in (feature.get('assets') or {}).items():
+        bands = asset.get('eo:bands') or asset.get('raster:bands') or []
+        common_names = []
+        names = []
+        for b in bands:
+            if isinstance(b, dict):
+                if b.get('common_name'):
+                    common_names.append(b['common_name'])
+                if b.get('name'):
+                    names.append(b['name'])
+        out[key] = {
+            'href': asset.get('href'),
+            'type': asset.get('type'),
+            'title': asset.get('title'),
+            'roles': asset.get('roles') or [],
+            'common_names': common_names,
+            'band_names': names,
+        }
+    return out
+
+
 def main():
     DATA.mkdir(exist_ok=True)
     ARCHIVE.mkdir(exist_ok=True)
@@ -83,6 +111,7 @@ def main():
     }
     result = post_json(STAC_URL, payload)
     features = result.get('features') or []
+    raw_by_id = {f.get('id'): f for f in features if f.get('id')}
     items = [compact_item(f) for f in features if f.get('id')]
     items.sort(key=lambda x: x.get('datetime') or '', reverse=True)
 
@@ -95,8 +124,15 @@ def main():
                 f.write(json.dumps(item, ensure_ascii=False, separators=(',', ':')) + '\n')
 
     usable = [x for x in items if isinstance(x.get('cloud_cover_percent'), (int, float))]
-    best = min(usable, key=lambda x: (x['cloud_cover_percent'], -(datetime.fromisoformat(x['datetime'].replace('Z', '+00:00')).timestamp()))) if usable else (items[0] if items else None)
+    best = min(
+        usable,
+        key=lambda x: (
+            x['cloud_cover_percent'],
+            -(datetime.fromisoformat(x['datetime'].replace('Z', '+00:00')).timestamp()),
+        ),
+    ) if usable else (items[0] if items else None)
     latest = items[0] if items else None
+    best_assets = compact_assets(raw_by_id.get(best['id'], {})) if best else {}
 
     status = {
         'ok': bool(items),
@@ -112,7 +148,9 @@ def main():
         'archive_file': f'data/sentinel/{archive.name}',
         'latest_scene': latest,
         'best_low_cloud_scene': best,
-        'note': 'Scene metadata only. NDVI/NDMI and landscape-zone statistics are the next step.',
+        'best_scene_assets': best_assets,
+        'best_scene_asset_keys': sorted(best_assets),
+        'note': 'Scene metadata plus asset manifest. NDVI/NDMI and landscape-zone statistics are the next step.',
     }
     STATUS.write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(status, ensure_ascii=False))
