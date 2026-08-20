@@ -4,7 +4,6 @@ from __future__ import annotations
 import json
 import math
 from datetime import datetime
-from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import numpy as np
@@ -36,6 +35,19 @@ COVERAGE_LIMITATION = (
     'near the state/data edge can be truncated. Derived drainage is a Czech-side terrain model, '
     'not an official hydrographic network.'
 )
+
+
+def json_safe(value):
+    """Recursively convert NumPy containers/scalars to standard JSON types."""
+    if isinstance(value, np.generic):
+        return value.item()
+    if isinstance(value, np.ndarray):
+        return [json_safe(v) for v in value.tolist()]
+    if isinstance(value, dict):
+        return {str(k): json_safe(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [json_safe(v) for v in value]
+    return value
 
 
 def finite_stats(values: np.ndarray) -> dict:
@@ -100,18 +112,14 @@ def drainage_geojson(flw, upstream_m2: np.ndarray, study_mask: np.ndarray) -> di
         if not geom:
             continue
         try:
-            geom4326 = transform_geom(SRC_CRS, 'EPSG:4326', geom, precision=6)
+            geom4326 = transform_geom(SRC_CRS, 'EPSG:4326', json_safe(geom), precision=6)
         except Exception:
             continue
-        props = dict(feat.get('properties') or {})
-        # Convert NumPy scalar types so json.dumps always succeeds.
-        for k, v in list(props.items()):
-            if isinstance(v, np.generic):
-                props[k] = v.item()
+        props = json_safe(dict(feat.get('properties') or {}))
         props['source'] = 'terrain-derived D8 drainage candidate'
         props['official_watercourse'] = False
         props['threshold_upstream_km2'] = STREAM_THRESHOLD_M2 / 1_000_000.0
-        out.append({'type': 'Feature', 'properties': props, 'geometry': geom4326})
+        out.append({'type': 'Feature', 'properties': props, 'geometry': json_safe(geom4326)})
     return {
         'type': 'FeatureCollection',
         'name': 'nove-hrabeci-derived-drainage',
@@ -136,8 +144,8 @@ def main():
     cell_y = abs(float(transform.e))
     cell_m = (cell_x + cell_y) / 2.0
 
-    # pyflwdir expects a numeric nodata value. By default max_depth=-1 fills all inland
-    # depressions to their lowest pour point; outlets='edge' allows flow to leave at the valid-data edge.
+    # pyflwdir expects a numeric nodata value. max_depth=-1 fills all inland
+    # depressions to their lowest pour point; outlets='edge' permits exit at valid-data edges.
     dem_for_flow = np.where(valid_dem, dem, NODATA).astype('float32')
     flw = pyflwdir.from_dem(
         dem_for_flow,
@@ -150,8 +158,8 @@ def main():
     upstream_m2 = flw.upstream_area(unit='m2').astype('float32')
     upstream_m2[~valid_dem] = np.nan
 
-    # TWI = ln(specific catchment area / tan(beta)). We use original DMR4G slope,
-    # while flow routing uses depression filling. A 0.5-degree floor prevents singularities on flats.
+    # TWI = ln(specific catchment area / tan(beta)). Flow routing uses depression filling,
+    # while beta comes from the original DMR4G terrain. The slope floor avoids singularities.
     grad_south, grad_east = np.gradient(dem, cell_y, cell_x)
     grad_north = -grad_south
     slope_rad = np.arctan(np.hypot(grad_east, grad_north)).astype('float32')
@@ -202,13 +210,12 @@ def main():
         entry.update(hydro_stats(mask, upstream_m2, twi, study_twi))
         zone_results.append(entry)
 
-    drainage = drainage_geojson(flw, upstream_m2, study_mask)
+    drainage = json_safe(drainage_geojson(flw, upstream_m2, study_mask))
     DRAINAGE_FILE.write_text(json.dumps(drainage, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')
 
     valid_study_count = int(np.count_nonzero(study_mask))
-    edge_warning = True  # explicit because study area touches international/data coverage boundary
     status = {
-        'ok': bool(zone_results) and np.any(np.isfinite(study_twi)),
+        'ok': bool(zone_results) and bool(np.any(np.isfinite(study_twi))),
         'quality_status': 'valid_with_border_limitation',
         'provider': 'ČÚZK DMR 4G 5 m + pyflwdir D8',
         'computed_at_local': now.isoformat(),
@@ -229,7 +236,7 @@ def main():
             'interpretation': 'terrain wetness predisposition only; not observed soil moisture',
         },
         'coverage_limitation': COVERAGE_LIMITATION,
-        'edge_truncation_warning': edge_warning,
+        'edge_truncation_warning': True,
         'study_area': {
             'valid_pixels': valid_study_count,
             'upstream_area_m2': finite_stats(study_upstream),
@@ -242,6 +249,7 @@ def main():
         'derived_drainage_file': str(DRAINAGE_FILE.relative_to(ROOT)).replace('\\', '/'),
         'next_step': 'Validate terrain-derived drainage against mapped watercourses/wet areas, then derive practical wetness/drying and cold-air terrain predisposition layers.',
     }
+    status = json_safe(status)
     STATUS_FILE.write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(status, ensure_ascii=False))
 
@@ -258,6 +266,6 @@ if __name__ == '__main__':
             'coverage_limitation': COVERAGE_LIMITATION,
             'error': str(exc),
         }
-        STATUS_FILE.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-        print(json.dumps(payload, ensure_ascii=False))
+        STATUS_FILE.write_text(json.dumps(json_safe(payload), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        print(json.dumps(json_safe(payload), ensure_ascii=False))
         raise
