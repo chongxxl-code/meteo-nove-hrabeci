@@ -1,12 +1,13 @@
 {
   "type": "FeatureCollection",
-  "name": "nove-hrabeci-landscape-zones-v0.4",
+  "name": "nove-hrabeci-landscape-zones-v0.5",
   "properties": {
-    "status": "working sampling cores; visually refined against satellite basemap, not cadastral boundaries",
+    "status": "working sampling cores; satellite-refined land-cover zones and DEM-confirmed terrain zones",
     "reference_scene": "S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913",
     "reference_scene_date": "2026-08-15",
-    "purpose": "Compare representative land-cover and terrain environments through Sentinel-2 NDVI/NDMI and meteorological context",
-    "updated_from_visual_check": "2026-08-20"
+    "purpose": "Compare representative land-cover and terrain environments through Sentinel-2 NDVI/NDMI, Copernicus DEM and meteorological context",
+    "updated_from_visual_check": "2026-08-20",
+    "terrain_confirmed_from": "Copernicus DEM GLO-30 Public"
   },
   "features": [
     {
@@ -16,7 +17,7 @@
         "name": "Nové Hraběcí – meteorologická reference",
         "class": "reference",
         "status": "fixed",
-        "note": "Modelová a databázová reference; není to fyzická meteostanice."
+        "note": "Modelová a databázová reference; není to fyzická meteostanice ani terénně neutrální bod. Copernicus DEM zde ukazuje cca 350 m, mírný sklon a relativně nižší polohu vůči širšímu okolí."
       },
       "geometry": {"type": "Point", "coordinates": [14.4398, 51.0162]}
     },
@@ -70,8 +71,8 @@
         "id": "NH-RIDGE-01",
         "name": "Partyzánský vrch – vrcholová kontrola",
         "class": "ridge_highland",
-        "status": "location_confirmed_pending_dem_extent",
-        "note": "Vrcholová kontrola u Partyzánského vrchu (~50.9966 N, 14.4063 E), jižně od těžebního jádra. Přesný terénní rozsah ještě zpřesní DEM."
+        "status": "dem_confirmed",
+        "note": "Copernicus DEM potvrzuje výraznou vysokou/hřebenovou polohu: medián výšky cca 514 m a medián TPI 900 m cca +92 m. Rozsah zůstává reprezentativním vzorkem, ne hranicí celého vrchu."
       },
       "geometry": {"type": "Polygon", "coordinates": [[[14.4045,50.9955],[14.4076,50.9955],[14.4076,50.9975],[14.4045,50.9975],[14.4045,50.9955]]]}
     },
@@ -79,10 +80,10 @@
       "type": "Feature",
       "properties": {
         "id": "NH-VALLEY-01",
-        "name": "Nízká poloha / údolí – pracovní terénní vzorek",
+        "name": "Nízká poloha / údolí – Rožany",
         "class": "valley_lowland",
-        "status": "pending_dem",
-        "note": "Poloha je zatím terénní kotva. Údolní jádro a tok studeného vzduchu upřesníme z DEM."
+        "status": "dem_confirmed",
+        "note": "Copernicus DEM potvrzuje nízkou/údolní polohu: medián výšky cca 321 m a medián TPI 900 m cca -24 m. Zóna je vhodná jako kontrola pro budoucí studium nočního chladu a vláhy."
       },
       "geometry": {"type": "Polygon", "coordinates": [[[14.4518,51.0259],[14.4550,51.0259],[14.4550,51.0278],[14.4518,51.0278],[14.4518,51.0259]]]}
     },
