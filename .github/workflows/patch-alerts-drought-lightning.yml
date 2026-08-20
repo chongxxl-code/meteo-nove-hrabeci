@@ -1,0 +1,30 @@
+name: Patch alerts drought and CHMI lightning
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patch_alerts_drought_lightning.py'
+      - '.github/workflows/patch-alerts-drought-lightning.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/patch_alerts_drought_lightning.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/build_local_alerts.py
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "feat: use local drought context and CHMI lightning layer"
+          git pull --rebase origin main
+          git push
