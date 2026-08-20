@@ -52,7 +52,7 @@
         const base = basePath();
         await OneSignal.init({
           appId: cfg.app_id,
-          serviceWorkerPath: `${base.replace(/^\//, '')}push/onesignal/OneSignalSDKWorker.js`,
+          serviceWorkerPath: `${base}push/onesignal/OneSignalSDKWorker.js`,
           serviceWorkerParam: { scope: `${base}push/onesignal/` },
           notifyButton: { enable: false },
           welcomeNotification: { disable: true }
