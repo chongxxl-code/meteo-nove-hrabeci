@@ -6,30 +6,31 @@
   <title>Nové Hraběcí – terénní hydrologie</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    :root{color-scheme:dark;--bg:#081417;--panel:#0d2024;--line:#62d4e7;--text:#e7f4f5;--muted:#94aeb2;--border:#214047}
+    :root{color-scheme:dark;--bg:#081417;--panel:#0d2024;--line:#62d4e7;--official:#f6fbff;--text:#e7f4f5;--muted:#94aeb2;--border:#214047}
     *{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
     #map{height:100%;width:100%}
-    .panel{position:absolute;z-index:1000;top:14px;left:14px;width:min(390px,calc(100% - 28px));background:rgba(8,20,23,.92);border:1px solid var(--border);border-radius:14px;padding:14px 15px;box-shadow:0 12px 35px rgba(0,0,0,.35);backdrop-filter:blur(9px)}
+    .panel{position:absolute;z-index:1000;top:14px;left:14px;width:min(410px,calc(100% - 28px));background:rgba(8,20,23,.92);border:1px solid var(--border);border-radius:14px;padding:14px 15px;box-shadow:0 12px 35px rgba(0,0,0,.35);backdrop-filter:blur(9px)}
     h1{font-size:17px;margin:0 0 5px}.sub{font-size:12px;color:var(--muted);line-height:1.35;margin-bottom:10px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px}.kpi{background:#10272c;border:1px solid #203d43;border-radius:9px;padding:8px}.kpi b{display:block;font-size:16px}.kpi span{font-size:10px;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:9px}.kpi{background:#10272c;border:1px solid #203d43;border-radius:9px;padding:8px}.kpi b{display:block;font-size:16px}.kpi span{font-size:10px;color:var(--muted)}
     .warning{font-size:11px;line-height:1.35;color:#d7c991;border-top:1px solid var(--border);padding-top:8px}
-    .legend{background:rgba(8,20,23,.9);color:var(--text);padding:8px 10px;border-radius:9px;border:1px solid var(--border);font-size:11px;line-height:1.5}
-    .sw{display:inline-block;width:24px;height:3px;vertical-align:middle;margin-right:6px;background:var(--line)}
+    .legend{background:rgba(8,20,23,.9);color:var(--text);padding:8px 10px;border-radius:9px;border:1px solid var(--border);font-size:11px;line-height:1.7}
+    .sw{display:inline-block;width:24px;height:3px;vertical-align:middle;margin-right:6px}.sw.d8{background:var(--line)}.sw.off{height:0;border-top:2px dashed var(--official)}
     .leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#10272c;color:var(--text)}.leaflet-popup-content{font-size:12px;line-height:1.45}
-    @media(max-width:620px){.panel{top:8px;left:8px;width:calc(100% - 16px);padding:11px}.grid{grid-template-columns:repeat(3,1fr)}.sub,.warning{font-size:10px}}
+    @media(max-width:620px){.panel{top:8px;left:8px;width:calc(100% - 16px);padding:11px}.grid{grid-template-columns:repeat(2,1fr)}.sub,.warning{font-size:10px}}
   </style>
 </head>
 <body>
 <div id="map"></div>
 <div class="panel">
   <h1>Terénní hydrologie · Nové Hraběcí</h1>
-  <div class="sub">ČÚZK DMR 4G, 5 m · D8 flow routing · TWI. Čáry jsou <b>modelované drenážní trasy</b>, nikoli oficiální vodní toky.</div>
+  <div class="sub"><b>Azurová</b> = D8 drenáž z ČÚZK DMR 4G 5 m. <b>Bílá přerušovaná</b> = oficiální ZABAGED® Vodní tok. Překryv slouží ke kontrole modelu.</div>
   <div class="grid">
-    <div class="kpi"><b id="segments">–</b><span>drenážních segmentů</span></div>
-    <div class="kpi"><b id="medianTwi">–</b><span>medián TWI oblasti</span></div>
-    <div class="kpi"><b>0,25</b><span>km² práh linie</span></div>
+    <div class="kpi"><b id="segments">–</b><span>D8 segmentů</span></div>
+    <div class="kpi"><b id="official">–</b><span>ZABAGED úseků</span></div>
+    <div class="kpi"><b id="medianTwi">–</b><span>medián TWI</span></div>
+    <div class="kpi"><b>0,25</b><span>km² práh D8</span></div>
   </div>
-  <div class="warning">⚠ ČÚZK DMR 4G končí na české hranici. Přítoky, které začínají v Německu, nejsou započtené; u hranice je akumulace podhodnocená.</div>
+  <div class="warning">⚠ DMR 4G končí na české hranici. Přítoky začínající v Německu nejsou v D8 akumulaci započtené; u hranice je proto model podhodnocený.</div>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -45,15 +46,26 @@ function fmt(v,d=2){return Number.isFinite(v)?Number(v).toFixed(d):'–'}
 
 Promise.all([
   fetch('data/terrain/derived-drainage.geojson').then(r=>r.json()),
+  fetch('data/terrain/zabaged-watercourses.geojson').then(r=>r.json()),
+  fetch('data/terrain/zabaged-watercourses-status.json').then(r=>r.json()),
   fetch('config/zones.geojson').then(r=>r.json()),
   fetch('data/terrain/hydrology-status.json').then(r=>r.json())
-]).then(([drain,zones,status])=>{
+]).then(([drain,officialWater,officialStatus,zones,status])=>{
   document.getElementById('segments').textContent=status.study_area?.derived_drainage_segments ?? drain.features.length;
+  document.getElementById('official').textContent=officialStatus.features_found ?? officialWater.features.length;
   document.getElementById('medianTwi').textContent=fmt(status.study_area?.twi?.median,2);
 
   const drainLayer=L.geoJSON(drain,{
-    style:f=>({color:'#62d4e7',weight:lineWeight(Number(f.properties?.upstream_km2||.25)),opacity:.82}),
-    onEachFeature:(f,l)=>l.bindPopup(`<b>Terénní drenáž</b><br>Přítoková plocha v konci segmentu: <b>${fmt(Number(f.properties?.upstream_km2),3)} km²</b><br><small>Model D8, ne oficiální vodní tok.</small>`)
+    style:f=>({color:'#62d4e7',weight:lineWeight(Number(f.properties?.upstream_km2||.25)),opacity:.8}),
+    onEachFeature:(f,l)=>l.bindPopup(`<b>D8 terénní drenáž</b><br>Přítoková plocha v konci segmentu: <b>${fmt(Number(f.properties?.upstream_km2),3)} km²</b><br><small>Model z DMR 4G, ne oficiální vodní tok.</small>`)
+  }).addTo(map);
+
+  const officialLayer=L.geoJSON(officialWater,{
+    style:f=>({color:'#f6fbff',weight:2.1,opacity:.95,dashArray:(f.properties?.vydattok_p==='občasný'?'5 5':null)}),
+    onEachFeature:(f,l)=>{
+      const p=f.properties||{};
+      l.bindPopup(`<b>ZABAGED® · Vodní tok</b><br>${p.jmeno?`Název: <b>${p.jmeno}</b><br>`:''}Typ: ${p.typtoku_p||'–'}<br>Vydatnost: ${p.vydattok_p||'–'}<br><small>Oficiální topografická reference ČÚZK.</small>`);
+    }
   }).addTo(map);
 
   const hs=Object.fromEntries((status.zones||[]).map(z=>[z.id,z]));
@@ -69,10 +81,10 @@ Promise.all([
     }
   }).addTo(map);
 
-  L.control.layers(null,{'D8 drenáž':drainLayer,'Krajinné zóny':zoneLayer},{collapsed:false,position:'bottomleft'}).addTo(map);
+  L.control.layers(null,{'D8 model':drainLayer,'ZABAGED vodní toky':officialLayer,'Krajinné zóny':zoneLayer},{collapsed:false,position:'bottomleft'}).addTo(map);
 }).catch(err=>{console.error(err);document.querySelector('.warning').textContent='Nepodařilo se načíst hydrologická data: '+err;});
 
-const legend=L.control({position:'bottomright'});legend.onAdd=()=>{const d=L.DomUtil.create('div','legend');d.innerHTML='<span class="sw"></span>D8 drenáž · silnější = větší přítoková plocha';return d};legend.addTo(map);
+const legend=L.control({position:'bottomright'});legend.onAdd=()=>{const d=L.DomUtil.create('div','legend');d.innerHTML='<div><span class="sw d8"></span>D8 drenáž · síla = přítoková plocha</div><div><span class="sw off"></span>ZABAGED® oficiální vodní tok</div>';return d};legend.addTo(map);
 </script>
 </body>
 </html>
