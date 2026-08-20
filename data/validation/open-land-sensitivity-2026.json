@@ -1,0 +1,994 @@
+{
+  "ok": true,
+  "quality_status": "valid_disturbance_filtered_sensitivity_test",
+  "computed_at_local": "2026-08-20T13:24:41.787143+02:00",
+  "network": "nove-hrabeci-open-land-experimental-v2",
+  "scene_count": 10,
+  "sample_count": 14,
+  "excluded_observation_count": 13,
+  "warning": "Sensitivity test only. Excluded observations are algorithmically flagged candidate disturbances, not verified mowing/grazing. Compare filtered and raw results; do not automatically prefer filtered.",
+  "comparison": {
+    "ndmi": {
+      "twi": {
+        "raw_median_r": 0.0976,
+        "filtered_median_r": 0.0398,
+        "delta_median_r": -0.0578,
+        "raw_expected_direction_fraction": 0.5,
+        "filtered_expected_direction_fraction": 0.5
+      },
+      "tpi900": {
+        "raw_median_r": 0.4027,
+        "filtered_median_r": 0.2676,
+        "delta_median_r": -0.1351,
+        "raw_expected_direction_fraction": 0.4,
+        "filtered_expected_direction_fraction": 0.4
+      },
+      "elevation": {
+        "raw_median_r": 0.4818,
+        "filtered_median_r": 0.3177,
+        "delta_median_r": -0.1641,
+        "raw_expected_direction_fraction": null,
+        "filtered_expected_direction_fraction": null
+      },
+      "slope": {
+        "raw_median_r": -0.2292,
+        "filtered_median_r": -0.3041,
+        "delta_median_r": -0.0749,
+        "raw_expected_direction_fraction": 0.9,
+        "filtered_expected_direction_fraction": 0.9
+      },
+      "southness": {
+        "raw_median_r": -0.0653,
+        "filtered_median_r": -0.3447,
+        "delta_median_r": -0.2794,
+        "raw_expected_direction_fraction": 0.778,
+        "filtered_expected_direction_fraction": 0.75
+      }
+    },
+    "ndvi": {
+      "twi": {
+        "raw_median_r": 0.103,
+        "filtered_median_r": 0.1211,
+        "delta_median_r": 0.0181,
+        "raw_expected_direction_fraction": 0.5,
+        "filtered_expected_direction_fraction": 0.5
+      },
+      "tpi900": {
+        "raw_median_r": 0.3371,
+        "filtered_median_r": 0.1948,
+        "delta_median_r": -0.1423,
+        "raw_expected_direction_fraction": 0.4,
+        "filtered_expected_direction_fraction": 0.4
+      },
+      "elevation": {
+        "raw_median_r": 0.4284,
+        "filtered_median_r": 0.2923,
+        "delta_median_r": -0.1361,
+        "raw_expected_direction_fraction": null,
+        "filtered_expected_direction_fraction": null
+      },
+      "slope": {
+        "raw_median_r": -0.3013,
+        "filtered_median_r": -0.3013,
+        "delta_median_r": 0.0,
+        "raw_expected_direction_fraction": 0.9,
+        "filtered_expected_direction_fraction": 0.9
+      },
+      "southness": {
+        "raw_median_r": -0.1321,
+        "filtered_median_r": -0.3223,
+        "delta_median_r": -0.1902,
+        "raw_expected_direction_fraction": 0.556,
+        "filtered_expected_direction_fraction": 0.75
+      }
+    }
+  },
+  "filtered_summary": {
+    "ndmi": {
+      "twi": {
+        "scene_count": 10,
+        "median_pearson_r": 0.0398,
+        "expected_direction_fraction": 0.5,
+        "corr_rain_7d_vs_scene_pearson": 0.447,
+        "corr_rain_14d_vs_scene_pearson": 0.5477,
+        "corr_rain_30d_vs_scene_pearson": 0.5981
+      },
+      "tpi900": {
+        "scene_count": 10,
+        "median_pearson_r": 0.2676,
+        "expected_direction_fraction": 0.4,
+        "corr_rain_7d_vs_scene_pearson": -0.3673,
+        "corr_rain_14d_vs_scene_pearson": -0.2657,
+        "corr_rain_30d_vs_scene_pearson": -0.4669
+      },
+      "elevation": {
+        "scene_count": 10,
+        "median_pearson_r": 0.3177,
+        "expected_direction_fraction": null,
+        "corr_rain_7d_vs_scene_pearson": -0.4168,
+        "corr_rain_14d_vs_scene_pearson": -0.1997,
+        "corr_rain_30d_vs_scene_pearson": -0.373
+      },
+      "slope": {
+        "scene_count": 10,
+        "median_pearson_r": -0.3041,
+        "expected_direction_fraction": 0.9,
+        "corr_rain_7d_vs_scene_pearson": -0.5662,
+        "corr_rain_14d_vs_scene_pearson": -0.653,
+        "corr_rain_30d_vs_scene_pearson": -0.2886
+      },
+      "southness": {
+        "scene_count": 8,
+        "median_pearson_r": -0.3447,
+        "expected_direction_fraction": 0.75,
+        "corr_rain_7d_vs_scene_pearson": -0.3423,
+        "corr_rain_14d_vs_scene_pearson": -0.2382,
+        "corr_rain_30d_vs_scene_pearson": -0.5936
+      }
+    },
+    "ndvi": {
+      "twi": {
+        "scene_count": 10,
+        "median_pearson_r": 0.1211,
+        "expected_direction_fraction": 0.5,
+        "corr_rain_7d_vs_scene_pearson": 0.394,
+        "corr_rain_14d_vs_scene_pearson": 0.5077,
+        "corr_rain_30d_vs_scene_pearson": 0.6206
+      },
+      "tpi900": {
+        "scene_count": 10,
+        "median_pearson_r": 0.1948,
+        "expected_direction_fraction": 0.4,
+        "corr_rain_7d_vs_scene_pearson": -0.3248,
+        "corr_rain_14d_vs_scene_pearson": -0.2281,
+        "corr_rain_30d_vs_scene_pearson": -0.4849
+      },
+      "elevation": {
+        "scene_count": 10,
+        "median_pearson_r": 0.2923,
+        "expected_direction_fraction": null,
+        "corr_rain_7d_vs_scene_pearson": -0.3571,
+        "corr_rain_14d_vs_scene_pearson": -0.1126,
+        "corr_rain_30d_vs_scene_pearson": -0.3359
+      },
+      "slope": {
+        "scene_count": 10,
+        "median_pearson_r": -0.3013,
+        "expected_direction_fraction": 0.9,
+        "corr_rain_7d_vs_scene_pearson": -0.6368,
+        "corr_rain_14d_vs_scene_pearson": -0.7832,
+        "corr_rain_30d_vs_scene_pearson": -0.3796
+      },
+      "southness": {
+        "scene_count": 8,
+        "median_pearson_r": -0.3223,
+        "expected_direction_fraction": 0.75,
+        "corr_rain_7d_vs_scene_pearson": -0.3287,
+        "corr_rain_14d_vs_scene_pearson": -0.2876,
+        "corr_rain_30d_vs_scene_pearson": -0.5962
+      }
+    }
+  },
+  "scenes": [
+    {
+      "scene_id": "S2B_T33UVS_20260409T100023_L2A",
+      "scene_datetime": "2026-04-09T10:06:38.025000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 1.7,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 5.6,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 17.6,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1923
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.7155
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.6969
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.3539
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": 0.2932
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1969
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.6954
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.6457
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.3249
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": 0.4475
+        }
+      }
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260422T101019_L2A",
+      "scene_datetime": "2026-04-22T10:16:33.260000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 19.1,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 22.4,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 31.2,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 5,
+          "excluded": 0,
+          "pearson_r": -0.3164
+        },
+        "tpi900": {
+          "n": 5,
+          "excluded": 0,
+          "pearson_r": 0.814
+        },
+        "elevation": {
+          "n": 5,
+          "excluded": 0,
+          "pearson_r": 0.54
+        },
+        "slope": {
+          "n": 5,
+          "excluded": 0,
+          "pearson_r": -0.4384
+        },
+        "southness": {
+          "n": 3,
+          "excluded": 0,
+          "pearson_r": null
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 5,
+          "excluded": 0,
+          "pearson_r": -0.2803
+        },
+        "tpi900": {
+          "n": 5,
+          "excluded": 0,
+          "pearson_r": 0.7663
+        },
+        "elevation": {
+          "n": 5,
+          "excluded": 0,
+          "pearson_r": 0.4884
+        },
+        "slope": {
+          "n": 5,
+          "excluded": 0,
+          "pearson_r": -0.4319
+        },
+        "southness": {
+          "n": 3,
+          "excluded": 0,
+          "pearson_r": null
+        }
+      }
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260502T101020_L2A",
+      "scene_datetime": "2026-05-02T10:16:34.339000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 0.1,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 19.2,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 24.2,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1409
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.6984
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.6463
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.3596
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": 0.1477
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1619
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.678
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.6041
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.3212
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": 0.2091
+        }
+      }
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260526T100129_L2A",
+      "scene_datetime": "2026-05-26T10:06:56.193000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 1.6,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 14.8,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 52.3,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.2589
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.6038
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.5998
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1659
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": -0.3081
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.2549
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.4987
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.4886
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.0796
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": -0.2801
+        }
+      }
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260529T101354_L2A",
+      "scene_datetime": "2026-05-29T10:16:53.979000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 0.0,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 4.5,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 52.3,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1448
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.515
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.5207
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.204
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": -0.3812
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1178
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.3627
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.3684
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1142
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": -0.3645
+        }
+      }
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260621T101021_L2A",
+      "scene_datetime": "2026-06-21T10:16:35.791000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 9.0,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 22.3,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 56.6,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": 0.2204
+        },
+        "tpi900": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.2724
+        },
+        "elevation": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.1701
+        },
+        "slope": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.0205
+        },
+        "southness": {
+          "n": 9,
+          "excluded": 3,
+          "pearson_r": -0.3074
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": 0.36
+        },
+        "tpi900": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.3406
+        },
+        "elevation": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.0744
+        },
+        "slope": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.1598
+        },
+        "southness": {
+          "n": 9,
+          "excluded": 3,
+          "pearson_r": -0.1807
+        }
+      }
+    },
+    {
+      "scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "scene_datetime": "2026-06-26T10:16:36.604000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 7.2,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 17.2,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 59.4,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": 0.3216
+        },
+        "tpi900": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.4891
+        },
+        "elevation": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.6951
+        },
+        "slope": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": 0.1722
+        },
+        "southness": {
+          "n": 10,
+          "excluded": 3,
+          "pearson_r": -0.4747
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": 0.4096
+        },
+        "tpi900": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.5515
+        },
+        "elevation": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": -0.7399
+        },
+        "slope": {
+          "n": 11,
+          "excluded": 3,
+          "pearson_r": 0.1085
+        },
+        "southness": {
+          "n": 10,
+          "excluded": 3,
+          "pearson_r": -0.3914
+        }
+      }
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260708T100031_L2A",
+      "scene_datetime": "2026-07-08T10:06:38.249000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 16.6,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 27.2,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 52.3,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 4,
+          "excluded": 1,
+          "pearson_r": 0.7254
+        },
+        "tpi900": {
+          "n": 4,
+          "excluded": 1,
+          "pearson_r": -0.8405
+        },
+        "elevation": {
+          "n": 4,
+          "excluded": 1,
+          "pearson_r": -0.9693
+        },
+        "slope": {
+          "n": 4,
+          "excluded": 1,
+          "pearson_r": -0.7426
+        },
+        "southness": {
+          "n": 3,
+          "excluded": 1,
+          "pearson_r": null
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 4,
+          "excluded": 1,
+          "pearson_r": 0.4968
+        },
+        "tpi900": {
+          "n": 4,
+          "excluded": 1,
+          "pearson_r": -0.752
+        },
+        "elevation": {
+          "n": 4,
+          "excluded": 1,
+          "pearson_r": -0.866
+        },
+        "slope": {
+          "n": 4,
+          "excluded": 1,
+          "pearson_r": -0.5403
+        },
+        "southness": {
+          "n": 3,
+          "excluded": 1,
+          "pearson_r": null
+        }
+      }
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "scene_datetime": "2026-07-25T10:06:57.551000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 17.7,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 77.4,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 104.6,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 8,
+          "excluded": 6,
+          "pearson_r": 0.5588
+        },
+        "tpi900": {
+          "n": 8,
+          "excluded": 6,
+          "pearson_r": 0.0201
+        },
+        "elevation": {
+          "n": 8,
+          "excluded": 6,
+          "pearson_r": 0.1147
+        },
+        "slope": {
+          "n": 8,
+          "excluded": 6,
+          "pearson_r": -0.8601
+        },
+        "southness": {
+          "n": 5,
+          "excluded": 6,
+          "pearson_r": -0.398
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 8,
+          "excluded": 6,
+          "pearson_r": 0.4861
+        },
+        "tpi900": {
+          "n": 8,
+          "excluded": 6,
+          "pearson_r": 0.0269
+        },
+        "elevation": {
+          "n": 8,
+          "excluded": 6,
+          "pearson_r": 0.2162
+        },
+        "slope": {
+          "n": 8,
+          "excluded": 6,
+          "pearson_r": -0.8766
+        },
+        "southness": {
+          "n": 5,
+          "excluded": 6,
+          "pearson_r": -0.4352
+        }
+      }
+    },
+    {
+      "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+      "scene_datetime": "2026-08-15T10:16:35.791000Z",
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 3.2,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 17.6,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 42.7,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "ndmi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.4455
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1237
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1847
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.2543
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": -0.6832
+        }
+      },
+      "ndvi": {
+        "twi": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": 0.452
+        },
+        "tpi900": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1323
+        },
+        "elevation": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.1332
+        },
+        "slope": {
+          "n": 14,
+          "excluded": 0,
+          "pearson_r": -0.2814
+        },
+        "southness": {
+          "n": 11,
+          "excluded": 0,
+          "pearson_r": -0.7667
+        }
+      }
+    }
+  ]
+}

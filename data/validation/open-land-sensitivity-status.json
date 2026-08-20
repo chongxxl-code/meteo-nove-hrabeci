@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "quality_status": "valid_disturbance_filtered_sensitivity_test",
+  "computed_at_local": "2026-08-20T13:24:41.787143+02:00",
+  "network": "nove-hrabeci-open-land-experimental-v2",
+  "scene_count": 10,
+  "sample_count": 14,
+  "excluded_observation_count": 13,
+  "warning": "Sensitivity test only. Excluded observations are algorithmically flagged candidate disturbances, not verified mowing/grazing. Compare filtered and raw results; do not automatically prefer filtered.",
+  "comparison": {
+    "ndmi": {
+      "twi": {
+        "raw_median_r": 0.0976,
+        "filtered_median_r": 0.0398,
+        "delta_median_r": -0.0578,
+        "raw_expected_direction_fraction": 0.5,
+        "filtered_expected_direction_fraction": 0.5
+      },
+      "tpi900": {
+        "raw_median_r": 0.4027,
+        "filtered_median_r": 0.2676,
+        "delta_median_r": -0.1351,
+        "raw_expected_direction_fraction": 0.4,
+        "filtered_expected_direction_fraction": 0.4
+      },
+      "elevation": {
+        "raw_median_r": 0.4818,
+        "filtered_median_r": 0.3177,
+        "delta_median_r": -0.1641,
+        "raw_expected_direction_fraction": null,
+        "filtered_expected_direction_fraction": null
+      },
+      "slope": {
+        "raw_median_r": -0.2292,
+        "filtered_median_r": -0.3041,
+        "delta_median_r": -0.0749,
+        "raw_expected_direction_fraction": 0.9,
+        "filtered_expected_direction_fraction": 0.9
+      },
+      "southness": {
+        "raw_median_r": -0.0653,
+        "filtered_median_r": -0.3447,
+        "delta_median_r": -0.2794,
+        "raw_expected_direction_fraction": 0.778,
+        "filtered_expected_direction_fraction": 0.75
+      }
+    },
+    "ndvi": {
+      "twi": {
+        "raw_median_r": 0.103,
+        "filtered_median_r": 0.1211,
+        "delta_median_r": 0.0181,
+        "raw_expected_direction_fraction": 0.5,
+        "filtered_expected_direction_fraction": 0.5
+      },
+      "tpi900": {
+        "raw_median_r": 0.3371,
+        "filtered_median_r": 0.1948,
+        "delta_median_r": -0.1423,
+        "raw_expected_direction_fraction": 0.4,
+        "filtered_expected_direction_fraction": 0.4
+      },
+      "elevation": {
+        "raw_median_r": 0.4284,
+        "filtered_median_r": 0.2923,
+        "delta_median_r": -0.1361,
+        "raw_expected_direction_fraction": null,
+        "filtered_expected_direction_fraction": null
+      },
+      "slope": {
+        "raw_median_r": -0.3013,
+        "filtered_median_r": -0.3013,
+        "delta_median_r": 0.0,
+        "raw_expected_direction_fraction": 0.9,
+        "filtered_expected_direction_fraction": 0.9
+      },
+      "southness": {
+        "raw_median_r": -0.1321,
+        "filtered_median_r": -0.3223,
+        "delta_median_r": -0.1902,
+        "raw_expected_direction_fraction": 0.556,
+        "filtered_expected_direction_fraction": 0.75
+      }
+    }
+  },
+  "output_file": "data/validation/open-land-sensitivity-2026.json",
+  "next_step": "If a terrain relationship keeps the same sign and similar strength after disturbance filtering, raise confidence modestly; if it changes strongly, prioritize management/phenology as a confounder."
+}
