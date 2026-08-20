@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nové Hraběcí – terénní hydrologie</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root{color-scheme:dark;--bg:#081417;--panel:#0d2024;--line:#62d4e7;--text:#e7f4f5;--muted:#94aeb2;--border:#214047}
+    *{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    #map{height:100%;width:100%}
+    .panel{position:absolute;z-index:1000;top:14px;left:14px;width:min(390px,calc(100% - 28px));background:rgba(8,20,23,.92);border:1px solid var(--border);border-radius:14px;padding:14px 15px;box-shadow:0 12px 35px rgba(0,0,0,.35);backdrop-filter:blur(9px)}
+    h1{font-size:17px;margin:0 0 5px}.sub{font-size:12px;color:var(--muted);line-height:1.35;margin-bottom:10px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px}.kpi{background:#10272c;border:1px solid #203d43;border-radius:9px;padding:8px}.kpi b{display:block;font-size:16px}.kpi span{font-size:10px;color:var(--muted)}
+    .warning{font-size:11px;line-height:1.35;color:#d7c991;border-top:1px solid var(--border);padding-top:8px}
+    .legend{background:rgba(8,20,23,.9);color:var(--text);padding:8px 10px;border-radius:9px;border:1px solid var(--border);font-size:11px;line-height:1.5}
+    .sw{display:inline-block;width:24px;height:3px;vertical-align:middle;margin-right:6px;background:var(--line)}
+    .leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#10272c;color:var(--text)}.leaflet-popup-content{font-size:12px;line-height:1.45}
+    @media(max-width:620px){.panel{top:8px;left:8px;width:calc(100% - 16px);padding:11px}.grid{grid-template-columns:repeat(3,1fr)}.sub,.warning{font-size:10px}}
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<div class="panel">
+  <h1>Terénní hydrologie · Nové Hraběcí</h1>
+  <div class="sub">ČÚZK DMR 4G, 5 m · D8 flow routing · TWI. Čáry jsou <b>modelované drenážní trasy</b>, nikoli oficiální vodní toky.</div>
+  <div class="grid">
+    <div class="kpi"><b id="segments">–</b><span>drenážních segmentů</span></div>
+    <div class="kpi"><b id="medianTwi">–</b><span>medián TWI oblasti</span></div>
+    <div class="kpi"><b>0,25</b><span>km² práh linie</span></div>
+  </div>
+  <div class="warning">⚠ ČÚZK DMR 4G končí na české hranici. Přítoky, které začínají v Německu, nejsou započtené; u hranice je akumulace podhodnocená.</div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map=L.map('map',{zoomControl:false}).setView([51.0162,14.4398],13);
+L.control.zoom({position:'bottomright'}).addTo(map);
+const osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri'});
+L.control.layers({'Mapa':osm,'Satelit':sat},{},{position:'topright'}).addTo(map);
+
+const zoneColors={reference:'#ffffff',open_land:'#b8e35c',forest:'#3fa86a',water_wetland:'#4aa7ff',quarry:'#d39a55',ridge_highland:'#ff8b64',valley_lowland:'#78c7de',urban:'#c7a7ff'};
+function lineWeight(km2){return Math.max(1.4,Math.min(7,1.1+Math.log10(Math.max(.25,km2))*2.2+2));}
+function fmt(v,d=2){return Number.isFinite(v)?Number(v).toFixed(d):'–'}
+
+Promise.all([
+  fetch('data/terrain/derived-drainage.geojson').then(r=>r.json()),
+  fetch('config/zones.geojson').then(r=>r.json()),
+  fetch('data/terrain/hydrology-status.json').then(r=>r.json())
+]).then(([drain,zones,status])=>{
+  document.getElementById('segments').textContent=status.study_area?.derived_drainage_segments ?? drain.features.length;
+  document.getElementById('medianTwi').textContent=fmt(status.study_area?.twi?.median,2);
+
+  const drainLayer=L.geoJSON(drain,{
+    style:f=>({color:'#62d4e7',weight:lineWeight(Number(f.properties?.upstream_km2||.25)),opacity:.82}),
+    onEachFeature:(f,l)=>l.bindPopup(`<b>Terénní drenáž</b><br>Přítoková plocha v konci segmentu: <b>${fmt(Number(f.properties?.upstream_km2),3)} km²</b><br><small>Model D8, ne oficiální vodní tok.</small>`)
+  }).addTo(map);
+
+  const hs=Object.fromEntries((status.zones||[]).map(z=>[z.id,z]));
+  const zoneLayer=L.geoJSON(zones,{
+    pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:6,color:'#fff',weight:2,fillColor:'#111',fillOpacity:.85}),
+    style:f=>({color:zoneColors[f.properties?.class]||'#fff',weight:2,fillOpacity:.08}),
+    onEachFeature:(f,l)=>{
+      const z=hs[f.properties?.id]||{};
+      const med=z.twi?.median ?? z.twi;
+      const pct=z.twi_median_study_percentile ?? z.twi_study_percentile;
+      const maxUa=z.upstream_area_m2?.max ?? z.upstream_area_m2;
+      l.bindPopup(`<b>${f.properties?.name||f.properties?.id}</b><br>TWI: <b>${fmt(Number(med),2)}</b>${pct!=null?` · ${fmt(Number(pct),1)}. percentil`:''}<br>max. přítoková plocha: <b>${maxUa!=null?fmt(Number(maxUa)/1e6,3):'–'} km²</b><br><small>${f.properties?.status||''}</small>`);
+    }
+  }).addTo(map);
+
+  L.control.layers(null,{'D8 drenáž':drainLayer,'Krajinné zóny':zoneLayer},{collapsed:false,position:'bottomleft'}).addTo(map);
+}).catch(err=>{console.error(err);document.querySelector('.warning').textContent='Nepodařilo se načíst hydrologická data: '+err;});
+
+const legend=L.control({position:'bottomright'});legend.onAdd=()=>{const d=L.DomUtil.create('div','legend');d.innerHTML='<span class="sw"></span>D8 drenáž · silnější = větší přítoková plocha';return d};legend.addTo(map);
+</script>
+</body>
+</html>
