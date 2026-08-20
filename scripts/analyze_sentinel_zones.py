@@ -21,7 +21,7 @@ STATUS_FILE = DATA_DIR / 'zone-status.json'
 EARTH_SEARCH = 'https://earth-search.aws.element84.com/v1/search'
 COLLECTIONS = ['sentinel-2-c1-l2a', 'sentinel-2-l2a']
 BBOX = [14.38, 50.98, 14.50, 51.06]
-UA = 'nove-hrabeci-observatory/1.0 (+github-actions)'
+UA = 'nove-hrabeci-observatory/1.1 (+github-actions)'
 ANALYSIS_VERSION = 2
 
 os.environ.setdefault('GDAL_DISABLE_READDIR_ON_OPEN', 'EMPTY_DIR')
@@ -175,13 +175,17 @@ def index_for_zone(a_asset: dict, b_asset: dict, geom_wgs84: dict, scl_asset: di
             return result
 
 
-def already_analyzed(scene_id: str, archive: Path) -> bool:
+def already_analyzed(scene_id: str, zones_version: str | None, archive: Path) -> bool:
     if not archive.exists():
         return False
     for line in archive.read_text(encoding='utf-8').splitlines():
         try:
             obj = json.loads(line)
-            if obj.get('scene_id') == scene_id and obj.get('analysis_version') == ANALYSIS_VERSION:
+            if (
+                obj.get('scene_id') == scene_id
+                and obj.get('analysis_version') == ANALYSIS_VERSION
+                and obj.get('zones_version') == zones_version
+            ):
                 return True
         except Exception:
             pass
@@ -192,6 +196,7 @@ def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc)
     zones = json.loads(ZONES_FILE.read_text(encoding='utf-8'))
+    zones_version = zones.get('name')
     item = find_scene(now)
     props = item.get('properties') or {}
     scene_id = item.get('id') or 'unknown'
@@ -243,7 +248,7 @@ def main():
         'platform': props.get('platform'),
         'mgrs_tile': props.get('mgrs:tile') or props.get('s2:mgrs_tile'),
         'computed_at_local': now.astimezone(TZ).isoformat(),
-        'zones_version': zones.get('name'),
+        'zones_version': zones_version,
         'ndvi_formula': '(NIR B08 - Red B04) / (NIR B08 + Red B04)',
         'ndmi_formula': f'({ndmi_nir_key} - SWIR16 B11) / ({ndmi_nir_key} + SWIR16 B11)',
         'cloud_mask': 'SCL classes 0,1,3,8,9,10,11 excluded when SCL is available',
@@ -252,7 +257,7 @@ def main():
     }
 
     archive = DATA_DIR / f'zone-stats-v2-{now.astimezone(TZ):%Y}.jsonl'
-    is_new = not already_analyzed(scene_id, archive)
+    is_new = not already_analyzed(scene_id, zones_version, archive)
     if is_new:
         with archive.open('a', encoding='utf-8') as f:
             f.write(json.dumps(record, ensure_ascii=False, separators=(',', ':')) + '\n')
