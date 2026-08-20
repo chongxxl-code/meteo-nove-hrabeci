@@ -1,0 +1,43 @@
+name: Collect CHMI Sluknov rain
+
+on:
+  schedule:
+    - cron: '2,12,22,32,42,52 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_chmi.py'
+      - '.github/workflows/collect-chmi.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: chmi-rain-collector
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Collect CHMI Sluknov rain gauge
+        run: python scripts/collect_chmi.py
+      - name: Commit rain observations
+        run: |
+          if git diff --quiet -- data/; then
+            echo "No observation changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/chmi-status.json data/observations/
+          git commit -m "data: CHMI Sluknov rain $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
