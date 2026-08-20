@@ -1,0 +1,2183 @@
+{
+  "ok": true,
+  "quality_status": "valid_exploratory_series",
+  "computed_at_local": "2026-08-20T12:41:04.443771+02:00",
+  "network": "nove-hrabeci-open-land-experimental-v1",
+  "network_review_version": "visual-review-v2.3",
+  "provider": "Sentinel-2 Collection 1 L2A via Earth Search / AWS Open Data COG + ČHMÚ antecedent rainfall",
+  "interpretation_warning": "NDMI is a spectral moisture signal, not direct soil-moisture measurement. Correlations are exploratory and do not establish causality.",
+  "summary": {
+    "scene_count": 10,
+    "valid_scene_count": 8,
+    "twi_contrast_scene_count": 9,
+    "high_twi_wetter_ndmi_count": 4,
+    "high_twi_wetter_ndmi_fraction": 0.444,
+    "median_high_twi_minus_low_twi_ndmi": -0.0336,
+    "corr_rain_7d_vs_twi_ndmi_contrast": 0.1678,
+    "corr_rain_14d_vs_twi_ndmi_contrast": 0.3285,
+    "corr_rain_30d_vs_twi_ndmi_contrast": 0.6188
+  },
+  "scenes": [
+    {
+      "scene_id": "S2B_T33UVS_20260409T100023_L2A",
+      "scene_datetime": "2026-04-09T10:06:38.025000Z",
+      "tile_cloud_cover_percent": 3.620512,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 1.7,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 5.6,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 17.6,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7016,
+            "median": 0.7044,
+            "p10": 0.6801,
+            "p90": 0.7203,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2076,
+            "median": 0.2087,
+            "p10": 0.1959,
+            "p90": 0.2157,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5083,
+            "median": 0.5086,
+            "p10": 0.4847,
+            "p90": 0.529,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0195,
+            "median": 0.0144,
+            "p10": 0.0077,
+            "p90": 0.035,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.4373,
+            "median": 0.4072,
+            "p10": 0.3829,
+            "p90": 0.536,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": -0.013,
+            "median": -0.0243,
+            "p10": -0.0416,
+            "p90": 0.0408,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.428,
+            "median": 0.4253,
+            "p10": 0.3844,
+            "p90": 0.4759,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": -0.0338,
+            "median": -0.0318,
+            "p10": -0.0666,
+            "p90": 0.0081,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5601,
+            "median": 0.5656,
+            "p10": 0.45,
+            "p90": 0.6737,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0739,
+            "median": 0.0916,
+            "p10": -0.0297,
+            "p90": 0.145,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.587,
+            "median": 0.5859,
+            "p10": 0.5556,
+            "p90": 0.6174,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0793,
+            "median": 0.0777,
+            "p10": 0.0565,
+            "p90": 0.1016,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.4797,
+            "median": 0.4749,
+            "p10": 0.4522,
+            "p90": 0.5142,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": -0.0048,
+            "median": -0.0098,
+            "p10": -0.0247,
+            "p90": 0.0189,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": -0.0318,
+        "low_twi_ndmi_median": 0.0777,
+        "high_twi_ndvi_median": 0.4253,
+        "low_twi_ndvi_median": 0.5656,
+        "high_position_ndmi_median": 0.11155,
+        "high_twi_minus_low_twi_ndmi": -0.1095,
+        "high_twi_minus_low_twi_ndvi": -0.1403
+      },
+      "quality_status": "valid"
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260422T101019_L2A",
+      "scene_datetime": "2026-04-22T10:16:33.260000Z",
+      "tile_cloud_cover_percent": 9.896988,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 19.1,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 22.4,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 31.2,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8023,
+            "median": 0.8,
+            "p10": 0.7853,
+            "p90": 0.8233,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3085,
+            "median": 0.3077,
+            "p10": 0.2968,
+            "p90": 0.3211,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5233,
+            "median": 0.5238,
+            "p10": 0.4668,
+            "p90": 0.5845,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0248,
+            "median": 0.0226,
+            "p10": -0.0141,
+            "p90": 0.0654,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.6954,
+            "median": 0.7045,
+            "p10": 0.6002,
+            "p90": 0.7756,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1893,
+            "median": 0.2034,
+            "p10": 0.1091,
+            "p90": 0.2517,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 64,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": 0.0226,
+        "low_twi_ndmi_median": 0.2034,
+        "high_twi_ndvi_median": 0.5238,
+        "low_twi_ndvi_median": 0.7045,
+        "high_position_ndmi_median": 0.3077,
+        "high_twi_minus_low_twi_ndmi": -0.1808,
+        "high_twi_minus_low_twi_ndvi": -0.1807
+      },
+      "quality_status": "partial"
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260502T101020_L2A",
+      "scene_datetime": "2026-05-02T10:16:34.339000Z",
+      "tile_cloud_cover_percent": 0.046108,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 0.1,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 19.2,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 24.2,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8235,
+            "median": 0.8217,
+            "p10": 0.8097,
+            "p90": 0.8447,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3428,
+            "median": 0.3431,
+            "p10": 0.326,
+            "p90": 0.3596,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.6523,
+            "median": 0.6537,
+            "p10": 0.6328,
+            "p90": 0.6713,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1424,
+            "median": 0.1387,
+            "p10": 0.1255,
+            "p90": 0.1592,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.6285,
+            "median": 0.5978,
+            "p10": 0.5471,
+            "p90": 0.7509,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1126,
+            "median": 0.0986,
+            "p10": 0.0575,
+            "p90": 0.1828,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5728,
+            "median": 0.5747,
+            "p10": 0.5193,
+            "p90": 0.6243,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0715,
+            "median": 0.0664,
+            "p10": 0.0213,
+            "p90": 0.1252,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7301,
+            "median": 0.7429,
+            "p10": 0.6521,
+            "p90": 0.7921,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2112,
+            "median": 0.2297,
+            "p10": 0.1158,
+            "p90": 0.2717,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7125,
+            "median": 0.7156,
+            "p10": 0.6526,
+            "p90": 0.7546,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1925,
+            "median": 0.1939,
+            "p10": 0.1434,
+            "p90": 0.2351,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.5972,
+            "median": 0.5945,
+            "p10": 0.5721,
+            "p90": 0.63,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0899,
+            "median": 0.0867,
+            "p10": 0.0655,
+            "p90": 0.1138,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": 0.0664,
+        "low_twi_ndmi_median": 0.1939,
+        "high_twi_ndvi_median": 0.5747,
+        "low_twi_ndvi_median": 0.7156,
+        "high_position_ndmi_median": 0.2409,
+        "high_twi_minus_low_twi_ndmi": -0.1275,
+        "high_twi_minus_low_twi_ndvi": -0.1409
+      },
+      "quality_status": "valid"
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260526T100129_L2A",
+      "scene_datetime": "2026-05-26T10:06:56.193000Z",
+      "tile_cloud_cover_percent": 0.00256,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 1.6,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 14.8,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 52.3,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8563,
+            "median": 0.8571,
+            "p10": 0.8451,
+            "p90": 0.8654,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.4589,
+            "median": 0.4598,
+            "p10": 0.4284,
+            "p90": 0.4842,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7558,
+            "median": 0.7565,
+            "p10": 0.7408,
+            "p90": 0.7699,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2803,
+            "median": 0.2761,
+            "p10": 0.2634,
+            "p90": 0.3013,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8061,
+            "median": 0.8095,
+            "p10": 0.7461,
+            "p90": 0.8556,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3171,
+            "median": 0.3084,
+            "p10": 0.2688,
+            "p90": 0.3758,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.76,
+            "median": 0.7572,
+            "p10": 0.7231,
+            "p90": 0.7961,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.254,
+            "median": 0.2484,
+            "p10": 0.1999,
+            "p90": 0.3124,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8495,
+            "median": 0.8532,
+            "p10": 0.8304,
+            "p90": 0.8712,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.4017,
+            "median": 0.4008,
+            "p10": 0.3774,
+            "p90": 0.4231,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7781,
+            "median": 0.7912,
+            "p10": 0.7144,
+            "p90": 0.8261,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3045,
+            "median": 0.3153,
+            "p10": 0.2421,
+            "p90": 0.3558,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.7218,
+            "median": 0.7206,
+            "p10": 0.6946,
+            "p90": 0.7497,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2323,
+            "median": 0.2328,
+            "p10": 0.209,
+            "p90": 0.2564,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": 0.2484,
+        "low_twi_ndmi_median": 0.3153,
+        "high_twi_ndvi_median": 0.7572,
+        "low_twi_ndvi_median": 0.7912,
+        "high_position_ndmi_median": 0.36795,
+        "high_twi_minus_low_twi_ndmi": -0.0669,
+        "high_twi_minus_low_twi_ndvi": -0.034
+      },
+      "quality_status": "valid"
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260529T101354_L2A",
+      "scene_datetime": "2026-05-29T10:16:53.979000Z",
+      "tile_cloud_cover_percent": 4.1378,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 0.0,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 4.5,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 52.3,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8637,
+            "median": 0.8666,
+            "p10": 0.8465,
+            "p90": 0.8759,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.4809,
+            "median": 0.4794,
+            "p10": 0.4491,
+            "p90": 0.5085,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7789,
+            "median": 0.7802,
+            "p10": 0.7635,
+            "p90": 0.7959,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2977,
+            "median": 0.2917,
+            "p10": 0.2785,
+            "p90": 0.3244,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8369,
+            "median": 0.8359,
+            "p10": 0.7823,
+            "p90": 0.8884,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3399,
+            "median": 0.3286,
+            "p10": 0.286,
+            "p90": 0.4028,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7974,
+            "median": 0.7961,
+            "p10": 0.7599,
+            "p90": 0.8333,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2851,
+            "median": 0.2755,
+            "p10": 0.2344,
+            "p90": 0.3448,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8647,
+            "median": 0.8708,
+            "p10": 0.8299,
+            "p90": 0.8899,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.4061,
+            "median": 0.4096,
+            "p10": 0.3724,
+            "p90": 0.4379,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7854,
+            "median": 0.8023,
+            "p10": 0.7059,
+            "p90": 0.8419,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3027,
+            "median": 0.3091,
+            "p10": 0.2325,
+            "p90": 0.3636,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.7481,
+            "median": 0.7499,
+            "p10": 0.7159,
+            "p90": 0.7787,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2488,
+            "median": 0.2513,
+            "p10": 0.2227,
+            "p90": 0.2719,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": 0.2755,
+        "low_twi_ndmi_median": 0.3091,
+        "high_twi_ndvi_median": 0.7961,
+        "low_twi_ndvi_median": 0.8023,
+        "high_position_ndmi_median": 0.38555,
+        "high_twi_minus_low_twi_ndmi": -0.0336,
+        "high_twi_minus_low_twi_ndvi": -0.0062
+      },
+      "quality_status": "valid"
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260621T101021_L2A",
+      "scene_datetime": "2026-06-21T10:16:35.791000Z",
+      "tile_cloud_cover_percent": 22.390679,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 9.0,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 22.3,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 56.6,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7232,
+            "median": 0.7243,
+            "p10": 0.6633,
+            "p90": 0.7631,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.184,
+            "median": 0.1865,
+            "p10": 0.1141,
+            "p90": 0.2338,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7442,
+            "median": 0.7454,
+            "p10": 0.7274,
+            "p90": 0.7588,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2444,
+            "median": 0.2424,
+            "p10": 0.2194,
+            "p90": 0.272,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7974,
+            "median": 0.8088,
+            "p10": 0.7534,
+            "p90": 0.8235,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3136,
+            "median": 0.3168,
+            "p10": 0.2899,
+            "p90": 0.3288,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8294,
+            "median": 0.8327,
+            "p10": 0.8102,
+            "p90": 0.8482,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3275,
+            "median": 0.3297,
+            "p10": 0.296,
+            "p90": 0.3644,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5028,
+            "median": 0.4697,
+            "p10": 0.4355,
+            "p90": 0.6795,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0907,
+            "median": 0.0544,
+            "p10": 0.0174,
+            "p90": 0.258,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5577,
+            "median": 0.5583,
+            "p10": 0.5359,
+            "p90": 0.5775,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0298,
+            "median": 0.0348,
+            "p10": -0.0056,
+            "p90": 0.0561,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.7644,
+            "median": 0.766,
+            "p10": 0.7366,
+            "p90": 0.7896,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2645,
+            "median": 0.269,
+            "p10": 0.232,
+            "p90": 0.2821,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": 0.3297,
+        "low_twi_ndmi_median": 0.0544,
+        "high_twi_ndvi_median": 0.8327,
+        "low_twi_ndvi_median": 0.5583,
+        "high_position_ndmi_median": 0.21445,
+        "high_twi_minus_low_twi_ndmi": 0.2753,
+        "high_twi_minus_low_twi_ndvi": 0.2744
+      },
+      "quality_status": "valid"
+    },
+    {
+      "scene_id": "S2C_T33UVS_20260626T101022_L2A",
+      "scene_datetime": "2026-06-26T10:16:36.604000Z",
+      "tile_cloud_cover_percent": 1.763202,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 7.2,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 17.2,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 59.4,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.6773,
+            "median": 0.6758,
+            "p10": 0.6021,
+            "p90": 0.7354,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1448,
+            "median": 0.1436,
+            "p10": 0.0937,
+            "p90": 0.1928,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7144,
+            "median": 0.7168,
+            "p10": 0.6931,
+            "p90": 0.7314,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2093,
+            "median": 0.2078,
+            "p10": 0.1873,
+            "p90": 0.2262,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7593,
+            "median": 0.7808,
+            "p10": 0.6853,
+            "p90": 0.7964,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2783,
+            "median": 0.2835,
+            "p10": 0.2525,
+            "p90": 0.2932,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.6723,
+            "median": 0.6706,
+            "p10": 0.6378,
+            "p90": 0.6999,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1166,
+            "median": 0.1148,
+            "p10": 0.0988,
+            "p90": 0.1268,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.4748,
+            "median": 0.4389,
+            "p10": 0.3822,
+            "p90": 0.6831,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0254,
+            "median": -0.0171,
+            "p10": -0.0572,
+            "p90": 0.2082,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5287,
+            "median": 0.5327,
+            "p10": 0.497,
+            "p90": 0.5566,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": -0.0125,
+            "median": -0.0052,
+            "p10": -0.048,
+            "p90": 0.0186,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.7326,
+            "median": 0.738,
+            "p10": 0.6986,
+            "p90": 0.7621,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2238,
+            "median": 0.2272,
+            "p10": 0.2,
+            "p90": 0.2463,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": 0.1148,
+        "low_twi_ndmi_median": -0.0052,
+        "high_twi_ndvi_median": 0.6706,
+        "low_twi_ndvi_median": 0.5327,
+        "high_position_ndmi_median": 0.17570000000000002,
+        "high_twi_minus_low_twi_ndmi": 0.12,
+        "high_twi_minus_low_twi_ndvi": 0.1379
+      },
+      "quality_status": "valid"
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260708T100031_L2A",
+      "scene_datetime": "2026-07-08T10:06:38.249000Z",
+      "tile_cloud_cover_percent": 16.834278,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 16.6,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 27.2,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 52.3,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 54,
+            "mean": 0.4725,
+            "median": 0.474,
+            "p10": 0.4412,
+            "p90": 0.5034,
+            "total_inside_pixels": 65,
+            "valid_fraction": 0.831
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": -0.066,
+            "median": -0.0557,
+            "p10": -0.1059,
+            "p90": -0.0437,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.812
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 64,
+            "valid_fraction": 0.0
+          },
+          "ndmi": {
+            "valid_pixels": 0,
+            "mean": null,
+            "median": null,
+            "p10": null,
+            "p90": null,
+            "total_inside_pixels": 16,
+            "valid_fraction": 0.0
+          },
+          "ok": false
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": null,
+        "low_twi_ndmi_median": -0.0557,
+        "high_twi_ndvi_median": null,
+        "low_twi_ndvi_median": 0.474,
+        "high_position_ndmi_median": null,
+        "high_twi_minus_low_twi_ndmi": null,
+        "high_twi_minus_low_twi_ndvi": null
+      },
+      "quality_status": "partial"
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260725T100043_L2A",
+      "scene_datetime": "2026-07-25T10:06:57.551000Z",
+      "tile_cloud_cover_percent": 1.618416,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 17.7,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 77.4,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 104.6,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7588,
+            "median": 0.7586,
+            "p10": 0.7397,
+            "p90": 0.7803,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2108,
+            "median": 0.2091,
+            "p10": 0.1938,
+            "p90": 0.2301,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.585,
+            "median": 0.5842,
+            "p10": 0.5744,
+            "p90": 0.6003,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0249,
+            "median": 0.0239,
+            "p10": 0.0179,
+            "p90": 0.0297,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5541,
+            "median": 0.5519,
+            "p10": 0.4932,
+            "p90": 0.6091,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": -0.0069,
+            "median": -0.0018,
+            "p10": -0.0384,
+            "p90": 0.0294,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7114,
+            "median": 0.7097,
+            "p10": 0.6888,
+            "p90": 0.729,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1265,
+            "median": 0.1229,
+            "p10": 0.1026,
+            "p90": 0.1461,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.687,
+            "median": 0.6784,
+            "p10": 0.6429,
+            "p90": 0.7408,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1276,
+            "median": 0.1143,
+            "p10": 0.0686,
+            "p90": 0.1907,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.5916,
+            "median": 0.5978,
+            "p10": 0.5418,
+            "p90": 0.6258,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0145,
+            "median": 0.0191,
+            "p10": -0.0275,
+            "p90": 0.044,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.4907,
+            "median": 0.4896,
+            "p10": 0.4636,
+            "p90": 0.5129,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": -0.0196,
+            "median": -0.0213,
+            "p10": -0.0349,
+            "p90": -0.0018,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": 0.1229,
+        "low_twi_ndmi_median": 0.0191,
+        "high_twi_ndvi_median": 0.7097,
+        "low_twi_ndvi_median": 0.5978,
+        "high_position_ndmi_median": 0.1165,
+        "high_twi_minus_low_twi_ndmi": 0.1038,
+        "high_twi_minus_low_twi_ndvi": 0.1119
+      },
+      "quality_status": "valid"
+    },
+    {
+      "scene_id": "S2C_T33UVS_20260815T101047_L2A",
+      "scene_datetime": "2026-08-15T10:16:35.791000Z",
+      "tile_cloud_cover_percent": 0.000783,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 3.2,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 17.6,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 42.7,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7733,
+            "median": 0.7737,
+            "p10": 0.7545,
+            "p90": 0.7886,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2033,
+            "median": 0.2035,
+            "p10": 0.1798,
+            "p90": 0.228,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7367,
+            "median": 0.7365,
+            "p10": 0.7055,
+            "p90": 0.7697,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1692,
+            "median": 0.1649,
+            "p10": 0.1485,
+            "p90": 0.1845,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7857,
+            "median": 0.7821,
+            "p10": 0.7545,
+            "p90": 0.8239,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2098,
+            "median": 0.2061,
+            "p10": 0.1873,
+            "p90": 0.2474,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.733,
+            "median": 0.7407,
+            "p10": 0.6892,
+            "p90": 0.7696,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1432,
+            "median": 0.1469,
+            "p10": 0.1145,
+            "p90": 0.1573,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7119,
+            "median": 0.7036,
+            "p10": 0.6595,
+            "p90": 0.7748,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1239,
+            "median": 0.1133,
+            "p10": 0.0532,
+            "p90": 0.1967,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.6351,
+            "median": 0.6453,
+            "p10": 0.5548,
+            "p90": 0.682,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.0292,
+            "median": 0.0376,
+            "p10": -0.0226,
+            "p90": 0.0657,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.6911,
+            "median": 0.6918,
+            "p10": 0.6496,
+            "p90": 0.7292,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1251,
+            "median": 0.1277,
+            "p10": 0.1042,
+            "p90": 0.1416,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "groups": {
+        "high_twi_ndmi_median": 0.1469,
+        "low_twi_ndmi_median": 0.1133,
+        "high_twi_ndvi_median": 0.7407,
+        "low_twi_ndvi_median": 0.6918,
+        "high_position_ndmi_median": 0.18419999999999997,
+        "high_twi_minus_low_twi_ndmi": 0.0336,
+        "high_twi_minus_low_twi_ndvi": 0.0489
+      },
+      "quality_status": "valid"
+    }
+  ],
+  "errors": []
+}
