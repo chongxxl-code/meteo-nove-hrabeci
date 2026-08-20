@@ -29,8 +29,16 @@ elif new_ui_tag not in s:
     changed = True
     print('UI polish stylesheet attached')
 
+nowcast_tag = '<script src="./radar-nowcast-ui.js?v=1" defer></script>'
+if nowcast_tag not in s:
+    if '</head>' not in s:
+        raise SystemExit('index.html has no </head> marker')
+    s = s.replace('</head>', nowcast_tag + '</head>', 1)
+    changed = True
+    print('Radar nowcast UI attached')
+
 if changed:
     p.write_text(s, encoding='utf-8')
     print('index.html updated')
 else:
-    print('push integration absent and UI polish v2 already attached')
+    print('push integration absent; UI polish and radar nowcast already attached')
