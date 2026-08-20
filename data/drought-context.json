@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "location": {
+    "name": "Nové Hraběcí",
+    "lat": 51.0162,
+    "lon": 14.4398
+  },
+  "computed_at_utc": "2026-08-20T14:22:06.302779+00:00",
+  "quality_status": "operational_local_drought_v1",
+  "state": {
+    "rank": 1,
+    "level": "yellow",
+    "headline": "zvýšené vysychání",
+    "score": 3,
+    "reasons": [
+      "30denní vodní bilance P−ET₀ -89.9 mm",
+      "kořenová půdní vlhkost je na 13. percentilu posledního roku",
+      "vlastní ČHMÚ 30denní archiv má zatím 2 % pokrytí; používá se reanalýzní vodní bilance jako most"
+    ],
+    "confidence": "medium"
+  },
+  "background": {
+    "provider": "Open-Meteo historical Best Match / ERA5-family background",
+    "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
+    "period_start": "2025-08-14",
+    "period_end": "2026-08-18",
+    "data_age_days": 2,
+    "windows": {
+      "7": {
+        "days": 7,
+        "precip_mm": 26.4,
+        "et0_mm": 30.1,
+        "p_minus_et0_mm": -3.7,
+        "record_days": 7
+      },
+      "14": {
+        "days": 14,
+        "precip_mm": 29.3,
+        "et0_mm": 67.9,
+        "p_minus_et0_mm": -38.6,
+        "record_days": 14
+      },
+      "30": {
+        "days": 30,
+        "precip_mm": 51.2,
+        "et0_mm": 141.1,
+        "p_minus_et0_mm": -89.9,
+        "record_days": 30
+      }
+    },
+    "latest_soil": {
+      "surface_m3m3": 0.329,
+      "rootzone_0_100cm_m3m3": 0.1652,
+      "surface_percentile_1y": 53.0,
+      "rootzone_percentile_1y": 13.2
+    }
+  },
+  "chmi_local_rain": {
+    "latest_observation_utc": "2026-08-20T12:50:00+00:00",
+    "coverage_fraction": {
+      "7": 0.077,
+      "14": 0.039,
+      "30": 0.018
+    },
+    "rain_mm": {
+      "7": 0.0,
+      "14": 0.0,
+      "30": 0.0
+    }
+  },
+  "sentinel_local_landscape": {
+    "ok": true,
+    "latest_scene_date": "2026-08-15",
+    "median_open_land_ndmi": 0.1649,
+    "seasonal_percentile": 50.0,
+    "scene_count": 10
+  },
+  "method_note": "Operational local drought signal: P-ET0 water balance + soil-moisture percentiles + Sentinel NDMI. It is not an official drought classification.",
+  "known_limitations": [
+    "Reanalysis soil moisture is coarser than the local terrain; Sentinel and the reviewed landscape network provide the local spatial refinement.",
+    "The first-year percentile is an operational baseline, not yet a long-term local climatology.",
+    "Copernicus 1 km Surface Soil Moisture / Soil Water Index is planned as an additional independent satellite layer."
+  ]
+}
