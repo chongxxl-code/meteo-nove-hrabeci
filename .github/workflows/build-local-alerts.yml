@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/build_local_alerts.py'
       - '.github/workflows/build-local-alerts.yml'
+      - 'data/drought-context.json'
       - 'data/validation/open-land-experiment-2026.json'
       - 'data/observations/**'
 
@@ -47,4 +48,3 @@ jobs:
           git commit -m "data: local risk state $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push
-# trigger corrected drought coverage guard
