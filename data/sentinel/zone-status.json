@@ -1,0 +1,194 @@
+{
+  "provider": "Sentinel-2 L2A via Earth Search / AWS Open Data COG",
+  "earth_search_url": "https://earth-search.aws.element84.com/v1/search",
+  "scene_id": "S2C_33UVS_20260815_0_L2A",
+  "scene_datetime": "2026-08-15T10:16:35.791000Z",
+  "tile_cloud_cover_percent": 0.000783,
+  "platform": "sentinel-2c",
+  "mgrs_tile": null,
+  "computed_at_local": "2026-08-20T09:51:11.929208+02:00",
+  "zones_version": "nove-hrabeci-landscape-zones-v0.2",
+  "ndvi_formula": "(NIR B08 - Red B04) / (NIR B08 + Red B04)",
+  "ndmi_formula": "(nir08 - SWIR16 B11) / (nir08 + SWIR16 B11)",
+  "cloud_mask": "SCL classes 0,1,3,8,9,10,11 excluded when SCL is available",
+  "zones": [
+    {
+      "id": "NH-OPEN-01",
+      "name": "Otevřená krajina / pastvina – vzorek 01",
+      "class": "open_land",
+      "zone_status": "visually_refined",
+      "ndvi": {
+        "valid_pixels": 0,
+        "mean": null,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "total_inside_pixels": 679,
+        "valid_fraction": 0.0
+      },
+      "ndmi": {
+        "valid_pixels": 165,
+        "mean": 0.3422,
+        "median": 0.3421,
+        "p10": 0.2762,
+        "p90": 0.4061,
+        "total_inside_pixels": 165,
+        "valid_fraction": 1.0
+      },
+      "ok": true
+    },
+    {
+      "id": "NH-FOREST-01",
+      "name": "Les – vzorek 01",
+      "class": "forest",
+      "zone_status": "visually_refined",
+      "ndvi": {
+        "valid_pixels": 0,
+        "mean": null,
+        "median": null,
+        "p10": null,
+        "p90": null,
+        "total_inside_pixels": 627,
+        "valid_fraction": 0.0
+      },
+      "ndmi": {
+        "valid_pixels": 149,
+        "mean": 0.5903,
+        "median": 0.6005,
+        "p10": 0.3156,
+        "p90": 0.852,
+        "total_inside_pixels": 154,
+        "valid_fraction": 0.968
+      },
+      "ok": true
+    },
+    {
+      "id": "NH-WET-01",
+      "name": "Voda / mokřad – Hraničář",
+      "class": "water_wetland",
+      "zone_status": "visually_refined",
+      "ndvi": {
+        "valid_pixels": 330,
+        "mean": -0.0597,
+        "median": -0.0345,
+        "p10": -0.0929,
+        "p90": -0.0101,
+        "total_inside_pixels": 378,
+        "valid_fraction": 0.873
+      },
+      "ndmi": {
+        "valid_pixels": 90,
+        "mean": -0.111,
+        "median": -0.1452,
+        "p10": -0.1817,
+        "p90": -0.1222,
+        "total_inside_pixels": 93,
+        "valid_fraction": 0.968
+      },
+      "ok": true
+    },
+    {
+      "id": "NH-QUARRY-01",
+      "name": "Kamenolom – odkrytý povrch",
+      "class": "quarry",
+      "zone_status": "visually_refined",
+      "ndvi": {
+        "valid_pixels": 93,
+        "mean": 0.2622,
+        "median": 0.3217,
+        "p10": -0.5208,
+        "p90": 1.0175,
+        "total_inside_pixels": 863,
+        "valid_fraction": 0.108
+      },
+      "ndmi": {
+        "valid_pixels": 208,
+        "mean": 0.4371,
+        "median": 0.4376,
+        "p10": 0.1968,
+        "p90": 0.6366,
+        "total_inside_pixels": 210,
+        "valid_fraction": 0.99
+      },
+      "ok": true
+    },
+    {
+      "id": "NH-RIDGE-01",
+      "name": "Vyšší poloha – pracovní terénní vzorek",
+      "class": "ridge_highland",
+      "zone_status": "pending_dem",
+      "ndvi": {
+        "valid_pixels": 178,
+        "mean": 0.2077,
+        "median": 0.213,
+        "p10": -0.4274,
+        "p90": 0.7756,
+        "total_inside_pixels": 492,
+        "valid_fraction": 0.362
+      },
+      "ndmi": {
+        "valid_pixels": 107,
+        "mean": 0.1753,
+        "median": 0.2569,
+        "p10": -0.3072,
+        "p90": 0.6312,
+        "total_inside_pixels": 110,
+        "valid_fraction": 0.973
+      },
+      "ok": true
+    },
+    {
+      "id": "NH-VALLEY-01",
+      "name": "Nízká poloha / údolí – pracovní terénní vzorek",
+      "class": "valley_lowland",
+      "zone_status": "pending_dem",
+      "ndvi": {
+        "valid_pixels": 46,
+        "mean": 1.0014,
+        "median": 1.1027,
+        "p10": 1.0291,
+        "p90": 1.1828,
+        "total_inside_pixels": 468,
+        "valid_fraction": 0.098
+      },
+      "ndmi": {
+        "valid_pixels": 121,
+        "mean": 0.2938,
+        "median": 0.2554,
+        "p10": 0.1004,
+        "p90": 0.6147,
+        "total_inside_pixels": 121,
+        "valid_fraction": 1.0
+      },
+      "ok": true
+    },
+    {
+      "id": "NH-URBAN-01",
+      "name": "Zastavěné prostředí – Šluknov",
+      "class": "urban",
+      "zone_status": "anchor",
+      "ndvi": {
+        "valid_pixels": 465,
+        "mean": 0.4883,
+        "median": 0.4984,
+        "p10": 0.0376,
+        "p90": 1.0464,
+        "total_inside_pixels": 964,
+        "valid_fraction": 0.482
+      },
+      "ndmi": {
+        "valid_pixels": 255,
+        "mean": 0.0518,
+        "median": 0.0631,
+        "p10": -0.2627,
+        "p90": 0.3706,
+        "total_inside_pixels": 255,
+        "valid_fraction": 1.0
+      },
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "new_scene_saved": true,
+  "archive_file": "data/sentinel/zone-stats-2026.jsonl"
+}
