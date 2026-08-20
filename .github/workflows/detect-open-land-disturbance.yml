@@ -1,0 +1,44 @@
+name: Detect open-land vegetation disturbance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/detect_open_land_disturbance.py'
+      - 'data/validation/open-land-experiment-2026.json'
+      - '.github/workflows/detect-open-land-disturbance.yml'
+  schedule:
+    - cron: '41 8 * * 1'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: open-land-disturbance
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Detect abrupt NDVI disturbances
+        run: python scripts/detect_open_land_disturbance.py
+      - name: Commit disturbance flags
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/validation/open-land-disturbance-2026.json data/validation/open-land-disturbance-status.json
+          if git diff --cached --quiet; then
+            echo "No disturbance changes."
+            exit 0
+          fi
+          git commit -m "data: open-land disturbance flags $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
