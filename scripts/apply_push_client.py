@@ -29,8 +29,13 @@ elif new_ui_tag not in s:
     changed = True
     print('UI polish stylesheet attached')
 
-nowcast_tag = '<script src="./radar-nowcast-ui.js?v=1" defer></script>'
-if nowcast_tag not in s:
+old_nowcast_tag = '<script src="./radar-nowcast-ui.js?v=1" defer></script>'
+nowcast_tag = '<script src="./radar-nowcast-ui.js?v=2" defer></script>'
+if old_nowcast_tag in s:
+    s = s.replace(old_nowcast_tag, nowcast_tag, 1)
+    changed = True
+    print('Radar nowcast UI cache-busted to v2')
+elif nowcast_tag not in s:
     if '</head>' not in s:
         raise SystemExit('index.html has no </head> marker')
     s = s.replace('</head>', nowcast_tag + '</head>', 1)
