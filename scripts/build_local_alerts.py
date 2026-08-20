@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import io
 import json
 import math
@@ -310,7 +311,7 @@ def main():
     oldnorm=(old or {}).get('_fingerprint'); oldtime=None
     try: oldtime=datetime.fromisoformat((old or {}).get('computed_at_local'))
     except Exception: pass
-    fp=str(hash(normalized)); payload['_fingerprint']=fp
+    fp=hashlib.sha256(normalized.encode('utf-8')).hexdigest(); payload['_fingerprint']=fp
     force=oldtime is None or (now-oldtime).total_seconds()>=3600
     if oldnorm==fp and not force:
         print(json.dumps({'ok':True,'changed':False,'active':[a['id'] for a in alerts if a['rank']>0]},ensure_ascii=False)); return
