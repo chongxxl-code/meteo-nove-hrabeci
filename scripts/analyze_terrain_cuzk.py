@@ -166,13 +166,18 @@ def fetch_dmr4g() -> tuple[np.ndarray, object, dict]:
             nodata = ds.nodata
             if nodata is not None:
                 dem[dem == nodata] = np.nan
-            if crs is None or crs.to_epsg() != 5514:
+            if crs is None:
+                raise RuntimeError('CUZK output TIFF has no CRS')
+            epsg = crs.to_epsg()
+            crs_text = str(crs) + ' ' + crs.to_wkt()
+            if epsg != 5514 and '5514' not in crs_text:
                 raise RuntimeError(f'Unexpected CUZK output CRS: {crs}')
             actual_px = (abs(float(transform.a)) + abs(float(transform.e))) / 2.0
             info = {
                 'requested_size_px': [width, height],
                 'returned_size_px': [ds.width, ds.height],
                 'actual_pixel_m': round(actual_px, 3),
+                'reported_crs': str(crs),
                 'export_href_host': urllib.parse.urlparse(href).netloc,
             }
             return dem, transform, info
