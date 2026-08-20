@@ -2,6 +2,7 @@
   const headline = document.getElementById('headline');
   if (!headline) return;
 
+  const STALE_MIN = 20;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const relationText = {
     miri_na_lokalitu: 'srážky míří k Novému Hraběcí',
@@ -14,17 +15,39 @@
 
   let last = null;
 
+  function ageMin(n) {
+    const t = Date.parse(n?.computed_at_utc || '');
+    if (!Number.isFinite(t)) return null;
+    return Math.max(0, Math.floor((Date.now() - t) / 60000));
+  }
+
+  function ageText(age) {
+    if (!Number.isFinite(age)) return '';
+    if (age < 1) return 'aktualizováno právě teď';
+    if (age === 1) return 'aktualizováno před 1 min';
+    return `aktualizováno před ${age} min`;
+  }
+
   function render(n) {
     if (!n) return;
     last = n;
+    const age = ageMin(n);
+    const stamp = ageText(age);
+
+    // Never present an old ETA or trajectory as current.
+    if (Number.isFinite(age) && age > STALE_MIN) {
+      headline.innerHTML = `<b style="color:var(--a)">Radarový nowcast:</b> poslední serverový výpočet je zastaralý. <span class="muted">${esc(stamp)} · čekám na nová radarová data.</span>`;
+      return;
+    }
     if (n.status === 'error') {
-      headline.innerHTML = '<b style="color:var(--a)">Radarový nowcast:</b> serverový výpočet je dočasně nedostupný. <span class="muted">Radarová mapa zůstává funkční.</span>';
+      headline.innerHTML = `<b style="color:var(--a)">Radarový nowcast:</b> serverový výpočet je dočasně nedostupný.${stamp ? ` <span class="muted">${esc(stamp)} · radarová mapa zůstává funkční.</span>` : ' <span class="muted">Radarová mapa zůstává funkční.</span>'}`;
       return;
     }
     if (n.status === 'initializing') {
       headline.innerHTML = '<b style="color:var(--a)">Radarový nowcast:</b> serverová analýza se inicializuje. <span class="muted">ETA zatím není k dispozici.</span>';
       return;
     }
+
     const relation = relationText[n.relation] || relationText.neurceno;
     const motion = n.motion || {};
     const bits = [];
@@ -32,6 +55,7 @@
       bits.push(`pohyb ${esc(motion.compass)} · ${Number(motion.speed_kmh).toFixed(0)} km/h`);
     }
     if (n.confidence) bits.push(`jistota ${esc(n.confidence)}`);
+    if (stamp) bits.push(esc(stamp));
 
     let main;
     if (Number.isFinite(Number(n.eta_min)) && n.relation === 'miri_na_lokalitu') {
@@ -48,17 +72,27 @@
     fetch('./data/radar-nowcast.json?ts=' + Date.now(), {cache:'no-store'})
       .then(r => r.ok ? r.json() : Promise.reject(new Error('nowcast unavailable')))
       .then(render)
-      .catch(() => {});
+      .catch(() => {
+        if (last) render(last);
+        else headline.innerHTML = '<b style="color:var(--a)">Radarový nowcast:</b> serverový výpočet je dočasně nedostupný. <span class="muted">Radarová mapa zůstává funkční.</span>';
+      });
   }
 
-  // The original radar loader also writes into #headline asynchronously.
-  // Re-apply the server result after it finishes, then refresh periodically.
   load();
   setTimeout(load, 1500);
   setTimeout(load, 5000);
-  setInterval(load, 60000);
+  setInterval(() => {
+    if (last) render(last); // also advances the visible age / expires stale ETA
+    load();
+  }, 60000);
 
-  // If another script overwrites the headline later, restore the last server result once.
+  window.addEventListener('focus', load);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) load();
+  });
+
+  // The original radar loader also writes into #headline asynchronously.
+  // Keep the newest server result as the final authority.
   const observer = new MutationObserver(() => {
     if (!last) return;
     observer.disconnect();
