@@ -13,7 +13,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "checked_at_local": "2026-08-20T09:35:24.824816+02:00",
+  "checked_at_local": "2026-08-20T09:40:38.816511+02:00",
   "search_window_days": 45,
   "items_found": 23,
   "new_items_saved": 0,
@@ -54,5 +54,624 @@
     "self_url": "https://stac.dataspace.copernicus.eu/v1/collections/sentinel-2-l2a/items/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913",
     "product_url": null
   },
-  "note": "Scene metadata only. NDVI/NDMI and landscape-zone statistics are the next step."
+  "best_scene_assets": {
+    "AOT_10m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R10m/T33UVS_20260815T101021_AOT_10m.jp2",
+      "type": "image/jp2",
+      "title": "Aerosol optical thickness (AOT) - 10m",
+      "roles": [
+        "data",
+        "gsd:10m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "AOT_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_AOT_20m.jp2",
+      "type": "image/jp2",
+      "title": "Aerosol optical thickness (AOT) - 20m",
+      "roles": [
+        "data",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "AOT_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_AOT_60m.jp2",
+      "type": "image/jp2",
+      "title": "Aerosol optical thickness (AOT) - 60m",
+      "roles": [
+        "data",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B01_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B01_20m.jp2",
+      "type": "image/jp2",
+      "title": "Coastal aerosol (band 1) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:upsampled",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B01_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B01_60m.jp2",
+      "type": "image/jp2",
+      "title": "Coastal aerosol (band 1) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B02_10m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R10m/T33UVS_20260815T101021_B02_10m.jp2",
+      "type": "image/jp2",
+      "title": "Blue (band 2) - 10m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:10m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B02_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B02_20m.jp2",
+      "type": "image/jp2",
+      "title": "Blue (band 2) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B02_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B02_60m.jp2",
+      "type": "image/jp2",
+      "title": "Blue (band 2) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B03_10m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R10m/T33UVS_20260815T101021_B03_10m.jp2",
+      "type": "image/jp2",
+      "title": "Green (band 3) - 10m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:10m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B03_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B03_20m.jp2",
+      "type": "image/jp2",
+      "title": "Green (band 3) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B03_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B03_60m.jp2",
+      "type": "image/jp2",
+      "title": "Green (band 3) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B04_10m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R10m/T33UVS_20260815T101021_B04_10m.jp2",
+      "type": "image/jp2",
+      "title": "Red (band 4) - 10m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:10m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B04_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B04_20m.jp2",
+      "type": "image/jp2",
+      "title": "Red (band 4) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B04_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B04_60m.jp2",
+      "type": "image/jp2",
+      "title": "Red (band 4) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B05_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B05_20m.jp2",
+      "type": "image/jp2",
+      "title": "Red edge 1 (band 5) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B05_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B05_60m.jp2",
+      "type": "image/jp2",
+      "title": "Red edge 1 (band 5) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B06_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B06_20m.jp2",
+      "type": "image/jp2",
+      "title": "Red edge 2 (band 6) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B06_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B06_60m.jp2",
+      "type": "image/jp2",
+      "title": "Red edge 2 (band 6) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B07_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B07_20m.jp2",
+      "type": "image/jp2",
+      "title": "Red edge 3 (band 7) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B07_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B07_60m.jp2",
+      "type": "image/jp2",
+      "title": "Red edge 3 (band 7) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B08_10m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R10m/T33UVS_20260815T101021_B08_10m.jp2",
+      "type": "image/jp2",
+      "title": "NIR 1 (band 8) - 10m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:10m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B09_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B09_60m.jp2",
+      "type": "image/jp2",
+      "title": "NIR 3 (band 9) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B11_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B11_20m.jp2",
+      "type": "image/jp2",
+      "title": "SWIR 1 (band 11) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B11_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B11_60m.jp2",
+      "type": "image/jp2",
+      "title": "SWIR 1 (band 11) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B12_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B12_20m.jp2",
+      "type": "image/jp2",
+      "title": "SWIR 2 (band 12) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B12_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B12_60m.jp2",
+      "type": "image/jp2",
+      "title": "SWIR 2 (band 12) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B8A_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_B8A_20m.jp2",
+      "type": "image/jp2",
+      "title": "NIR 2 (band 8A) - 20m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:original",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "B8A_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_B8A_60m.jp2",
+      "type": "image/jp2",
+      "title": "NIR 2 (band 8A) - 60m",
+      "roles": [
+        "data",
+        "reflectance",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "CLD_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/QI_DATA/MSK_CLDPRB_20m.jp2",
+      "type": "image/jp2",
+      "title": "Cloud probability (CLD) - 20m",
+      "roles": [
+        "data",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "CLD_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/QI_DATA/MSK_CLDPRB_60m.jp2",
+      "type": "image/jp2",
+      "title": "Cloud probability (CLD) - 60m",
+      "roles": [
+        "data",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "Product": {
+      "href": "https://download.dataspace.copernicus.eu/odata/v1/Products(2445fbd1-7877-48cd-8325-5651d6ac6021)/$value",
+      "type": "application/zip",
+      "title": "Zipped product",
+      "roles": [
+        "data",
+        "metadata",
+        "archive"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "SCL_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_SCL_20m.jp2",
+      "type": "image/jp2",
+      "title": "Scene classification map (SCL) - 20m",
+      "roles": [
+        "data",
+        "sampling:original",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "SCL_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_SCL_60m.jp2",
+      "type": "image/jp2",
+      "title": "Scene classification map (SCL) - 60m",
+      "roles": [
+        "data",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "SNW_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/QI_DATA/MSK_SNWPRB_20m.jp2",
+      "type": "image/jp2",
+      "title": "Snow probability (SNW) - 20m",
+      "roles": [
+        "data",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "SNW_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/QI_DATA/MSK_SNWPRB_60m.jp2",
+      "type": "image/jp2",
+      "title": "Snow probability (SNW) - 60m",
+      "roles": [
+        "data",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "TCI_10m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R10m/T33UVS_20260815T101021_TCI_10m.jp2",
+      "type": "image/jp2",
+      "title": "True color image",
+      "roles": [
+        "visual",
+        "sampling:original",
+        "gsd:10m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "TCI_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_TCI_20m.jp2",
+      "type": "image/jp2",
+      "title": "True color image",
+      "roles": [
+        "visual",
+        "sampling:downsampled",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "TCI_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_TCI_60m.jp2",
+      "type": "image/jp2",
+      "title": "True color image",
+      "roles": [
+        "visual",
+        "sampling:downsampled",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "WVP_10m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R10m/T33UVS_20260815T101021_WVP_10m.jp2",
+      "type": "image/jp2",
+      "title": "Water vapour (WVP) - 10m",
+      "roles": [
+        "data",
+        "gsd:10m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "WVP_20m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R20m/T33UVS_20260815T101021_WVP_20m.jp2",
+      "type": "image/jp2",
+      "title": "Water vapour (WVP) - 20m",
+      "roles": [
+        "data",
+        "gsd:20m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "WVP_60m": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/IMG_DATA/R60m/T33UVS_20260815T101021_WVP_60m.jp2",
+      "type": "image/jp2",
+      "title": "Water vapour (WVP) - 60m",
+      "roles": [
+        "data",
+        "gsd:60m"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "thumbnail": {
+      "href": "https://datahub.creodias.eu/odata/v1/Assets(a1813c2a-8b9f-4a7a-a648-73fdf9feb064)/$value",
+      "type": "image/jpeg",
+      "title": "Quicklook",
+      "roles": [
+        "thumbnail",
+        "overview"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "safe_manifest": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/manifest.safe",
+      "type": "application/xml",
+      "title": "manifest.safe",
+      "roles": [
+        "metadata"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "granule_metadata": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/GRANULE/L2A_T33UVS_A010145_20260815T101047/MTD_TL.xml",
+      "type": "application/xml",
+      "title": "MTD_TL.xml",
+      "roles": [
+        "metadata"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "inspire_metadata": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/INSPIRE.xml",
+      "type": "application/xml",
+      "title": "INSPIRE.xml",
+      "roles": [
+        "metadata"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "product_metadata": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/MTD_MSIL2A.xml",
+      "type": "application/xml",
+      "title": "MTD_MSIL2A.xml",
+      "roles": [
+        "metadata"
+      ],
+      "common_names": [],
+      "band_names": []
+    },
+    "datastrip_metadata": {
+      "href": "s3://eodata/Sentinel-2/MSI/L2A/2026/08/15/S2C_MSIL2A_20260815T101021_N0512_R022_T33UVS_20260815T152913.SAFE/DATASTRIP/DS_2CPS_20260815T152913_S20260815T101047/MTD_DS.xml",
+      "type": "application/xml",
+      "title": "MTD_DS.xml",
+      "roles": [
+        "metadata"
+      ],
+      "common_names": [],
+      "band_names": []
+    }
+  },
+  "best_scene_asset_keys": [
+    "AOT_10m",
+    "AOT_20m",
+    "AOT_60m",
+    "B01_20m",
+    "B01_60m",
+    "B02_10m",
+    "B02_20m",
+    "B02_60m",
+    "B03_10m",
+    "B03_20m",
+    "B03_60m",
+    "B04_10m",
+    "B04_20m",
+    "B04_60m",
+    "B05_20m",
+    "B05_60m",
+    "B06_20m",
+    "B06_60m",
+    "B07_20m",
+    "B07_60m",
+    "B08_10m",
+    "B09_60m",
+    "B11_20m",
+    "B11_60m",
+    "B12_20m",
+    "B12_60m",
+    "B8A_20m",
+    "B8A_60m",
+    "CLD_20m",
+    "CLD_60m",
+    "Product",
+    "SCL_20m",
+    "SCL_60m",
+    "SNW_20m",
+    "SNW_60m",
+    "TCI_10m",
+    "TCI_20m",
+    "TCI_60m",
+    "WVP_10m",
+    "WVP_20m",
+    "WVP_60m",
+    "datastrip_metadata",
+    "granule_metadata",
+    "inspire_metadata",
+    "product_metadata",
+    "safe_manifest",
+    "thumbnail"
+  ],
+  "note": "Scene metadata plus asset manifest. NDVI/NDMI and landscape-zone statistics are the next step."
 }
