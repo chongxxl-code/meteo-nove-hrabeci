@@ -1,6 +1,7 @@
 name: Collect CHMI regional rain
 
 # CHMI OpenData "now" files contain 10-minute observations and are refreshed hourly.
+# Re-trigger after fixing the official 10m data path.
 on:
   schedule:
     - cron: '7 * * * *'
