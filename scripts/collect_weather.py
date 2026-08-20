@@ -5,6 +5,7 @@ import csv
 import io
 import json
 import math
+import re
 import time
 import urllib.parse
 import urllib.request
@@ -21,8 +22,9 @@ DATA = ROOT / 'data'
 ARCHIVE = DATA / 'archive'
 HOURLY = ['temperature_2m', 'precipitation', 'cloud_cover', 'wind_speed_10m', 'wind_gusts_10m']
 CURRENT = ['temperature_2m', 'relative_humidity_2m', 'precipitation', 'cloud_cover', 'pressure_msl', 'wind_speed_10m', 'wind_gusts_10m']
-UA = 'nove-hrabeci-meteo/0.5 (+github-actions)'
+UA = 'nove-hrabeci-meteo/0.6 (+github-actions)'
 DWD_ROOT = 'https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/hourly'
+DWD_MAX_AGE_HOURS = 12
 
 
 def get_bytes(url: str, timeout: int = 30, tries: int = 3) -> bytes:
@@ -48,36 +50,18 @@ def make_url(base, params):
 
 
 def forecast_url(model=None):
-    p = {
-        'latitude': LAT,
-        'longitude': LON,
-        'timezone': TZ,
-        'forecast_days': 3,
-        'hourly': ','.join(HOURLY),
-    }
+    p = {'latitude': LAT, 'longitude': LON, 'timezone': TZ, 'forecast_days': 3, 'hourly': ','.join(HOURLY)}
     if model:
         p['models'] = model
     return make_url('https://api.open-meteo.com/v1/forecast', p)
 
 
 def ecmwf_url():
-    return make_url('https://api.open-meteo.com/v1/ecmwf', {
-        'latitude': LAT,
-        'longitude': LON,
-        'timezone': TZ,
-        'forecast_days': 3,
-        'hourly': ','.join(HOURLY),
-    })
+    return make_url('https://api.open-meteo.com/v1/ecmwf', {'latitude': LAT, 'longitude': LON, 'timezone': TZ, 'forecast_days': 3, 'hourly': ','.join(HOURLY)})
 
 
 def current_url():
-    return make_url('https://api.open-meteo.com/v1/forecast', {
-        'latitude': LAT,
-        'longitude': LON,
-        'timezone': TZ,
-        'forecast_days': 1,
-        'current': ','.join(CURRENT),
-    })
+    return make_url('https://api.open-meteo.com/v1/forecast', {'latitude': LAT, 'longitude': LON, 'timezone': TZ, 'forecast_days': 1, 'current': ','.join(CURRENT)})
 
 
 def fetch_with_fallback(urls):
@@ -124,20 +108,13 @@ def dwd_station_candidates(description_url: str):
         parts = line.split(maxsplit=6)
         if len(parts) < 7 or not parts[0].isdigit():
             continue
-        sid, start, end, height, lat, lon, name = parts
+        sid, start, end, height, lat, lon, rest = parts
         try:
             if end < cutoff:
                 continue
-            item = {
-                'station_id': int(sid),
-                'station_id_str': f'{int(sid):05d}',
-                'start': start,
-                'end': end,
-                'elevation_m': float(height),
-                'latitude': float(lat),
-                'longitude': float(lon),
-                'name': name.strip(),
-            }
+            name_parts = [p.strip() for p in re.split(r'\s{2,}', rest.strip()) if p.strip()]
+            name = name_parts[0] if name_parts else rest.strip()
+            item = {'station_id': int(sid), 'station_id_str': f'{int(sid):05d}', 'start': start, 'end': end, 'elevation_m': float(height), 'latitude': float(lat), 'longitude': float(lon), 'name': name}
             item['distance_km'] = haversine_km(LAT, LON, item['latitude'], item['longitude'])
             out.append(item)
         except Exception:
@@ -169,67 +146,52 @@ def parse_dwd_zip(blob: bytes, kind: str):
     if not rows:
         raise RuntimeError('DWD product contains no rows')
     for row in reversed(rows):
-        stamp = row.get('MESS_DATUM', '')
         try:
-            dt = datetime.strptime(stamp, '%Y%m%d%H').replace(tzinfo=timezone.utc)
+            dt = datetime.strptime(row.get('MESS_DATUM', ''), '%Y%m%d%H').replace(tzinfo=timezone.utc)
         except Exception:
             continue
         if kind == 'tu':
-            temp = valid_number(row.get('TT_TU'))
-            rh = valid_number(row.get('RF_TU'))
+            temp, rh = valid_number(row.get('TT_TU')), valid_number(row.get('RF_TU'))
             if temp is None and rh is None:
                 continue
-            return {
-                'observed_at_utc': dt.isoformat().replace('+00:00', 'Z'),
-                'temperature_c': temp,
-                'relative_humidity_pct': rh,
-            }
+            return {'observed_at_utc': dt.isoformat().replace('+00:00', 'Z'), 'temperature_c': temp, 'relative_humidity_pct': rh}
         if kind == 'rr':
             rain = valid_number(row.get('R1'))
             if rain is None:
                 continue
-            return {
-                'observed_at_utc': dt.isoformat().replace('+00:00', 'Z'),
-                'precipitation_1h_mm': rain,
-            }
+            return {'observed_at_utc': dt.isoformat().replace('+00:00', 'Z'), 'precipitation_1h_mm': rain}
     raise RuntimeError('No valid DWD observation row found')
 
 
 def nearest_dwd_observation(kind: str):
     if kind == 'tu':
-        sub = 'air_temperature/recent'
-        desc = 'TU_Stundenwerte_Beschreibung_Stationen.txt'
-        pattern = 'stundenwerte_TU_{sid}_akt.zip'
+        sub, desc, pattern = 'air_temperature/recent', 'TU_Stundenwerte_Beschreibung_Stationen.txt', 'stundenwerte_TU_{sid}_akt.zip'
     elif kind == 'rr':
-        sub = 'precipitation/recent'
-        desc = 'RR_Stundenwerte_Beschreibung_Stationen.txt'
-        pattern = 'stundenwerte_RR_{sid}_akt.zip'
+        sub, desc, pattern = 'precipitation/recent', 'RR_Stundenwerte_Beschreibung_Stationen.txt', 'stundenwerte_RR_{sid}_akt.zip'
     else:
         raise ValueError(kind)
-
     base = f'{DWD_ROOT}/{sub}'
     candidates = dwd_station_candidates(f'{base}/{desc}')
+    nearest_listed = None
     last_error = None
-    for station in candidates[:30]:
+    stale = []
+    for station in candidates[:40]:
         url = f"{base}/{pattern.format(sid=station['station_id_str'])}"
         try:
             obs = parse_dwd_zip(get_bytes(url), kind)
-            return {
-                'provider': 'DWD CDC',
-                'element': kind,
-                'station_id': station['station_id_str'],
-                'station_name': station['name'],
-                'latitude': station['latitude'],
-                'longitude': station['longitude'],
-                'elevation_m': station['elevation_m'],
-                'distance_km': round(station['distance_km'], 2),
-                'source_url': url,
-                **obs,
-            }
+            observed = datetime.fromisoformat(obs['observed_at_utc'].replace('Z', '+00:00'))
+            age_h = (datetime.now(timezone.utc) - observed).total_seconds() / 3600
+            station_info = {'station_id': station['station_id_str'], 'station_name': station['name'], 'distance_km': round(station['distance_km'], 2), 'observed_at_utc': obs['observed_at_utc'], 'age_hours': round(age_h, 1)}
+            if nearest_listed is None:
+                nearest_listed = station_info
+            if age_h > DWD_MAX_AGE_HOURS:
+                stale.append(station_info)
+                continue
+            return {'provider': 'DWD CDC', 'element': kind, 'station_id': station['station_id_str'], 'station_name': station['name'], 'latitude': station['latitude'], 'longitude': station['longitude'], 'elevation_m': station['elevation_m'], 'distance_km': round(station['distance_km'], 2), 'source_url': url, 'age_hours': round(age_h, 1), 'nearest_listed_station': nearest_listed, **obs}
         except Exception as exc:
             last_error = exc
             continue
-    raise RuntimeError(f'No active DWD {kind} station could be read: {last_error}')
+    raise RuntimeError(json.dumps({'message': 'No sufficiently fresh DWD station found', 'max_age_hours': DWD_MAX_AGE_HOURS, 'nearest_listed_station': nearest_listed, 'stale_examples': stale[:5], 'last_error': str(last_error)}, ensure_ascii=False))
 
 
 def main():
@@ -238,31 +200,23 @@ def main():
     now_utc = datetime.now(timezone.utc)
     now_local = now_utc.astimezone(ZoneInfo(TZ))
     errors = []
-
     try:
         current = get_json(current_url()).get('current')
     except Exception as exc:
         current = None
         errors.append(f'current: {exc}')
-
     models = {}
-    jobs = {
-        'dwd': [forecast_url('dwd_icon_d2'), forecast_url('dwd_icon_seamless')],
-        'chmi': [forecast_url('chmi_aladin_cz_1km'), forecast_url('chmi_aladin_seamless')],
-        'ec': [ecmwf_url()],
-    }
+    jobs = {'dwd': [forecast_url('dwd_icon_d2'), forecast_url('dwd_icon_seamless')], 'chmi': [forecast_url('chmi_aladin_cz_1km'), forecast_url('chmi_aladin_seamless')], 'ec': [ecmwf_url()]}
     for name, urls in jobs.items():
         try:
             models[name] = fetch_with_fallback(urls)
         except Exception as exc:
             errors.append(f'{name}: {exc}')
-
     try:
         rv = get_json('https://api.rainviewer.com/public/weather-maps.json')
     except Exception as exc:
         rv = None
         errors.append(f'rainviewer: {exc}')
-
     observations = {'dwd': {}}
     for kind in ('tu', 'rr'):
         try:
@@ -270,23 +224,12 @@ def main():
         except Exception as exc:
             observations['dwd'][kind] = {'ok': False, 'error': str(exc)}
             errors.append(f'dwd_observation_{kind}: {exc}')
-
     if not models:
         raise SystemExit('No forecast model could be collected.')
-
-    snapshot = {
-        'collected_at_utc': now_utc.isoformat().replace('+00:00', 'Z'),
-        'collected_at_local': now_local.isoformat(),
-        'location': {'name': 'Nové Hraběcí', 'latitude': LAT, 'longitude': LON, 'timezone': TZ},
-        'current': current,
-        'observations': observations,
-        'models': {n: trim_hourly(p) for n, p in models.items()},
-    }
-
+    snapshot = {'collected_at_utc': now_utc.isoformat().replace('+00:00', 'Z'), 'collected_at_local': now_local.isoformat(), 'location': {'name': 'Nové Hraběcí', 'latitude': LAT, 'longitude': LON, 'timezone': TZ}, 'current': current, 'observations': observations, 'models': {n: trim_hourly(p) for n, p in models.items()}}
     month = ARCHIVE / f'{now_local:%Y-%m}.jsonl'
     with month.open('a', encoding='utf-8') as f:
         f.write(json.dumps(snapshot, ensure_ascii=False, separators=(',', ':')) + '\n')
-
     status_path = DATA / 'status.json'
     prev = 0
     if status_path.exists():
@@ -294,34 +237,15 @@ def main():
             prev = int(json.loads(status_path.read_text(encoding='utf-8')).get('total_snapshots', 0))
         except Exception:
             pass
-
     frames = ((rv or {}).get('radar') or {}).get('past') or []
     frames = frames[-12:]
     latest = frames[-1].get('time') if frames else None
-
     model_status = {}
     for name in ('dwd', 'chmi', 'ec'):
         p = models.get(name)
         vals = ((p or {}).get('hourly') or {}).get('temperature_2m') or []
         model_status[name] = {'ok': bool(p), 'temperature_2m': vals[0] if vals else None}
-
-    status = {
-        'schema': 2,
-        'collected_at_utc': snapshot['collected_at_utc'],
-        'collected_at_local': snapshot['collected_at_local'],
-        'total_snapshots': prev + 1,
-        'archive_file': f'data/archive/{month.name}',
-        'models': model_status,
-        'current': current,
-        'observations': observations,
-        'radar': {
-            'rainviewer_frames': len(frames),
-            'rainviewer_latest_unix': latest,
-            'rainviewer_latest_local': datetime.fromtimestamp(latest, timezone.utc).astimezone(ZoneInfo(TZ)).strftime('%d.%m.%Y %H:%M') if latest else None,
-        },
-        'errors': errors,
-        'note': 'Forecasts plus nearest active official DWD observations. ČHMÚ Šluknov rain gauge integration is next.',
-    }
+    status = {'schema': 3, 'collected_at_utc': snapshot['collected_at_utc'], 'collected_at_local': snapshot['collected_at_local'], 'total_snapshots': prev + 1, 'archive_file': f'data/archive/{month.name}', 'models': model_status, 'current': current, 'observations': observations, 'radar': {'rainviewer_frames': len(frames), 'rainviewer_latest_unix': latest, 'rainviewer_latest_local': datetime.fromtimestamp(latest, timezone.utc).astimezone(ZoneInfo(TZ)).strftime('%d.%m.%Y %H:%M') if latest else None}, 'errors': errors, 'note': 'Forecasts plus fresh official DWD observations when available; stale nearby stations are rejected. ČHMÚ Šluknov rain gauge integration is next.'}
     status_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'ok': True, 'models': list(models), 'observations': observations, 'archive': str(month), 'errors': errors}, ensure_ascii=False))
 
