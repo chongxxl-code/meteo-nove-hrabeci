@@ -1,0 +1,18 @@
+{
+  "review_version": "visual-review-v4.1",
+  "reviewed_at_local": "2026-08-20T14:13:00+02:00",
+  "status": "approved_for_stable_experimental_network",
+  "note": "Manual satellite review of north-facing v4 candidates. N7 rejected because the sample is too close to a woody/edge line; N8 rejected because the sample intersects a road/tree line. N4, N5 and N6 are visually acceptable homogeneous meadow/pasture samples.",
+  "approved": [
+    {"label":"N4","id":"NH-OPEN-V4-N04","role":"north_facing_slope"},
+    {"label":"N5","id":"NH-OPEN-V4-N05","role":"north_facing_slope"},
+    {"label":"N6","id":"NH-OPEN-V4-N06","role":"north_facing_slope"}
+  ],
+  "rejected": [
+    {"label":"N7","id":"NH-OPEN-V4-N07","role":"north_facing_slope","reason":"too_close_to_woody_edge"},
+    {"label":"N8","id":"NH-OPEN-V4-N08","role":"north_facing_slope","reason":"road_tree_line_intersection"}
+  ],
+  "approved_labels": ["N4","N5","N6"],
+  "rejected_labels": ["N7","N8"],
+  "next_step": "Merge N4-N6 into stable network and recompute seasonal Sentinel, terrain gradients, manual sensitivity and north-vs-south comparisons."
+}
