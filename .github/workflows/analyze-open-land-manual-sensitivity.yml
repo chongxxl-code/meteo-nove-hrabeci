@@ -6,9 +6,11 @@ on:
     branches: [main]
     paths:
       - 'scripts/analyze_open_land_manual_sensitivity.py'
+      - 'scripts/build_landscape_findings.py'
       - 'config/disturbance-visual-review.json'
       - 'data/validation/open-land-disturbance-2026.json'
       - 'data/validation/open-land-experiment-2026.json'
+      - 'data/validation/open-land-gradient-status.json'
       - '.github/workflows/analyze-open-land-manual-sensitivity.yml'
 
 permissions:
@@ -29,15 +31,17 @@ jobs:
       - run: python -m pip install --disable-pip-version-check numpy
       - name: Run manual-review sensitivity analysis
         run: python scripts/analyze_open_land_manual_sensitivity.py
+      - name: Refresh living landscape findings
+        run: python scripts/build_landscape_findings.py
       - name: Commit results
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/validation/open-land-manual-sensitivity-2026.json data/validation/open-land-manual-sensitivity-status.json
+          git add data/validation/open-land-manual-sensitivity-2026.json data/validation/open-land-manual-sensitivity-status.json data/knowledge/findings.json
           if git diff --cached --quiet; then
-            echo "No manual sensitivity changes."
+            echo "No manual sensitivity or findings changes."
             exit 0
           fi
-          git commit -m "data: manual disturbance sensitivity $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "data: manual disturbance sensitivity and findings $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push
