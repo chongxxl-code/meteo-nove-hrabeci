@@ -1,9 +1,9 @@
 {
   "type": "FeatureCollection",
-  "name": "nove-hrabeci-open-land-candidates-v1",
+  "name": "nove-hrabeci-open-land-candidates-v1.1",
   "properties": {
     "status": "candidate_needs_visual_check",
-    "generated_at_local": "2026-08-20T11:47:19.291449+02:00",
+    "generated_at_local": "2026-08-20T11:49:48.109434+02:00",
     "purpose": "Matched open-land sampling network for testing terrain effects while holding land-cover type more constant.",
     "worldcover_source": "ESA WorldCover 2021 v200, class 30 grassland, 10 m",
     "worldcover_url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N51E012_Map.tif",
@@ -12,7 +12,9 @@
       "minimum_current_sentinel_ndvi_median": 0.55,
       "minimum_sentinel_valid_fraction": 0.8,
       "sampling_square_m": 120.0,
-      "minimum_center_spacing_m": 350.0
+      "minimum_center_spacing_m": 350.0,
+      "north_south_aspect_max_error_deg": 45.0,
+      "minimum_aspect_coherence": 0.45
     },
     "note": "Candidates are algorithmically screened but must be visually checked on satellite imagery before promotion into config/zones.geojson."
   },
@@ -31,7 +33,8 @@
         "sentinel_valid_fraction": 1.0,
         "elevation_m_bpv": 373.96,
         "slope_deg": 2.5,
-        "aspect_deg": 151.56,
+        "dominant_aspect_deg": 138.2,
+        "aspect_coherence": 0.932,
         "tpi_300m_m": -6.82,
         "tpi_900m_m": -31.06,
         "twi": 6.41,
@@ -86,7 +89,8 @@
         "sentinel_valid_fraction": 1.0,
         "elevation_m_bpv": 443.76,
         "slope_deg": 2.1,
-        "aspect_deg": 131.49,
+        "dominant_aspect_deg": 138.4,
+        "aspect_coherence": 0.99,
         "tpi_300m_m": 9.33,
         "tpi_900m_m": 30.63,
         "twi": 6.35,
@@ -141,7 +145,8 @@
         "sentinel_valid_fraction": 1.0,
         "elevation_m_bpv": 322.24,
         "slope_deg": 11.45,
-        "aspect_deg": 203.1,
+        "dominant_aspect_deg": 358.6,
+        "aspect_coherence": 0.613,
         "tpi_300m_m": -1.2,
         "tpi_900m_m": -13.52,
         "twi": 4.43,
@@ -188,50 +193,51 @@
         "selection_role": "south_facing_slope",
         "selection_score": 1.0,
         "status": "candidate_needs_visual_check",
-        "worldcover_2021_grassland_fraction": 0.89,
+        "worldcover_2021_grassland_fraction": 0.885,
         "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
         "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
-        "sentinel_ndvi_median": 0.7949,
-        "sentinel_ndmi_median": 0.2339,
+        "sentinel_ndvi_median": 0.6988,
+        "sentinel_ndmi_median": 0.1515,
         "sentinel_valid_fraction": 1.0,
-        "elevation_m_bpv": 314.45,
-        "slope_deg": 6.93,
-        "aspect_deg": 152.32,
-        "tpi_300m_m": -11.09,
-        "tpi_900m_m": -27.19,
-        "twi": 6.76,
-        "wetness_score": 63.47,
-        "drying_score": 34.75,
-        "cold_pool_score": 86.44,
+        "elevation_m_bpv": 335.52,
+        "slope_deg": 8.88,
+        "dominant_aspect_deg": 177.6,
+        "aspect_coherence": 0.97,
+        "tpi_300m_m": -9.45,
+        "tpi_900m_m": -15.44,
+        "twi": 5.22,
+        "wetness_score": 45.99,
+        "drying_score": 50.11,
+        "cold_pool_score": 72.99,
         "id": "NH-OPEN-C04",
         "name": "Kandidát – jižní svah",
         "class": "open_land_candidate",
-        "center_lat": 51.025629,
-        "center_lon": 14.447789
+        "center_lat": 51.025086,
+        "center_lon": 14.439421
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              14.4470579,
-              51.0250211
+              14.4386899,
+              51.0244783
             ],
             [
-              14.4487523,
-              51.0251677
+              14.4403842,
+              51.024625
             ],
             [
-              14.4485199,
-              51.0262363
+              14.4401517,
+              51.0256936
             ],
             [
-              14.4468255,
-              51.0260897
+              14.4384572,
+              51.0255469
             ],
             [
-              14.4470579,
-              51.0250211
+              14.4386899,
+              51.0244783
             ]
           ]
         ]
@@ -251,7 +257,8 @@
         "sentinel_valid_fraction": 1.0,
         "elevation_m_bpv": 393.24,
         "slope_deg": 3.25,
-        "aspect_deg": 108.52,
+        "dominant_aspect_deg": 108.4,
+        "aspect_coherence": 0.992,
         "tpi_300m_m": 0.73,
         "tpi_900m_m": -9.6,
         "twi": 7.58,
@@ -298,50 +305,51 @@
         "selection_role": "low_twi",
         "selection_score": 1.0,
         "status": "candidate_needs_visual_check",
-        "worldcover_2021_grassland_fraction": 0.954,
+        "worldcover_2021_grassland_fraction": 0.867,
         "sentinel_scene_id": "S2C_T33UVS_20260815T101047_L2A",
         "sentinel_scene_datetime": "2026-08-15T10:16:35.791000Z",
-        "sentinel_ndvi_median": 0.6431,
-        "sentinel_ndmi_median": 0.0887,
+        "sentinel_ndvi_median": 0.692,
+        "sentinel_ndmi_median": 0.1121,
         "sentinel_valid_fraction": 1.0,
-        "elevation_m_bpv": 350.52,
-        "slope_deg": 9.31,
-        "aspect_deg": 181.0,
-        "tpi_300m_m": 1.13,
-        "tpi_900m_m": 1.9,
-        "twi": 5.09,
-        "wetness_score": 35.31,
-        "drying_score": 56.22,
-        "cold_pool_score": 51.5,
+        "elevation_m_bpv": 396.17,
+        "slope_deg": 7.75,
+        "dominant_aspect_deg": 276.6,
+        "aspect_coherence": 0.982,
+        "tpi_300m_m": 1.24,
+        "tpi_900m_m": 5.15,
+        "twi": 5.12,
+        "wetness_score": 34.07,
+        "drying_score": 50.82,
+        "cold_pool_score": 48.99,
         "id": "NH-OPEN-C06",
         "name": "Kandidát – nízké TWI",
         "class": "open_land_candidate",
-        "center_lat": 51.025912,
-        "center_lon": 14.439529
+        "center_lat": 51.006559,
+        "center_lon": 14.495353
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              14.4387978,
-              51.025304
+              14.4946218,
+              51.0059518
             ],
             [
-              14.4404922,
-              51.0254507
+              14.4963157,
+              51.0060977
             ],
             [
-              14.4402596,
-              51.0265193
+              14.4960844,
+              51.0071664
             ],
             [
-              14.4385652,
-              51.0263726
+              14.4943905,
+              51.0070205
             ],
             [
-              14.4387978,
-              51.025304
+              14.4946218,
+              51.0059518
             ]
           ]
         ]
