@@ -9,3 +9,4 @@ if 'LOKÁLNÍ RIZIKA</span>' not in s:
 s=s.replace('<li>forecastový archiv přibližně každé 3 hodiny,</li>','<li>lokální rizikový engine přibližně každých 15 minut,</li><li>forecastový archiv přibližně každé 3 hodiny,</li>',1)
 p.write_text(s,encoding='utf-8')
 print('documented local alerts')
+# trigger v1
