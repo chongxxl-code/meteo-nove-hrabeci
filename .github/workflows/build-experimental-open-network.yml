@@ -1,0 +1,44 @@
+name: Build stable open-land experimental network
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'config/open-land-review-v2.json'
+      - 'config/open-land-candidates.geojson'
+      - 'scripts/build_experimental_open_network.py'
+      - '.github/workflows/build-experimental-open-network.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: experimental-open-land-network
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build stable experimental network
+        run: python scripts/build_experimental_open_network.py
+      - name: Commit stable experimental network
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/open-land-experimental.geojson data/validation/open-land-experimental-status.json
+          if git diff --cached --quiet; then
+            echo "No experimental-network changes."
+            exit 0
+          fi
+          git commit -m "data: stable open-land experimental network $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
