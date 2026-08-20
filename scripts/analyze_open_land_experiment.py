@@ -4,7 +4,6 @@ from __future__ import annotations
 import json
 import math
 from datetime import datetime
-from pathlib import Path
 from statistics import median
 from zoneinfo import ZoneInfo
 
@@ -18,6 +17,7 @@ ZONES_FILE = ROOT / 'config' / 'open-land-experimental.geojson'
 RAIN_FILE = ROOT / 'data' / 'validation' / 'sentinel-rain-context-2026.json'
 OUT_FILE = ROOT / 'data' / 'validation' / 'open-land-experiment-2026.json'
 STATUS_FILE = ROOT / 'data' / 'validation' / 'open-land-experiment-status.json'
+ANALYSIS_VERSION = 2
 
 
 def lookup_scene(scene_id: str) -> dict:
@@ -38,7 +38,11 @@ def med(values):
 
 
 def corr(xs, ys):
-    pairs = [(float(x), float(y)) for x, y in zip(xs, ys) if x is not None and y is not None and math.isfinite(float(x)) and math.isfinite(float(y))]
+    pairs = [
+        (float(x), float(y)) for x, y in zip(xs, ys)
+        if x is not None and y is not None
+        and math.isfinite(float(x)) and math.isfinite(float(y))
+    ]
     if len(pairs) < 4:
         return None
     a = np.array([p[0] for p in pairs], dtype='float64')
@@ -63,7 +67,7 @@ def analyze_scene(item: dict, zones: dict, rain: dict) -> dict:
         geom = feature.get('geometry') or {}
         z = {
             'id': p.get('id'),
-            'label': p.get('review_label'),
+            'label': p.get('review_label') or p.get('display_label'),
             'role': p.get('selection_role'),
             'name': p.get('name'),
         }
@@ -91,11 +95,35 @@ def analyze_scene(item: dict, zones: dict, rain: dict) -> dict:
                 out.append(value)
         return out
 
-    high_twi_ndmi = med(values('high_twi', 'ndmi'))
-    low_twi_ndmi = med(values('low_twi', 'ndmi'))
-    high_twi_ndvi = med(values('high_twi', 'ndvi'))
-    low_twi_ndvi = med(values('low_twi', 'ndvi'))
-    high_pos_ndmi = med(values('high_position', 'ndmi'))
+    def role_median(role: str, index_name: str):
+        return med(values(role, index_name))
+
+    def contrast(a: float | None, b: float | None):
+        return None if a is None or b is None else round(a - b, 4)
+
+    roles = [
+        'high_twi', 'low_twi',
+        'low_position', 'high_position',
+        'south_facing_slope', 'north_facing_slope',
+    ]
+    role_stats = {}
+    for role in roles:
+        ndmi_vals = values(role, 'ndmi')
+        ndvi_vals = values(role, 'ndvi')
+        role_stats[role] = {
+            'valid_samples': len(ndmi_vals),
+            'ndmi_median': med(ndmi_vals),
+            'ndvi_median': med(ndvi_vals),
+        }
+
+    groups = {
+        'high_twi_minus_low_twi_ndmi': contrast(role_stats['high_twi']['ndmi_median'], role_stats['low_twi']['ndmi_median']),
+        'high_twi_minus_low_twi_ndvi': contrast(role_stats['high_twi']['ndvi_median'], role_stats['low_twi']['ndvi_median']),
+        'low_minus_high_position_ndmi': contrast(role_stats['low_position']['ndmi_median'], role_stats['high_position']['ndmi_median']),
+        'low_minus_high_position_ndvi': contrast(role_stats['low_position']['ndvi_median'], role_stats['high_position']['ndvi_median']),
+        'south_minus_north_ndmi': contrast(role_stats['south_facing_slope']['ndmi_median'], role_stats['north_facing_slope']['ndmi_median']),
+        'south_minus_north_ndvi': contrast(role_stats['south_facing_slope']['ndvi_median'], role_stats['north_facing_slope']['ndvi_median']),
+    }
 
     return {
         'scene_id': item.get('id'),
@@ -105,23 +133,36 @@ def analyze_scene(item: dict, zones: dict, rain: dict) -> dict:
         'rain_14d': rain.get('rain_14d'),
         'rain_30d': rain.get('rain_30d'),
         'zones': results,
-        'groups': {
-            'high_twi_ndmi_median': high_twi_ndmi,
-            'low_twi_ndmi_median': low_twi_ndmi,
-            'high_twi_ndvi_median': high_twi_ndvi,
-            'low_twi_ndvi_median': low_twi_ndvi,
-            'high_position_ndmi_median': high_pos_ndmi,
-            'high_twi_minus_low_twi_ndmi': None if high_twi_ndmi is None or low_twi_ndmi is None else round(high_twi_ndmi - low_twi_ndmi, 4),
-            'high_twi_minus_low_twi_ndvi': None if high_twi_ndvi is None or low_twi_ndvi is None else round(high_twi_ndvi - low_twi_ndvi, 4),
-        },
+        'role_stats': role_stats,
+        'groups': groups,
         'quality_status': 'valid' if all(z.get('ok') for z in results) else 'partial',
     }
 
 
+def contrast_summary(records: list[dict], key: str, positive_label: str) -> dict:
+    vals = [(r.get('groups') or {}).get(key) for r in records]
+    valid = [float(v) for v in vals if v is not None and math.isfinite(float(v))]
+    positive = sum(1 for v in valid if v > 0)
+    out = {
+        'scene_count': len(valid),
+        'positive_count': positive,
+        'positive_fraction': round(positive / len(valid), 3) if valid else None,
+        'median_contrast': round(float(median(valid)), 4) if valid else None,
+        'positive_means': positive_label,
+    }
+    for days in (7, 14, 30):
+        rain_values = [((r.get(f'rain_{days}d') or {}).get('precipitation_mm')) for r in records]
+        out[f'corr_rain_{days}d_vs_contrast'] = corr(rain_values, vals)
+    return out
+
+
 def main():
     zones = json.loads(ZONES_FILE.read_text(encoding='utf-8'))
-    if zones.get('properties', {}).get('status') != 'stable_after_second_visual_check':
-        raise RuntimeError('Experimental open-land network is not stable/finalized.')
+    props = zones.get('properties', {})
+    network_status = str(props.get('status') or '')
+    if not network_status.startswith('stable_'):
+        raise RuntimeError(f'Experimental open-land network is not stable/finalized: {network_status!r}')
+
     rain_data = json.loads(RAIN_FILE.read_text(encoding='utf-8'))
     rain_scenes = rain_data.get('scenes') or []
     if not rain_scenes:
@@ -138,31 +179,29 @@ def main():
         except Exception as exc:
             errors.append({'scene_id': scene_id, 'error': str(exc)})
 
-    contrasts = [r['groups'].get('high_twi_minus_low_twi_ndmi') for r in records]
-    contrast_valid = [v for v in contrasts if v is not None]
-    positive = sum(1 for v in contrast_valid if v > 0)
-
     summary = {
         'scene_count': len(records),
-        'valid_scene_count': sum(1 for r in records if r.get('quality_status') == 'valid'),
-        'twi_contrast_scene_count': len(contrast_valid),
-        'high_twi_wetter_ndmi_count': positive,
-        'high_twi_wetter_ndmi_fraction': round(positive / len(contrast_valid), 3) if contrast_valid else None,
-        'median_high_twi_minus_low_twi_ndmi': round(float(median(contrast_valid)), 4) if contrast_valid else None,
+        'fully_valid_scene_count': sum(1 for r in records if r.get('quality_status') == 'valid'),
+        'sample_count': len(zones.get('features') or []),
+        'role_counts': props.get('role_counts') or {},
+        'twi_ndmi': contrast_summary(records, 'high_twi_minus_low_twi_ndmi', 'high-TWI group has higher NDMI'),
+        'position_ndmi': contrast_summary(records, 'low_minus_high_position_ndmi', 'low-position group has higher NDMI'),
+        'aspect_ndmi': contrast_summary(records, 'south_minus_north_ndmi', 'south-facing group has higher NDMI'),
+        'twi_ndvi': contrast_summary(records, 'high_twi_minus_low_twi_ndvi', 'high-TWI group has higher NDVI'),
+        'position_ndvi': contrast_summary(records, 'low_minus_high_position_ndvi', 'low-position group has higher NDVI'),
+        'aspect_ndvi': contrast_summary(records, 'south_minus_north_ndvi', 'south-facing group has higher NDVI'),
     }
-
-    for days in (7, 14, 30):
-        rain_values = [((r.get(f'rain_{days}d') or {}).get('precipitation_mm')) for r in records]
-        summary[f'corr_rain_{days}d_vs_twi_ndmi_contrast'] = corr(rain_values, contrasts)
 
     out = {
         'ok': bool(records),
-        'quality_status': 'valid_exploratory_series' if records and not errors else 'partial_exploratory_series',
+        'quality_status': 'valid_exploratory_series_v2' if records and not errors else 'partial_exploratory_series_v2',
+        'analysis_version': ANALYSIS_VERSION,
         'computed_at_local': datetime.now(TZ).isoformat(),
         'network': zones.get('name'),
-        'network_review_version': zones.get('properties', {}).get('review_version'),
+        'network_status': network_status,
+        'network_review_versions': props.get('review_versions') or props.get('review_version'),
         'provider': 'Sentinel-2 Collection 1 L2A via Earth Search / AWS Open Data COG + ČHMÚ antecedent rainfall',
-        'interpretation_warning': 'NDMI is a spectral moisture signal, not direct soil-moisture measurement. Correlations are exploratory and do not establish causality.',
+        'interpretation_warning': 'NDMI is a spectral vegetation/water-content signal, not direct soil-moisture measurement. Group contrasts are exploratory; land management, phenology and sample imbalance can confound them. Correlations do not establish causality.',
         'summary': summary,
         'scenes': records,
         'errors': errors,
@@ -173,13 +212,15 @@ def main():
     status = {
         'ok': bool(records),
         'quality_status': out['quality_status'],
+        'analysis_version': ANALYSIS_VERSION,
         'computed_at_local': out['computed_at_local'],
         'network': out['network'],
+        'network_status': network_status,
         'scene_count': len(records),
         'failed_scene_count': len(errors),
         'summary': summary,
         'output_file': str(OUT_FILE.relative_to(ROOT)).replace('\\', '/'),
-        'next_step': 'Inspect per-scene TWI+ versus TWI- NDMI response, then add replacement low-position and south-facing samples before broader terrain-effect inference.'
+        'next_step': 'Inspect replicated TWI, relative-position and aspect contrasts across the seasonal series; treat north-facing inference cautiously because only one north sample is available.'
     }
     STATUS_FILE.write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(status, ensure_ascii=False))
