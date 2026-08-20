@@ -16,29 +16,41 @@ h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
 .hour .t{font-size:19px;margin:6px 0}
 .note{font-size:11px;line-height:1.45;margin-top:7px}
 
-/* Model comparison is useful, but secondary: keep data, reduce visual weight. */
-.chart{padding-bottom:11px}
-.chart svg{height:170px;margin-top:2px}
-.chart .sect{margin-bottom:0}
-.chart>.muted:last-child{font-size:10px;margin-top:-2px;opacity:.78}
-.models{padding:13px 14px}
-.models .sect{margin-bottom:2px}
-.models .sect h2{font-size:16px}
-.models .sect>span{font-size:10px}
-.models .model{padding:7px 0}
-.models .model strong{font-size:13px;align-items:baseline}
-.models .model strong span:last-child{font-size:13px}
-.models .model small{font-size:10px}
+/* Information hierarchy: change visual order only; DOM and JS stay untouched. */
+.hero{order:10}
+.ai{order:11}
+.hours{order:20}
+.risks{order:30}
+.landscape{order:40}
+.chart{order:50}
+.models{order:51}
+.radar{order:60}
+.central{order:70}
+
+/* Model comparison is useful, but clearly secondary. */
+.chart{padding:11px 13px 8px}
+.chart svg{height:118px;margin-top:0}
+.chart .sect h2{font-size:14px}
+.chart .sect>span{font-size:10px}
+.chart>.muted:last-child{font-size:9px;margin-top:-5px;opacity:.65}
+.models{padding:10px 12px}
+.models .sect{margin-bottom:0}
+.models .sect h2{font-size:14px}
+.models .sect>span{font-size:9px}
+.models .model{padding:5px 0}
+.models .model strong{font-size:12px;align-items:baseline}
+.models .model strong span:last-child{font-size:12px}
+.models .model small{font-size:9px}
 
 /* System collection remains available, but behaves as a quiet service/status layer. */
-.central{padding:10px 14px;background:rgba(8,23,30,.78);border-color:#18333d}
-.central .sect h2{font-size:13px;color:var(--mu);font-weight:800}
-.central .sect>span{font-size:10px}
-.central .centralgrid{display:flex;flex-wrap:wrap;align-items:center;gap:5px 18px;margin-top:6px}
+.central{padding:9px 13px;background:rgba(8,23,30,.72);border-color:#18333d}
+.central .sect h2{font-size:12px;color:var(--mu);font-weight:800}
+.central .sect>span{font-size:9px}
+.central .centralgrid{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin-top:5px}
 .central .stat{background:transparent;border:0;border-radius:0;padding:0;white-space:nowrap}
-.central .stat b{display:inline;font-size:12px;color:var(--tx)}
-.central .stat span{font-size:10px;margin-left:4px}
-.central .note{font-size:10px;margin:5px 0 0;opacity:.82}
+.central .stat b{display:inline;font-size:11px;color:var(--tx)}
+.central .stat span{font-size:9px;margin-left:4px}
+.central .note{font-size:9px;margin:4px 0 0;opacity:.72}
 
 /* Landscape tools stay complete, but secondary actions no longer dominate. */
 .landgrid{margin-top:9px}
@@ -60,7 +72,7 @@ h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
 
 @media(max-width:850px){
   .temp{font-size:52px}
-  .chart svg{height:160px}
+  .chart svg{height:105px}
   .central .centralgrid{display:flex;grid-template-columns:none}
 }
 @media(max-width:520px){
@@ -74,17 +86,17 @@ h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
   .aitxt{font-size:17px}
   .sect{align-items:flex-start}
   .sect h2{font-size:16px}
-  .chart svg{height:145px}
-  .chart>.muted:last-child{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .models{padding:10px 11px}
-  .models .model{padding:6px 0}
+  .chart svg{height:92px}
+  .chart>.muted:last-child{font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .models{padding:9px 10px}
+  .models .model{padding:4px 0}
   .hourstrip{grid-template-columns:repeat(12,minmax(72px,1fr))}
-  .central{padding:9px 11px}
+  .central{padding:8px 10px}
   .central .sect{align-items:center}
-  .central .sect h2{font-size:12px}
-  .central .centralgrid{gap:4px 12px}
+  .central .sect h2{font-size:11px}
+  .central .centralgrid{gap:3px 10px}
   .central .stat{width:auto}
-  .central .note{font-size:9px}
+  .central .note{font-size:8px}
   .action{width:auto;justify-content:flex-start;padding:7px 9px}
   #map{height:320px}
 }
