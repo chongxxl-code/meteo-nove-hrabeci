@@ -1,0 +1,41 @@
+name: Merge north-facing v4 review into stable network
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/merge_open_land_v4.py'
+      - 'config/open-land-review-v4.json'
+      - 'config/open-land-north-candidates-v4.geojson'
+      - '.github/workflows/merge-open-land-v4.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: merge-open-land-v4
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Merge approved v4 north controls
+        run: python scripts/merge_open_land_v4.py
+      - name: Commit expanded stable network
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/open-land-experimental.geojson data/validation/open-land-experimental-status.json
+          if git diff --cached --quiet; then
+            echo "No stable-network changes."
+            exit 0
+          fi
+          git commit -m "data: merge approved north-facing v4 controls $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
