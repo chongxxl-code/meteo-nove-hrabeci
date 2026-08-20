@@ -13,12 +13,12 @@ from PIL import Image
 
 LAT = 51.0162
 LON = 14.4398
-ZOOM = 8
+ZOOM = 7
 TILE = 256
 GRID = 3
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data' / 'radar-nowcast.json'
-UA = 'nove-hrabeci-radar-nowcast/0.1 (+github-actions)'
+UA = 'nove-hrabeci-radar-nowcast/0.2 (+github-actions)'
 MAX_SHIFT_PX = 55
 TARGET_RADIUS_KM = 7.0
 MAX_ETA_MIN = 120.0
@@ -70,7 +70,6 @@ def fetch_frame(host: str, path: str):
 
 
 def phase_shift(a: np.ndarray, b: np.ndarray):
-    # Positive dx/dy means precipitation moved east/right and south/down from a to b.
     win_y = np.hanning(a.shape[0])[:, None]
     win_x = np.hanning(a.shape[1])[None, :]
     aw = (a - a.mean()) * win_y * win_x
@@ -101,7 +100,6 @@ def angle_diff_deg(a, b):
 
 
 def compass_from_vector(dx, dy):
-    # screen y grows south; bearing 0=N, 90=E
     bearing = (math.degrees(math.atan2(dx, -dy)) + 360.0) % 360.0
     names = ['S', 'SV', 'V', 'JV', 'J', 'JZ', 'Z', 'SZ']
     return bearing, names[int((bearing + 22.5) // 45) % 8]
@@ -128,8 +126,7 @@ def classify(latest, tx, ty, vx_px_min, vy_px_min, mpp):
     eta = eta[(eta >= 0) & (eta <= MAX_ETA_MIN)]
     if len(eta):
         return {'relation': 'miri_na_lokalitu', 'eta_min': int(round(float(np.min(eta)))), 'nearest_km': round(nearest_km, 1)}
-    near_now = nearest_km <= TARGET_RADIUS_KM
-    if near_now:
+    if nearest_km <= TARGET_RADIUS_KM:
         return {'relation': 'nad_nebo_u_lokality', 'eta_min': 0, 'nearest_km': round(nearest_km, 1)}
     return {'relation': 'miji_lokalitu', 'eta_min': None, 'nearest_km': round(nearest_km, 1)}
 
@@ -170,8 +167,7 @@ def main():
             if np.count_nonzero(imgs[i - 1] > 0.08) < MIN_RAIN_PIXELS or np.count_nonzero(imgs[i] > 0.08) < MIN_RAIN_PIXELS:
                 continue
             dx, dy, ratio = phase_shift(imgs[i - 1], imgs[i])
-            mag = math.hypot(dx, dy)
-            if mag > MAX_SHIFT_PX:
+            if math.hypot(dx, dy) > MAX_SHIFT_PX:
                 continue
             shifts.append({'dx': dx, 'dy': dy, 'dt_min': dt_min, 'ratio': ratio})
 
