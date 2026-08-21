@@ -19,7 +19,15 @@ TARGET_LON = 14.4398
 PREFERRED_WSI = '0-203-0-11501049001'
 PREFERRED_NAME = 'Šluknov'
 BASE = 'https://opendata.chmi.cz/meteorology/climate'
-UA = 'nove-hrabeci-meteo/1.0 (+github-actions)'
+UA = 'nove-hrabeci-meteo/1.1 (+github-actions)'
+WANTED = {
+    'T': 'temperature_c',
+    'H': 'relative_humidity_pct',
+    'F': 'wind_speed_ms',
+    'Fmax': 'wind_gust_ms',
+    'D': 'wind_direction_deg',
+    'SRA10M': 'precipitation_10m_mm',
+}
 
 
 def get_json(url: str, tries: int = 2):
@@ -93,10 +101,10 @@ def parse_dt(v):
     if not re.match(r'^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}', s):
         return None
     try:
-        dt = datetime.fromisoformat(s.replace('Z', '+00:00'))
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
-        return dt.astimezone(timezone.utc)
+        d = datetime.fromisoformat(s.replace('Z', '+00:00'))
+        if d.tzinfo is None:
+            d = d.replace(tzinfo=timezone.utc)
+        return d.astimezone(timezone.utc)
     except Exception:
         return None
 
@@ -135,56 +143,63 @@ def metadata_stations(payload, now_utc):
                 continue
         dist = haversine_km(TARGET_LAT, TARGET_LON, lat, lon)
         stations[str(wsi)] = {
-            'wsi': str(wsi),
-            'name': str(name),
-            'lat': lat,
-            'lon': lon,
-            'elevation_m': elev,
-            'distance_km': round(dist, 2),
+            'wsi': str(wsi), 'name': str(name), 'lat': lat, 'lon': lon,
+            'elevation_m': elev, 'distance_km': round(dist, 2),
         }
     out = list(stations.values())
     out.sort(key=lambda s: (0 if s['wsi'] == PREFERRED_WSI else 1, s['distance_km']))
     return out
 
 
-def extract_sra10m(payload):
+def row_element(row):
+    for v in row.values():
+        if isinstance(v, str):
+            s = v.strip()
+            if s in WANTED:
+                return s
+    return None
+
+
+def row_value(cols, row, element):
+    for c in cols:
+        key = re.sub(r'[^A-Z0-9]', '', c.upper())
+        if key in ('VALUE', 'HODNOTA', 'VAL') or 'VALUE' in key:
+            n = as_float(row.get(c))
+            if n is not None:
+                return n
+    for c in cols:
+        key = c.upper()
+        if any(x in key for x in ('FLAG', 'QUALITY', 'WSI', 'DATE', 'TIME', 'INTERVAL', 'HEIGHT')):
+            continue
+        v = row.get(c)
+        if isinstance(v, str) and v.strip() == element:
+            continue
+        n = as_float(v)
+        if n is not None:
+            return n
+    return None
+
+
+def extract_weather(payload):
     cols, rows = table_rows(payload)
-    out = []
+    by_time = {}
+    available = set()
     for row in rows:
-        raw = list(row.values())
-        if not any(str(v).strip().upper() == 'SRA10M' for v in raw if v is not None):
+        element = row_element(row)
+        if not element:
             continue
-        observed = next((parse_dt(v) for v in raw if parse_dt(v)), None)
-        if not observed:
+        observed = next((parse_dt(v) for v in row.values() if parse_dt(v)), None)
+        value = row_value(cols, row, element)
+        if not observed or value is None:
             continue
-        value = None
-        for c in cols:
-            key = re.sub(r'[^A-Z0-9]', '', c.upper())
-            if key in ('VALUE', 'HODNOTA', 'VAL') or 'VALUE' in key:
-                value = as_float(row.get(c))
-                if value is not None:
-                    break
-        if value is None:
-            for c in cols:
-                key = c.upper()
-                if any(x in key for x in ('FLAG', 'QUALITY', 'WSI', 'DATE', 'TIME', 'INTERVAL', 'HEIGHT')):
-                    continue
-                v = row.get(c)
-                if isinstance(v, str) and v.strip().upper() == 'SRA10M':
-                    continue
-                n = as_float(v)
-                if n is not None:
-                    value = n
-                    break
-        if value is not None:
-            out.append({
-                'observed_at_utc': observed.isoformat().replace('+00:00', 'Z'),
-                'precipitation_10m_mm': value,
-            })
-    if not out:
-        raise RuntimeError(f'No SRA10M rows parsed; columns={cols!r}; row_count={len(rows)}')
-    unique = {r['observed_at_utc']: r for r in out}
-    return [unique[k] for k in sorted(unique)]
+        available.add(element)
+        key = observed.isoformat().replace('+00:00', 'Z')
+        rec = by_time.setdefault(key, {'observed_at_utc': key})
+        rec[WANTED[element]] = value
+    points = [by_time[k] for k in sorted(by_time)]
+    if not points or 'SRA10M' not in available:
+        raise RuntimeError(f'No usable SRA10M observations; columns={cols!r}; row_count={len(rows)}')
+    return points, sorted(available)
 
 
 def try_station(station, now_utc):
@@ -193,9 +208,8 @@ def try_station(station, now_utc):
         url = f"{BASE}/now/data/10m-{station['wsi']}-{d:%Y%m%d}.json"
         try:
             payload = get_json(url)
-            points = extract_sra10m(payload)
-            points.sort(key=lambda x: x['observed_at_utc'])
-            return points, url
+            points, available = extract_weather(payload)
+            return points, available, url
         except Exception as exc:
             errors.append(f'{url}: {exc}')
     raise RuntimeError(' | '.join(errors))
@@ -215,6 +229,16 @@ def existing_times(archive):
     return out
 
 
+def append_unique(archive, records):
+    known = existing_times(archive)
+    new = [r for r in records if r.get('observed_at_utc') not in known]
+    if new:
+        with archive.open('a', encoding='utf-8') as f:
+            for r in new:
+                f.write(json.dumps(r, ensure_ascii=False, separators=(',', ':')) + '\n')
+    return len(new)
+
+
 def main():
     DATA.mkdir(exist_ok=True)
     OBS.mkdir(exist_ok=True)
@@ -226,86 +250,68 @@ def main():
     if not candidates:
         raise RuntimeError('No ČHMÚ stations parsed from metadata')
 
-    chosen = None
-    points = None
-    source_url = None
+    chosen = points = source_url = available = None
     attempts = []
     for station in candidates[:25]:
         if station['distance_km'] > 80:
             continue
         try:
-            p, url = try_station(station, now_utc)
-            chosen, points, source_url = station, p, url
+            p, elems, url = try_station(station, now_utc)
+            chosen, points, available, source_url = station, p, elems, url
             break
         except Exception as exc:
-            attempts.append({
-                'station': station['name'],
-                'wsi': station['wsi'],
-                'distance_km': station['distance_km'],
-                'error': str(exc)[:500],
-            })
+            attempts.append({'station': station['name'], 'wsi': station['wsi'],
+                             'distance_km': station['distance_km'], 'error': str(exc)[:500]})
 
     if not chosen or not points:
-        raise RuntimeError(
-            'No nearby ČHMÚ station with current SRA10M; attempts='
-            + json.dumps(attempts[:8], ensure_ascii=False)
-        )
+        raise RuntimeError('No nearby ČHMÚ station with current 10m data; attempts=' + json.dumps(attempts[:8], ensure_ascii=False))
+
+    base_meta = {
+        'provider': 'ČHMÚ OpenData', 'station_name': chosen['name'], 'station_wsi': chosen['wsi'],
+        'latitude': chosen['lat'], 'longitude': chosen['lon'], 'elevation_m': chosen['elevation_m'],
+        'distance_to_nove_hrabeci_km': chosen['distance_km'],
+    }
+
+    weather_archive = OBS / f'chmi-weather-{chosen["wsi"].replace("-", "_")}-{now_local:%Y-%m}.jsonl'
+    weather_records = [{**base_meta, **p} for p in points]
+    weather_new = append_unique(weather_archive, weather_records)
+
+    # Preserve the original rain-only archive for existing drought/landscape consumers.
+    rain_archive = OBS / f'chmi-rain-{chosen["wsi"].replace("-", "_")}-{now_local:%Y-%m}.jsonl'
+    rain_records = [{**base_meta, 'observed_at_utc': p['observed_at_utc'],
+                     'precipitation_10m_mm': p['precipitation_10m_mm']}
+                    for p in points if p.get('precipitation_10m_mm') is not None]
+    rain_new = append_unique(rain_archive, rain_records)
 
     latest = points[-1]
     latest_dt = datetime.fromisoformat(latest['observed_at_utc'].replace('Z', '+00:00'))
-    archive = OBS / f'chmi-rain-{chosen["wsi"].replace("-", "_")}-{now_local:%Y-%m}.jsonl'
-    known = existing_times(archive)
-    new_points = [p for p in points if p['observed_at_utc'] not in known]
-    if new_points:
-        with archive.open('a', encoding='utf-8') as f:
-            for p in new_points:
-                rec = {
-                    'provider': 'ČHMÚ OpenData',
-                    'station_name': chosen['name'],
-                    'station_wsi': chosen['wsi'],
-                    'latitude': chosen['lat'],
-                    'longitude': chosen['lon'],
-                    'elevation_m': chosen['elevation_m'],
-                    'distance_to_nove_hrabeci_km': chosen['distance_km'],
-                    **p,
-                }
-                f.write(json.dumps(rec, ensure_ascii=False, separators=(',', ':')) + '\n')
-
-    recent = [
-        p for p in points
-        if datetime.fromisoformat(p['observed_at_utc'].replace('Z', '+00:00'))
-        >= latest_dt - timedelta(minutes=50)
-    ]
-    rain_60 = round(sum(float(p['precipitation_10m_mm']) for p in recent), 3)
+    recent = [p for p in points if datetime.fromisoformat(p['observed_at_utc'].replace('Z', '+00:00')) >= latest_dt - timedelta(minutes=50)]
+    rain_60 = round(sum(float(p.get('precipitation_10m_mm') or 0) for p in recent), 3)
 
     status = {
-        'ok': True,
-        'provider': 'ČHMÚ OpenData',
-        'preferred_station': PREFERRED_NAME,
+        'ok': True, 'provider': 'ČHMÚ OpenData', 'preferred_station': PREFERRED_NAME,
         'preferred_station_available': chosen['wsi'] == PREFERRED_WSI,
-        'station_name': chosen['name'],
-        'station_wsi': chosen['wsi'],
-        'latitude': chosen['lat'],
-        'longitude': chosen['lon'],
-        'elevation_m': chosen['elevation_m'],
-        'distance_to_nove_hrabeci_km': chosen['distance_km'],
-        'metadata_url': meta_url,
-        'source_url': source_url,
-        'checked_at_local': now_local.isoformat(),
-        'observed_at_utc': latest['observed_at_utc'],
-        'observed_at_local': latest_dt.astimezone(TZ).isoformat(),
+        'station_name': chosen['name'], 'station_wsi': chosen['wsi'],
+        'latitude': chosen['lat'], 'longitude': chosen['lon'], 'elevation_m': chosen['elevation_m'],
+        'distance_to_nove_hrabeci_km': chosen['distance_km'], 'metadata_url': meta_url,
+        'source_url': source_url, 'checked_at_local': now_local.isoformat(),
+        'observed_at_utc': latest['observed_at_utc'], 'observed_at_local': latest_dt.astimezone(TZ).isoformat(),
         'age_minutes': round((now_utc - latest_dt).total_seconds() / 60, 1),
-        'precipitation_10m_mm': latest['precipitation_10m_mm'],
+        'available_elements': available,
+        'temperature_c': latest.get('temperature_c'),
+        'relative_humidity_pct': latest.get('relative_humidity_pct'),
+        'wind_speed_ms': latest.get('wind_speed_ms'),
+        'wind_gust_ms': latest.get('wind_gust_ms'),
+        'wind_direction_deg': latest.get('wind_direction_deg'),
+        'precipitation_10m_mm': latest.get('precipitation_10m_mm'),
         'precipitation_last_60m_mm': rain_60,
-        'new_points_saved': len(new_points),
+        'new_weather_points_saved': weather_new, 'new_rain_points_saved': rain_new,
         'available_points_today': len(points),
-        'archive_file': f'data/observations/{archive.name}',
+        'weather_archive_file': f'data/observations/{weather_archive.name}',
+        'archive_file': f'data/observations/{rain_archive.name}',
         'fallback_attempts_before_success': attempts[:8],
     }
-    (DATA / 'chmi-status.json').write_text(
-        json.dumps(status, ensure_ascii=False, indent=2) + '\n',
-        encoding='utf-8',
-    )
+    (DATA / 'chmi-status.json').write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(status, ensure_ascii=False))
 
 
@@ -314,18 +320,10 @@ def safe_main():
         main()
     except Exception as exc:
         DATA.mkdir(exist_ok=True)
-        payload = {
-            'ok': False,
-            'provider': 'ČHMÚ OpenData',
-            'preferred_station': PREFERRED_NAME,
-            'preferred_station_wsi': PREFERRED_WSI,
-            'checked_at_local': datetime.now(TZ).isoformat(),
-            'error': str(exc),
-        }
-        (DATA / 'chmi-status.json').write_text(
-            json.dumps(payload, ensure_ascii=False, indent=2) + '\n',
-            encoding='utf-8',
-        )
+        payload = {'ok': False, 'provider': 'ČHMÚ OpenData', 'preferred_station': PREFERRED_NAME,
+                   'preferred_station_wsi': PREFERRED_WSI, 'checked_at_local': datetime.now(TZ).isoformat(),
+                   'error': str(exc)}
+        (DATA / 'chmi-status.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print(json.dumps(payload, ensure_ascii=False))
 
 
