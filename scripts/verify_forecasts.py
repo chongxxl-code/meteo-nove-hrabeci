@@ -3,8 +3,7 @@ from __future__ import annotations
 
 import json
 import math
-from collections import defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -12,12 +11,15 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data'
 FORECAST_ARCHIVE = DATA / 'archive'
 RADAR_ARCHIVE = DATA / 'radar-observations'
+OBS_ARCHIVE = DATA / 'observations'
 OUT = DATA / 'forecast-verification.json'
 TZ = ZoneInfo('Europe/Prague')
 RAIN_FORECAST_THRESHOLD_MM = 0.1
 RAIN_OBS_THRESHOLD_MM = 0.1
 RADAR_WINDOW_MIN = 40
-OBS_MATCH_MIN = 90
+CHMI_TEMP_MATCH_MIN = 60
+CHMI_RAIN_WINDOW_MIN = 40
+DWD_MATCH_MIN = 90
 
 
 def dt(s):
@@ -46,29 +48,46 @@ def lead_bin(h):
     return '48–72 h'
 
 
-def load_forecasts():
-    snapshots = []
-    if not FORECAST_ARCHIVE.exists():
-        return snapshots
-    for p in sorted(FORECAST_ARCHIVE.glob('*.jsonl')):
+def load_jsonl_dir(folder, pattern='*.jsonl'):
+    out = []
+    if not folder.exists():
+        return out
+    for p in sorted(folder.glob(pattern)):
         for line in p.read_text(encoding='utf-8').splitlines():
             try:
-                snapshots.append(json.loads(line))
+                out.append(json.loads(line))
             except Exception:
                 pass
-    return snapshots
+    return out
+
+
+def load_forecasts():
+    return load_jsonl_dir(FORECAST_ARCHIVE)
 
 
 def load_radar():
     out = []
-    if not RADAR_ARCHIVE.exists():
+    for r in load_jsonl_dir(RADAR_ARCHIVE):
+        t = dt(r.get('radar_time_utc'))
+        if t:
+            out.append((t, r))
+    out.sort(key=lambda x: x[0])
+    return out
+
+
+def load_chmi_weather():
+    out = []
+    seen = set()
+    if not OBS_ARCHIVE.exists():
         return out
-    for p in sorted(RADAR_ARCHIVE.glob('*.jsonl')):
+    for p in sorted(OBS_ARCHIVE.glob('chmi-weather-*.jsonl')):
         for line in p.read_text(encoding='utf-8').splitlines():
             try:
                 r = json.loads(line)
-                t = dt(r.get('radar_time_utc'))
-                if t:
+                t = dt(r.get('observed_at_utc'))
+                key = (r.get('station_wsi'), r.get('observed_at_utc'))
+                if t and key not in seen:
+                    seen.add(key)
                     out.append((t, r))
             except Exception:
                 pass
@@ -86,26 +105,47 @@ def build_dwd_observations(snapshots):
         if t and tu.get('temperature_c') is not None:
             k = ('t', t.isoformat(), tu.get('station_id'))
             if k not in seen:
-                seen.add(k)
-                temp.append((t, float(tu['temperature_c']), tu))
+                seen.add(k); temp.append((t, float(tu['temperature_c']), tu))
         rr = dwd.get('rr') or {}
         t = dt(rr.get('observed_at_utc'))
         if t and rr.get('precipitation_1h_mm') is not None:
             k = ('r', t.isoformat(), rr.get('station_id'))
             if k not in seen:
-                seen.add(k)
-                rain.append((t, float(rr['precipitation_1h_mm']), rr))
+                seen.add(k); rain.append((t, float(rr['precipitation_1h_mm']), rr))
     temp.sort(key=lambda x: x[0]); rain.sort(key=lambda x: x[0])
     return temp, rain
 
 
-def nearest_obs(target, arr, tol_min=OBS_MATCH_MIN):
+def nearest_obs(target, arr, tol_min):
     best = None
     for item in arr:
         delta = abs((item[0] - target).total_seconds()) / 60
         if delta <= tol_min and (best is None or delta < best[0]):
             best = (delta, item)
     return best[1] if best else None
+
+
+def nearest_chmi_temp(target, chmi):
+    arr = []
+    for t, r in chmi:
+        if r.get('temperature_c') is not None:
+            arr.append((t, float(r['temperature_c']), r))
+    return nearest_obs(target, arr, CHMI_TEMP_MATCH_MIN)
+
+
+def chmi_rain_obs(target, chmi):
+    vals = []
+    meta = None
+    for t, r in chmi:
+        delta = abs((t - target).total_seconds()) / 60
+        if delta <= CHMI_RAIN_WINDOW_MIN and r.get('precipitation_10m_mm') is not None:
+            vals.append(float(r['precipitation_10m_mm']))
+            if meta is None or delta < meta[0]:
+                meta = (delta, r)
+    if not vals:
+        return None, None, 0, None
+    total = sum(vals)
+    return total >= RAIN_OBS_THRESHOLD_MM, total, len(vals), meta[1] if meta else None
 
 
 def radar_obs(target, radar):
@@ -122,7 +162,8 @@ def radar_obs(target, radar):
 def main():
     snapshots = load_forecasts()
     radar = load_radar()
-    temp_obs, rain_obs = build_dwd_observations(snapshots)
+    chmi = load_chmi_weather()
+    dwd_temp, dwd_rain = build_dwd_observations(snapshots)
     now = datetime.now(timezone.utc)
 
     temp_cases = []
@@ -146,42 +187,60 @@ def main():
                     continue
 
                 if i < len(temps) and temps[i] is not None:
-                    obs = nearest_obs(target, temp_obs)
+                    obs = nearest_chmi_temp(target, chmi)
+                    source = 'chmi_sluknov'
+                    if not obs:
+                        obs = nearest_obs(target, dwd_temp, DWD_MATCH_MIN)
+                        source = 'dwd_station'
                     if obs:
                         observed = obs[1]
                         forecast = float(temps[i])
+                        meta = obs[2]
                         temp_cases.append({
                             'model': model, 'lead_bin': bucket, 'lead_h': round(lead_h, 2),
                             'issued_at_utc': issued.isoformat().replace('+00:00','Z'),
                             'target_at_utc': target.isoformat().replace('+00:00','Z'),
                             'forecast_c': forecast, 'observed_c': observed,
-                            'error_c': round(forecast - observed, 3),
-                            'station': obs[2].get('station_name'), 'station_distance_km': obs[2].get('distance_km')
+                            'error_c': round(forecast - observed, 3), 'verification_source': source,
+                            'station': meta.get('station_name'),
+                            'station_distance_km': meta.get('distance_to_nove_hrabeci_km', meta.get('distance_km'))
                         })
 
                 if i < len(rains) and rains[i] is not None:
                     forecast_mm = float(rains[i])
                     forecast_rain = forecast_mm >= RAIN_FORECAST_THRESHOLD_MM
-                    local, samples = radar_obs(target, radar)
-                    station = nearest_obs(target, rain_obs)
-                    station_rain = None if not station else station[1] >= RAIN_OBS_THRESHOLD_MM
-                    if local is not None or station is not None:
-                        observed_rain = local if local is not None else station_rain
-                        outcome = ('hit' if forecast_rain and observed_rain else
-                                   'false_alarm' if forecast_rain and not observed_rain else
-                                   'miss' if (not forecast_rain) and observed_rain else 'correct_dry')
-                        rain_cases.append({
-                            'model': model, 'lead_bin': bucket, 'lead_h': round(lead_h, 2),
-                            'issued_at_utc': issued.isoformat().replace('+00:00','Z'),
-                            'target_at_utc': target.isoformat().replace('+00:00','Z'),
-                            'forecast_mm': forecast_mm, 'forecast_rain': forecast_rain,
-                            'observed_rain': observed_rain, 'outcome': outcome,
-                            'verification_source': 'local_radar' if local is not None else 'dwd_station',
-                            'radar_samples': samples,
-                            'station_rain_mm': None if not station else station[1],
-                            'station': None if not station else station[2].get('station_name'),
-                            'station_distance_km': None if not station else station[2].get('distance_km')
-                        })
+                    local, radar_samples = radar_obs(target, radar)
+                    gauge_rain, gauge_mm, gauge_samples, gauge_meta = chmi_rain_obs(target, chmi)
+                    dwd = nearest_obs(target, dwd_rain, DWD_MATCH_MIN)
+
+                    if local is not None:
+                        observed_rain = local
+                        source = 'local_radar'
+                    elif gauge_rain is not None:
+                        observed_rain = gauge_rain
+                        source = 'chmi_sluknov_gauge'
+                    elif dwd is not None:
+                        observed_rain = dwd[1] >= RAIN_OBS_THRESHOLD_MM
+                        source = 'dwd_station'
+                    else:
+                        continue
+
+                    outcome = ('hit' if forecast_rain and observed_rain else
+                               'false_alarm' if forecast_rain and not observed_rain else
+                               'miss' if (not forecast_rain) and observed_rain else 'correct_dry')
+                    rain_cases.append({
+                        'model': model, 'lead_bin': bucket, 'lead_h': round(lead_h, 2),
+                        'issued_at_utc': issued.isoformat().replace('+00:00','Z'),
+                        'target_at_utc': target.isoformat().replace('+00:00','Z'),
+                        'forecast_mm': forecast_mm, 'forecast_rain': forecast_rain,
+                        'observed_rain': observed_rain, 'outcome': outcome,
+                        'verification_source': source, 'radar_samples': radar_samples,
+                        'chmi_gauge_mm_window': None if gauge_mm is None else round(gauge_mm, 3),
+                        'chmi_gauge_samples': gauge_samples,
+                        'station_rain_mm': None if dwd is None else dwd[1],
+                        'station': (gauge_meta or {}).get('station_name') if gauge_meta else (None if dwd is None else dwd[2].get('station_name')),
+                        'station_distance_km': (gauge_meta or {}).get('distance_to_nove_hrabeci_km') if gauge_meta else (None if dwd is None else dwd[2].get('distance_km'))
+                    })
 
     summary = {}
     models = sorted({c['model'] for c in temp_cases + rain_cases})
@@ -198,38 +257,29 @@ def main():
             dry = sum(x['outcome']=='correct_dry' for x in rc)
             total = len(rc)
             summary[model][b] = {
-                'temperature': {
-                    'n': len(tc),
-                    'mae_c': rounded(mean([abs(e) for e in errs]), 2),
-                    'bias_c': rounded(mean(errs), 2)
-                },
-                'rain': {
-                    'n': total, 'hits': hits, 'false_alarms': fa, 'misses': misses, 'correct_dry': dry,
-                    'accuracy': rounded((hits+dry)/total, 3) if total else None,
-                    'pod': rounded(hits/(hits+misses), 3) if hits+misses else None,
-                    'false_alarm_ratio': rounded(fa/(hits+fa), 3) if hits+fa else None
-                }
+                'temperature': {'n': len(tc), 'mae_c': rounded(mean([abs(e) for e in errs]), 2), 'bias_c': rounded(mean(errs), 2)},
+                'rain': {'n': total, 'hits': hits, 'false_alarms': fa, 'misses': misses, 'correct_dry': dry,
+                         'accuracy': rounded((hits+dry)/total, 3) if total else None,
+                         'pod': rounded(hits/(hits+misses), 3) if hits+misses else None,
+                         'false_alarm_ratio': rounded(fa/(hits+fa), 3) if hits+fa else None}
             }
 
-    recent_rain = sorted(rain_cases, key=lambda x: (x['target_at_utc'], x['issued_at_utc']), reverse=True)[:80]
-    recent_temp = sorted(temp_cases, key=lambda x: (x['target_at_utc'], x['issued_at_utc']), reverse=True)[:40]
     out = {
-        'schema': 1,
-        'generated_at_utc': now.isoformat().replace('+00:00','Z'),
+        'schema': 2, 'generated_at_utc': now.isoformat().replace('+00:00','Z'),
         'method': {
-            'temperature_truth': 'nearest sufficiently fresh DWD hourly air-temperature observation; not a sensor in Nové Hraběcí',
-            'rain_truth_priority': 'qualitative RainViewer signal within 7 km of NH when archived; otherwise nearest fresh DWD hourly rain observation',
+            'temperature_truth_priority': 'ČHMÚ Šluknov 10-minute T (1.85 km), then fresh DWD hourly observation',
+            'rain_truth_priority': 'qualitative RainViewer signal within 7 km of NH, then ČHMÚ Šluknov 10-minute gauge, then fresh DWD hourly gauge',
             'rain_forecast_threshold_mm': RAIN_FORECAST_THRESHOLD_MM,
-            'note': 'Radar is used only for rain/no-rain verification, not as gauge millimetres. Model weights are not changed automatically.'
+            'note': 'Radar is rain/no-rain only; ČHMÚ gauge retains measured millimetres. Model weights are not changed automatically.'
         },
         'coverage': {
-            'forecast_snapshots': len(snapshots), 'dwd_temperature_observations': len(temp_obs),
-            'dwd_rain_observations': len(rain_obs), 'radar_observations': len(radar),
-            'temperature_cases': len(temp_cases), 'rain_cases': len(rain_cases)
+            'forecast_snapshots': len(snapshots), 'chmi_weather_observations': len(chmi),
+            'dwd_temperature_observations': len(dwd_temp), 'dwd_rain_observations': len(dwd_rain),
+            'radar_observations': len(radar), 'temperature_cases': len(temp_cases), 'rain_cases': len(rain_cases)
         },
         'summary': summary,
-        'recent_rain_cases': recent_rain,
-        'recent_temperature_cases': recent_temp
+        'recent_rain_cases': sorted(rain_cases, key=lambda x: (x['target_at_utc'], x['issued_at_utc']), reverse=True)[:80],
+        'recent_temperature_cases': sorted(temp_cases, key=lambda x: (x['target_at_utc'], x['issued_at_utc']), reverse=True)[:40]
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(out['coverage'], ensure_ascii=False))
