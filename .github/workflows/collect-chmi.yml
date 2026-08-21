@@ -1,6 +1,6 @@
-name: Collect CHMI regional weather
+name: Collect regional weather observations
 
-# CHMI OpenData "now" files contain 10-minute observations and are refreshed hourly.
+# ČHMÚ and DWD 10-minute observations are refreshed frequently; collect hourly.
 on:
   schedule:
     - cron: '7 * * * *'
@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/collect_chmi.py'
+      - 'scripts/collect_dwd_sohland.py'
       - 'scripts/verify_forecasts.py'
       - '.github/workflows/collect-chmi.yml'
 
@@ -16,7 +17,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: chmi-weather-collector
+  group: regional-weather-collector
   cancel-in-progress: false
 
 jobs:
@@ -29,19 +30,21 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Collect nearest live CHMI 10-minute weather data
+      - name: Collect live CHMI 10-minute observations
         run: python scripts/collect_chmi.py
+      - name: Collect live DWD Sohland 10-minute observations
+        run: python scripts/collect_dwd_sohland.py
       - name: Rebuild forecast verification
         run: python scripts/verify_forecasts.py
       - name: Commit observations and verification
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/chmi-status.json data/observations/ data/forecast-verification.json 2>/dev/null || true
+          git add data/chmi-status.json data/dwd-sohland-status.json data/observations/ data/forecast-verification.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No observation changes."
             exit 0
           fi
-          git commit -m "data: CHMI weather $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "data: regional weather $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push
