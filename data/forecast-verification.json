@@ -1,8 +1,8 @@
 {
-  "schema": 3,
-  "generated_at_utc": "2026-08-21T05:38:22.861950Z",
+  "schema": 4,
+  "generated_at_utc": "2026-08-21T05:38:56.204150Z",
   "method": {
-    "temperature_truth_priority": "nearest current ČHMÚ 10-minute station measuring T, then fresh DWD hourly observation",
+    "temperature_truth_priority": "fresh DWD Sohland/Spree 10-minute T (~4.9 km), then nearest current ČHMÚ 10-minute T station, then DWD hourly observation",
     "temperature_station": "Varnsdorf",
     "temperature_station_distance_km": 16.76,
     "rain_truth_priority": "qualitative RainViewer signal within 7 km of NH, then ČHMÚ Šluknov 10-minute gauge (1.85 km), then fresh DWD hourly gauge",
@@ -11,6 +11,7 @@
   },
   "coverage": {
     "forecast_snapshots": 13,
+    "sohland_temperature_observations": 0,
     "chmi_temperature_observations": 30,
     "chmi_rain_observations": 169,
     "dwd_temperature_observations": 2,
