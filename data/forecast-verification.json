@@ -1,20 +1,23 @@
 {
-  "schema": 2,
-  "generated_at_utc": "2026-08-21T05:12:25.318761Z",
+  "schema": 3,
+  "generated_at_utc": "2026-08-21T05:13:57.716180Z",
   "method": {
-    "temperature_truth_priority": "ČHMÚ Šluknov 10-minute T (1.85 km), then fresh DWD hourly observation",
-    "rain_truth_priority": "qualitative RainViewer signal within 7 km of NH, then ČHMÚ Šluknov 10-minute gauge, then fresh DWD hourly gauge",
+    "temperature_truth_priority": "nearest current ČHMÚ 10-minute station measuring T, then fresh DWD hourly observation",
+    "temperature_station": "Varnsdorf",
+    "temperature_station_distance_km": 16.76,
+    "rain_truth_priority": "qualitative RainViewer signal within 7 km of NH, then ČHMÚ Šluknov 10-minute gauge (1.85 km), then fresh DWD hourly gauge",
     "rain_forecast_threshold_mm": 0.1,
     "note": "Radar is rain/no-rain only; ČHMÚ gauge retains measured millimetres. Model weights are not changed automatically."
   },
   "coverage": {
     "forecast_snapshots": 13,
-    "chmi_weather_observations": 60,
+    "chmi_temperature_observations": 30,
+    "chmi_rain_observations": 169,
     "dwd_temperature_observations": 2,
     "dwd_rain_observations": 2,
     "radar_observations": 8,
     "temperature_cases": 249,
-    "rain_cases": 279
+    "rain_cases": 591
   },
   "summary": {
     "chmi": {
@@ -25,11 +28,11 @@
           "bias_c": 3.38
         },
         "rain": {
-          "n": 21,
+          "n": 72,
           "hits": 0,
           "false_alarms": 0,
           "misses": 0,
-          "correct_dry": 21,
+          "correct_dry": 72,
           "accuracy": 1.0,
           "pod": null,
           "false_alarm_ratio": null
@@ -42,11 +45,11 @@
           "bias_c": 2.74
         },
         "rain": {
-          "n": 18,
+          "n": 56,
           "hits": 0,
           "false_alarms": 0,
           "misses": 0,
-          "correct_dry": 18,
+          "correct_dry": 56,
           "accuracy": 1.0,
           "pod": null,
           "false_alarm_ratio": null
@@ -59,12 +62,12 @@
           "bias_c": 4.04
         },
         "rain": {
-          "n": 54,
+          "n": 69,
           "hits": 0,
           "false_alarms": 12,
           "misses": 0,
-          "correct_dry": 42,
-          "accuracy": 0.778,
+          "correct_dry": 57,
+          "accuracy": 0.826,
           "pod": null,
           "false_alarm_ratio": 1.0
         }
@@ -112,11 +115,11 @@
           "bias_c": 2.77
         },
         "rain": {
-          "n": 21,
+          "n": 72,
           "hits": 0,
           "false_alarms": 0,
           "misses": 0,
-          "correct_dry": 21,
+          "correct_dry": 72,
           "accuracy": 1.0,
           "pod": null,
           "false_alarm_ratio": null
@@ -129,11 +132,11 @@
           "bias_c": 2.64
         },
         "rain": {
-          "n": 18,
+          "n": 56,
           "hits": 0,
           "false_alarms": 0,
           "misses": 0,
-          "correct_dry": 18,
+          "correct_dry": 56,
           "accuracy": 1.0,
           "pod": null,
           "false_alarm_ratio": null
@@ -146,11 +149,11 @@
           "bias_c": 2.44
         },
         "rain": {
-          "n": 54,
+          "n": 69,
           "hits": 0,
           "false_alarms": 0,
           "misses": 0,
-          "correct_dry": 54,
+          "correct_dry": 69,
           "accuracy": 1.0,
           "pod": null,
           "false_alarm_ratio": null
@@ -199,14 +202,14 @@
           "bias_c": 3.2
         },
         "rain": {
-          "n": 21,
+          "n": 72,
           "hits": 0,
-          "false_alarms": 0,
+          "false_alarms": 37,
           "misses": 0,
-          "correct_dry": 21,
-          "accuracy": 1.0,
+          "correct_dry": 35,
+          "accuracy": 0.486,
           "pod": null,
-          "false_alarm_ratio": null
+          "false_alarm_ratio": 1.0
         }
       },
       "6–12 h": {
@@ -216,14 +219,14 @@
           "bias_c": 3.13
         },
         "rain": {
-          "n": 18,
+          "n": 56,
           "hits": 0,
-          "false_alarms": 0,
+          "false_alarms": 15,
           "misses": 0,
-          "correct_dry": 18,
-          "accuracy": 1.0,
+          "correct_dry": 41,
+          "accuracy": 0.732,
           "pod": null,
-          "false_alarm_ratio": null
+          "false_alarm_ratio": 1.0
         }
       },
       "12–24 h": {
@@ -233,11 +236,11 @@
           "bias_c": 3.11
         },
         "rain": {
-          "n": 54,
+          "n": 69,
           "hits": 0,
           "false_alarms": 0,
           "misses": 0,
-          "correct_dry": 54,
+          "correct_dry": 69,
           "accuracy": 1.0,
           "pod": null,
           "false_alarm_ratio": null
@@ -293,7 +296,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -311,7 +314,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -329,7 +332,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -347,7 +350,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -365,7 +368,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -383,7 +386,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -401,7 +404,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -419,7 +422,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -437,7 +440,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -455,7 +458,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -473,7 +476,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -491,7 +494,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -509,7 +512,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -527,7 +530,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -545,7 +548,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -563,7 +566,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -581,7 +584,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -599,7 +602,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -617,7 +620,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -635,7 +638,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -653,7 +656,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -671,7 +674,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -689,7 +692,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -707,7 +710,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -725,7 +728,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -743,7 +746,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -761,7 +764,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -779,7 +782,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -797,7 +800,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -815,7 +818,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -833,7 +836,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -851,7 +854,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -869,7 +872,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -887,7 +890,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -905,7 +908,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -923,7 +926,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -941,7 +944,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -959,7 +962,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -977,7 +980,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 8,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -995,7 +998,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1013,7 +1016,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1031,7 +1034,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1049,7 +1052,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1067,7 +1070,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1085,7 +1088,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1103,7 +1106,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1121,7 +1124,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1139,7 +1142,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1157,7 +1160,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1175,7 +1178,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1193,7 +1196,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1211,7 +1214,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1229,7 +1232,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1247,7 +1250,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1265,7 +1268,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1283,7 +1286,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1301,7 +1304,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1319,7 +1322,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1337,7 +1340,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1355,7 +1358,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1373,7 +1376,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1391,7 +1394,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1409,7 +1412,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1427,7 +1430,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1445,7 +1448,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1463,7 +1466,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1481,7 +1484,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1499,7 +1502,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1517,7 +1520,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1535,7 +1538,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1553,7 +1556,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1571,7 +1574,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1589,7 +1592,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1607,7 +1610,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1625,7 +1628,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1643,7 +1646,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1661,7 +1664,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1679,7 +1682,7 @@
       "verification_source": "local_radar",
       "radar_samples": 2,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1697,7 +1700,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1715,7 +1718,7 @@
       "verification_source": "local_radar",
       "radar_samples": 1,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 18,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1731,7 +1734,7 @@
       "forecast_c": 13.9,
       "observed_c": 11.2,
       "error_c": 2.7,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1744,7 +1747,7 @@
       "forecast_c": 14.9,
       "observed_c": 11.2,
       "error_c": 3.7,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1757,7 +1760,7 @@
       "forecast_c": 16.9,
       "observed_c": 11.2,
       "error_c": 5.7,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1770,7 +1773,7 @@
       "forecast_c": 13.9,
       "observed_c": 11.2,
       "error_c": 2.7,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1783,7 +1786,7 @@
       "forecast_c": 15.4,
       "observed_c": 11.2,
       "error_c": 4.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1796,7 +1799,7 @@
       "forecast_c": 16.9,
       "observed_c": 11.2,
       "error_c": 5.7,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1809,7 +1812,7 @@
       "forecast_c": 14.2,
       "observed_c": 11.2,
       "error_c": 3.0,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1822,7 +1825,7 @@
       "forecast_c": 15.4,
       "observed_c": 11.2,
       "error_c": 4.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1835,7 +1838,7 @@
       "forecast_c": 16.6,
       "observed_c": 11.2,
       "error_c": 5.4,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1848,7 +1851,7 @@
       "forecast_c": 14.8,
       "observed_c": 11.2,
       "error_c": 3.6,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1861,7 +1864,7 @@
       "forecast_c": 14.4,
       "observed_c": 11.2,
       "error_c": 3.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1874,7 +1877,7 @@
       "forecast_c": 16.6,
       "observed_c": 11.2,
       "error_c": 5.4,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1887,7 +1890,7 @@
       "forecast_c": 14.8,
       "observed_c": 11.2,
       "error_c": 3.6,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1900,7 +1903,7 @@
       "forecast_c": 14.4,
       "observed_c": 11.2,
       "error_c": 3.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1913,7 +1916,7 @@
       "forecast_c": 17.0,
       "observed_c": 11.2,
       "error_c": 5.8,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1926,7 +1929,7 @@
       "forecast_c": 14.9,
       "observed_c": 11.2,
       "error_c": 3.7,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1939,7 +1942,7 @@
       "forecast_c": 14.4,
       "observed_c": 11.2,
       "error_c": 3.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1952,7 +1955,7 @@
       "forecast_c": 17.0,
       "observed_c": 11.2,
       "error_c": 5.8,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1965,7 +1968,7 @@
       "forecast_c": 14.0,
       "observed_c": 11.2,
       "error_c": 2.8,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1978,7 +1981,7 @@
       "forecast_c": 14.8,
       "observed_c": 11.2,
       "error_c": 3.6,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -1991,7 +1994,7 @@
       "forecast_c": 16.9,
       "observed_c": 11.2,
       "error_c": 5.7,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2004,7 +2007,7 @@
       "forecast_c": 14.2,
       "observed_c": 11.2,
       "error_c": 3.0,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2017,7 +2020,7 @@
       "forecast_c": 15.4,
       "observed_c": 11.2,
       "error_c": 4.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2030,7 +2033,7 @@
       "forecast_c": 16.9,
       "observed_c": 11.2,
       "error_c": 5.7,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2043,7 +2046,7 @@
       "forecast_c": 15.3,
       "observed_c": 11.2,
       "error_c": 4.1,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2056,7 +2059,7 @@
       "forecast_c": 15.4,
       "observed_c": 11.2,
       "error_c": 4.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2069,7 +2072,7 @@
       "forecast_c": 17.0,
       "observed_c": 11.2,
       "error_c": 5.8,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2082,7 +2085,7 @@
       "forecast_c": 15.3,
       "observed_c": 11.2,
       "error_c": 4.1,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2095,7 +2098,7 @@
       "forecast_c": 15.4,
       "observed_c": 11.2,
       "error_c": 4.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2108,7 +2111,7 @@
       "forecast_c": 17.0,
       "observed_c": 11.2,
       "error_c": 5.8,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2121,7 +2124,7 @@
       "forecast_c": 15.3,
       "observed_c": 11.2,
       "error_c": 4.1,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2134,7 +2137,7 @@
       "forecast_c": 15.4,
       "observed_c": 11.2,
       "error_c": 4.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2147,7 +2150,7 @@
       "forecast_c": 17.0,
       "observed_c": 11.2,
       "error_c": 5.8,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2160,7 +2163,7 @@
       "forecast_c": 15.3,
       "observed_c": 11.2,
       "error_c": 4.1,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2173,7 +2176,7 @@
       "forecast_c": 15.4,
       "observed_c": 11.2,
       "error_c": 4.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2186,7 +2189,7 @@
       "forecast_c": 17.0,
       "observed_c": 11.2,
       "error_c": 5.8,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2199,7 +2202,7 @@
       "forecast_c": 15.3,
       "observed_c": 11.2,
       "error_c": 4.1,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2212,7 +2215,7 @@
       "forecast_c": 15.4,
       "observed_c": 11.2,
       "error_c": 4.2,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2225,7 +2228,7 @@
       "forecast_c": 17.0,
       "observed_c": 11.2,
       "error_c": 5.8,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     },
@@ -2238,7 +2241,7 @@
       "forecast_c": 13.1,
       "observed_c": 10.8,
       "error_c": 2.3,
-      "verification_source": "chmi_sluknov",
+      "verification_source": "chmi_nearest_temperature_station",
       "station": "Varnsdorf",
       "station_distance_km": 16.76
     }
