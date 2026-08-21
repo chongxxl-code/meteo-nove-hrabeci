@@ -1,32 +1,32 @@
 {
   "schema": 4,
-  "generated_at_utc": "2026-08-21T05:38:56.204150Z",
+  "generated_at_utc": "2026-08-21T05:39:24.024540Z",
   "method": {
     "temperature_truth_priority": "fresh DWD Sohland/Spree 10-minute T (~4.9 km), then nearest current ČHMÚ 10-minute T station, then DWD hourly observation",
-    "temperature_station": "Varnsdorf",
-    "temperature_station_distance_km": 16.76,
+    "temperature_station": "Sohland/Spree",
+    "temperature_station_distance_km": 4.89,
     "rain_truth_priority": "qualitative RainViewer signal within 7 km of NH, then ČHMÚ Šluknov 10-minute gauge (1.85 km), then fresh DWD hourly gauge",
     "rain_forecast_threshold_mm": 0.1,
     "note": "Radar is rain/no-rain only; ČHMÚ gauge retains measured millimetres. Model weights are not changed automatically."
   },
   "coverage": {
     "forecast_snapshots": 13,
-    "sohland_temperature_observations": 0,
+    "sohland_temperature_observations": 174,
     "chmi_temperature_observations": 30,
     "chmi_rain_observations": 169,
     "dwd_temperature_observations": 2,
     "dwd_rain_observations": 2,
     "radar_observations": 9,
-    "temperature_cases": 249,
+    "temperature_cases": 591,
     "rain_cases": 591
   },
   "summary": {
     "chmi": {
       "0–6 h": {
         "temperature": {
-          "n": 19,
-          "mae_c": 3.38,
-          "bias_c": 3.38
+          "n": 72,
+          "mae_c": 2.23,
+          "bias_c": 1.21
         },
         "rain": {
           "n": 72,
@@ -41,9 +41,9 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 16,
-          "mae_c": 2.74,
-          "bias_c": 2.74
+          "n": 56,
+          "mae_c": 2.77,
+          "bias_c": 0.19
         },
         "rain": {
           "n": 56,
@@ -58,9 +58,9 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 48,
-          "mae_c": 4.04,
-          "bias_c": 4.04
+          "n": 69,
+          "mae_c": 4.52,
+          "bias_c": 4.52
         },
         "rain": {
           "n": 69,
@@ -111,9 +111,9 @@
     "dwd": {
       "0–6 h": {
         "temperature": {
-          "n": 19,
-          "mae_c": 2.77,
-          "bias_c": 2.77
+          "n": 72,
+          "mae_c": 2.02,
+          "bias_c": 1.39
         },
         "rain": {
           "n": 72,
@@ -128,9 +128,9 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 16,
-          "mae_c": 2.64,
-          "bias_c": 2.64
+          "n": 56,
+          "mae_c": 2.19,
+          "bias_c": 1.2
         },
         "rain": {
           "n": 56,
@@ -145,9 +145,9 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 48,
-          "mae_c": 2.44,
-          "bias_c": 2.44
+          "n": 69,
+          "mae_c": 3.54,
+          "bias_c": 3.54
         },
         "rain": {
           "n": 69,
@@ -198,9 +198,9 @@
     "ec": {
       "0–6 h": {
         "temperature": {
-          "n": 19,
-          "mae_c": 3.2,
-          "bias_c": 3.2
+          "n": 72,
+          "mae_c": 2.25,
+          "bias_c": 1.4
         },
         "rain": {
           "n": 72,
@@ -215,9 +215,9 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 16,
-          "mae_c": 3.13,
-          "bias_c": 3.13
+          "n": 56,
+          "mae_c": 2.76,
+          "bias_c": 1.15
         },
         "rain": {
           "n": 56,
@@ -232,9 +232,9 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 48,
-          "mae_c": 3.11,
-          "bias_c": 3.11
+          "n": 69,
+          "mae_c": 4.14,
+          "bias_c": 4.14
         },
         "rain": {
           "n": 69,
@@ -1733,11 +1733,11 @@
       "issued_at_utc": "2026-08-21T03:58:45.098386Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 13.9,
-      "observed_c": 11.2,
-      "error_c": 2.7,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 4.6,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -1746,11 +1746,11 @@
       "issued_at_utc": "2026-08-21T03:58:45.098386Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.9,
-      "observed_c": 11.2,
-      "error_c": 3.7,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 5.6,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -1759,11 +1759,11 @@
       "issued_at_utc": "2026-08-21T03:58:45.098386Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 16.9,
-      "observed_c": 11.2,
-      "error_c": 5.7,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.6,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -1772,11 +1772,11 @@
       "issued_at_utc": "2026-08-21T01:56:14.955910Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 13.9,
-      "observed_c": 11.2,
-      "error_c": 2.7,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 4.6,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -1785,11 +1785,11 @@
       "issued_at_utc": "2026-08-21T01:56:14.955910Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.4,
-      "observed_c": 11.2,
-      "error_c": 4.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -1798,11 +1798,11 @@
       "issued_at_utc": "2026-08-21T01:56:14.955910Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 16.9,
-      "observed_c": 11.2,
-      "error_c": 5.7,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.6,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -1811,11 +1811,11 @@
       "issued_at_utc": "2026-08-20T22:45:34.461462Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.2,
-      "observed_c": 11.2,
-      "error_c": 3.0,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 4.9,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -1824,11 +1824,11 @@
       "issued_at_utc": "2026-08-20T22:45:34.461462Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.4,
-      "observed_c": 11.2,
-      "error_c": 4.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -1837,11 +1837,11 @@
       "issued_at_utc": "2026-08-20T22:45:34.461462Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 16.6,
-      "observed_c": 11.2,
-      "error_c": 5.4,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.3,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -1850,11 +1850,11 @@
       "issued_at_utc": "2026-08-20T21:41:52.556670Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.8,
-      "observed_c": 11.2,
-      "error_c": 3.6,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 5.5,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -1863,11 +1863,11 @@
       "issued_at_utc": "2026-08-20T21:41:52.556670Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.4,
-      "observed_c": 11.2,
-      "error_c": 3.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 5.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -1876,11 +1876,11 @@
       "issued_at_utc": "2026-08-20T21:41:52.556670Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 16.6,
-      "observed_c": 11.2,
-      "error_c": 5.4,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.3,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -1889,11 +1889,11 @@
       "issued_at_utc": "2026-08-20T18:57:04.255720Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.8,
-      "observed_c": 11.2,
-      "error_c": 3.6,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 5.5,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -1902,11 +1902,11 @@
       "issued_at_utc": "2026-08-20T18:57:04.255720Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.4,
-      "observed_c": 11.2,
-      "error_c": 3.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 5.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -1915,11 +1915,11 @@
       "issued_at_utc": "2026-08-20T18:57:04.255720Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 17.0,
-      "observed_c": 11.2,
-      "error_c": 5.8,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -1928,11 +1928,11 @@
       "issued_at_utc": "2026-08-20T15:47:22.852119Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.9,
-      "observed_c": 11.2,
-      "error_c": 3.7,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 5.6,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -1941,11 +1941,11 @@
       "issued_at_utc": "2026-08-20T15:47:22.852119Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.4,
-      "observed_c": 11.2,
-      "error_c": 3.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 5.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -1954,11 +1954,11 @@
       "issued_at_utc": "2026-08-20T15:47:22.852119Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 17.0,
-      "observed_c": 11.2,
-      "error_c": 5.8,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -1967,11 +1967,11 @@
       "issued_at_utc": "2026-08-20T13:09:18.064269Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.0,
-      "observed_c": 11.2,
-      "error_c": 2.8,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 4.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -1980,11 +1980,11 @@
       "issued_at_utc": "2026-08-20T13:09:18.064269Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.8,
-      "observed_c": 11.2,
-      "error_c": 3.6,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 5.5,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -1993,11 +1993,11 @@
       "issued_at_utc": "2026-08-20T13:09:18.064269Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 16.9,
-      "observed_c": 11.2,
-      "error_c": 5.7,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.6,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -2006,11 +2006,11 @@
       "issued_at_utc": "2026-08-20T09:48:45.704808Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 14.2,
-      "observed_c": 11.2,
-      "error_c": 3.0,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 4.9,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -2019,11 +2019,11 @@
       "issued_at_utc": "2026-08-20T09:48:45.704808Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.4,
-      "observed_c": 11.2,
-      "error_c": 4.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -2032,11 +2032,11 @@
       "issued_at_utc": "2026-08-20T09:48:45.704808Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 16.9,
-      "observed_c": 11.2,
-      "error_c": 5.7,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.6,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -2045,11 +2045,11 @@
       "issued_at_utc": "2026-08-20T07:04:19.685758Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.3,
-      "observed_c": 11.2,
-      "error_c": 4.1,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.0,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -2058,11 +2058,11 @@
       "issued_at_utc": "2026-08-20T07:04:19.685758Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.4,
-      "observed_c": 11.2,
-      "error_c": 4.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -2071,11 +2071,11 @@
       "issued_at_utc": "2026-08-20T07:04:19.685758Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 17.0,
-      "observed_c": 11.2,
-      "error_c": 5.8,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -2084,11 +2084,11 @@
       "issued_at_utc": "2026-08-20T06:17:07.501731Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.3,
-      "observed_c": 11.2,
-      "error_c": 4.1,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.0,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -2097,11 +2097,11 @@
       "issued_at_utc": "2026-08-20T06:17:07.501731Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.4,
-      "observed_c": 11.2,
-      "error_c": 4.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -2110,11 +2110,11 @@
       "issued_at_utc": "2026-08-20T06:17:07.501731Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 17.0,
-      "observed_c": 11.2,
-      "error_c": 5.8,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -2123,11 +2123,11 @@
       "issued_at_utc": "2026-08-20T06:08:27.302262Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.3,
-      "observed_c": 11.2,
-      "error_c": 4.1,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.0,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -2136,11 +2136,11 @@
       "issued_at_utc": "2026-08-20T06:08:27.302262Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.4,
-      "observed_c": 11.2,
-      "error_c": 4.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -2149,11 +2149,11 @@
       "issued_at_utc": "2026-08-20T06:08:27.302262Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 17.0,
-      "observed_c": 11.2,
-      "error_c": 5.8,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -2162,11 +2162,11 @@
       "issued_at_utc": "2026-08-20T06:07:24.628795Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.3,
-      "observed_c": 11.2,
-      "error_c": 4.1,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.0,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -2175,11 +2175,11 @@
       "issued_at_utc": "2026-08-20T06:07:24.628795Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.4,
-      "observed_c": 11.2,
-      "error_c": 4.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -2188,11 +2188,11 @@
       "issued_at_utc": "2026-08-20T06:07:24.628795Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 17.0,
-      "observed_c": 11.2,
-      "error_c": 5.8,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -2201,11 +2201,11 @@
       "issued_at_utc": "2026-08-20T05:59:01.464377Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.3,
-      "observed_c": 11.2,
-      "error_c": 4.1,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.0,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "chmi",
@@ -2214,11 +2214,11 @@
       "issued_at_utc": "2026-08-20T05:59:01.464377Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 15.4,
-      "observed_c": 11.2,
-      "error_c": 4.2,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 6.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "ec",
@@ -2227,11 +2227,11 @@
       "issued_at_utc": "2026-08-20T05:59:01.464377Z",
       "target_at_utc": "2026-08-21T05:00:00Z",
       "forecast_c": 17.0,
-      "observed_c": 11.2,
-      "error_c": 5.8,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.3,
+      "error_c": 7.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     },
     {
       "model": "dwd",
@@ -2240,11 +2240,11 @@
       "issued_at_utc": "2026-08-21T03:58:45.098386Z",
       "target_at_utc": "2026-08-21T04:00:00Z",
       "forecast_c": 13.1,
-      "observed_c": 10.8,
-      "error_c": 2.3,
-      "verification_source": "chmi_nearest_temperature_station",
-      "station": "Varnsdorf",
-      "station_distance_km": 16.76
+      "observed_c": 9.2,
+      "error_c": 3.9,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
     }
   ]
 }
