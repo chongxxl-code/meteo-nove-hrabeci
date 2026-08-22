@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_utc": "2026-08-21T06:02:06.652158+00:00",
+  "computed_at_utc": "2026-08-22T05:58:41.559453+00:00",
   "quality_status": "operational_local_drought_v1",
   "state": {
     "rank": 1,
@@ -13,61 +13,60 @@
     "headline": "zvýšené vysychání",
     "score": 3,
     "reasons": [
-      "30denní vodní bilance P−ET₀ -85.8 mm",
-      "kořenová půdní vlhkost je na 12. percentilu posledního roku",
-      "vlastní ČHMÚ 30denní archiv má zatím 4 % pokrytí; používá se reanalýzní vodní bilance jako most",
-      "Copernicus SSM 1 km: povrchová vlhkost 14.5 %",
-      "Copernicus SWI T60 1 km: profilový vláhový index 32.0 %"
+      "30denní vodní bilance P−ET₀ -81.4 mm",
+      "kořenová půdní vlhkost je na 14. percentilu posledního roku",
+      "vlastní ČHMÚ 30denní archiv má zatím 7 % pokrytí; používá se reanalýzní vodní bilance jako most",
+      "Copernicus 1 km dává smíšený půdně-vlhkostní signál"
     ],
-    "confidence": "medium_high"
+    "confidence": "medium"
   },
   "background": {
     "provider": "Open-Meteo historical Best Match / ERA5-family background",
     "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
-    "period_start": "2025-08-15",
-    "period_end": "2026-08-19",
+    "period_start": "2025-08-16",
+    "period_end": "2026-08-20",
     "data_age_days": 2,
     "windows": {
       "7": {
         "days": 7,
-        "precip_mm": 30.3,
-        "et0_mm": 27.3,
-        "p_minus_et0_mm": 3.0,
+        "precip_mm": 36.7,
+        "et0_mm": 25.6,
+        "p_minus_et0_mm": 11.1,
         "record_days": 7
       },
       "14": {
         "days": 14,
-        "precip_mm": 30.8,
-        "et0_mm": 64.9,
-        "p_minus_et0_mm": -34.1,
+        "precip_mm": 36.7,
+        "et0_mm": 63.2,
+        "p_minus_et0_mm": -26.5,
         "record_days": 14
       },
       "30": {
         "days": 30,
-        "precip_mm": 53.5,
-        "et0_mm": 139.3,
-        "p_minus_et0_mm": -85.8,
+        "precip_mm": 57.8,
+        "et0_mm": 139.2,
+        "p_minus_et0_mm": -81.4,
         "record_days": 30
       }
     },
     "latest_soil": {
-      "surface_m3m3": 0.296,
-      "rootzone_0_100cm_m3m3": 0.1642,
-      "surface_percentile_1y": 38.4,
-      "rootzone_percentile_1y": 12.4
+      "surface_m3m3": 0.3145,
+      "rootzone_0_100cm_m3m3": 0.168,
+      "surface_percentile_1y": 44.6,
+      "rootzone_percentile_1y": 13.5
     }
   },
   "chmi_local_rain": {
-    "latest_observation_utc": "2026-08-21T04:50:00+00:00",
+    "latest_observation_utc": "2026-08-22T04:50:00+00:00",
     "coverage_fraction": {
-      "7": 0.168,
-      "14": 0.084,
-      "30": 0.039
+      "7": 0.311,
+      "14": 0.155,
+      "30": 0.072
     },
     "rain_mm": {
-      "7": 0.0,
-      "14": 0.0,
-      "30": 0.0
+      "7": 26.6,
+      "14": 26.6,
+      "30": 26.6
     }
   },
   "sentinel_local_landscape": {
@@ -86,12 +85,12 @@
   "copernicus_1km": {
     "ok": true,
     "quality_status": "operational_copernicus_soil_1km",
-    "nominal_date_ssm": "2026-08-17T00:00:00.000",
-    "nominal_date_swi": "2026-08-17T12:00:00.000",
-    "surface_soil_moisture_percent": 14.5,
-    "soil_water_index_t20_percent": 33.0,
-    "soil_water_index_t60_percent": 32.0,
-    "independent_evidence": "supports_drying",
+    "nominal_date_ssm": "2026-08-18T00:00:00.000",
+    "nominal_date_swi": "2026-08-18T12:00:00.000",
+    "surface_soil_moisture_percent": 50.0,
+    "soil_water_index_t20_percent": 33.5,
+    "soil_water_index_t60_percent": 32.5,
+    "independent_evidence": "mixed",
     "note": "CLMS 1 km satellite control; kept as independent evidence and does not change the warning rank until a local archive is calibrated."
   }
 }
