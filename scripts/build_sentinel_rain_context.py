@@ -2,12 +2,11 @@
 from __future__ import annotations
 
 import json
-from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from collect_chmi import get_json, extract_sra10m, PREFERRED_WSI
+from collect_chmi import get_json, extract_weather, PREFERRED_RAIN_WSI
 
 TZ = ZoneInfo('Europe/Prague')
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,6 +14,19 @@ SENTINEL_DIR = ROOT / 'data' / 'sentinel'
 VALIDATION_DIR = ROOT / 'data' / 'validation'
 BASE = 'https://opendata.chmi.cz/meteorology/climate'
 MIN_COVERAGE = 0.85
+PREFERRED_WSI = PREFERRED_RAIN_WSI
+
+
+def extract_sra10m(payload) -> list[dict]:
+    points, _ = extract_weather(payload, ['SRA10M'])
+    return [
+        {
+            'observed_at_utc': p['observed_at_utc'],
+            'precipitation_10m_mm': p['precipitation_10m_mm'],
+        }
+        for p in points
+        if p.get('precipitation_10m_mm') is not None
+    ]
 
 
 def load_jsonl(path: Path) -> list[dict]:
@@ -53,7 +65,7 @@ def fetch_month(year: int, month: int, now: datetime) -> tuple[list[dict], list[
             except Exception as exc:
                 errors.append(f'{url}: {exc}')
 
-    # Current month, or fallback if the monthly recent file is not available:
+    # Current month, or fallback if the monthly recent file is not available.
     first = date(year, month, 1)
     next_month = date(year + (month == 12), 1 if month == 12 else month + 1, 1)
     last = min(now.date(), next_month - timedelta(days=1))
@@ -64,6 +76,7 @@ def fetch_month(year: int, month: int, now: datetime) -> tuple[list[dict], list[
             f'{BASE}/now/data/10m-{PREFERRED_WSI}-{d:%Y%m%d}.json',
         ]
         got = False
+        last_error = 'no URL attempted'
         for url in urls:
             try:
                 points.extend(extract_sra10m(get_json(url, tries=1)))
