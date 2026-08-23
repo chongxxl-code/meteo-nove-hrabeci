@@ -1,6 +1,6 @@
 {
   "schema": 4,
-  "generated_at_utc": "2026-08-23T06:55:57.444468Z",
+  "generated_at_utc": "2026-08-23T07:00:17.805184Z",
   "method": {
     "temperature_truth_priority": "fresh DWD Sohland/Spree 10-minute T (~4.9 km), then nearest current ČHMÚ 10-minute T station, then DWD hourly observation",
     "temperature_station": "Sohland/Spree",
@@ -10,22 +10,22 @@
     "note": "Radar is rain/no-rain only; ČHMÚ gauge retains measured millimetres. Model weights are not changed automatically."
   },
   "coverage": {
-    "forecast_snapshots": 29,
+    "forecast_snapshots": 30,
     "sohland_temperature_observations": 471,
     "chmi_temperature_observations": 313,
     "chmi_rain_observations": 458,
     "dwd_temperature_observations": 4,
     "dwd_rain_observations": 4,
     "radar_observations": 92,
-    "temperature_cases": 3021,
+    "temperature_cases": 3068,
     "rain_cases": 3021
   },
   "summary": {
     "chmi": {
       "0–6 h": {
         "temperature": {
-          "n": 170,
-          "mae_c": 1.91,
+          "n": 173,
+          "mae_c": 1.88,
           "bias_c": 0.73
         },
         "rain": {
@@ -41,8 +41,8 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 159,
-          "mae_c": 2.1,
+          "n": 160,
+          "mae_c": 2.09,
           "bias_c": 0.19
         },
         "rain": {
@@ -58,9 +58,9 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 282,
-          "mae_c": 2.45,
-          "bias_c": 1.18
+          "n": 286,
+          "mae_c": 2.42,
+          "bias_c": 1.17
         },
         "rain": {
           "n": 282,
@@ -75,8 +75,8 @@
       },
       "24–48 h": {
         "temperature": {
-          "n": 405,
-          "mae_c": 1.71,
+          "n": 413,
+          "mae_c": 1.68,
           "bias_c": 0.1
         },
         "rain": {
@@ -111,8 +111,8 @@
     "dwd": {
       "0–6 h": {
         "temperature": {
-          "n": 170,
-          "mae_c": 1.68,
+          "n": 173,
+          "mae_c": 1.67,
           "bias_c": 0.93
         },
         "rain": {
@@ -128,7 +128,7 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 159,
+          "n": 160,
           "mae_c": 1.65,
           "bias_c": 0.79
         },
@@ -145,9 +145,9 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 282,
-          "mae_c": 1.91,
-          "bias_c": 1.29
+          "n": 286,
+          "mae_c": 1.89,
+          "bias_c": 1.28
         },
         "rain": {
           "n": 282,
@@ -162,9 +162,9 @@
       },
       "24–48 h": {
         "temperature": {
-          "n": 378,
-          "mae_c": 1.52,
-          "bias_c": 1.0
+          "n": 385,
+          "mae_c": 1.5,
+          "bias_c": 0.99
         },
         "rain": {
           "n": 378,
@@ -198,9 +198,9 @@
     "ec": {
       "0–6 h": {
         "temperature": {
-          "n": 170,
-          "mae_c": 1.78,
-          "bias_c": 1.02
+          "n": 173,
+          "mae_c": 1.76,
+          "bias_c": 1.01
         },
         "rain": {
           "n": 170,
@@ -215,8 +215,8 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 159,
-          "mae_c": 1.91,
+          "n": 160,
+          "mae_c": 1.9,
           "bias_c": 0.87
         },
         "rain": {
@@ -232,9 +232,9 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 282,
-          "mae_c": 2.14,
-          "bias_c": 1.71
+          "n": 286,
+          "mae_c": 2.11,
+          "bias_c": 1.69
         },
         "rain": {
           "n": 282,
@@ -249,9 +249,9 @@
       },
       "24–48 h": {
         "temperature": {
-          "n": 405,
-          "mae_c": 1.51,
-          "bias_c": 0.81
+          "n": 413,
+          "mae_c": 1.49,
+          "bias_c": 0.8
         },
         "rain": {
           "n": 405,
@@ -1729,12 +1729,51 @@
     {
       "model": "dwd",
       "lead_bin": "0–6 h",
-      "lead_h": 2.02,
+      "lead_h": 0.02,
+      "issued_at_utc": "2026-08-23T06:58:52.780281Z",
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.7,
+      "observed_c": 12.6,
+      "error_c": 1.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "chmi",
+      "lead_bin": "0–6 h",
+      "lead_h": 0.02,
+      "issued_at_utc": "2026-08-23T06:58:52.780281Z",
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.3,
+      "observed_c": 12.6,
+      "error_c": 0.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "ec",
+      "lead_bin": "0–6 h",
+      "lead_h": 0.02,
+      "issued_at_utc": "2026-08-23T06:58:52.780281Z",
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "dwd",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.02,
       "issued_at_utc": "2026-08-23T03:58:41.010415Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.3,
-      "observed_c": 12.4,
-      "error_c": -0.1,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.6,
+      "observed_c": 12.6,
+      "error_c": 1.0,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1742,12 +1781,12 @@
     {
       "model": "chmi",
       "lead_bin": "0–6 h",
-      "lead_h": 2.02,
+      "lead_h": 3.02,
       "issued_at_utc": "2026-08-23T03:58:41.010415Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.8,
-      "observed_c": 12.4,
-      "error_c": -0.6,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.3,
+      "observed_c": 12.6,
+      "error_c": 0.7,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1755,12 +1794,12 @@
     {
       "model": "ec",
       "lead_bin": "0–6 h",
-      "lead_h": 2.02,
+      "lead_h": 3.02,
       "issued_at_utc": "2026-08-23T03:58:41.010415Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1768,12 +1807,12 @@
     {
       "model": "dwd",
       "lead_bin": "0–6 h",
-      "lead_h": 4.03,
+      "lead_h": 5.03,
       "issued_at_utc": "2026-08-23T01:58:11.426798Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.3,
-      "observed_c": 12.4,
-      "error_c": -0.1,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.6,
+      "observed_c": 12.6,
+      "error_c": 1.0,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1781,12 +1820,12 @@
     {
       "model": "chmi",
       "lead_bin": "0–6 h",
-      "lead_h": 4.03,
+      "lead_h": 5.03,
       "issued_at_utc": "2026-08-23T01:58:11.426798Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.0,
-      "observed_c": 12.4,
-      "error_c": -0.4,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.3,
+      "observed_c": 12.6,
+      "error_c": 0.7,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1794,12 +1833,12 @@
     {
       "model": "ec",
       "lead_bin": "0–6 h",
-      "lead_h": 4.03,
+      "lead_h": 5.03,
       "issued_at_utc": "2026-08-23T01:58:11.426798Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1807,12 +1846,12 @@
     {
       "model": "dwd",
       "lead_bin": "6–12 h",
-      "lead_h": 8.43,
+      "lead_h": 9.43,
       "issued_at_utc": "2026-08-22T21:34:08.348375Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.3,
-      "observed_c": 12.4,
-      "error_c": -0.1,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.8,
+      "observed_c": 12.6,
+      "error_c": 1.2,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1820,12 +1859,12 @@
     {
       "model": "chmi",
       "lead_bin": "6–12 h",
-      "lead_h": 8.43,
+      "lead_h": 9.43,
       "issued_at_utc": "2026-08-22T21:34:08.348375Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.8,
-      "observed_c": 12.4,
-      "error_c": -0.6,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.2,
+      "observed_c": 12.6,
+      "error_c": 0.6,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1833,51 +1872,51 @@
     {
       "model": "ec",
       "lead_bin": "6–12 h",
-      "lead_h": 8.43,
+      "lead_h": 9.43,
       "issued_at_utc": "2026-08-22T21:34:08.348375Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.0,
-      "observed_c": 12.4,
-      "error_c": -0.4,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "dwd",
-      "lead_bin": "6–12 h",
-      "lead_h": 11.21,
+      "lead_bin": "12–24 h",
+      "lead_h": 12.21,
       "issued_at_utc": "2026-08-22T18:47:22.865536Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.1,
-      "observed_c": 12.4,
-      "error_c": -0.3,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.7,
+      "observed_c": 12.6,
+      "error_c": 1.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "chmi",
-      "lead_bin": "6–12 h",
-      "lead_h": 11.21,
+      "lead_bin": "12–24 h",
+      "lead_h": 12.21,
       "issued_at_utc": "2026-08-22T18:47:22.865536Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.8,
-      "observed_c": 12.4,
-      "error_c": -0.6,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.2,
+      "observed_c": 12.6,
+      "error_c": 0.6,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "ec",
-      "lead_bin": "6–12 h",
-      "lead_h": 11.21,
+      "lead_bin": "12–24 h",
+      "lead_h": 12.21,
       "issued_at_utc": "2026-08-22T18:47:22.865536Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.8,
-      "observed_c": 12.4,
-      "error_c": -0.6,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.8,
+      "observed_c": 12.6,
+      "error_c": 0.2,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1885,12 +1924,12 @@
     {
       "model": "dwd",
       "lead_bin": "12–24 h",
-      "lead_h": 14.44,
+      "lead_h": 15.44,
       "issued_at_utc": "2026-08-22T15:33:47.883939Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1898,12 +1937,12 @@
     {
       "model": "chmi",
       "lead_bin": "12–24 h",
-      "lead_h": 14.44,
+      "lead_h": 15.44,
       "issued_at_utc": "2026-08-22T15:33:47.883939Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.3,
-      "observed_c": 12.4,
-      "error_c": -1.1,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.9,
+      "observed_c": 12.6,
+      "error_c": 0.3,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1911,12 +1950,12 @@
     {
       "model": "ec",
       "lead_bin": "12–24 h",
-      "lead_h": 14.44,
+      "lead_h": 15.44,
       "issued_at_utc": "2026-08-22T15:33:47.883939Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.8,
-      "observed_c": 12.4,
-      "error_c": -0.6,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.8,
+      "observed_c": 12.6,
+      "error_c": 0.2,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1924,12 +1963,12 @@
     {
       "model": "dwd",
       "lead_bin": "12–24 h",
-      "lead_h": 17.02,
+      "lead_h": 18.02,
       "issued_at_utc": "2026-08-22T12:58:36.054042Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.0,
-      "observed_c": 12.4,
-      "error_c": -0.4,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.3,
+      "observed_c": 12.6,
+      "error_c": 0.7,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1937,12 +1976,12 @@
     {
       "model": "chmi",
       "lead_bin": "12–24 h",
-      "lead_h": 17.02,
+      "lead_h": 18.02,
       "issued_at_utc": "2026-08-22T12:58:36.054042Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.3,
-      "observed_c": 12.4,
-      "error_c": -1.1,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.9,
+      "observed_c": 12.6,
+      "error_c": 0.3,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1950,12 +1989,12 @@
     {
       "model": "ec",
       "lead_bin": "12–24 h",
-      "lead_h": 17.02,
+      "lead_h": 18.02,
       "issued_at_utc": "2026-08-22T12:58:36.054042Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.0,
-      "observed_c": 12.4,
-      "error_c": -0.4,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1963,12 +2002,12 @@
     {
       "model": "dwd",
       "lead_bin": "12–24 h",
-      "lead_h": 20.34,
+      "lead_h": 21.34,
       "issued_at_utc": "2026-08-22T09:39:29.476459Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.5,
-      "observed_c": 12.4,
-      "error_c": -0.9,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.7,
+      "observed_c": 12.6,
+      "error_c": 0.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1976,12 +2015,12 @@
     {
       "model": "chmi",
       "lead_bin": "12–24 h",
-      "lead_h": 20.34,
+      "lead_h": 21.34,
       "issued_at_utc": "2026-08-22T09:39:29.476459Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.4,
-      "observed_c": 12.4,
-      "error_c": -1.0,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.0,
+      "observed_c": 12.6,
+      "error_c": 0.4,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1989,51 +2028,51 @@
     {
       "model": "ec",
       "lead_bin": "12–24 h",
-      "lead_h": 20.34,
+      "lead_h": 21.34,
       "issued_at_utc": "2026-08-22T09:39:29.476459Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.0,
-      "observed_c": 12.4,
-      "error_c": -0.4,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "dwd",
-      "lead_bin": "12–24 h",
-      "lead_h": 23.04,
+      "lead_bin": "24–48 h",
+      "lead_h": 24.04,
       "issued_at_utc": "2026-08-22T06:57:19.447530Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.8,
-      "observed_c": 12.4,
-      "error_c": -0.6,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.3,
+      "observed_c": 12.6,
+      "error_c": 0.7,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "chmi",
-      "lead_bin": "12–24 h",
-      "lead_h": 23.04,
+      "lead_bin": "24–48 h",
+      "lead_h": 24.04,
       "issued_at_utc": "2026-08-22T06:57:19.447530Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.4,
-      "observed_c": 12.4,
-      "error_c": -1.0,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.0,
+      "observed_c": 12.6,
+      "error_c": 0.4,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "ec",
-      "lead_bin": "12–24 h",
-      "lead_h": 23.04,
+      "lead_bin": "24–48 h",
+      "lead_h": 24.04,
       "issued_at_utc": "2026-08-22T06:57:19.447530Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.8,
+      "observed_c": 12.6,
+      "error_c": 0.2,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2041,12 +2080,12 @@
     {
       "model": "dwd",
       "lead_bin": "24–48 h",
-      "lead_h": 26.09,
+      "lead_h": 27.09,
       "issued_at_utc": "2026-08-22T03:54:22.200075Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2054,12 +2093,12 @@
     {
       "model": "chmi",
       "lead_bin": "24–48 h",
-      "lead_h": 26.09,
+      "lead_h": 27.09,
       "issued_at_utc": "2026-08-22T03:54:22.200075Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.4,
-      "observed_c": 12.4,
-      "error_c": -1.0,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.0,
+      "observed_c": 12.6,
+      "error_c": 0.4,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2067,12 +2106,12 @@
     {
       "model": "ec",
       "lead_bin": "24–48 h",
-      "lead_h": 26.09,
+      "lead_h": 27.09,
       "issued_at_utc": "2026-08-22T03:54:22.200075Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.8,
+      "observed_c": 12.6,
+      "error_c": 0.2,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2080,12 +2119,12 @@
     {
       "model": "dwd",
       "lead_bin": "24–48 h",
-      "lead_h": 28.19,
+      "lead_h": 29.19,
       "issued_at_utc": "2026-08-22T01:48:21.476942Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.1,
+      "observed_c": 12.6,
+      "error_c": 0.5,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2093,12 +2132,12 @@
     {
       "model": "chmi",
       "lead_bin": "24–48 h",
-      "lead_h": 28.19,
+      "lead_h": 29.19,
       "issued_at_utc": "2026-08-22T01:48:21.476942Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.5,
-      "observed_c": 12.4,
-      "error_c": -0.9,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.9,
+      "observed_c": 12.6,
+      "error_c": 0.3,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2106,12 +2145,12 @@
     {
       "model": "ec",
       "lead_bin": "24–48 h",
-      "lead_h": 28.19,
+      "lead_h": 29.19,
       "issued_at_utc": "2026-08-22T01:48:21.476942Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.8,
+      "observed_c": 12.6,
+      "error_c": 0.2,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2119,12 +2158,12 @@
     {
       "model": "dwd",
       "lead_bin": "24–48 h",
-      "lead_h": 32.39,
+      "lead_h": 33.39,
       "issued_at_utc": "2026-08-21T21:36:32.925137Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.8,
-      "observed_c": 12.4,
-      "error_c": -0.6,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.2,
+      "observed_c": 12.6,
+      "error_c": 0.6,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2132,12 +2171,12 @@
     {
       "model": "chmi",
       "lead_bin": "24–48 h",
-      "lead_h": 32.39,
+      "lead_h": 33.39,
       "issued_at_utc": "2026-08-21T21:36:32.925137Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.6,
-      "observed_c": 12.4,
-      "error_c": -0.8,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.7,
+      "observed_c": 12.6,
+      "error_c": 0.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2145,12 +2184,12 @@
     {
       "model": "ec",
       "lead_bin": "24–48 h",
-      "lead_h": 32.39,
+      "lead_h": 33.39,
       "issued_at_utc": "2026-08-21T21:36:32.925137Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.1,
-      "observed_c": 12.4,
-      "error_c": -0.3,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.9,
+      "observed_c": 12.6,
+      "error_c": 0.3,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2158,12 +2197,12 @@
     {
       "model": "dwd",
       "lead_bin": "24–48 h",
-      "lead_h": 35.1,
+      "lead_h": 36.1,
       "issued_at_utc": "2026-08-21T18:53:50.543797Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.8,
-      "observed_c": 12.4,
-      "error_c": -0.6,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.0,
+      "observed_c": 12.6,
+      "error_c": 0.4,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2171,12 +2210,12 @@
     {
       "model": "chmi",
       "lead_bin": "24–48 h",
-      "lead_h": 35.1,
+      "lead_h": 36.1,
       "issued_at_utc": "2026-08-21T18:53:50.543797Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.6,
-      "observed_c": 12.4,
-      "error_c": -0.8,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 12.7,
+      "observed_c": 12.6,
+      "error_c": 0.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2184,12 +2223,12 @@
     {
       "model": "ec",
       "lead_bin": "24–48 h",
-      "lead_h": 35.1,
+      "lead_h": 36.1,
       "issued_at_utc": "2026-08-21T18:53:50.543797Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.1,
-      "observed_c": 12.4,
-      "error_c": -0.3,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.0,
+      "observed_c": 12.6,
+      "error_c": 0.4,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2197,51 +2236,12 @@
     {
       "model": "dwd",
       "lead_bin": "24–48 h",
-      "lead_h": 38.22,
+      "lead_h": 39.22,
       "issued_at_utc": "2026-08-21T15:46:39.329831Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.1,
-      "observed_c": 12.4,
-      "error_c": -0.3,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "chmi",
-      "lead_bin": "24–48 h",
-      "lead_h": 38.22,
-      "issued_at_utc": "2026-08-21T15:46:39.329831Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.6,
-      "observed_c": 12.4,
-      "error_c": -0.8,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "ec",
-      "lead_bin": "24–48 h",
-      "lead_h": 38.22,
-      "issued_at_utc": "2026-08-21T15:46:39.329831Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 12.1,
-      "observed_c": 12.4,
-      "error_c": -0.3,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "dwd",
-      "lead_bin": "24–48 h",
-      "lead_h": 40.85,
-      "issued_at_utc": "2026-08-21T13:09:04.728251Z",
-      "target_at_utc": "2026-08-23T06:00:00Z",
-      "forecast_c": 11.9,
-      "observed_c": 12.4,
-      "error_c": -0.5,
+      "target_at_utc": "2026-08-23T07:00:00Z",
+      "forecast_c": 13.4,
+      "observed_c": 12.6,
+      "error_c": 0.8,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
