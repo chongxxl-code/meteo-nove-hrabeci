@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "collected_at_utc": "2026-08-24T07:18:11.177815Z",
-  "collected_at_local": "2026-08-24T09:18:11.177815+02:00",
-  "total_snapshots": 38,
+  "collected_at_utc": "2026-08-24T10:01:40.506702Z",
+  "collected_at_local": "2026-08-24T12:01:40.506702+02:00",
+  "total_snapshots": 39,
   "archive_file": "data/archive/2026-08.jsonl",
   "models": {
     "dwd": {
@@ -15,40 +15,72 @@
     },
     "ec": {
       "ok": true,
-      "temperature_2m": 11.0
+      "temperature_2m": 10.9
     }
   },
   "current": {
-    "time": "2026-08-24T09:15",
+    "time": "2026-08-24T12:00",
     "interval": 900,
-    "temperature_2m": 13.5,
-    "relative_humidity_2m": 73,
+    "temperature_2m": 17.2,
+    "relative_humidity_2m": 54,
     "precipitation": 0.0,
-    "cloud_cover": 9,
-    "pressure_msl": 1023.5,
-    "wind_speed_10m": 6.9,
+    "cloud_cover": 82,
+    "pressure_msl": 1022.9,
+    "wind_speed_10m": 7.3,
     "wind_gusts_10m": 17.3
   },
   "observations": {
     "dwd": {
       "tu": {
-        "ok": false,
-        "error": "{\"message\": \"No sufficiently fresh DWD station found\", \"max_age_hours\": 12, \"nearest_listed_station\": {\"station_id\": \"06129\", \"station_name\": \"Sohland/Spree\", \"distance_km\": 4.89, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, \"stale_examples\": [{\"station_id\": \"06129\", \"station_name\": \"Sohland/Spree\", \"distance_km\": 4.89, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"00314\", \"station_name\": \"Kubschütz, Kr. Bautzen\", \"distance_km\": 16.65, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"02985\", \"station_name\": \"Lichtenhain-Mittelndorf\", \"distance_km\": 18.31, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"02252\", \"station_name\": \"Bertsdorf-Hörnitz\", \"distance_km\": 25.06, \"observed_at_utc\": \"2026-08-22T13:00:00Z\", \"age_hours\": 42.3}, {\"station_id\": \"01684\", \"station_name\": \"Görlitz\", \"distance_km\": 39.19, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}], \"last_error\": \"None\"}"
+        "provider": "DWD CDC",
+        "element": "tu",
+        "station_id": "06129",
+        "station_name": "Sohland/Spree",
+        "latitude": 51.0594,
+        "longitude": 14.4266,
+        "elevation_m": 291.0,
+        "distance_km": 4.89,
+        "source_url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/hourly/air_temperature/recent/stundenwerte_TU_06129_akt.zip",
+        "age_hours": 11.0,
+        "nearest_listed_station": {
+          "station_id": "06129",
+          "station_name": "Sohland/Spree",
+          "distance_km": 4.89,
+          "observed_at_utc": "2026-08-23T23:00:00Z",
+          "age_hours": 11.0
+        },
+        "observed_at_utc": "2026-08-23T23:00:00Z",
+        "temperature_c": 5.5,
+        "relative_humidity_pct": 97.0
       },
       "rr": {
-        "ok": false,
-        "error": "{\"message\": \"No sufficiently fresh DWD station found\", \"max_age_hours\": 12, \"nearest_listed_station\": {\"station_id\": \"06129\", \"station_name\": \"Sohland/Spree\", \"distance_km\": 4.89, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, \"stale_examples\": [{\"station_id\": \"06129\", \"station_name\": \"Sohland/Spree\", \"distance_km\": 4.89, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"07337\", \"station_name\": \"Dürrhennersdorf\", \"distance_km\": 12.95, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"00314\", \"station_name\": \"Kubschütz, Kr. Bautzen\", \"distance_km\": 16.65, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"16010\", \"station_name\": \"Hochkirch-Pommritz\", \"distance_km\": 18.16, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"02985\", \"station_name\": \"Lichtenhain-Mittelndorf\", \"distance_km\": 18.31, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}], \"last_error\": \"None\"}"
+        "provider": "DWD CDC",
+        "element": "rr",
+        "station_id": "06129",
+        "station_name": "Sohland/Spree",
+        "latitude": 51.0594,
+        "longitude": 14.4266,
+        "elevation_m": 291.0,
+        "distance_km": 4.89,
+        "source_url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/hourly/precipitation/recent/stundenwerte_RR_06129_akt.zip",
+        "age_hours": 11.0,
+        "nearest_listed_station": {
+          "station_id": "06129",
+          "station_name": "Sohland/Spree",
+          "distance_km": 4.89,
+          "observed_at_utc": "2026-08-23T23:00:00Z",
+          "age_hours": 11.0
+        },
+        "observed_at_utc": "2026-08-23T23:00:00Z",
+        "precipitation_1h_mm": 0.0
       }
     }
   },
   "radar": {
     "rainviewer_frames": 12,
-    "rainviewer_latest_unix": 1787555400,
-    "rainviewer_latest_local": "24.08.2026 09:10"
+    "rainviewer_latest_unix": 1787565600,
+    "rainviewer_latest_local": "24.08.2026 12:00"
   },
-  "errors": [
-    "dwd_observation_tu: {\"message\": \"No sufficiently fresh DWD station found\", \"max_age_hours\": 12, \"nearest_listed_station\": {\"station_id\": \"06129\", \"station_name\": \"Sohland/Spree\", \"distance_km\": 4.89, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, \"stale_examples\": [{\"station_id\": \"06129\", \"station_name\": \"Sohland/Spree\", \"distance_km\": 4.89, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"00314\", \"station_name\": \"Kubschütz, Kr. Bautzen\", \"distance_km\": 16.65, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"02985\", \"station_name\": \"Lichtenhain-Mittelndorf\", \"distance_km\": 18.31, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"02252\", \"station_name\": \"Bertsdorf-Hörnitz\", \"distance_km\": 25.06, \"observed_at_utc\": \"2026-08-22T13:00:00Z\", \"age_hours\": 42.3}, {\"station_id\": \"01684\", \"station_name\": \"Görlitz\", \"distance_km\": 39.19, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}], \"last_error\": \"None\"}",
-    "dwd_observation_rr: {\"message\": \"No sufficiently fresh DWD station found\", \"max_age_hours\": 12, \"nearest_listed_station\": {\"station_id\": \"06129\", \"station_name\": \"Sohland/Spree\", \"distance_km\": 4.89, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, \"stale_examples\": [{\"station_id\": \"06129\", \"station_name\": \"Sohland/Spree\", \"distance_km\": 4.89, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"07337\", \"station_name\": \"Dürrhennersdorf\", \"distance_km\": 12.95, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"00314\", \"station_name\": \"Kubschütz, Kr. Bautzen\", \"distance_km\": 16.65, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"16010\", \"station_name\": \"Hochkirch-Pommritz\", \"distance_km\": 18.16, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}, {\"station_id\": \"02985\", \"station_name\": \"Lichtenhain-Mittelndorf\", \"distance_km\": 18.31, \"observed_at_utc\": \"2026-08-22T23:00:00Z\", \"age_hours\": 32.3}], \"last_error\": \"None\"}"
-  ],
+  "errors": [],
   "note": "Forecasts plus fresh official DWD observations when available; stale nearby stations are rejected. ČHMÚ Šluknov rain gauge integration is next."
 }
