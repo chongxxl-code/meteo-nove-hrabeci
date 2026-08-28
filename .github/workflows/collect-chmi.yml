@@ -11,6 +11,7 @@ on:
       - 'scripts/collect_chmi.py'
       - 'scripts/collect_dwd_sohland.py'
       - 'scripts/verify_forecasts.py'
+      - 'scripts/build_health_status.py'
       - '.github/workflows/collect-chmi.yml'
 
 permissions:
@@ -36,11 +37,13 @@ jobs:
         run: python scripts/collect_dwd_sohland.py
       - name: Rebuild forecast verification
         run: python scripts/verify_forecasts.py
-      - name: Commit observations and verification
+      - name: Build collector health status
+        run: python scripts/build_health_status.py
+      - name: Commit observations, verification and health
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/chmi-status.json data/dwd-sohland-status.json data/observations/ data/forecast-verification.json 2>/dev/null || true
+          git add data/chmi-status.json data/dwd-sohland-status.json data/health-status.json data/observations/ data/forecast-verification.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No observation changes."
             exit 0
