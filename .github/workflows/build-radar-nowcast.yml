@@ -16,8 +16,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: radar-nowcast
-  cancel-in-progress: true
+  group: meteo-data-writer
+  cancel-in-progress: false
 
 jobs:
   build:
