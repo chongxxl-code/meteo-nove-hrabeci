@@ -2,7 +2,7 @@
   "ok": true,
   "quality_status": "valid_exploratory_series_v2",
   "analysis_version": 2,
-  "computed_at_local": "2026-08-24T11:06:28.531609+02:00",
+  "computed_at_local": "2026-08-31T18:11:24.906816+02:00",
   "network": "nove-hrabeci-open-land-experimental-v3",
   "network_status": "stable_after_v4_visual_review",
   "network_review_versions": [
@@ -14,8 +14,8 @@
   "provider": "Sentinel-2 Collection 1 L2A via Earth Search / AWS Open Data COG + ČHMÚ antecedent rainfall",
   "interpretation_warning": "NDMI is a spectral vegetation/water-content signal, not direct soil-moisture measurement. Group contrasts are exploratory; land management, phenology and sample imbalance can confound them. Correlations do not establish causality.",
   "summary": {
-    "scene_count": 10,
-    "fully_valid_scene_count": 8,
+    "scene_count": 11,
+    "fully_valid_scene_count": 9,
     "sample_count": 17,
     "role_counts": {
       "high_position": 2,
@@ -26,64 +26,64 @@
       "south_facing_slope": 2
     },
     "twi_ndmi": {
-      "scene_count": 10,
-      "positive_count": 5,
-      "positive_fraction": 0.5,
-      "median_contrast": 0.0358,
+      "scene_count": 11,
+      "positive_count": 6,
+      "positive_fraction": 0.545,
+      "median_contrast": 0.0707,
       "positive_means": "high-TWI group has higher NDMI",
-      "corr_rain_7d_vs_contrast": 0.1389,
-      "corr_rain_14d_vs_contrast": 0.3283,
-      "corr_rain_30d_vs_contrast": 0.5441
+      "corr_rain_7d_vs_contrast": 0.1311,
+      "corr_rain_14d_vs_contrast": 0.2957,
+      "corr_rain_30d_vs_contrast": 0.4969
     },
     "position_ndmi": {
-      "scene_count": 9,
+      "scene_count": 10,
       "positive_count": 2,
-      "positive_fraction": 0.222,
-      "median_contrast": -0.1284,
+      "positive_fraction": 0.2,
+      "median_contrast": -0.1263,
       "positive_means": "low-position group has higher NDMI",
-      "corr_rain_7d_vs_contrast": 0.1627,
-      "corr_rain_14d_vs_contrast": -0.0149,
-      "corr_rain_30d_vs_contrast": 0.2202
+      "corr_rain_7d_vs_contrast": 0.2851,
+      "corr_rain_14d_vs_contrast": 0.1375,
+      "corr_rain_30d_vs_contrast": 0.3063
     },
     "aspect_ndmi": {
-      "scene_count": 10,
+      "scene_count": 11,
       "positive_count": 2,
-      "positive_fraction": 0.2,
-      "median_contrast": -0.0955,
+      "positive_fraction": 0.182,
+      "median_contrast": -0.1191,
       "positive_means": "south-facing group has higher NDMI",
-      "corr_rain_7d_vs_contrast": 0.2405,
-      "corr_rain_14d_vs_contrast": 0.2205,
-      "corr_rain_30d_vs_contrast": 0.203
+      "corr_rain_7d_vs_contrast": 0.0876,
+      "corr_rain_14d_vs_contrast": 0.1347,
+      "corr_rain_30d_vs_contrast": 0.1421
     },
     "twi_ndvi": {
-      "scene_count": 10,
-      "positive_count": 6,
-      "positive_fraction": 0.6,
-      "median_contrast": 0.0534,
+      "scene_count": 11,
+      "positive_count": 7,
+      "positive_fraction": 0.636,
+      "median_contrast": 0.068,
       "positive_means": "high-TWI group has higher NDVI",
-      "corr_rain_7d_vs_contrast": 0.0759,
-      "corr_rain_14d_vs_contrast": 0.2995,
-      "corr_rain_30d_vs_contrast": 0.583
+      "corr_rain_7d_vs_contrast": 0.0863,
+      "corr_rain_14d_vs_contrast": 0.2665,
+      "corr_rain_30d_vs_contrast": 0.5248
     },
     "position_ndvi": {
-      "scene_count": 9,
-      "positive_count": 2,
-      "positive_fraction": 0.222,
-      "median_contrast": -0.0887,
-      "positive_means": "low-position group has higher NDVI",
-      "corr_rain_7d_vs_contrast": 0.084,
-      "corr_rain_14d_vs_contrast": -0.1131,
-      "corr_rain_30d_vs_contrast": 0.3016
-    },
-    "aspect_ndvi": {
       "scene_count": 10,
       "positive_count": 2,
       "positive_fraction": 0.2,
-      "median_contrast": -0.1111,
+      "median_contrast": -0.0812,
+      "positive_means": "low-position group has higher NDVI",
+      "corr_rain_7d_vs_contrast": 0.2398,
+      "corr_rain_14d_vs_contrast": 0.0592,
+      "corr_rain_30d_vs_contrast": 0.3709
+    },
+    "aspect_ndvi": {
+      "scene_count": 11,
+      "positive_count": 2,
+      "positive_fraction": 0.182,
+      "median_contrast": -0.1102,
       "positive_means": "south-facing group has higher NDVI",
-      "corr_rain_7d_vs_contrast": -0.1276,
-      "corr_rain_14d_vs_contrast": -0.0485,
-      "corr_rain_30d_vs_contrast": 0.1865
+      "corr_rain_7d_vs_contrast": -0.129,
+      "corr_rain_14d_vs_contrast": -0.0807,
+      "corr_rain_30d_vs_contrast": 0.1233
     }
   },
   "scenes": [
@@ -5054,6 +5054,503 @@
         "low_minus_high_position_ndvi": -0.015,
         "south_minus_north_ndmi": -0.1297,
         "south_minus_north_ndvi": -0.131
+      },
+      "quality_status": "valid"
+    },
+    {
+      "scene_id": "S2B_T33UVS_20260827T100022_L2A",
+      "scene_datetime": "2026-08-27T10:06:36.699000Z",
+      "tile_cloud_cover_percent": 0.000917,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 42.2,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 74.2,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 95.5,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "zones": [
+        {
+          "id": "NH-OPEN-V2-04",
+          "label": "H1",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.787,
+            "median": 0.7863,
+            "p10": 0.7723,
+            "p90": 0.8025,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2659,
+            "median": 0.2606,
+            "p10": 0.2513,
+            "p90": 0.2836,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-05",
+          "label": "H2",
+          "role": "high_position",
+          "name": "Vyšší poloha · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7817,
+            "median": 0.7802,
+            "p10": 0.7552,
+            "p90": 0.8092,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2524,
+            "median": 0.2454,
+            "p10": 0.2284,
+            "p90": 0.2823,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-08",
+          "label": "N2",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.8483,
+            "median": 0.8511,
+            "p10": 0.8149,
+            "p90": 0.8707,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.3324,
+            "median": 0.3306,
+            "p10": 0.3041,
+            "p90": 0.3609,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-15",
+          "label": "T+3",
+          "role": "high_twi",
+          "name": "Vysoké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7519,
+            "median": 0.7548,
+            "p10": 0.7127,
+            "p90": 0.7847,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1899,
+            "median": 0.1959,
+            "p10": 0.1552,
+            "p90": 0.2125,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-16",
+          "label": "T-1",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 1",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7351,
+            "median": 0.7335,
+            "p10": 0.7133,
+            "p90": 0.7563,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.1894,
+            "median": 0.1849,
+            "p10": 0.1581,
+            "p90": 0.2231,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-17",
+          "label": "T-2",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 2",
+          "ndvi": {
+            "valid_pixels": 65,
+            "mean": 0.7139,
+            "median": 0.724,
+            "p10": 0.6481,
+            "p90": 0.75,
+            "total_inside_pixels": 65,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.136,
+            "median": 0.1474,
+            "p10": 0.0856,
+            "p90": 0.1772,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V2-18",
+          "label": "T-3",
+          "role": "low_twi",
+          "name": "Nízké TWI · varianta 3",
+          "ndvi": {
+            "valid_pixels": 64,
+            "mean": 0.7661,
+            "median": 0.7672,
+            "p10": 0.7291,
+            "p90": 0.7956,
+            "total_inside_pixels": 64,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 16,
+            "mean": 0.2302,
+            "median": 0.2294,
+            "p10": 0.2121,
+            "p90": 0.256,
+            "total_inside_pixels": 16,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L04",
+          "label": "L4",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 4",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.8197,
+            "median": 0.824,
+            "p10": 0.7832,
+            "p90": 0.8452,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2913,
+            "median": 0.3002,
+            "p10": 0.2516,
+            "p90": 0.3279,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L05",
+          "label": "L5",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.806,
+            "median": 0.8081,
+            "p10": 0.7701,
+            "p90": 0.8335,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 14,
+            "mean": 0.2904,
+            "median": 0.2896,
+            "p10": 0.2494,
+            "p90": 0.3251,
+            "total_inside_pixels": 14,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L06",
+          "label": "L6",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.7152,
+            "median": 0.719,
+            "p10": 0.6815,
+            "p90": 0.7362,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 13,
+            "mean": 0.1547,
+            "median": 0.1533,
+            "p10": 0.1327,
+            "p90": 0.1773,
+            "total_inside_pixels": 13,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-L07",
+          "label": "L7",
+          "role": "low_position",
+          "name": "Nízká poloha · varianta 7",
+          "ndvi": {
+            "valid_pixels": 48,
+            "mean": 0.7218,
+            "median": 0.7259,
+            "p10": 0.6794,
+            "p90": 0.754,
+            "total_inside_pixels": 48,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.162,
+            "median": 0.1585,
+            "p10": 0.1252,
+            "p90": 0.191,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S06",
+          "label": "S6",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7079,
+            "median": 0.7086,
+            "p10": 0.6809,
+            "p90": 0.7301,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.155,
+            "median": 0.1572,
+            "p10": 0.1376,
+            "p90": 0.1747,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-S07",
+          "label": "S7",
+          "role": "south_facing_slope",
+          "name": "Jižní svah · varianta 7",
+          "ndvi": {
+            "valid_pixels": 50,
+            "mean": 0.7704,
+            "median": 0.7684,
+            "p10": 0.741,
+            "p90": 0.8202,
+            "total_inside_pixels": 50,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 11,
+            "mean": 0.2286,
+            "median": 0.2162,
+            "p10": 0.2009,
+            "p90": 0.2722,
+            "total_inside_pixels": 11,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V3-TP08",
+          "label": "T+8",
+          "role": "high_twi",
+          "name": "Vysoké TWI – záloha · varianta 8",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8494,
+            "median": 0.8483,
+            "p10": 0.8244,
+            "p90": 0.884,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.318,
+            "median": 0.3153,
+            "p10": 0.2893,
+            "p90": 0.3576,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N04",
+          "label": "N4",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 4",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8396,
+            "median": 0.8447,
+            "p10": 0.7772,
+            "p90": 0.887,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 10,
+            "mean": 0.3168,
+            "median": 0.3227,
+            "p10": 0.2672,
+            "p90": 0.3654,
+            "total_inside_pixels": 10,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N05",
+          "label": "N5",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 5",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.8219,
+            "median": 0.8215,
+            "p10": 0.7935,
+            "p90": 0.8468,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.2868,
+            "median": 0.2889,
+            "p10": 0.2589,
+            "p90": 0.3046,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        },
+        {
+          "id": "NH-OPEN-V4-N06",
+          "label": "N6",
+          "role": "north_facing_slope",
+          "name": "Severní svah · varianta 6",
+          "ndvi": {
+            "valid_pixels": 49,
+            "mean": 0.767,
+            "median": 0.7706,
+            "p10": 0.7418,
+            "p90": 0.7825,
+            "total_inside_pixels": 49,
+            "valid_fraction": 1.0
+          },
+          "ndmi": {
+            "valid_pixels": 12,
+            "mean": 0.2333,
+            "median": 0.2356,
+            "p10": 0.2136,
+            "p90": 0.2453,
+            "total_inside_pixels": 12,
+            "valid_fraction": 1.0
+          },
+          "ok": true
+        }
+      ],
+      "role_stats": {
+        "high_twi": {
+          "valid_samples": 2,
+          "ndmi_median": 0.2556,
+          "ndvi_median": 0.80155
+        },
+        "low_twi": {
+          "valid_samples": 3,
+          "ndmi_median": 0.1849,
+          "ndvi_median": 0.7335
+        },
+        "low_position": {
+          "valid_samples": 4,
+          "ndmi_median": 0.22405000000000003,
+          "ndvi_median": 0.767
+        },
+        "high_position": {
+          "valid_samples": 2,
+          "ndmi_median": 0.253,
+          "ndvi_median": 0.78325
+        },
+        "south_facing_slope": {
+          "valid_samples": 2,
+          "ndmi_median": 0.1867,
+          "ndvi_median": 0.7384999999999999
+        },
+        "north_facing_slope": {
+          "valid_samples": 4,
+          "ndmi_median": 0.30579999999999996,
+          "ndvi_median": 0.8331
+        }
+      },
+      "groups": {
+        "high_twi_minus_low_twi_ndmi": 0.0707,
+        "high_twi_minus_low_twi_ndvi": 0.068,
+        "low_minus_high_position_ndmi": -0.0289,
+        "low_minus_high_position_ndvi": -0.0162,
+        "south_minus_north_ndmi": -0.1191,
+        "south_minus_north_ndvi": -0.0946
       },
       "quality_status": "valid"
     }
