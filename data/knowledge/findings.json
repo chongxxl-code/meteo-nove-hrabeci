@@ -1,10 +1,10 @@
 {
   "ok": true,
-  "generated_at_local": "2026-08-24T11:12:44.647199+02:00",
+  "generated_at_local": "2026-08-31T18:16:21.425100+02:00",
   "status": "living_exploratory_knowledge_base",
   "scope": "Nové Hraběcí open-land experimental network",
   "sample_count": 17,
-  "scene_count": 10,
+  "scene_count": 11,
   "source_analyses": [
     "data/validation/open-land-experiment-status.json",
     "data/validation/open-land-gradient-status.json",
@@ -22,10 +22,10 @@
       "confidence": "low_to_moderate",
       "claim": "Po rozšíření sítě na více severních svahů zůstává vyšší sklon většinou spojen s nižším NDMI/NDVI, ale vztah je slabší a méně konzistentní než v původní menší síti.",
       "evidence": [
-        "Raw NDMI: očekávaný záporný směr v 60.0 % použitelných scén; medián Pearson r = -0.1041.",
+        "Raw NDMI: očekávaný záporný směr v 54.5 % použitelných scén; medián Pearson r = -0.0845.",
         "Po ručním filtru 5 potvrzených změn: NDMI medián r = -0.1076; očekávaný směr 60.0 %.",
         "NDVI po ručním filtru: medián r = -0.1648.",
-        "Síla NDMI vztahu sklonu se s 14denním deštěm mění korelací r = -0.6992 (explorační)."
+        "Síla NDMI vztahu sklonu se s 14denním deštěm mění korelací r = -0.2647 (explorační)."
       ],
       "interpretation": "Odvodnění po svahu zůstává možným mechanismem, ale po rozšíření vzorku už sklon není nejsilnější samostatný prediktor. Výsledek je vhodnější držet jako pracovní hypotézu než jako téměř potvrzený vztah.",
       "next_test": "Sledovat sklon odděleně během výrazně mokrých epizod a v další sezoně; ideálně doplnit terénní půdní vlhkost."
@@ -37,10 +37,10 @@
       "confidence": "low_to_moderate",
       "claim": "Vyšší TWI samo o sobě není ve všech termínech spojeno s vyšším NDMI; statický signál je slabý i po ručním filtru, ale vztah se zesiluje po delším vlhkém období.",
       "evidence": [
-        "Raw TWI–NDMI: medián Pearson r = 0.0484; kladný směr v 50.0 % scén.",
+        "Raw TWI–NDMI: medián Pearson r = 0.1552; kladný směr v 54.5 % scén.",
         "Po ručním filtru: medián r = -0.0512; očekávaný kladný směr 50.0 %.",
-        "Korelace 30denního deště se sílou denního TWI–NDMI vztahu: r = 0.5232.",
-        "Skupinový TWI+ − TWI− medián NDMI = 0.0358."
+        "Korelace 30denního deště se sílou denního TWI–NDMI vztahu: r = 0.4981.",
+        "Skupinový TWI+ − TWI− medián NDMI = 0.0707."
       ],
       "interpretation": "TWI zatím není univerzální žebříček „mokré–suché“. Možná se topografická akumulace projeví hlavně tehdy, když je v krajině dost vody k redistribuci.",
       "next_test": "Zvýšit počet scén po výrazně mokrých i suchých obdobích a testovat TWI efekt odděleně podle předchozích srážek."
@@ -53,10 +53,10 @@
       "claim": "Po rozšíření a vizuálním ověření severní kontrolní skupiny je vyšší southness většinou spojena s nižším NDMI i NDVI. Vztah se prakticky nemění ani po vyřazení pouze ručně potvrzených vegetačních změn.",
       "evidence": [
         "Síť nyní obsahuje 4 severní a 2 jižní kontrolní plochy.",
-        "Raw southness–NDMI: očekávaný záporný směr v 80.0 % scén; medián Pearson r = -0.4065.",
+        "Raw southness–NDMI: očekávaný záporný směr v 81.8 % scén; medián Pearson r = -0.5.",
         "Po ručním filtru: NDMI medián r = -0.4065; očekávaný záporný směr 80.0 %.",
         "NDVI po ručním filtru: medián r = -0.4383; očekávaný směr 70.0 %.",
-        "Skupinový jih − sever medián NDMI = -0.0955."
+        "Skupinový jih − sever medián NDMI = -0.1191."
       ],
       "interpretation": "Směr odpovídá vyššímu oslunění a potenciálnímu výparu na jižních svazích. Protože severní skupina už není založená na jediném místě a nové severní plochy prošly vizuální kontrolou, je tento signál podstatně věrohodnější než v předchozí verzi sítě. Stále však jde o jednu sezonu a observační vztah.",
       "next_test": "Sledovat sever × jih zejména během teplých suchých epizod a ověřit, zda se stejný směr zopakuje v další sezoně."
@@ -68,9 +68,9 @@
       "confidence": "moderate_for_current_sample",
       "claim": "Níže položené travní vzorky nejsou v této sezoně systematicky vlhčí/zelenejší než vyšší vzorky. Ruční filtr potvrzených vegetačních změn tento překvapivý opačný signál neodstranil.",
       "evidence": [
-        "Nízká − vyšší poloha: medián NDMI kontrastu = -0.1284; nízká skupina měla vyšší NDMI jen v 22.2 % srovnatelných scén.",
-        "TPI900–NDMI: raw medián r = 0.3712, po ručním filtru 0.423.",
-        "Výška–NDMI: raw medián r = 0.5203, po ručním filtru 0.5262."
+        "Nízká − vyšší poloha: medián NDMI kontrastu = -0.1263; nízká skupina měla vyšší NDMI jen v 20.0 % srovnatelných scén.",
+        "TPI900–NDMI: raw medián r = 0.292, po ručním filtru 0.423.",
+        "Výška–NDMI: raw medián r = 0.469, po ručním filtru 0.5262."
       ],
       "interpretation": "Neznamená to, že vyšší terén způsobuje větší vlhkost. Naopak to říká, že samotná kategorie „nízká/vysoká poloha“ je pro naše plochy příliš jednoduchá. Rozdíl může souviset s půdou, lokální drenáží, hospodařením mimo zachycené termíny, fenologií nebo kombinací terénních vlastností.",
       "next_test": "Použít více sezon, případně půdní mapy a terénní měření; jednoduchou výškovou hypotézu nepovyšovat na kauzální vysvětlení."
@@ -83,8 +83,8 @@
       "claim": "Automatický detektor našel 15 kandidátních vegetačních narušení, ale ruční historická kontrola potvrdila přesvědčivou změnu jen u 5 z nich.",
       "evidence": [
         "Detektor označil 15 kandidátních událostí; ruční kontrola potvrdila 5 a u 10 nenašla přesvědčivou viditelnou změnu.",
-        "Ručně ověřený citlivostní test proto vyřazuje jen 5 sample×datum pozorování, zatímco široký algoritmický filtr vyřazoval 13.",
-        "Například TPI900–NDMI je raw 0.3712, po širokém algoritmickém filtru 0.2676, ale po ručním filtru 0.423."
+        "Ručně ověřený citlivostní test proto vyřazuje jen 5 sample×datum pozorování, zatímco široký algoritmický filtr vyřazoval 16.",
+        "Například TPI900–NDMI je raw 0.292, po širokém algoritmickém filtru 0.2276, ale po ručním filtru 0.423."
       ],
       "interpretation": "Spektrální NDVI změna může být reálná i bez nápadné změny v RGB, takže 10 vizuálně nepotvrzených případů neoznačujeme automaticky za falešné poplachy. Pro kauzální interpretaci budeme jako přísnější kontrolu používat ručně potvrzené změny a automatické flagy držet odděleně.",
       "next_test": "Při dalších událostech kombinovat NDVI/NDMI, true-colour snímek a pokud možno místní záznam o seči, pastvě nebo jiném zásahu."
