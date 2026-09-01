@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_utc": "2026-08-31T11:49:09.320583+00:00",
+  "computed_at_utc": "2026-09-01T10:24:58.727552+00:00",
   "quality_status": "operational_local_drought_v1",
   "state": {
     "rank": 0,
@@ -13,66 +13,66 @@
     "headline": "bez potvrzeného výrazného vysychání",
     "score": 1,
     "reasons": [
-      "kořenová půdní vlhkost je na 17. percentilu posledního roku",
-      "vlastní ČHMÚ 30denní archiv má zatím 36 % pokrytí; používá se reanalýzní vodní bilance jako most"
+      "kořenová půdní vlhkost je na 16. percentilu posledního roku",
+      "vlastní ČHMÚ 30denní archiv má zatím 42 % pokrytí; používá se reanalýzní vodní bilance jako most"
     ],
     "confidence": "medium"
   },
   "background": {
     "provider": "Open-Meteo historical Best Match / ERA5-family background",
     "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
-    "period_start": "2025-08-25",
-    "period_end": "2026-08-29",
+    "period_start": "2025-08-26",
+    "period_end": "2026-08-30",
     "data_age_days": 2,
     "windows": {
       "7": {
         "days": 7,
-        "precip_mm": 14.3,
-        "et0_mm": 21.9,
-        "p_minus_et0_mm": -7.6,
+        "precip_mm": 14.5,
+        "et0_mm": 23.2,
+        "p_minus_et0_mm": -8.7,
         "record_days": 7
       },
       "14": {
         "days": 14,
-        "precip_mm": 89.2,
-        "et0_mm": 40.0,
-        "p_minus_et0_mm": 49.2,
+        "precip_mm": 88.0,
+        "et0_mm": 40.9,
+        "p_minus_et0_mm": 47.1,
         "record_days": 14
       },
       "30": {
         "days": 30,
-        "precip_mm": 95.4,
-        "et0_mm": 123.7,
-        "p_minus_et0_mm": -28.3,
+        "precip_mm": 95.6,
+        "et0_mm": 122.1,
+        "p_minus_et0_mm": -26.5,
         "record_days": 30
       }
     },
     "latest_soil": {
-      "surface_m3m3": 0.2865,
-      "rootzone_0_100cm_m3m3": 0.1836,
-      "surface_percentile_1y": 34.9,
-      "rootzone_percentile_1y": 17.0
+      "surface_m3m3": 0.2655,
+      "rootzone_0_100cm_m3m3": 0.1812,
+      "surface_percentile_1y": 30.3,
+      "rootzone_percentile_1y": 15.7
     }
   },
   "chmi_local_rain": {
-    "latest_observation_utc": "2026-08-31T04:50:00+00:00",
+    "latest_observation_utc": "2026-09-01T08:50:00+00:00",
     "coverage_fraction": {
-      "7": 0.896,
-      "14": 0.761,
-      "30": 0.355
+      "7": 1.0,
+      "14": 0.9,
+      "30": 0.42
     },
     "rain_mm": {
-      "7": 8.3,
-      "14": 45.8,
-      "30": 45.8
+      "7": 10.9,
+      "14": 48.4,
+      "30": 48.4
     }
   },
   "sentinel_local_landscape": {
     "ok": true,
-    "latest_scene_date": "2026-08-15",
-    "median_open_land_ndmi": 0.1649,
-    "seasonal_percentile": 50.0,
-    "scene_count": 10
+    "latest_scene_date": "2026-08-27",
+    "median_open_land_ndmi": 0.2356,
+    "seasonal_percentile": 81.8,
+    "scene_count": 11
   },
   "method_note": "Operational local drought signal: P-ET0 water balance + reanalysis soil-moisture percentiles + Sentinel-2 NDMI + independent Copernicus CLMS 1 km SSM/SWI control. It is not an official drought classification.",
   "known_limitations": [
@@ -83,11 +83,11 @@
   "copernicus_1km": {
     "ok": false,
     "quality_status": "operational_copernicus_soil_1km",
-    "nominal_date_ssm": "2026-08-27T00:00:00.000",
-    "nominal_date_swi": "2026-08-27T12:00:00.000",
+    "nominal_date_ssm": "2026-08-28T00:00:00.000",
+    "nominal_date_swi": "2026-08-28T12:00:00.000",
     "surface_soil_moisture_percent": null,
     "soil_water_index_t20_percent": 41.0,
-    "soil_water_index_t60_percent": 35.5,
+    "soil_water_index_t60_percent": 36.0,
     "independent_evidence": "neutral_or_uncalibrated",
     "note": "CLMS 1 km satellite control; kept as independent evidence and does not change the warning rank until a local archive is calibrated."
   }
