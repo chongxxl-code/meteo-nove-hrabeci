@@ -40,13 +40,40 @@ jobs:
         run: cat data/radar-nowcast.json
       - name: Commit nowcast, observation and health state
         run: |
-          if git diff --quiet -- data/; then
-            echo "No radar data changes."
-            exit 0
-          fi
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/radar-nowcast.json data/radar-observations/ data/health-status.json
-          git commit -m "data: radar nowcast $(date -u +'%Y-%m-%d %H:%M UTC')"
-          git pull --rebase origin main
-          git push
+
+          rebuild_data() {
+            python scripts/build_radar_nowcast.py
+            python scripts/archive_radar_observation.py
+            python scripts/build_health_status.py
+          }
+
+          make_commit() {
+            git add data/radar-nowcast.json data/radar-observations/ data/health-status.json
+            if git diff --cached --quiet; then
+              echo "No radar data changes."
+              return 1
+            fi
+            git commit -m "data: radar nowcast $(date -u +'%Y-%m-%d %H:%M UTC')"
+          }
+
+          make_commit || exit 0
+
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+
+            echo "Concurrent repository update detected; rebuilding on latest main (attempt ${attempt}/3)."
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            git reset --hard origin/main
+            rebuild_data
+            make_commit || exit 0
+            sleep $((attempt * 5))
+          done
+
+          echo "Unable to push radar data after 3 retries."
+          exit 1
