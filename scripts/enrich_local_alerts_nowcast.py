@@ -47,11 +47,25 @@ def find_alert(alerts, alert_id):
     return None
 
 
+def _drop_contradictory_reasons(alert):
+    aid = alert.get("id")
+    phrases = {
+        "storm": ("nedávají silný lokální signál", "bez lokálního signálu"),
+        "runoff": ("bez zvýšeného rizika",),
+        "wind": ("bez zvýšeného rizika",),
+    }.get(aid, ())
+    if not phrases:
+        return
+    reasons = alert.get("reasons") or []
+    alert["reasons"] = [r for r in reasons if not any(p in str(r).lower() for p in phrases)]
+
+
 def bump(alert, rank, reason, confidence="high"):
     if not alert:
         return
     old = int(alert.get("rank") or 0)
     if rank > old:
+        _drop_contradictory_reasons(alert)
         alert["rank"] = rank
         alert["level"] = ["green", "yellow", "orange", "red"][rank]
         headlines = {
@@ -132,8 +146,6 @@ def main():
             detail += f", ETA ~{eta:.0f} min"
         bump(storm, 2, detail)
 
-    # Red remains deliberately conservative: it requires a very strong nearby echo
-    # plus substantial convective instability or dangerous modelled gusts.
     very_strong_echo = (r10 is not None and r10 >= 50) or (r25 is not None and r25 >= 55)
     severe_environment = (cape is not None and cape >= 1000) or (gust is not None and gust >= 75)
     if close_15 and very_strong_echo and severe_environment:
@@ -149,7 +161,6 @@ def main():
     if close_15 and gust is not None and gust >= 75 and very_strong_echo:
         bump(wind, 3, f"bezprostřední konvektivní systém + modelové nárazy ~{gust:.0f} km/h")
 
-    # Recompute fingerprint so the parent workflow sees a meaningful state change.
     import hashlib
     normalized = json.dumps({
         "alerts": alerts_doc.get("alerts"),
