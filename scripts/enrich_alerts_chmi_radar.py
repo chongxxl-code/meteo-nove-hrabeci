@@ -33,11 +33,22 @@ def find_alert(alerts, aid):
     return None
 
 
+def _drop_contradictory_reasons(alert):
+    phrases = {
+        'storm': ('nedávají silný lokální signál', 'bez lokálního signálu'),
+        'runoff': ('bez zvýšeného rizika',),
+        'wind': ('bez zvýšeného rizika',),
+    }.get(alert.get('id'), ())
+    if phrases:
+        alert['reasons'] = [r for r in (alert.get('reasons') or []) if not any(p in str(r).lower() for p in phrases)]
+
+
 def bump(alert, rank, reason, confidence='high'):
     if not alert:
         return
     old = int(alert.get('rank') or 0)
     if rank > old:
+        _drop_contradictory_reasons(alert)
         alert['rank'] = rank
         alert['level'] = ['green', 'yellow', 'orange', 'red'][rank]
         heads = {
@@ -125,7 +136,6 @@ def main():
     runoff = find_alert(alerts, 'runoff')
     wind = find_alert(alerts, 'wind')
 
-    # Two-radar consensus: RainViewer supplies motion; official CZRAD confirms intensity/position.
     if close50 and ch50 is not None and ch50 >= 40:
         bump(storm, 1, f'ČHMÚ radar potvrzuje aktivní echo do 50 km ({ch50:.0f} dBZ); RainViewer ukazuje pohyb k NH', 'high')
 
@@ -139,7 +149,6 @@ def main():
     if close25 and pc25 is not None and pc25 >= 45:
         bump(runoff, 2, f'ČHMÚ PseudoCAPPI 2 km potvrzuje silné srážkové echo do 25 km ({pc25:.0f} dBZ)', 'high')
 
-    # Red remains conservative and requires agreement of both radars plus a severe environment.
     severe_env = (cape is not None and cape >= 1000) or (gust is not None and gust >= 75)
     dual_very_strong = close10 and ch10 is not None and ch10 >= 50 and rv10 is not None and rv10 >= 50
     if dual_very_strong and severe_env:
