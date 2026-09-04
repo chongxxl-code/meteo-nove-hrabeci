@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-09-04T23:44:48.831636+02:00",
+  "computed_at_local": "2026-09-04T23:49:22.503673+02:00",
   "alerts": [
     {
       "id": "storm",
@@ -15,11 +15,9 @@
       "rank": 2,
       "headline": "výrazné riziko",
       "reasons": [
-        "radar/modely nyní nedávají silný lokální signál",
         "radarový nowcast: srážkový systém míří k lokalitě, vzdálenost 0.4 km",
         "radarový nowcast: aktivní systém do 0.4 km, ETA ~0 min",
-        "ČHMÚ radar potvrzuje aktivní echo do 50 km (45 dBZ); RainViewer ukazuje pohyb k NH",
-        "dva radarové zdroje potvrzují silný systém do 25 km (ČHMÚ 41 dBZ), ETA ~0 min",
+        "ČHMÚ radar potvrzuje aktivní echo do 50 km (46 dBZ); RainViewer ukazuje pohyb k NH",
         "ČHMÚ COTREC potvrzuje příchod systému přibližně za 20 min; shoda s RainViewer ETA ±20 min"
       ],
       "confidence": "high"
@@ -322,7 +320,7 @@
     },
     "radar_nowcast": {
       "ok": true,
-      "computed_at_utc": "2026-09-04T21:44:19.535884Z",
+      "computed_at_utc": "2026-09-04T21:48:52.546786Z",
       "age_min": 0.7,
       "relation": "miri_na_lokalitu",
       "confidence": "high",
@@ -342,16 +340,16 @@
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD",
       "status": "operational",
-      "computed_at_utc": "2026-09-04T21:44:43.785003Z",
-      "latest_observed_at_utc": "2026-09-04T21:40:00Z",
+      "computed_at_utc": "2026-09-04T21:49:17.062319Z",
+      "latest_observed_at_utc": "2026-09-04T21:45:00Z",
       "max_age_min": 20.0,
       "products": {
         "maxz": {
           "ok": true,
           "product": "maxz",
-          "source_file": "T_PABV23_C_OKPR_20260904214000.hdf",
-          "observed_at_utc": "2026-09-04T21:40:00Z",
-          "age_min": 4.7,
+          "source_file": "T_PABV23_C_OKPR_20260904214500.hdf",
+          "observed_at_utc": "2026-09-04T21:45:00Z",
+          "age_min": 4.2,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -366,20 +364,20 @@
             978.0
           ],
           "metrics": {
-            "max_dbz_7km": 28.5,
-            "max_dbz_10km": 28.5,
-            "max_dbz_25km": 41.0,
-            "max_dbz_50km": 45.0,
-            "nearest_35dbz_km": 18.9,
-            "point_dbz": 23.5
+            "max_dbz_7km": 32.5,
+            "max_dbz_10km": 32.5,
+            "max_dbz_25km": 34.5,
+            "max_dbz_50km": 46.0,
+            "nearest_35dbz_km": 25.7,
+            "point_dbz": 25.5
           }
         },
         "pseudocappi2km": {
           "ok": true,
           "product": "pseudocappi2km",
-          "source_file": "T_PANV23_C_OKPR_20260904214000.hdf",
-          "observed_at_utc": "2026-09-04T21:40:00Z",
-          "age_min": 4.7,
+          "source_file": "T_PANV23_C_OKPR_20260904214500.hdf",
+          "observed_at_utc": "2026-09-04T21:45:00Z",
+          "age_min": 4.3,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -394,12 +392,12 @@
             978.0
           ],
           "metrics": {
-            "max_dbz_7km": 28.5,
-            "max_dbz_10km": 28.5,
-            "max_dbz_25km": 41.0,
-            "max_dbz_50km": 45.0,
-            "nearest_35dbz_km": 18.9,
-            "point_dbz": 23.5
+            "max_dbz_7km": 32.5,
+            "max_dbz_10km": 32.5,
+            "max_dbz_25km": 34.5,
+            "max_dbz_50km": 46.0,
+            "nearest_35dbz_km": 25.7,
+            "point_dbz": 25.5
           }
         }
       }
@@ -407,10 +405,10 @@
     "chmi_radar_forecast": {
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD COTREC",
-      "age_min": 5.0,
+      "age_min": 4.5,
       "chmi_arrival_lead_min": 20,
       "chmi_strong_arrival_lead_min": null,
-      "peak_dbz_25km_next60": 37.0,
+      "peak_dbz_25km_next60": 37.5,
       "rainviewer_eta_min": 0.0,
       "agreement": "agree",
       "eta_difference_min": 20.0,
@@ -419,5 +417,5 @@
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "c23ccbed09decf6e202bd8390514de5417d424b39f97d4b4716386b1af97e079"
+  "_fingerprint": "f7c94f09b9de8cc09c96275778b38fb83ec3240888ed295b8f504c81c74375e7"
 }
