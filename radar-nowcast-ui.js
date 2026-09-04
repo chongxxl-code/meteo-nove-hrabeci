@@ -2,6 +2,7 @@
   const headline = document.getElementById('headline');
   if (!headline) return;
 
+  const LIVE_URL = 'https://raw.githubusercontent.com/chongxxl-code/meteo-nove-hrabeci/main/data/radar-nowcast.json';
   const STALE_MIN = 20;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const relationText = {
@@ -34,7 +35,6 @@
     const age = ageMin(n);
     const stamp = ageText(age);
 
-    // Never present an old ETA or trajectory as current.
     if (Number.isFinite(age) && age > STALE_MIN) {
       headline.innerHTML = `<b style="color:var(--a)">Radarový nowcast:</b> poslední serverový výpočet je zastaralý. <span class="muted">${esc(stamp)} · čekám na nová radarová data.</span>`;
       return;
@@ -56,6 +56,7 @@
     }
     if (n.confidence) bits.push(`jistota ${esc(n.confidence)}`);
     if (stamp) bits.push(esc(stamp));
+    bits.push('živá data z main');
 
     let main;
     if (Number.isFinite(Number(n.eta_min)) && n.relation === 'miri_na_lokalitu') {
@@ -68,21 +69,29 @@
     headline.innerHTML = main + suffix;
   }
 
-  function load() {
-    fetch('./data/radar-nowcast.json?ts=' + Date.now(), {cache:'no-store'})
-      .then(r => r.ok ? r.json() : Promise.reject(new Error('nowcast unavailable')))
-      .then(render)
-      .catch(() => {
-        if (last) render(last);
-        else headline.innerHTML = '<b style="color:var(--a)">Radarový nowcast:</b> serverový výpočet je dočasně nedostupný. <span class="muted">Radarová mapa zůstává funkční.</span>';
-      });
+  async function load() {
+    const ts = Date.now();
+    try {
+      let r;
+      try {
+        r = await fetch(`${LIVE_URL}?ts=${ts}`, {cache:'no-store', mode:'cors'});
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      } catch (e) {
+        r = await fetch(`./data/radar-nowcast.json?ts=${ts}`, {cache:'no-store'});
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      }
+      render(await r.json());
+    } catch (e) {
+      if (last) render(last);
+      else headline.innerHTML = '<b style="color:var(--a)">Radarový nowcast:</b> serverový výpočet je dočasně nedostupný. <span class="muted">Radarová mapa zůstává funkční.</span>';
+    }
   }
 
   load();
   setTimeout(load, 1500);
   setTimeout(load, 5000);
   setInterval(() => {
-    if (last) render(last); // also advances the visible age / expires stale ETA
+    if (last) render(last);
     load();
   }, 60000);
 
@@ -91,8 +100,6 @@
     if (!document.hidden) load();
   });
 
-  // The original radar loader also writes into #headline asynchronously.
-  // Keep the newest server result as the final authority.
   const observer = new MutationObserver(() => {
     if (!last) return;
     observer.disconnect();
