@@ -8,11 +8,13 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_local_alerts.py'
+      - 'scripts/enrich_local_alerts_nowcast.py'
       - 'scripts/send_critical_push.py'
       - 'scripts/sync_push_config.py'
       - 'scripts/check_onesignal_health.py'
       - '.github/workflows/build-local-alerts.yml'
       - 'data/drought-context.json'
+      - 'data/radar-nowcast.json'
       - 'data/push-config.json'
       - 'data/validation/open-land-experiment-2026.json'
       - 'data/observations/**'
@@ -21,8 +23,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: local-alerts
-  cancel-in-progress: true
+  group: meteo-data-writer
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -40,6 +42,8 @@ jobs:
           METEOMATICS_USER: ${{ secrets.METEOMATICS_USER }}
           METEOMATICS_PASSWORD: ${{ secrets.METEOMATICS_PASSWORD }}
         run: python scripts/build_local_alerts.py
+      - name: Enrich warnings with live radar nowcast
+        run: python scripts/enrich_local_alerts_nowcast.py
       - name: Sync public OneSignal App ID into client config
         env:
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
@@ -58,11 +62,20 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/alerts.json data/push-state.json data/push-config.json data/push-health.json 2>/dev/null || true
+
+          # Stage files one by one. Some state files legitimately do not exist yet;
+          # a missing optional file must never prevent alerts.json from being staged.
+          for f in data/alerts.json data/push-state.json data/push-config.json data/push-health.json; do
+            if [ -e "$f" ]; then
+              git add "$f"
+            fi
+          done
+
           if git diff --cached --quiet; then
             echo "Local risk and push state unchanged."
             exit 0
           fi
+
           git commit -m "data: local risk state $(date -u +'%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main
           git push
