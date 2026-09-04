@@ -10,8 +10,10 @@ on:
       - 'scripts/build_local_alerts.py'
       - 'scripts/enrich_local_alerts_nowcast.py'
       - 'scripts/enrich_alerts_chmi_radar.py'
+      - 'scripts/enrich_alerts_chmi_forecast.py'
       - 'scripts/build_radar_nowcast.py'
       - 'scripts/build_chmi_radar.py'
+      - 'scripts/build_chmi_radar_forecast.py'
       - 'scripts/send_critical_push.py'
       - 'scripts/sync_push_config.py'
       - 'scripts/check_onesignal_health.py'
@@ -19,6 +21,7 @@ on:
       - 'data/drought-context.json'
       - 'data/radar-nowcast.json'
       - 'data/chmi-radar.json'
+      - 'data/chmi-radar-forecast.json'
       - 'data/push-config.json'
       - 'data/validation/open-land-experiment-2026.json'
       - 'data/observations/**'
@@ -45,6 +48,8 @@ jobs:
         run: python scripts/build_radar_nowcast.py
       - name: Refresh official CHMI radar composite
         run: python scripts/build_chmi_radar.py
+      - name: Refresh official CHMI COTREC radar forecast
+        run: python scripts/build_chmi_radar_forecast.py
       - name: Build deterministic local warning state
         env:
           METEOMATICS_USER: ${{ secrets.METEOMATICS_USER }}
@@ -52,8 +57,10 @@ jobs:
         run: python scripts/build_local_alerts.py
       - name: Enrich warnings with live RainViewer radar nowcast
         run: python scripts/enrich_local_alerts_nowcast.py
-      - name: Enrich warnings with CHMI radar consensus
+      - name: Enrich warnings with CHMI measured-radar consensus
         run: python scripts/enrich_alerts_chmi_radar.py
+      - name: Compare RainViewer ETA with CHMI COTREC forecast
+        run: python scripts/enrich_alerts_chmi_forecast.py
       - name: Sync public OneSignal App ID into client config
         env:
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
@@ -73,7 +80,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          for f in data/alerts.json data/radar-nowcast.json data/chmi-radar.json data/push-state.json data/push-config.json data/push-health.json; do
+          for f in data/alerts.json data/radar-nowcast.json data/chmi-radar.json data/chmi-radar-forecast.json data/push-state.json data/push-config.json data/push-health.json; do
             if [ -e "$f" ]; then
               git add "$f"
             fi
