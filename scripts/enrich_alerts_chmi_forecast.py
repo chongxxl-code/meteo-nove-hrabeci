@@ -33,11 +33,22 @@ def find_alert(doc, aid):
     return None
 
 
+def _drop_contradictory_reasons(alert):
+    phrases = {
+        'storm': ('nedávají silný lokální signál', 'bez lokálního signálu'),
+        'runoff': ('bez zvýšeného rizika',),
+        'wind': ('bez zvýšeného rizika',),
+    }.get(alert.get('id'), ())
+    if phrases:
+        alert['reasons'] = [r for r in (alert.get('reasons') or []) if not any(p in str(r).lower() for p in phrases)]
+
+
 def bump(alert, rank, reason, confidence='high'):
     if not alert:
         return
     old = int(alert.get('rank') or 0)
     if rank > old:
+        _drop_contradictory_reasons(alert)
         alert['rank'] = rank
         alert['level'] = ['green', 'yellow', 'orange', 'red'][rank]
         if alert.get('id') == 'storm':
@@ -111,7 +122,7 @@ def main():
         if chmi_eta is not None and float(chmi_eta) <= 60:
             bump(storm, max(1, int((storm or {}).get('rank') or 0)), f'ČHMÚ COTREC potvrzuje příchod systému přibližně za {int(chmi_eta)} min; shoda s RainViewer ETA ±{int(round(eta_diff or 0))} min', 'high')
         if chmi_eta is not None and float(chmi_eta) <= 30 and peak25 is not None and float(peak25) >= 40:
-            bump(storm, 2, f'dva nezávislé nowcasty se shodují a ČHMÚ čeká aktivní echo do 30 min', 'high')
+            bump(storm, 2, 'dva nezávislé nowcasty se shodují a ČHMÚ čeká aktivní echo do 30 min', 'high')
         if strong_eta is not None and float(strong_eta) <= 30:
             bump(runoff, 2, f'ČHMÚ COTREC očekává silné echo ≥45 dBZ do 10 km za ~{int(strong_eta)} min', 'high')
     elif agreement == 'disagree':
