@@ -12,7 +12,6 @@ from build_chmi_radar import get_bytes, extract_grid, local_metrics
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data' / 'chmi-radar-forecast.json'
-UA = 'nove-hrabeci-chmi-radar-fct/1.0 (+github-actions)'
 
 PRODUCTS = {
     'maxz': 'https://opendata.chmi.cz/meteorology/weather/radar/composite/fct_maxz/hdf5/',
@@ -38,18 +37,42 @@ def latest_tar(base: str):
     return max(candidates, key=lambda x: x[0])
 
 
+def member_lead_min(member_name: str, calc_ts: datetime):
+    # Current CHMI archives encode the forecast valid time in the member filename.
+    # Prefer that over a particular suffix spelling; it is also consistent with the
+    # published specification and survives filename-format variations.
+    stamps = re.findall(r'(20\d{12})', member_name)
+    for stamp in reversed(stamps):
+        try:
+            valid = datetime.strptime(stamp, '%Y%m%d%H%M%S').replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+        lead = int(round((valid - calc_ts).total_seconds() / 60.0))
+        if lead in (10, 20, 30, 40, 50, 60):
+            return lead, valid
+
+    # Fallback for archives that explicitly encode fct10/fct20 etc.
+    m = re.search(r'(?:fct|ft)[_.-]?(10|20|30|40|50|60)(?:\D|$)', member_name, flags=re.I)
+    if m:
+        lead = int(m.group(1))
+        valid = datetime.fromtimestamp(calc_ts.timestamp() + lead * 60, tz=timezone.utc)
+        return lead, valid
+    return None, None
+
+
 def read_tar_product(name: str, base: str):
     calc_ts, filename = latest_tar(base)
     raw_tar = get_bytes(base + filename, timeout=35)
     horizons = []
+    member_names = []
     with tarfile.open(fileobj=io.BytesIO(raw_tar), mode='r:*') as tf:
-        members = [m for m in tf.getmembers() if m.isfile() and m.name.lower().endswith('.hdf')]
+        members = [m for m in tf.getmembers() if m.isfile()]
+        member_names = [m.name for m in members[:12]]
         for member in members:
-            m = re.search(r'_fct(\d+)\.hdf$', member.name, flags=re.I)
-            if not m:
+            if not member.name.lower().endswith('.hdf'):
                 continue
-            lead = int(m.group(1))
-            if lead not in (10, 20, 30, 40, 50, 60):
+            lead, valid_ts = member_lead_min(member.name, calc_ts)
+            if lead is None:
                 continue
             fh = tf.extractfile(member)
             if fh is None:
@@ -59,15 +82,17 @@ def read_tar_product(name: str, base: str):
             metrics = local_metrics(values, row, col, ground_x, ground_y)
             horizons.append({
                 'lead_min': lead,
-                'valid_at_utc': datetime.fromtimestamp(calc_ts.timestamp() + lead * 60, tz=timezone.utc).isoformat().replace('+00:00', 'Z'),
+                'valid_at_utc': valid_ts.isoformat().replace('+00:00', 'Z'),
                 'quantity': quantity,
                 'metrics': metrics,
             })
-    horizons.sort(key=lambda x: x['lead_min'])
+    # De-duplicate if an archive happens to contain multiple representations.
+    by_lead = {h['lead_min']: h for h in horizons}
+    horizons = [by_lead[k] for k in sorted(by_lead)]
     if len(horizons) < 4:
-        raise RuntimeError(f'{name}: forecast TAR obsahuje jen {len(horizons)} použitelných horizontů')
+        sample = ', '.join(member_names[:6])
+        raise RuntimeError(f'{name}: forecast TAR obsahuje jen {len(horizons)} použitelných horizontů; sample members: {sample}')
 
-    # Arrival signal: echo >=35 dBZ reaches 7 km of NH. Strong arrival is >=45 dBZ within 10 km.
     first_echo = next((h['lead_min'] for h in horizons if (h['metrics'].get('max_dbz_7km') or -99) >= 35), None)
     first_strong = next((h['lead_min'] for h in horizons if (h['metrics'].get('max_dbz_10km') or -99) >= 45), None)
     peak_25 = max((h['metrics'].get('max_dbz_25km') for h in horizons if h['metrics'].get('max_dbz_25km') is not None), default=None)
@@ -93,7 +118,7 @@ def main():
         try:
             products[name] = read_tar_product(name, base)
         except Exception as exc:
-            products[name] = {'ok': False, 'product': name, 'error': str(exc)[:260]}
+            products[name] = {'ok': False, 'product': name, 'error': str(exc)[:500]}
             errors.append(f'{name}: {exc}')
 
     good = [p for p in products.values() if p.get('ok')]
