@@ -1,64 +1,15 @@
 {
   "schema": 1,
-  "computed_at_utc": "2026-09-04T19:55:16.402023Z",
+  "computed_at_utc": "2026-09-04T20:45:18.054630Z",
   "location": {
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "status": "operational",
-  "confidence": "high",
-  "eta_min": 0,
-  "relation": "miri_na_lokalitu",
-  "note": "ETA je zobrazena jen při stabilním směru a rychlosti.",
-  "nearest_precip_km": 0.4,
-  "motion": {
-    "bearing_deg": 90.0,
-    "compass": "V",
-    "speed_kmh": 106.2,
-    "pair_count": 5,
-    "angle_spread_deg": 2.5,
-    "speed_spread_px_min": 0.002,
-    "phase_peak_ratio_median": 1.119
-  },
-  "frames": {
-    "count": 6,
-    "first_unix": 1788548400,
-    "latest_unix": 1788551400
-  },
-  "diagnostics": {
-    "source_frames": 6,
-    "usable_frames": 6,
-    "frame_tiles": [
-      {
-        "time": 1788548400,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1788549000,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1788549600,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1788550200,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1788550800,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1788551400,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      }
-    ]
-  }
+  "status": "error",
+  "confidence": null,
+  "eta_min": null,
+  "relation": "neurceno",
+  "note": "Nowcast se nepodařilo spočítat; veřejný radar na webu zůstává nezávisle funkční.",
+  "motion": null,
+  "error": "HTTP Error 502: Bad Gateway"
 }
