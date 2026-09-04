@@ -11,12 +11,12 @@ from pathlib import Path
 
 import h5py
 import numpy as np
-from pyproj import CRS, Transformer
+from pyproj import CRS, Geod, Transformer
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data' / 'chmi-radar.json'
 LAT, LON = 51.0162, 14.4398
-UA = 'nove-hrabeci-chmi-radar/1.0 (+github-actions)'
+UA = 'nove-hrabeci-chmi-radar/1.1 (+github-actions)'
 
 PRODUCTS = {
     'maxz': 'https://opendata.chmi.cz/meteorology/weather/radar/composite/maxz/hdf5/',
@@ -60,12 +60,14 @@ def latest_hdf(base: str):
 
 def find_data_group(h5):
     found = []
+
     def visitor(name, obj):
         if isinstance(obj, h5py.Group) and 'data' in obj and isinstance(obj['data'], h5py.Dataset):
             q = None
             if 'what' in obj:
                 q = obj['what'].attrs.get('quantity')
             found.append((name, obj, as_text(q) if q is not None else ''))
+
     h5.visititems(visitor)
     if not found:
         raise RuntimeError('ODIM HDF neobsahuje datovou vrstvu')
@@ -122,27 +124,46 @@ def extract_grid(raw_bytes: bytes):
             raise RuntimeError('ODIM HDF postrádá georeferenční rohy')
 
         crs = CRS.from_user_input(projdef)
-        transformer = Transformer.from_crs('EPSG:4326', crs, always_xy=True)
-        xy = {k: transformer.transform(*v) for k, v in corners.items()}
+        fwd = Transformer.from_crs('EPSG:4326', crs, always_xy=True)
+        inv = Transformer.from_crs(crs, 'EPSG:4326', always_xy=True)
+        xy = {k: fwd.transform(*v) for k, v in corners.items()}
         xs = [p[0] for p in xy.values()]
         ys = [p[1] for p in xy.values()]
         xmin, xmax = min(xs), max(xs)
         ymin, ymax = min(ys), max(ys)
-        x, y = transformer.transform(LON, LAT)
+        x, y = fwd.transform(LON, LAT)
 
         col = int(round((x - xmin) / xscale - 0.5))
         row = int(round((ymax - y) / yscale - 0.5))
         if not (0 <= row < values.shape[0] and 0 <= col < values.shape[1]):
             raise RuntimeError(f'NH leží mimo ODIM grid: row={row}, col={col}, shape={values.shape}')
 
-        return values, row, col, float(abs(xscale)), float(abs(yscale)), quantity, projdef
+        # ODIM grid is in projected metres. In Web Mercator those metres are not
+        # ground metres at 51°N, so derive the true local ground spacing geodetically.
+        geod = Geod(ellps='WGS84')
+        lon_x, lat_x = inv.transform(x + abs(xscale), y)
+        lon_y, lat_y = inv.transform(x, y + abs(yscale))
+        _, _, ground_x = geod.inv(LON, LAT, lon_x, lat_x)
+        _, _, ground_y = geod.inv(LON, LAT, lon_y, lat_y)
+
+        return (
+            values,
+            row,
+            col,
+            float(abs(xscale)),
+            float(abs(yscale)),
+            float(abs(ground_x)),
+            float(abs(ground_y)),
+            quantity,
+            projdef,
+        )
 
 
-def local_metrics(values, row, col, xscale_m, yscale_m):
+def local_metrics(values, row, col, ground_x_m, ground_y_m):
     out = {}
     yy, xx = np.indices(values.shape)
-    dy = (yy - row) * yscale_m
-    dx = (xx - col) * xscale_m
+    dy = (yy - row) * ground_y_m
+    dx = (xx - col) * ground_x_m
     dist_km = np.hypot(dx, dy) / 1000.0
     for radius in (7, 10, 25, 50):
         mask = dist_km <= radius
@@ -159,8 +180,8 @@ def local_metrics(values, row, col, xscale_m, yscale_m):
 def read_product(name, base):
     ts, filename = latest_hdf(base)
     raw = get_bytes(base + filename)
-    values, row, col, xs, ys, quantity, projdef = extract_grid(raw)
-    metrics = local_metrics(values, row, col, xs, ys)
+    values, row, col, proj_x, proj_y, ground_x, ground_y, quantity, projdef = extract_grid(raw)
+    metrics = local_metrics(values, row, col, ground_x, ground_y)
     age_min = (datetime.now(timezone.utc) - ts).total_seconds() / 60.0
     return {
         'ok': True,
@@ -170,7 +191,8 @@ def read_product(name, base):
         'age_min': round(age_min, 1),
         'quantity': quantity,
         'grid_shape': [int(values.shape[0]), int(values.shape[1])],
-        'grid_resolution_m': [round(xs, 1), round(ys, 1)],
+        'projected_grid_resolution_m': [round(proj_x, 1), round(proj_y, 1)],
+        'ground_grid_resolution_m_at_nh': [round(ground_x, 1), round(ground_y, 1)],
         'metrics': metrics,
     }
 
@@ -197,7 +219,7 @@ def main():
         'status': status,
         'latest_observed_at_utc': latest,
         'products': products,
-        'method_note': 'Oficiální radarový kompozit ČHMÚ. MAX_Z sleduje maximum odrazivosti ve sloupci; PseudoCAPPI 2 km je používán jako bližší indikace srážek u zemského povrchu. Lokální metriky jsou počítány z ODIM HDF5 gridu 1 km.',
+        'method_note': 'Oficiální radarový kompozit ČHMÚ. MAX_Z sleduje maximum odrazivosti ve sloupci; PseudoCAPPI 2 km je používán jako bližší indikace srážek u zemského povrchu. Lokální vzdálenosti jsou počítány v reálných pozemních kilometrech z ODIM HDF5 gridu.',
         'source_urls': PRODUCTS,
     }
     if errors:
