@@ -9,13 +9,16 @@ on:
     paths:
       - 'scripts/build_local_alerts.py'
       - 'scripts/enrich_local_alerts_nowcast.py'
+      - 'scripts/enrich_alerts_chmi_radar.py'
       - 'scripts/build_radar_nowcast.py'
+      - 'scripts/build_chmi_radar.py'
       - 'scripts/send_critical_push.py'
       - 'scripts/sync_push_config.py'
       - 'scripts/check_onesignal_health.py'
       - '.github/workflows/build-local-alerts.yml'
       - 'data/drought-context.json'
       - 'data/radar-nowcast.json'
+      - 'data/chmi-radar.json'
       - 'data/push-config.json'
       - 'data/validation/open-land-experiment-2026.json'
       - 'data/observations/**'
@@ -37,16 +40,20 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install radar analysis dependencies
-        run: python -m pip install --disable-pip-version-check numpy pillow
-      - name: Refresh radar nowcast for this alert decision
+        run: python -m pip install --disable-pip-version-check numpy pillow h5py pyproj
+      - name: Refresh RainViewer radar nowcast for this alert decision
         run: python scripts/build_radar_nowcast.py
+      - name: Refresh official CHMI radar composite
+        run: python scripts/build_chmi_radar.py
       - name: Build deterministic local warning state
         env:
           METEOMATICS_USER: ${{ secrets.METEOMATICS_USER }}
           METEOMATICS_PASSWORD: ${{ secrets.METEOMATICS_PASSWORD }}
         run: python scripts/build_local_alerts.py
-      - name: Enrich warnings with live radar nowcast
+      - name: Enrich warnings with live RainViewer radar nowcast
         run: python scripts/enrich_local_alerts_nowcast.py
+      - name: Enrich warnings with CHMI radar consensus
+        run: python scripts/enrich_alerts_chmi_radar.py
       - name: Sync public OneSignal App ID into client config
         env:
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
@@ -61,21 +68,19 @@ jobs:
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
           ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
         run: python scripts/send_critical_push.py || echo "::warning::Critical push delivery failed; next scheduled run will retry."
-      - name: Commit only meaningful alert / push-state changes
+      - name: Commit only meaningful alert / radar / push-state changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage files one by one. Some state files legitimately do not exist yet;
-          # a missing optional file must never prevent alerts.json from being staged.
-          for f in data/alerts.json data/push-state.json data/push-config.json data/push-health.json; do
+          for f in data/alerts.json data/radar-nowcast.json data/chmi-radar.json data/push-state.json data/push-config.json data/push-health.json; do
             if [ -e "$f" ]; then
               git add "$f"
             fi
           done
 
           if git diff --cached --quiet; then
-            echo "Local risk and push state unchanged."
+            echo "Local risk and radar state unchanged."
             exit 0
           fi
 
