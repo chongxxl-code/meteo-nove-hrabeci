@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-09-04T23:42:52.580265+02:00",
+  "computed_at_local": "2026-09-04T23:44:48.831636+02:00",
   "alerts": [
     {
       "id": "storm",
@@ -19,7 +19,8 @@
         "radarový nowcast: srážkový systém míří k lokalitě, vzdálenost 0.4 km",
         "radarový nowcast: aktivní systém do 0.4 km, ETA ~0 min",
         "ČHMÚ radar potvrzuje aktivní echo do 50 km (45 dBZ); RainViewer ukazuje pohyb k NH",
-        "dva radarové zdroje potvrzují silný systém do 25 km (ČHMÚ 41 dBZ), ETA ~0 min"
+        "dva radarové zdroje potvrzují silný systém do 25 km (ČHMÚ 41 dBZ), ETA ~0 min",
+        "ČHMÚ COTREC potvrzuje příchod systému přibližně za 20 min; shoda s RainViewer ETA ±20 min"
       ],
       "confidence": "high"
     },
@@ -321,8 +322,8 @@
     },
     "radar_nowcast": {
       "ok": true,
-      "computed_at_utc": "2026-09-04T21:42:11.506836Z",
-      "age_min": 0.9,
+      "computed_at_utc": "2026-09-04T21:44:19.535884Z",
+      "age_min": 0.7,
       "relation": "miri_na_lokalitu",
       "confidence": "high",
       "nearest_precip_km": 0.4,
@@ -341,7 +342,7 @@
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD",
       "status": "operational",
-      "computed_at_utc": "2026-09-04T21:42:45.426089Z",
+      "computed_at_utc": "2026-09-04T21:44:43.785003Z",
       "latest_observed_at_utc": "2026-09-04T21:40:00Z",
       "max_age_min": 20.0,
       "products": {
@@ -350,7 +351,7 @@
           "product": "maxz",
           "source_file": "T_PABV23_C_OKPR_20260904214000.hdf",
           "observed_at_utc": "2026-09-04T21:40:00Z",
-          "age_min": 2.7,
+          "age_min": 4.7,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -378,7 +379,7 @@
           "product": "pseudocappi2km",
           "source_file": "T_PANV23_C_OKPR_20260904214000.hdf",
           "observed_at_utc": "2026-09-04T21:40:00Z",
-          "age_min": 2.8,
+          "age_min": 4.7,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -404,12 +405,19 @@
       }
     },
     "chmi_radar_forecast": {
-      "ok": false,
-      "status": "stale_or_unavailable",
-      "age_min": null
+      "ok": true,
+      "provider": "ČHMÚ OpenData / CZRAD COTREC",
+      "age_min": 5.0,
+      "chmi_arrival_lead_min": 20,
+      "chmi_strong_arrival_lead_min": null,
+      "peak_dbz_25km_next60": 37.0,
+      "rainviewer_eta_min": 0.0,
+      "agreement": "agree",
+      "eta_difference_min": 20.0,
+      "note": "ČHMÚ COTREC je kontrolní extrapolace; při shodě zvyšuje důvěru, při rozporu ji snižuje. Samostatně nepřebíjí přímé měřené radarové varování."
     }
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "815e33a8ad93f7c52f5ec4bf4bbc5f541ed06660022a4932f0afa19a54ef2c8d"
+  "_fingerprint": "c23ccbed09decf6e202bd8390514de5417d424b39f97d4b4716386b1af97e079"
 }
