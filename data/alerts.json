@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-09-04T23:34:49.466954+02:00",
+  "computed_at_local": "2026-09-04T23:36:55.549510+02:00",
   "alerts": [
     {
       "id": "storm",
@@ -18,7 +18,8 @@
         "radar/modely nyní nedávají silný lokální signál",
         "radarový nowcast: srážkový systém míří k lokalitě, vzdálenost 0.4 km",
         "radarový nowcast: aktivní systém do 0.4 km, ETA ~0 min",
-        "ČHMÚ radar potvrzuje aktivní echo do 50 km (42 dBZ); RainViewer ukazuje pohyb k NH"
+        "ČHMÚ radar potvrzuje aktivní echo do 50 km (46 dBZ); RainViewer ukazuje pohyb k NH",
+        "dva radarové zdroje potvrzují silný systém do 25 km (ČHMÚ 40 dBZ), ETA ~0 min"
       ],
       "confidence": "high"
     },
@@ -320,8 +321,8 @@
     },
     "radar_nowcast": {
       "ok": true,
-      "computed_at_utc": "2026-09-04T21:34:25.040487Z",
-      "age_min": 0.6,
+      "computed_at_utc": "2026-09-04T21:36:18.017590Z",
+      "age_min": 0.9,
       "relation": "miri_na_lokalitu",
       "confidence": "high",
       "nearest_precip_km": 0.4,
@@ -340,56 +341,64 @@
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD",
       "status": "operational",
-      "computed_at_utc": "2026-09-04T21:34:49.100347Z",
-      "latest_observed_at_utc": "2026-09-04T21:30:00Z",
+      "computed_at_utc": "2026-09-04T21:36:55.397955Z",
+      "latest_observed_at_utc": "2026-09-04T21:35:00Z",
       "max_age_min": 20.0,
       "products": {
         "maxz": {
           "ok": true,
           "product": "maxz",
-          "source_file": "T_PABV23_C_OKPR_20260904213000.hdf",
-          "observed_at_utc": "2026-09-04T21:30:00Z",
-          "age_min": 4.8,
+          "source_file": "T_PABV23_C_OKPR_20260904213500.hdf",
+          "observed_at_utc": "2026-09-04T21:35:00Z",
+          "age_min": 1.9,
           "quantity": "DBZH",
           "grid_shape": [
             378,
             598
           ],
-          "grid_resolution_m": [
+          "projected_grid_resolution_m": [
             1555.7,
             1555.7
           ],
+          "ground_grid_resolution_m_at_nh": [
+            980.7,
+            978.0
+          ],
           "metrics": {
             "max_dbz_7km": 30.5,
-            "max_dbz_10km": 32.0,
-            "max_dbz_25km": 36.0,
-            "max_dbz_50km": 41.5,
-            "nearest_35dbz_km": 16.8,
-            "point_dbz": 27.0
+            "max_dbz_10km": 31.0,
+            "max_dbz_25km": 40.0,
+            "max_dbz_50km": 46.5,
+            "nearest_35dbz_km": 20.1,
+            "point_dbz": 23.0
           }
         },
         "pseudocappi2km": {
           "ok": true,
           "product": "pseudocappi2km",
-          "source_file": "T_PANV23_C_OKPR_20260904213000.hdf",
-          "observed_at_utc": "2026-09-04T21:30:00Z",
-          "age_min": 4.8,
+          "source_file": "T_PANV23_C_OKPR_20260904213500.hdf",
+          "observed_at_utc": "2026-09-04T21:35:00Z",
+          "age_min": 1.9,
           "quantity": "DBZH",
           "grid_shape": [
             378,
             598
           ],
-          "grid_resolution_m": [
+          "projected_grid_resolution_m": [
             1555.7,
             1555.7
           ],
+          "ground_grid_resolution_m_at_nh": [
+            980.7,
+            978.0
+          ],
           "metrics": {
             "max_dbz_7km": 30.5,
-            "max_dbz_10km": 32.0,
-            "max_dbz_25km": 36.0,
-            "max_dbz_50km": 41.5,
-            "nearest_35dbz_km": 16.8,
-            "point_dbz": 27.0
+            "max_dbz_10km": 31.0,
+            "max_dbz_25km": 40.0,
+            "max_dbz_50km": 46.5,
+            "nearest_35dbz_km": 20.1,
+            "point_dbz": 23.0
           }
         }
       }
@@ -397,5 +406,5 @@
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "29e22d4796d8c2c402794deb9bc85bf5c8a1547a219ec72bc9e3c883dbc7ada0"
+  "_fingerprint": "bf7fe4b512ad1253ae04c2e0be79f1a8627ed1dfb5fc56f3577e0de3b1024efc"
 }

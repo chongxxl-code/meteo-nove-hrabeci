@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "computed_at_utc": "2026-09-04T21:34:49.100347Z",
+  "computed_at_utc": "2026-09-04T21:36:55.397955Z",
   "location": {
     "name": "Nové Hraběcí",
     "lat": 51.0162,
@@ -8,58 +8,66 @@
   },
   "provider": "ČHMÚ OpenData / CZRAD",
   "status": "operational",
-  "latest_observed_at_utc": "2026-09-04T21:30:00Z",
+  "latest_observed_at_utc": "2026-09-04T21:35:00Z",
   "products": {
     "maxz": {
       "ok": true,
       "product": "maxz",
-      "source_file": "T_PABV23_C_OKPR_20260904213000.hdf",
-      "observed_at_utc": "2026-09-04T21:30:00Z",
-      "age_min": 4.8,
+      "source_file": "T_PABV23_C_OKPR_20260904213500.hdf",
+      "observed_at_utc": "2026-09-04T21:35:00Z",
+      "age_min": 1.9,
       "quantity": "DBZH",
       "grid_shape": [
         378,
         598
       ],
-      "grid_resolution_m": [
+      "projected_grid_resolution_m": [
         1555.7,
         1555.7
       ],
+      "ground_grid_resolution_m_at_nh": [
+        980.7,
+        978.0
+      ],
       "metrics": {
         "max_dbz_7km": 30.5,
-        "max_dbz_10km": 32.0,
-        "max_dbz_25km": 36.0,
-        "max_dbz_50km": 41.5,
-        "nearest_35dbz_km": 16.8,
-        "point_dbz": 27.0
+        "max_dbz_10km": 31.0,
+        "max_dbz_25km": 40.0,
+        "max_dbz_50km": 46.5,
+        "nearest_35dbz_km": 20.1,
+        "point_dbz": 23.0
       }
     },
     "pseudocappi2km": {
       "ok": true,
       "product": "pseudocappi2km",
-      "source_file": "T_PANV23_C_OKPR_20260904213000.hdf",
-      "observed_at_utc": "2026-09-04T21:30:00Z",
-      "age_min": 4.8,
+      "source_file": "T_PANV23_C_OKPR_20260904213500.hdf",
+      "observed_at_utc": "2026-09-04T21:35:00Z",
+      "age_min": 1.9,
       "quantity": "DBZH",
       "grid_shape": [
         378,
         598
       ],
-      "grid_resolution_m": [
+      "projected_grid_resolution_m": [
         1555.7,
         1555.7
       ],
+      "ground_grid_resolution_m_at_nh": [
+        980.7,
+        978.0
+      ],
       "metrics": {
         "max_dbz_7km": 30.5,
-        "max_dbz_10km": 32.0,
-        "max_dbz_25km": 36.0,
-        "max_dbz_50km": 41.5,
-        "nearest_35dbz_km": 16.8,
-        "point_dbz": 27.0
+        "max_dbz_10km": 31.0,
+        "max_dbz_25km": 40.0,
+        "max_dbz_50km": 46.5,
+        "nearest_35dbz_km": 20.1,
+        "point_dbz": 23.0
       }
     }
   },
-  "method_note": "Oficiální radarový kompozit ČHMÚ. MAX_Z sleduje maximum odrazivosti ve sloupci; PseudoCAPPI 2 km je používán jako bližší indikace srážek u zemského povrchu. Lokální metriky jsou počítány z ODIM HDF5 gridu 1 km.",
+  "method_note": "Oficiální radarový kompozit ČHMÚ. MAX_Z sleduje maximum odrazivosti ve sloupci; PseudoCAPPI 2 km je používán jako bližší indikace srážek u zemského povrchu. Lokální vzdálenosti jsou počítány v reálných pozemních kilometrech z ODIM HDF5 gridu.",
   "source_urls": {
     "maxz": "https://opendata.chmi.cz/meteorology/weather/radar/composite/maxz/hdf5/",
     "pseudocappi2km": "https://opendata.chmi.cz/meteorology/weather/radar/composite/pseudocappi2km/hdf5/"
