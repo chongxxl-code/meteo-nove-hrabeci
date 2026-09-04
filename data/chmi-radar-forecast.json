@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "computed_at_utc": "2026-09-04T21:42:52.394312Z",
+  "provider": "ČHMÚ OpenData / CZRAD COTREC",
+  "status": "error",
+  "latest_calculation_time_utc": null,
+  "products": {
+    "maxz": {
+      "ok": false,
+      "product": "maxz",
+      "error": "maxz: forecast TAR obsahuje jen 0 použitelných horizontů"
+    },
+    "pseudocappi2km": {
+      "ok": false,
+      "product": "pseudocappi2km",
+      "error": "pseudocappi2km: forecast TAR obsahuje jen 0 použitelných horizontů"
+    }
+  },
+  "method_note": "Oficiální ČHMÚ extrapolační radarový forecast COTREC na +10 až +60 min. Přesouvá poslední radarová echa podle pohybových vektorů; nepředpovídá změny jejich intenzity. Používá se jako nezávislá kontrola našeho RainViewer ETA, ne jako jeho náhrada.",
+  "source_urls": {
+    "maxz": "https://opendata.chmi.cz/meteorology/weather/radar/composite/fct_maxz/hdf5/",
+    "pseudocappi2km": "https://opendata.chmi.cz/meteorology/weather/radar/composite/fct_pseudocappi2km/hdf5/"
+  },
+  "errors": [
+    "maxz: maxz: forecast TAR obsahuje jen 0 použitelných horizontů",
+    "pseudocappi2km: pseudocappi2km: forecast TAR obsahuje jen 0 použitelných horizontů"
+  ]
+}

@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-09-04T23:36:55.549510+02:00",
+  "computed_at_local": "2026-09-04T23:42:52.580265+02:00",
   "alerts": [
     {
       "id": "storm",
@@ -18,8 +18,8 @@
         "radar/modely nyní nedávají silný lokální signál",
         "radarový nowcast: srážkový systém míří k lokalitě, vzdálenost 0.4 km",
         "radarový nowcast: aktivní systém do 0.4 km, ETA ~0 min",
-        "ČHMÚ radar potvrzuje aktivní echo do 50 km (46 dBZ); RainViewer ukazuje pohyb k NH",
-        "dva radarové zdroje potvrzují silný systém do 25 km (ČHMÚ 40 dBZ), ETA ~0 min"
+        "ČHMÚ radar potvrzuje aktivní echo do 50 km (45 dBZ); RainViewer ukazuje pohyb k NH",
+        "dva radarové zdroje potvrzují silný systém do 25 km (ČHMÚ 41 dBZ), ETA ~0 min"
       ],
       "confidence": "high"
     },
@@ -121,13 +121,13 @@
       }
     ],
     "rain": {
-      "rain_7d_mm": 12.7,
-      "rain_14d_mm": 33.7,
+      "rain_7d_mm": 11.8,
+      "rain_14d_mm": 32.9,
       "rain_30d_mm": 55.9,
       "latest_observation_utc": "2026-09-04T20:50:00+00:00",
       "interval_counts": {
-        "7": 1076,
-        "14": 2032,
+        "7": 1075,
+        "14": 2031,
         "30": 2301
       },
       "coverage_fraction": {
@@ -147,27 +147,17 @@
       "ok": true,
       "provider": "RainViewer",
       "latest": {
-        "time_unix": 1788557400,
-        "time_local": "2026-09-04T23:30:00+02:00",
+        "time_unix": 1788558000,
+        "time_local": "2026-09-04T23:40:00+02:00",
         "max_dbz": {
-          "10km": 38,
-          "25km": 44,
-          "50km": 44
+          "10km": 31,
+          "25km": 40,
+          "50km": 46
         },
-        "nearest_35dbz_km": 9.5
+        "nearest_35dbz_km": 11.0
       },
-      "trend_30m": "steady_or_lateral",
+      "trend_30m": "moving_away",
       "frames": [
-        {
-          "time_unix": 1788555600,
-          "time_local": "2026-09-04T23:00:00+02:00",
-          "max_dbz": {
-            "10km": 37,
-            "25km": 50,
-            "50km": 50
-          },
-          "nearest_35dbz_km": 8.6
-        },
         {
           "time_unix": 1788556200,
           "time_local": "2026-09-04T23:10:00+02:00",
@@ -197,6 +187,16 @@
             "50km": 44
           },
           "nearest_35dbz_km": 9.5
+        },
+        {
+          "time_unix": 1788558000,
+          "time_local": "2026-09-04T23:40:00+02:00",
+          "max_dbz": {
+            "10km": 31,
+            "25km": 40,
+            "50km": 46
+          },
+          "nearest_35dbz_km": 11.0
         }
       ]
     },
@@ -321,7 +321,7 @@
     },
     "radar_nowcast": {
       "ok": true,
-      "computed_at_utc": "2026-09-04T21:36:18.017590Z",
+      "computed_at_utc": "2026-09-04T21:42:11.506836Z",
       "age_min": 0.9,
       "relation": "miri_na_lokalitu",
       "confidence": "high",
@@ -332,25 +332,25 @@
         "compass": "V",
         "speed_kmh": 110.9,
         "pair_count": 5,
-        "angle_spread_deg": 0.1,
-        "speed_spread_px_min": 0.083,
-        "phase_peak_ratio_median": 1.256
+        "angle_spread_deg": 2.4,
+        "speed_spread_px_min": 0.081,
+        "phase_peak_ratio_median": 1.091
       }
     },
     "chmi_radar": {
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD",
       "status": "operational",
-      "computed_at_utc": "2026-09-04T21:36:55.397955Z",
-      "latest_observed_at_utc": "2026-09-04T21:35:00Z",
+      "computed_at_utc": "2026-09-04T21:42:45.426089Z",
+      "latest_observed_at_utc": "2026-09-04T21:40:00Z",
       "max_age_min": 20.0,
       "products": {
         "maxz": {
           "ok": true,
           "product": "maxz",
-          "source_file": "T_PABV23_C_OKPR_20260904213500.hdf",
-          "observed_at_utc": "2026-09-04T21:35:00Z",
-          "age_min": 1.9,
+          "source_file": "T_PABV23_C_OKPR_20260904214000.hdf",
+          "observed_at_utc": "2026-09-04T21:40:00Z",
+          "age_min": 2.7,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -365,20 +365,20 @@
             978.0
           ],
           "metrics": {
-            "max_dbz_7km": 30.5,
-            "max_dbz_10km": 31.0,
-            "max_dbz_25km": 40.0,
-            "max_dbz_50km": 46.5,
-            "nearest_35dbz_km": 20.1,
-            "point_dbz": 23.0
+            "max_dbz_7km": 28.5,
+            "max_dbz_10km": 28.5,
+            "max_dbz_25km": 41.0,
+            "max_dbz_50km": 45.0,
+            "nearest_35dbz_km": 18.9,
+            "point_dbz": 23.5
           }
         },
         "pseudocappi2km": {
           "ok": true,
           "product": "pseudocappi2km",
-          "source_file": "T_PANV23_C_OKPR_20260904213500.hdf",
-          "observed_at_utc": "2026-09-04T21:35:00Z",
-          "age_min": 1.9,
+          "source_file": "T_PANV23_C_OKPR_20260904214000.hdf",
+          "observed_at_utc": "2026-09-04T21:40:00Z",
+          "age_min": 2.8,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -393,18 +393,23 @@
             978.0
           ],
           "metrics": {
-            "max_dbz_7km": 30.5,
-            "max_dbz_10km": 31.0,
-            "max_dbz_25km": 40.0,
-            "max_dbz_50km": 46.5,
-            "nearest_35dbz_km": 20.1,
-            "point_dbz": 23.0
+            "max_dbz_7km": 28.5,
+            "max_dbz_10km": 28.5,
+            "max_dbz_25km": 41.0,
+            "max_dbz_50km": 45.0,
+            "nearest_35dbz_km": 18.9,
+            "point_dbz": 23.5
           }
         }
       }
+    },
+    "chmi_radar_forecast": {
+      "ok": false,
+      "status": "stale_or_unavailable",
+      "age_min": null
     }
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "bf7fe4b512ad1253ae04c2e0be79f1a8627ed1dfb5fc56f3577e0de3b1024efc"
+  "_fingerprint": "815e33a8ad93f7c52f5ec4bf4bbc5f541ed06660022a4932f0afa19a54ef2c8d"
 }
