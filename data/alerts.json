@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-09-05T07:14:36.988019+02:00",
+  "computed_at_local": "2026-09-05T11:06:29.744416+02:00",
   "alerts": [
     {
       "id": "storm",
@@ -35,11 +35,11 @@
       "id": "wind",
       "name": "Silný vítr",
       "icon": "🌬️",
-      "level": "yellow",
-      "rank": 1,
-      "headline": "zesílený vítr",
+      "level": "green",
+      "rank": 0,
+      "headline": "bez zvýšeného rizika",
       "reasons": [
-        "modelový konsenzus nárazů do 12 h ~54 km/h"
+        "modelový konsenzus nárazů do 12 h ~45 km/h"
       ],
       "confidence": "medium"
     },
@@ -65,7 +65,7 @@
       "rank": 0,
       "headline": "bez zvýšeného rizika",
       "reasons": [
-        "modelový konsenzus maxima do 12 h ~19.1 °C"
+        "modelový konsenzus maxima do 12 h ~18.9 °C"
       ],
       "confidence": "medium"
     },
@@ -77,7 +77,7 @@
       "rank": 0,
       "headline": "bez rizika",
       "reasons": [
-        "nejnižší modelový scénář do 12 h ~13.5 °C"
+        "nejnižší modelový scénář do 12 h ~13.6 °C"
       ],
       "confidence": "medium",
       "note": "Později se práh upraví podle lokální chladové predispozice NH-REF."
@@ -88,8 +88,8 @@
       {
         "name": "ICON-D2",
         "ok": true,
-        "max_temp_12h": 19.1,
-        "min_temp_12h": 13.7,
+        "max_temp_12h": 18.9,
+        "min_temp_12h": 13.6,
         "max_precip_1h_12h": 0.0,
         "precip_sum_6h": 0.0,
         "max_gust_12h": 44.6,
@@ -97,39 +97,29 @@
       },
       {
         "name": "ALADIN",
-        "ok": true,
-        "max_temp_12h": 17.9,
-        "min_temp_12h": 13.6,
-        "max_precip_1h_12h": 0.1,
-        "precip_sum_6h": 0.1,
-        "max_gust_12h": 42.8,
-        "max_cape_12h": 210.0
+        "ok": false,
+        "error": "The read operation timed out"
       },
       {
         "name": "ECMWF",
-        "ok": true,
-        "max_temp_12h": 19.0,
-        "min_temp_12h": 13.5,
-        "max_precip_1h_12h": 0.3,
-        "precip_sum_6h": 1.2,
-        "max_gust_12h": 53.6,
-        "max_cape_12h": 80.0
+        "ok": false,
+        "error": "The read operation timed out"
       }
     ],
     "rain": {
       "rain_7d_mm": 14.2,
-      "rain_14d_mm": 33.1,
+      "rain_14d_mm": 26.4,
       "rain_30d_mm": 59.7,
-      "latest_observation_utc": "2026-09-05T03:50:00+00:00",
+      "latest_observation_utc": "2026-09-05T07:50:00+00:00",
       "interval_counts": {
-        "7": 1077,
-        "14": 2022,
-        "30": 2337
+        "7": 1078,
+        "14": 2023,
+        "30": 2361
       },
       "coverage_fraction": {
         "7": 1.0,
         "14": 1.0,
-        "30": 0.541
+        "30": 0.547
       }
     },
     "sentinel": {
@@ -143,54 +133,54 @@
       "ok": true,
       "provider": "RainViewer",
       "latest": {
-        "time_unix": 1788585000,
-        "time_local": "2026-09-05T07:10:00+02:00",
+        "time_unix": 1788598800,
+        "time_local": "2026-09-05T11:00:00+02:00",
         "max_dbz": {
-          "10km": 13,
-          "25km": 15,
-          "50km": 15
+          "10km": -32,
+          "25km": -32,
+          "50km": -1
         },
         "nearest_35dbz_km": null
       },
       "trend_30m": "unknown",
       "frames": [
         {
-          "time_unix": 1788583200,
-          "time_local": "2026-09-05T06:40:00+02:00",
+          "time_unix": 1788597000,
+          "time_local": "2026-09-05T10:30:00+02:00",
           "max_dbz": {
             "10km": -32,
-            "25km": 32,
-            "50km": 32
+            "25km": -32,
+            "50km": -2
           },
           "nearest_35dbz_km": null
         },
         {
-          "time_unix": 1788583800,
-          "time_local": "2026-09-05T06:50:00+02:00",
+          "time_unix": 1788597600,
+          "time_local": "2026-09-05T10:40:00+02:00",
           "max_dbz": {
-            "10km": 20,
-            "25km": 25,
-            "50km": 25
+            "10km": -32,
+            "25km": -32,
+            "50km": -2
           },
           "nearest_35dbz_km": null
         },
         {
-          "time_unix": 1788584400,
-          "time_local": "2026-09-05T07:00:00+02:00",
+          "time_unix": 1788598200,
+          "time_local": "2026-09-05T10:50:00+02:00",
           "max_dbz": {
-            "10km": -1,
-            "25km": 19,
-            "50km": 19
+            "10km": -2,
+            "25km": -2,
+            "50km": -2
           },
           "nearest_35dbz_km": null
         },
         {
-          "time_unix": 1788585000,
-          "time_local": "2026-09-05T07:10:00+02:00",
+          "time_unix": 1788598800,
+          "time_local": "2026-09-05T11:00:00+02:00",
           "max_dbz": {
-            "10km": 13,
-            "25km": 15,
-            "50km": 15
+            "10km": -32,
+            "25km": -32,
+            "50km": -1
           },
           "nearest_35dbz_km": null
         }
@@ -201,10 +191,10 @@
       "provider": "ČHMÚ CAP",
       "active_for_point": [],
       "inspected_files": [
+        "alert_cap_50_050823.xml",
         "alert_cap_50_040803.xml",
         "alert_cap_50_030749.xml",
-        "alert_cap_50_020755.xml",
-        "alert_cap_50_010756.xml"
+        "alert_cap_50_020755.xml"
       ]
     },
     "lightning": {
@@ -317,36 +307,36 @@
     },
     "radar_nowcast": {
       "ok": true,
-      "computed_at_utc": "2026-09-05T05:13:54.563538Z",
-      "age_min": 0.9,
+      "computed_at_utc": "2026-09-05T09:05:58.831733Z",
+      "age_min": 1.5,
       "relation": "miji_lokalitu",
       "confidence": "high",
-      "nearest_precip_km": 69.5,
+      "nearest_precip_km": 181.3,
       "eta_min": null,
       "motion": {
-        "bearing_deg": 103.0,
+        "bearing_deg": 107.1,
         "compass": "V",
-        "speed_kmh": 61.6,
+        "speed_kmh": 62.8,
         "pair_count": 5,
         "angle_spread_deg": 1.9,
-        "speed_spread_px_min": 0.069,
-        "phase_peak_ratio_median": 1.665
+        "speed_spread_px_min": 0.039,
+        "phase_peak_ratio_median": 1.436
       }
     },
     "chmi_radar": {
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD",
       "status": "operational",
-      "computed_at_utc": "2026-09-05T05:14:29.722551Z",
-      "latest_observed_at_utc": "2026-09-05T05:10:00Z",
+      "computed_at_utc": "2026-09-05T09:06:23.979981Z",
+      "latest_observed_at_utc": "2026-09-05T09:05:00Z",
       "max_age_min": 20.0,
       "products": {
         "maxz": {
           "ok": true,
           "product": "maxz",
-          "source_file": "T_PABV23_C_OKPR_20260905051000.hdf",
-          "observed_at_utc": "2026-09-05T05:10:00Z",
-          "age_min": 4.4,
+          "source_file": "T_PABV23_C_OKPR_20260905090500.hdf",
+          "observed_at_utc": "2026-09-05T09:05:00Z",
+          "age_min": 1.4,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -365,16 +355,16 @@
             "max_dbz_10km": null,
             "max_dbz_25km": null,
             "max_dbz_50km": null,
-            "nearest_35dbz_km": 161.9,
+            "nearest_35dbz_km": 307.7,
             "point_dbz": null
           }
         },
         "pseudocappi2km": {
           "ok": true,
           "product": "pseudocappi2km",
-          "source_file": "T_PANV23_C_OKPR_20260905051000.hdf",
-          "observed_at_utc": "2026-09-05T05:10:00Z",
-          "age_min": 4.5,
+          "source_file": "T_PANV23_C_OKPR_20260905090500.hdf",
+          "observed_at_utc": "2026-09-05T09:05:00Z",
+          "age_min": 1.4,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -393,7 +383,7 @@
             "max_dbz_10km": null,
             "max_dbz_25km": null,
             "max_dbz_50km": null,
-            "nearest_35dbz_km": 162.6,
+            "nearest_35dbz_km": 310.6,
             "point_dbz": null
           }
         }
@@ -402,7 +392,7 @@
     "chmi_radar_forecast": {
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD COTREC",
-      "age_min": 4.9,
+      "age_min": 2.5,
       "chmi_arrival_lead_min": null,
       "chmi_strong_arrival_lead_min": null,
       "peak_dbz_25km_next60": null,
@@ -414,5 +404,5 @@
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "bdc5bb101a293b7cc132ba87a31599583f65de0ea420a2aed87c8bf29bf1b5c7"
+  "_fingerprint": "d91a58afb9962c7171dc2eb3428723125a809a7ad71707244f73b2abac1aced4"
 }
