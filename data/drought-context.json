@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_utc": "2026-09-07T10:42:04.548838+00:00",
+  "computed_at_utc": "2026-09-08T10:03:56.127007+00:00",
   "quality_status": "operational_local_drought_v1",
   "state": {
     "rank": 0,
@@ -14,55 +14,56 @@
     "score": 1,
     "reasons": [
       "kořenová půdní vlhkost je na 21. percentilu posledního roku",
-      "vlastní ČHMÚ 30denní archiv má zatím 61 % pokrytí; používá se reanalýzní vodní bilance jako most"
+      "vlastní ČHMÚ 30denní archiv má zatím 64 % pokrytí; používá se reanalýzní vodní bilance jako most",
+      "Copernicus 1 km dává smíšený půdně-vlhkostní signál"
     ],
     "confidence": "medium"
   },
   "background": {
     "provider": "Open-Meteo historical Best Match / ERA5-family background",
     "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
-    "period_start": "2025-09-01",
-    "period_end": "2026-09-05",
+    "period_start": "2025-09-02",
+    "period_end": "2026-09-06",
     "data_age_days": 2,
     "windows": {
       "7": {
         "days": 7,
-        "precip_mm": 15.1,
-        "et0_mm": 21.8,
-        "p_minus_et0_mm": -6.7,
+        "precip_mm": 15.3,
+        "et0_mm": 20.1,
+        "p_minus_et0_mm": -4.8,
         "record_days": 7
       },
       "14": {
         "days": 14,
-        "precip_mm": 29.4,
-        "et0_mm": 43.8,
-        "p_minus_et0_mm": -14.4,
+        "precip_mm": 29.8,
+        "et0_mm": 43.3,
+        "p_minus_et0_mm": -13.5,
         "record_days": 14
       },
       "30": {
         "days": 30,
-        "precip_mm": 104.3,
-        "et0_mm": 112.3,
-        "p_minus_et0_mm": -8.0,
+        "precip_mm": 105.0,
+        "et0_mm": 110.1,
+        "p_minus_et0_mm": -5.1,
         "record_days": 30
       }
     },
     "latest_soil": {
-      "surface_m3m3": 0.3685,
-      "rootzone_0_100cm_m3m3": 0.2075,
-      "surface_percentile_1y": 83.2,
-      "rootzone_percentile_1y": 20.8
+      "surface_m3m3": 0.333,
+      "rootzone_0_100cm_m3m3": 0.2105,
+      "surface_percentile_1y": 55.1,
+      "rootzone_percentile_1y": 21.4
     }
   },
   "chmi_local_rain": {
-    "latest_observation_utc": "2026-09-07T08:50:00+00:00",
+    "latest_observation_utc": "2026-09-08T08:50:00+00:00",
     "coverage_fraction": {
-      "7": 1.0,
+      "7": 0.951,
       "14": 1.0,
-      "30": 0.612
+      "30": 0.644
     },
     "rain_mm": {
-      "7": 11.8,
+      "7": 11.6,
       "14": 22.5,
       "30": 60.0
     }
@@ -81,14 +82,14 @@
     "Copernicus SSM/SWI has 1 km resolution; it strengthens independent validation but cannot by itself resolve field-scale differences inside Nové Hraběcí."
   ],
   "copernicus_1km": {
-    "ok": false,
+    "ok": true,
     "quality_status": "operational_copernicus_soil_1km",
-    "nominal_date_ssm": "2026-09-03T00:00:00.000",
-    "nominal_date_swi": "2026-09-03T12:00:00.000",
-    "surface_soil_moisture_percent": null,
+    "nominal_date_ssm": "2026-09-04T00:00:00.000",
+    "nominal_date_swi": "2026-09-04T12:00:00.000",
+    "surface_soil_moisture_percent": 37.0,
     "soil_water_index_t20_percent": 42.5,
     "soil_water_index_t60_percent": 37.0,
-    "independent_evidence": "neutral_or_uncalibrated",
+    "independent_evidence": "mixed",
     "note": "CLMS 1 km satellite control; kept as independent evidence and does not change the warning rank until a local archive is calibrated."
   }
 }
