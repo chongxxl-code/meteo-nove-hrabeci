@@ -1,54 +1,25 @@
 {
   "schema": 1,
-  "computed_at_utc": "2026-09-10T05:16:25.709032Z",
+  "computed_at_utc": "2026-09-10T05:58:25.694066Z",
   "location": {
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "status": "operational",
-  "confidence": "high",
+  "status": "no_reliable_motion",
+  "confidence": "low",
   "eta_min": null,
-  "relation": "miji_lokalitu",
-  "note": "ETA je zobrazena jen při stabilním směru a rychlosti.",
-  "nearest_precip_km": 30.6,
-  "motion": {
-    "bearing_deg": 119.7,
-    "compass": "JV",
-    "speed_kmh": 37.2,
-    "pair_count": 5,
-    "angle_spread_deg": 6.1,
-    "speed_spread_px_min": 0.04,
-    "phase_peak_ratio_median": 1.588
-  },
+  "relation": "pohyb_neurcity",
+  "note": "Radar je načtený, ale zatím není dost stabilních dvojic snímků pro spolehlivý pohyb.",
+  "motion": null,
   "frames": {
     "count": 6,
-    "first_unix": 1789014000,
-    "latest_unix": 1789017000
+    "first_unix": 1789016400,
+    "latest_unix": 1789019400
   },
   "diagnostics": {
     "source_frames": 6,
     "usable_frames": 6,
     "frame_tiles": [
-      {
-        "time": 1789014000,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1789014600,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1789015200,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1789015800,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
       {
         "time": 1789016400,
         "good_tiles": 9,
@@ -58,7 +29,28 @@
         "time": 1789017000,
         "good_tiles": 9,
         "failed_tiles": 0
+      },
+      {
+        "time": 1789017600,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1789018200,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1789018800,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1789019400,
+        "good_tiles": 9,
+        "failed_tiles": 0
       }
-    ]
+    ],
+    "motion_pairs": 2
   }
 }
