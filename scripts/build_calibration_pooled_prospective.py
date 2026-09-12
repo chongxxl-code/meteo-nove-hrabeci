@@ -24,6 +24,7 @@ from build_calibration_ml_shadow import finite
 from build_calibration_ml_walkforward import truth_available_at
 
 CANDIDATE_ID = "pooled_squared_v1"
+CANDIDATE_PROTOCOL_VERSION = 2
 CANDIDATE_FROZEN_AT_UTC = "2026-09-12T19:40:24Z"
 FROZEN_MODEL_LEVELS = ("chmi", "dwd", "ec")
 FROZEN_FEATURE_NAMES = [
@@ -41,6 +42,31 @@ FROZEN_FEATURE_NAMES = [
     "wind_speed_10m_kmh",
     "wind_gusts_10m_kmh",
     "cape_jkg",
+    "weather_code",
+    "wind_direction_sin",
+    "wind_direction_cos",
+    "target_hour_sin",
+    "target_hour_cos",
+    "target_doy_sin",
+    "target_doy_cos",
+]
+# This exact feature subset was the one used by the first successful prospective
+# prediction issue. Keep it fixed from now on: future data coverage must never
+# silently add CAPE or remove another feature and thereby change the candidate.
+FROZEN_ACTIVE_FEATURE_NAMES = [
+    "model_chmi",
+    "model_dwd",
+    "model_ec",
+    "lead_h",
+    "temperature_c",
+    "relative_humidity_pct",
+    "dew_point_c",
+    "dewpoint_depression_c",
+    "precipitation_mm",
+    "pressure_msl_hpa",
+    "cloud_cover_pct",
+    "wind_speed_10m_kmh",
+    "wind_gusts_10m_kmh",
     "weather_code",
     "wind_direction_sin",
     "wind_direction_cos",
@@ -221,23 +247,45 @@ def fit_frozen_candidate(train, future):
     y_train = np.asarray([float(case["error_c"]) for case in train], dtype=float)
     x_future = np.asarray([frozen_case_features(case) for case in future], dtype=float)
 
+    index_by_name = {name: index for index, name in enumerate(FROZEN_FEATURE_NAMES)}
+    active_indices = [index_by_name[name] for name in FROZEN_ACTIVE_FEATURE_NAMES]
     minimum = max(MIN_FEATURE_FINITE_N, int(len(train) * MIN_FEATURE_FINITE_FRACTION))
     finite_counts = np.isfinite(x_train).sum(axis=0)
-    keep_mask = finite_counts >= minimum
-    if not np.any(keep_mask):
-        raise RuntimeError("no usable frozen candidate features after coverage filtering")
+    insufficient = [
+        {
+            "feature": name,
+            "finite_train_n": int(finite_counts[index_by_name[name]]),
+            "minimum_required": minimum,
+        }
+        for name in FROZEN_ACTIVE_FEATURE_NAMES
+        if int(finite_counts[index_by_name[name]]) < minimum
+    ]
+    if insufficient:
+        raise RuntimeError(
+            "frozen active feature coverage fell below the predeclared minimum: "
+            + json.dumps(insufficient[:4], ensure_ascii=False)
+        )
 
-    used = [name for name, keep in zip(FROZEN_FEATURE_NAMES, keep_mask) if bool(keep)]
-    dropped = [
-        {"feature": name, "finite_train_n": int(count)}
-        for name, count, keep in zip(FROZEN_FEATURE_NAMES, finite_counts, keep_mask)
-        if not bool(keep)
+    inactive = [
+        {
+            "feature": name,
+            "finite_train_n": int(finite_counts[index_by_name[name]]),
+            "reason": "frozen_excluded_at_first_successful_prospective_issue",
+        }
+        for name in FROZEN_FEATURE_NAMES
+        if name not in FROZEN_ACTIVE_FEATURE_NAMES
     ]
 
     model = HistGradientBoostingRegressor(**FROZEN_MODEL_PARAMS)
-    model.fit(x_train[:, keep_mask], y_train)
-    predictions = model.predict(x_future[:, keep_mask])
-    return predictions, used, dropped, minimum, sklearn.__version__
+    model.fit(x_train[:, active_indices], y_train)
+    predictions = model.predict(x_future[:, active_indices])
+    return (
+        predictions,
+        list(FROZEN_ACTIVE_FEATURE_NAMES),
+        inactive,
+        minimum,
+        sklearn.__version__,
+    )
 
 
 def main():
@@ -287,6 +335,8 @@ def main():
         skip("frozen prospective candidate could not be fitted", error=f"{type(exc).__name__}: {exc}"[:500])
         return
 
+    source_event = os.environ.get("GITHUB_EVENT_NAME") or "unknown"
+    confirmatory_eligible = source_event == "schedule"
     bias_tables = build_bias_tables(train)
     month = issued.strftime("%Y-%m")
     out = CAL / f"prospective-pooled-{month}.jsonl"
@@ -300,14 +350,17 @@ def main():
         raw_temperature = float(case["forecast"]["temperature_c"])
         deterministic_correction, correction_level, correction_n = correction_for(case, bias_tables)
         row = {
-            "schema": 1,
+            "schema": 2,
             "shadow_only": True,
             "allowed_to_affect_public_forecast": False,
             "allowed_to_affect_alerts": False,
             "candidate": CANDIDATE_ID,
+            "candidate_protocol_version": CANDIDATE_PROTOCOL_VERSION,
             "candidate_frozen_at_utc": CANDIDATE_FROZEN_AT_UTC,
             "created_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "source_commit": os.environ.get("GITHUB_SHA"),
+            "source_event": source_event,
+            "confirmatory_eligible": confirmatory_eligible,
             "model": case["model"],
             "issued_at_utc": case["issued_at_utc"],
             "target_at_utc": case["target_at_utc"],
@@ -319,7 +372,7 @@ def main():
             "ml_predicted_error_c": round(float(predicted_error), 3),
             "ml_temperature_c": round(raw_temperature - float(predicted_error), 3),
             "training": {
-                "candidate_policy": "frozen architecture; expanding leakage-safe training window",
+                "candidate_policy": "frozen algorithm/features/params; expanding leakage-safe training window",
                 "as_of_utc": case["issued_at_utc"],
                 "cases": len(train),
                 "first_target_utc": train[0]["target_at_utc"],
@@ -333,6 +386,7 @@ def main():
                 "deterministic_correction_level": correction_level,
                 "deterministic_correction_training_n": correction_n,
                 "leakage_guard": "training truth observation must be available no later than forecast issuance",
+                "confirmatory_sampling_rule": "only GitHub schedule events count toward confirmatory metrics",
             },
             "truth": None,
         }
@@ -349,7 +403,10 @@ def main():
             {
                 "ok": True,
                 "candidate": CANDIDATE_ID,
+                "candidate_protocol_version": CANDIDATE_PROTOCOL_VERSION,
                 "candidate_frozen_at_utc": CANDIDATE_FROZEN_AT_UTC,
+                "source_event": source_event,
+                "confirmatory_eligible": confirmatory_eligible,
                 "snapshot_issued_at_utc": iso_utc(issued),
                 "training_cases": len(train),
                 "future_cases_selected": len(future),
