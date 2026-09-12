@@ -1,8 +1,14 @@
 {
-  "schema": 1,
-  "generated_at_utc": "2026-09-12T15:35:01.703363Z",
+  "schema": 2,
+  "generated_at_utc": "2026-09-12T15:43:56.576894Z",
   "purpose": "shadow calibration only; never changes public forecast or alert ranks",
-  "history_window_days_requested": 92,
+  "history_window_days_requested": 540,
+  "query_chunk_days": 90,
+  "lead_offsets_days": [
+    1,
+    2,
+    3
+  ],
   "truth_reference": {
     "station": "Sohland/Spree",
     "station_id": "06129",
@@ -23,28 +29,303 @@
       "ok": true
     }
   ],
+  "truth_available_from_utc": "2025-03-11T00:00:00Z",
+  "truth_available_to_utc": "2026-09-12T14:50:00Z",
+  "requested_start_utc": "2025-03-21T15:43:56.576894Z",
+  "actual_query_start_date": "2025-03-21",
+  "actual_query_end_date": "2026-09-12",
   "model_status": {
     "dwd": {
       "ok": true,
       "model_id": "dwd_icon_d2",
-      "rows": 2224,
-      "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&past_days=92&forecast_days=1&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2"
+      "rows": 12924,
+      "chunks": [
+        {
+          "start": "2025-03-21",
+          "end": "2025-06-18",
+          "rows": 2160,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&start_date=2025-03-21&end_date=2025-06-18&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-06-19",
+          "end": "2025-09-16",
+          "rows": 2160,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&start_date=2025-06-19&end_date=2025-09-16&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-09-17",
+          "end": "2025-12-15",
+          "rows": 2160,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&start_date=2025-09-17&end_date=2025-12-15&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-12-16",
+          "end": "2026-03-15",
+          "rows": 2160,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&start_date=2025-12-16&end_date=2026-03-15&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-03-16",
+          "end": "2026-06-13",
+          "rows": 2108,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&start_date=2026-03-16&end_date=2026-06-13&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-06-14",
+          "end": "2026-09-11",
+          "rows": 2160,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&start_date=2026-06-14&end_date=2026-09-11&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-09-12",
+          "end": "2026-09-12",
+          "rows": 16,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&start_date=2026-09-12&end_date=2026-09-12&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        }
+      ]
     },
     "chmi": {
       "ok": true,
       "model_id": "chmi_aladin_cz_1km",
       "rows": 3848,
-      "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&past_days=92&forecast_days=1&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2"
+      "chunks": [
+        {
+          "start": "2025-03-21",
+          "end": "2025-06-18",
+          "rows": 0,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&start_date=2025-03-21&end_date=2025-06-18&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-06-19",
+          "end": "2025-09-16",
+          "rows": 0,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&start_date=2025-06-19&end_date=2025-09-16&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-09-17",
+          "end": "2025-12-15",
+          "rows": 0,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&start_date=2025-09-17&end_date=2025-12-15&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-12-16",
+          "end": "2026-03-15",
+          "rows": 0,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&start_date=2025-12-16&end_date=2026-03-15&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-03-16",
+          "end": "2026-06-13",
+          "rows": 0,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&start_date=2026-03-16&end_date=2026-06-13&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-06-14",
+          "end": "2026-09-11",
+          "rows": 3816,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&start_date=2026-06-14&end_date=2026-09-11&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-09-12",
+          "end": "2026-09-12",
+          "rows": 32,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&start_date=2026-09-12&end_date=2026-09-12&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        }
+      ]
     },
     "ec": {
       "ok": true,
       "model_id": "ecmwf_ifs",
-      "rows": 4448,
-      "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&past_days=92&forecast_days=1&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2"
+      "rows": 23718,
+      "chunks": [
+        {
+          "start": "2025-03-21",
+          "end": "2025-06-18",
+          "rows": 0,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&start_date=2025-03-21&end_date=2025-06-18&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-06-19",
+          "end": "2025-09-16",
+          "rows": 0,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&start_date=2025-06-19&end_date=2025-09-16&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-09-17",
+          "end": "2025-12-15",
+          "rows": 5400,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&start_date=2025-09-17&end_date=2025-12-15&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2025-12-16",
+          "end": "2026-03-15",
+          "rows": 6480,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&start_date=2025-12-16&end_date=2026-03-15&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-03-16",
+          "end": "2026-06-13",
+          "rows": 5310,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&start_date=2026-03-16&end_date=2026-06-13&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-06-14",
+          "end": "2026-09-11",
+          "rows": 6480,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&start_date=2026-06-14&end_date=2026-09-11&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        },
+        {
+          "start": "2026-09-12",
+          "end": "2026-09-12",
+          "rows": 48,
+          "ok": true,
+          "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&start_date=2026-09-12&end_date=2026-09-12&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
+        }
+      ]
     }
   },
-  "rows": 10520,
-  "first_target_utc": "2026-06-12T00:00:00Z",
+  "rows": 40490,
+  "first_target_utc": "2025-03-21T00:00:00Z",
   "last_target_utc": "2026-09-12T15:00:00Z",
-  "output": "data/calibration/history-v0.jsonl"
+  "storage": {
+    "format": "monthly deterministic gzip JSONL shards",
+    "legacy_history_v0_removed": true,
+    "shards": [
+      {
+        "file": "data/calibration/history-2025-03.jsonl.gz",
+        "month": "2025-03",
+        "rows": 264,
+        "compressed_bytes": 10331
+      },
+      {
+        "file": "data/calibration/history-2025-04.jsonl.gz",
+        "month": "2025-04",
+        "rows": 720,
+        "compressed_bytes": 26978
+      },
+      {
+        "file": "data/calibration/history-2025-05.jsonl.gz",
+        "month": "2025-05",
+        "rows": 744,
+        "compressed_bytes": 28255
+      },
+      {
+        "file": "data/calibration/history-2025-06.jsonl.gz",
+        "month": "2025-06",
+        "rows": 720,
+        "compressed_bytes": 27404
+      },
+      {
+        "file": "data/calibration/history-2025-07.jsonl.gz",
+        "month": "2025-07",
+        "rows": 744,
+        "compressed_bytes": 27841
+      },
+      {
+        "file": "data/calibration/history-2025-08.jsonl.gz",
+        "month": "2025-08",
+        "rows": 744,
+        "compressed_bytes": 27731
+      },
+      {
+        "file": "data/calibration/history-2025-09.jsonl.gz",
+        "month": "2025-09",
+        "rows": 720,
+        "compressed_bytes": 26908
+      },
+      {
+        "file": "data/calibration/history-2025-10.jsonl.gz",
+        "month": "2025-10",
+        "rows": 2904,
+        "compressed_bytes": 83372
+      },
+      {
+        "file": "data/calibration/history-2025-11.jsonl.gz",
+        "month": "2025-11",
+        "rows": 2880,
+        "compressed_bytes": 80195
+      },
+      {
+        "file": "data/calibration/history-2025-12.jsonl.gz",
+        "month": "2025-12",
+        "rows": 2976,
+        "compressed_bytes": 80506
+      },
+      {
+        "file": "data/calibration/history-2026-01.jsonl.gz",
+        "month": "2026-01",
+        "rows": 2976,
+        "compressed_bytes": 81486
+      },
+      {
+        "file": "data/calibration/history-2026-02.jsonl.gz",
+        "month": "2026-02",
+        "rows": 2688,
+        "compressed_bytes": 75194
+      },
+      {
+        "file": "data/calibration/history-2026-03.jsonl.gz",
+        "month": "2026-03",
+        "rows": 2544,
+        "compressed_bytes": 75333
+      },
+      {
+        "file": "data/calibration/history-2026-04.jsonl.gz",
+        "month": "2026-04",
+        "rows": 2090,
+        "compressed_bytes": 62331
+      },
+      {
+        "file": "data/calibration/history-2026-05.jsonl.gz",
+        "month": "2026-05",
+        "rows": 2976,
+        "compressed_bytes": 87087
+      },
+      {
+        "file": "data/calibration/history-2026-06.jsonl.gz",
+        "month": "2026-06",
+        "rows": 3192,
+        "compressed_bytes": 94692
+      },
+      {
+        "file": "data/calibration/history-2026-07.jsonl.gz",
+        "month": "2026-07",
+        "rows": 4464,
+        "compressed_bytes": 126834
+      },
+      {
+        "file": "data/calibration/history-2026-08.jsonl.gz",
+        "month": "2026-08",
+        "rows": 4464,
+        "compressed_bytes": 125715
+      },
+      {
+        "file": "data/calibration/history-2026-09.jsonl.gz",
+        "month": "2026-09",
+        "rows": 1680,
+        "compressed_bytes": 47912
+      }
+    ],
+    "compressed_bytes_total": 1196105
+  }
 }
