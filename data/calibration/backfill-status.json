@@ -1,6 +1,6 @@
 {
   "schema": 3,
-  "generated_at_utc": "2026-09-12T18:01:49.949701Z",
+  "generated_at_utc": "2026-09-12T18:35:53.736789Z",
   "purpose": "shadow calibration only; never changes public forecast or alert ranks",
   "history_window_days_requested": 540,
   "query_chunk_days": 90,
@@ -19,7 +19,7 @@
   },
   "issue_observation_context": {
     "source": "DWD Sohland/Spree 10-minute",
-    "rows_with_context": 40502,
+    "rows_with_context": 40508,
     "coverage_pct": 100.0,
     "features": [
       "latest temperature and relative humidity known at issuance",
@@ -36,20 +36,20 @@
     },
     {
       "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/now/10minutenwerte_TU_06129_now.zip",
-      "points": 105,
+      "points": 108,
       "ok": true
     }
   ],
   "truth_available_from_utc": "2025-03-11T00:00:00Z",
-  "truth_available_to_utc": "2026-09-12T17:20:00Z",
-  "requested_start_utc": "2025-03-21T18:01:49.949701Z",
+  "truth_available_to_utc": "2026-09-12T17:50:00Z",
+  "requested_start_utc": "2025-03-21T18:35:53.736789Z",
   "actual_query_start_date": "2025-03-21",
   "actual_query_end_date": "2026-09-12",
   "model_status": {
     "dwd": {
       "ok": true,
       "model_id": "dwd_icon_d2",
-      "rows": 12926,
+      "rows": 12927,
       "chunks": [
         {
           "start": "2025-03-21",
@@ -96,7 +96,7 @@
         {
           "start": "2026-09-12",
           "end": "2026-09-12",
-          "rows": 18,
+          "rows": 19,
           "ok": true,
           "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&start_date=2026-09-12&end_date=2026-09-12&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
         }
@@ -105,7 +105,7 @@
     "chmi": {
       "ok": true,
       "model_id": "chmi_aladin_cz_1km",
-      "rows": 3852,
+      "rows": 3854,
       "chunks": [
         {
           "start": "2025-03-21",
@@ -152,7 +152,7 @@
         {
           "start": "2026-09-12",
           "end": "2026-09-12",
-          "rows": 36,
+          "rows": 38,
           "ok": true,
           "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&start_date=2026-09-12&end_date=2026-09-12&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
         }
@@ -161,7 +161,7 @@
     "ec": {
       "ok": true,
       "model_id": "ecmwf_ifs",
-      "rows": 23724,
+      "rows": 23727,
       "chunks": [
         {
           "start": "2025-03-21",
@@ -208,16 +208,16 @@
         {
           "start": "2026-09-12",
           "end": "2026-09-12",
-          "rows": 54,
+          "rows": 57,
           "ok": true,
           "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&start_date=2026-09-12&end_date=2026-09-12&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Crelative_humidity_2m_previous_day3%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cdew_point_2m_previous_day3%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cweather_code_previous_day3%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Cpressure_msl_previous_day3%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Ccloud_cover_previous_day3%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_speed_10m_previous_day3%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2%2Cwind_direction_10m_previous_day3"
         }
       ]
     }
   },
-  "rows": 40502,
+  "rows": 40508,
   "first_target_utc": "2025-03-21T00:00:00Z",
-  "last_target_utc": "2026-09-12T17:00:00Z",
+  "last_target_utc": "2026-09-12T18:00:00Z",
   "storage": {
     "format": "monthly deterministic gzip JSONL shards",
     "legacy_history_v0_removed": true,
@@ -226,117 +226,117 @@
         "file": "data/calibration/history-2025-03.jsonl.gz",
         "month": "2025-03",
         "rows": 264,
-        "compressed_bytes": 20850
+        "compressed_bytes": 22180
       },
       {
         "file": "data/calibration/history-2025-04.jsonl.gz",
         "month": "2025-04",
         "rows": 720,
-        "compressed_bytes": 55604
+        "compressed_bytes": 59074
       },
       {
         "file": "data/calibration/history-2025-05.jsonl.gz",
         "month": "2025-05",
         "rows": 744,
-        "compressed_bytes": 57893
+        "compressed_bytes": 61658
       },
       {
         "file": "data/calibration/history-2025-06.jsonl.gz",
         "month": "2025-06",
         "rows": 720,
-        "compressed_bytes": 56759
+        "compressed_bytes": 60528
       },
       {
         "file": "data/calibration/history-2025-07.jsonl.gz",
         "month": "2025-07",
         "rows": 744,
-        "compressed_bytes": 57370
+        "compressed_bytes": 61147
       },
       {
         "file": "data/calibration/history-2025-08.jsonl.gz",
         "month": "2025-08",
         "rows": 744,
-        "compressed_bytes": 57597
+        "compressed_bytes": 61416
       },
       {
         "file": "data/calibration/history-2025-09.jsonl.gz",
         "month": "2025-09",
         "rows": 720,
-        "compressed_bytes": 55291
+        "compressed_bytes": 58818
       },
       {
         "file": "data/calibration/history-2025-10.jsonl.gz",
         "month": "2025-10",
         "rows": 2904,
-        "compressed_bytes": 168026
+        "compressed_bytes": 179814
       },
       {
         "file": "data/calibration/history-2025-11.jsonl.gz",
         "month": "2025-11",
         "rows": 2880,
-        "compressed_bytes": 165281
+        "compressed_bytes": 177053
       },
       {
         "file": "data/calibration/history-2025-12.jsonl.gz",
         "month": "2025-12",
         "rows": 2976,
-        "compressed_bytes": 164307
+        "compressed_bytes": 176561
       },
       {
         "file": "data/calibration/history-2026-01.jsonl.gz",
         "month": "2026-01",
         "rows": 2976,
-        "compressed_bytes": 166988
+        "compressed_bytes": 179293
       },
       {
         "file": "data/calibration/history-2026-02.jsonl.gz",
         "month": "2026-02",
         "rows": 2688,
-        "compressed_bytes": 152792
+        "compressed_bytes": 164012
       },
       {
         "file": "data/calibration/history-2026-03.jsonl.gz",
         "month": "2026-03",
         "rows": 2544,
-        "compressed_bytes": 155567
+        "compressed_bytes": 165867
       },
       {
         "file": "data/calibration/history-2026-04.jsonl.gz",
         "month": "2026-04",
         "rows": 2090,
-        "compressed_bytes": 128654
+        "compressed_bytes": 137276
       },
       {
         "file": "data/calibration/history-2026-05.jsonl.gz",
         "month": "2026-05",
         "rows": 2976,
-        "compressed_bytes": 180758
+        "compressed_bytes": 192995
       },
       {
         "file": "data/calibration/history-2026-06.jsonl.gz",
         "month": "2026-06",
         "rows": 3192,
-        "compressed_bytes": 188390
+        "compressed_bytes": 200561
       },
       {
         "file": "data/calibration/history-2026-07.jsonl.gz",
         "month": "2026-07",
         "rows": 4464,
-        "compressed_bytes": 234489
+        "compressed_bytes": 248492
       },
       {
         "file": "data/calibration/history-2026-08.jsonl.gz",
         "month": "2026-08",
         "rows": 4464,
-        "compressed_bytes": 235077
+        "compressed_bytes": 249363
       },
       {
         "file": "data/calibration/history-2026-09.jsonl.gz",
         "month": "2026-09",
-        "rows": 1692,
-        "compressed_bytes": 89443
+        "rows": 1698,
+        "compressed_bytes": 95224
       }
     ],
-    "compressed_bytes_total": 2391136
+    "compressed_bytes_total": 2551332
   }
 }
