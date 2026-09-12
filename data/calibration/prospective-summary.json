@@ -1,6 +1,6 @@
 {
   "schema": 3,
-  "generated_at_utc": "2026-09-12T20:39:31.955395Z",
+  "generated_at_utc": "2026-09-12T23:05:16.601794Z",
   "ok": true,
   "shadow_only": true,
   "allowed_to_affect_public_forecast": false,
@@ -20,55 +20,173 @@
     "warning": "This is independent prospective evidence only against the Sohland proxy; it cannot authorize Nové Hraběcí production use."
   },
   "coverage": {
-    "archived_prediction_rows": 74,
-    "archived_forecast_issue_times": 4,
+    "archived_prediction_rows": 94,
+    "archived_forecast_issue_times": 5,
     "archived_rows_by_source_event": {
       "legacy_or_unknown": 18,
       "push": 38,
-      "schedule": 18
+      "schedule": 38
     },
-    "confirmatory_prediction_rows": 18,
-    "confirmatory_forecast_issue_times": 1,
-    "matured_rows": 0,
-    "matured_issue_times": 0,
+    "confirmatory_prediction_rows": 38,
+    "confirmatory_forecast_issue_times": 2,
+    "matured_rows": 3,
+    "matured_issue_times": 1,
     "matured_issue_span_days": 0.0,
-    "pending_rows": 18,
+    "pending_rows": 35,
     "truth_unmatched_rows": 0,
     "first_confirmatory_issue_utc": "2026-09-12T20:36:56.910130Z",
-    "last_confirmatory_issue_utc": "2026-09-12T20:36:56.910130Z"
+    "last_confirmatory_issue_utc": "2026-09-12T23:02:00.969257Z"
   },
   "prospective_metrics": {
     "overall": {
-      "n": 0,
+      "n": 3,
       "raw": {
-        "n": 0,
-        "mae_c": null,
-        "rmse_c": null,
-        "bias_c": null,
-        "abs_bias_c": null,
-        "p95_abs_error_c": null
+        "n": 3,
+        "mae_c": 3.9,
+        "rmse_c": 3.911,
+        "bias_c": 3.9,
+        "abs_bias_c": 3.9,
+        "p95_abs_error_c": 4.25
       },
       "deterministic": {
-        "n": 0,
-        "mae_c": null,
-        "rmse_c": null,
-        "bias_c": null,
-        "abs_bias_c": null,
-        "p95_abs_error_c": null
+        "n": 3,
+        "mae_c": 1.125,
+        "rmse_c": 1.182,
+        "bias_c": 1.125,
+        "abs_bias_c": 1.125,
+        "p95_abs_error_c": 1.553
       },
       "ml": {
-        "n": 0,
-        "mae_c": null,
-        "rmse_c": null,
-        "bias_c": null,
-        "abs_bias_c": null,
-        "p95_abs_error_c": null
+        "n": 3,
+        "mae_c": 0.865,
+        "rmse_c": 0.872,
+        "bias_c": 0.865,
+        "abs_bias_c": 0.865,
+        "p95_abs_error_c": 0.942
       },
-      "ml_improvement_vs_raw_pct": null,
-      "ml_improvement_vs_deterministic_pct": null
+      "ml_improvement_vs_raw_pct": 77.8,
+      "ml_improvement_vs_deterministic_pct": 23.1
     },
-    "by_model": {},
-    "by_lead_bin": {}
+    "by_model": {
+      "chmi": {
+        "n": 1,
+        "raw": {
+          "n": 1,
+          "mae_c": 3.6,
+          "rmse_c": 3.6,
+          "bias_c": 3.6,
+          "abs_bias_c": 3.6,
+          "p95_abs_error_c": 3.6
+        },
+        "deterministic": {
+          "n": 1,
+          "mae_c": 0.742,
+          "rmse_c": 0.742,
+          "bias_c": 0.742,
+          "abs_bias_c": 0.742,
+          "p95_abs_error_c": 0.742
+        },
+        "ml": {
+          "n": 1,
+          "mae_c": 0.94,
+          "rmse_c": 0.94,
+          "bias_c": 0.94,
+          "abs_bias_c": 0.94,
+          "p95_abs_error_c": 0.94
+        },
+        "ml_improvement_vs_raw_pct": 73.9,
+        "ml_improvement_vs_deterministic_pct": -26.7
+      },
+      "dwd": {
+        "n": 1,
+        "raw": {
+          "n": 1,
+          "mae_c": 3.8,
+          "rmse_c": 3.8,
+          "bias_c": 3.8,
+          "abs_bias_c": 3.8,
+          "p95_abs_error_c": 3.8
+        },
+        "deterministic": {
+          "n": 1,
+          "mae_c": 1.021,
+          "rmse_c": 1.021,
+          "bias_c": 1.021,
+          "abs_bias_c": 1.021,
+          "p95_abs_error_c": 1.021
+        },
+        "ml": {
+          "n": 1,
+          "mae_c": 0.714,
+          "rmse_c": 0.714,
+          "bias_c": 0.714,
+          "abs_bias_c": 0.714,
+          "p95_abs_error_c": 0.714
+        },
+        "ml_improvement_vs_raw_pct": 81.2,
+        "ml_improvement_vs_deterministic_pct": 30.1
+      },
+      "ec": {
+        "n": 1,
+        "raw": {
+          "n": 1,
+          "mae_c": 4.3,
+          "rmse_c": 4.3,
+          "bias_c": 4.3,
+          "abs_bias_c": 4.3,
+          "p95_abs_error_c": 4.3
+        },
+        "deterministic": {
+          "n": 1,
+          "mae_c": 1.612,
+          "rmse_c": 1.612,
+          "bias_c": 1.612,
+          "abs_bias_c": 1.612,
+          "p95_abs_error_c": 1.612
+        },
+        "ml": {
+          "n": 1,
+          "mae_c": 0.942,
+          "rmse_c": 0.942,
+          "bias_c": 0.942,
+          "abs_bias_c": 0.942,
+          "p95_abs_error_c": 0.942
+        },
+        "ml_improvement_vs_raw_pct": 78.1,
+        "ml_improvement_vs_deterministic_pct": 41.6
+      }
+    },
+    "by_lead_bin": {
+      "0–6 h": {
+        "n": 3,
+        "raw": {
+          "n": 3,
+          "mae_c": 3.9,
+          "rmse_c": 3.911,
+          "bias_c": 3.9,
+          "abs_bias_c": 3.9,
+          "p95_abs_error_c": 4.25
+        },
+        "deterministic": {
+          "n": 3,
+          "mae_c": 1.125,
+          "rmse_c": 1.182,
+          "bias_c": 1.125,
+          "abs_bias_c": 1.125,
+          "p95_abs_error_c": 1.553
+        },
+        "ml": {
+          "n": 3,
+          "mae_c": 0.865,
+          "rmse_c": 0.872,
+          "bias_c": 0.865,
+          "abs_bias_c": 0.865,
+          "p95_abs_error_c": 0.942
+        },
+        "ml_improvement_vs_raw_pct": 77.8,
+        "ml_improvement_vs_deterministic_pct": 23.1
+      }
+    }
   },
   "readiness": {
     "early_signal": {
