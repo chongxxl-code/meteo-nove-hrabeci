@@ -6,7 +6,11 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-from calibration_truth import issue_observation_context, load_local_dwd_truth
+from calibration_truth import (
+    DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES,
+    issue_observation_context,
+    load_local_dwd_truth,
+)
 from build_calibration_shadow import (
     CAL,
     DATA,
@@ -30,13 +34,19 @@ from build_calibration_observation_challenger import (
 )
 
 CANDIDATE = CAL / "observation-challenger.json"
+BACKFILL_STATUS = CAL / "backfill-status.json"
 DESIRED_LEADS_H = (1, 3, 6, 12, 24, 36, 48, 60, 72)
 MAX_LEAD_DISTANCE_H = 1.1
 MIN_TRAIN_CASES = 5000
+MIN_COMPATIBLE_HISTORY_FRACTION = 0.95
 
 
 def iso_utc(value):
     return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def skip(reason, **extra):
+    print(json.dumps({"ok": True, "skipped": True, "reason": reason, **extra}, ensure_ascii=False))
 
 
 def latest_snapshot():
@@ -47,7 +57,7 @@ def latest_snapshot():
         if stamp is not None and snapshot.get("models"):
             ranked.append((stamp, snapshot))
     if not ranked:
-        raise RuntimeError("No forecast snapshot available for prospective shadow run")
+        return None, None
     return max(ranked, key=lambda item: item[0])
 
 
@@ -113,33 +123,70 @@ def existing_keys(path):
     return keys
 
 
+def context_uses_current_availability_rule(case):
+    context = case.get("observed_context_at_issue") or {}
+    try:
+        return int(context.get("operational_availability_lag_minutes_assumed")) == int(
+            DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES
+        )
+    except Exception:
+        return False
+
+
 def main():
-    if not CANDIDATE.exists():
-        raise RuntimeError("Observation challenger result is missing; run calibration backfill first")
+    if not CANDIDATE.exists() or not BACKFILL_STATUS.exists():
+        skip("calibration candidate/backfill status not available yet")
+        return
     candidate = json.loads(CANDIDATE.read_text(encoding="utf-8"))
+    backfill_status = json.loads(BACKFILL_STATUS.read_text(encoding="utf-8"))
     if not candidate.get("candidate_pass"):
-        print(json.dumps({"ok": True, "skipped": True, "reason": "observation challenger gate is not passing"}))
+        skip("observation challenger gate is not passing")
+        return
+
+    candidate_generated = parse_dt(candidate.get("generated_at_utc"))
+    backfill_generated = parse_dt(backfill_status.get("generated_at_utc"))
+    if candidate_generated and backfill_generated and candidate_generated < backfill_generated:
+        skip("observation challenger is older than the latest historical backfill")
         return
 
     issued, snapshot = latest_snapshot()
+    if issued is None or snapshot is None:
+        skip("no forecast snapshot available")
+        return
+
     truth, truth_times = load_local_dwd_truth(DATA / "observations")
     context = issue_observation_context(issued, truth, truth_times)
     context_probe = {"issued_at_utc": iso_utc(issued), "observed_context_at_issue": context}
-    if not context_is_safe(context_probe):
-        raise RuntimeError(
-            "No sufficiently fresh leakage-safe DWD issue observation for latest forecast snapshot"
+    if not context_is_safe(context_probe) or not context_uses_current_availability_rule(context_probe):
+        skip(
+            "no operationally available DWD issue observation for latest snapshot",
+            snapshot_issued_at_utc=iso_utc(issued),
+            assumed_publication_lag_min=DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES,
         )
+        return
 
     future = build_future_cases(snapshot, issued, context)
     if not future:
-        raise RuntimeError("Latest snapshot has no usable future cases in requested lead set")
+        skip("latest snapshot has no usable future cases in requested lead set")
+        return
 
     history, _ = history_cases(return_storage=True)
     live = live_cases()
     history, live, coverage = attach_issue_context(history, live)
+    compatible_history = [case for case in history if context_uses_current_availability_rule(case)]
+    compatible_fraction = len(compatible_history) / len(history) if history else 0.0
+    if compatible_fraction < MIN_COMPATIBLE_HISTORY_FRACTION:
+        skip(
+            "historical calibration has not yet been rebuilt with the operational DWD availability rule",
+            compatible_history_cases=len(compatible_history),
+            history_cases=len(history),
+            compatible_fraction=round(compatible_fraction, 3),
+        )
+        return
+
     train = []
-    for case in history + live:
-        if not context_is_safe(case):
+    for case in compatible_history + live:
+        if not context_is_safe(case) or not context_uses_current_availability_rule(case):
             continue
         case_issue = parse_dt(case.get("issued_at_utc"))
         available = truth_available_at(case)
@@ -149,7 +196,8 @@ def main():
             continue
         train.append(case)
     if len(train) < MIN_TRAIN_CASES:
-        raise RuntimeError(f"Only {len(train)} leakage-safe prospective training cases")
+        skip("insufficient leakage-safe prospective training cases", training_cases=len(train))
+        return
 
     predictions, features_used, features_dropped = fit_predict(
         train,
@@ -197,6 +245,9 @@ def main():
                 "temperature_change_1h_c": context.get("temperature_change_1h_c"),
                 "temperature_change_3h_c": context.get("temperature_change_3h_c"),
                 "temperature_change_6h_c": context.get("temperature_change_6h_c"),
+                "operational_availability_lag_minutes_assumed": context.get(
+                    "operational_availability_lag_minutes_assumed"
+                ),
             },
             "training": {
                 "as_of_utc": case["issued_at_utc"],
@@ -207,6 +258,7 @@ def main():
                 "deterministic_correction_training_n": correction_n,
                 "history_context_cases": coverage.get("history_context_cases"),
                 "live_context_cases": coverage.get("live_context_cases"),
+                "dwd_operational_availability_lag_minutes_assumed": DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES,
             },
             "truth": None,
         }
@@ -229,6 +281,7 @@ def main():
                 "new_predictions_written": len(rows),
                 "output": str(out.relative_to(ROOT)),
                 "issue_observation_age_min": context.get("age_minutes_at_issue"),
+                "assumed_publication_lag_min": DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES,
             },
             ensure_ascii=False,
         )
