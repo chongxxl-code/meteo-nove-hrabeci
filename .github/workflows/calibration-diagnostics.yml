@@ -7,6 +7,7 @@ on:
     paths:
       - 'scripts/diagnose_calibration_bias.py'
       - 'scripts/validate_calibration_strict.py'
+      - 'scripts/build_calibration_ml_v11.py'
       - '.github/workflows/calibration-diagnostics.yml'
 
 permissions:
@@ -27,11 +28,19 @@ jobs:
         run: pip install --disable-pip-version-check scikit-learn
       - name: Diagnose calibration bias variants
         run: python scripts/diagnose_calibration_bias.py
+      - name: Build ML v1.1 challenger
+        run: python scripts/build_calibration_ml_v11.py
       - name: Show compact diagnostic result
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           p = json.loads(Path('data/calibration/bias-diagnostic.json').read_text())
-          print(json.dumps({'ranking': p.get('ranking'), 'successful_folds': p.get('data', {}).get('successful_folds')}, ensure_ascii=False, indent=2))
+          w = json.loads(Path('data/calibration/ml-v1.1-walkforward.json').read_text())
+          print(json.dumps({
+            'ranking': p.get('ranking'),
+            'successful_folds': p.get('data', {}).get('successful_folds'),
+            'v11_walk_metrics': w.get('aggregate_metrics'),
+            'v11_walk_gate': w.get('gate')
+          }, ensure_ascii=False, indent=2))
           PY
