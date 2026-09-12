@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at_utc": "2026-09-12T15:16:37.822148Z",
+  "generated_at_utc": "2026-09-12T15:34:20.595604Z",
   "purpose": "shadow calibration only; never changes public forecast or alert ranks",
   "history_window_days_requested": 92,
   "truth_reference": {
@@ -8,6 +8,7 @@
     "station_id": "06129",
     "distance_to_nove_hrabeci_km": 4.89,
     "is_nove_hrabeci_truth": false,
+    "matching_policy": "canonical nearest UTC Sohland observation within ±20 minutes; no CHMI fallback",
     "warning": "This is a nearby proxy target until an on-site NH station is available."
   },
   "dwd_sources": [
@@ -18,7 +19,7 @@
     },
     {
       "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/now/10minutenwerte_TU_06129_now.zip",
-      "points": 87,
+      "points": 90,
       "ok": true
     }
   ],
@@ -26,24 +27,24 @@
     "dwd": {
       "ok": true,
       "model_id": "dwd_icon_d2",
-      "rows": 2223,
+      "rows": 2224,
       "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=dwd_icon_d2&past_days=92&forecast_days=1&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2"
     },
     "chmi": {
       "ok": true,
       "model_id": "chmi_aladin_cz_1km",
-      "rows": 3846,
+      "rows": 3848,
       "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=chmi_aladin_cz_1km&past_days=92&forecast_days=1&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2"
     },
     "ec": {
       "ok": true,
       "model_id": "ecmwf_ifs",
-      "rows": 4446,
+      "rows": 4448,
       "request_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=51.0162&longitude=14.4398&models=ecmwf_ifs&past_days=92&forecast_days=1&timezone=GMT&wind_speed_unit=kmh&hourly=temperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Crelative_humidity_2m_previous_day1%2Crelative_humidity_2m_previous_day2%2Cdew_point_2m_previous_day1%2Cdew_point_2m_previous_day2%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cweather_code_previous_day1%2Cweather_code_previous_day2%2Cpressure_msl_previous_day1%2Cpressure_msl_previous_day2%2Ccloud_cover_previous_day1%2Ccloud_cover_previous_day2%2Cwind_speed_10m_previous_day1%2Cwind_speed_10m_previous_day2%2Cwind_direction_10m_previous_day1%2Cwind_direction_10m_previous_day2"
     }
   },
-  "rows": 10515,
+  "rows": 10520,
   "first_target_utc": "2026-06-12T00:00:00Z",
-  "last_target_utc": "2026-09-12T14:00:00Z",
+  "last_target_utc": "2026-09-12T15:00:00Z",
   "output": "data/calibration/history-v0.jsonl"
 }
