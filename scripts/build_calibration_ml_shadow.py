@@ -89,7 +89,11 @@ def case_features(case):
     )
 
     wind_direction = forecast.get("wind_direction_10m_deg")
-    wind_sin, wind_cos = cyclical(wind_direction, 360.0) if finite(wind_direction) else (float("nan"), float("nan"))
+    wind_sin, wind_cos = (
+        cyclical(wind_direction, 360.0)
+        if finite(wind_direction)
+        else (float("nan"), float("nan"))
+    )
     if target is not None:
         hour_sin, hour_cos = cyclical(target.hour + target.minute / 60.0, 24.0)
         doy_sin, doy_cos = cyclical(target.timetuple().tm_yday, 365.2425)
@@ -155,9 +159,13 @@ def metrics(rows):
         "raw_bias_c": rounded(mean(raw)),
         "deterministic_bias_c": rounded(mean(deterministic)),
         "ml_bias_c": rounded(mean(ml)),
-        "deterministic_improvement_vs_raw_pct": rounded(improvement_pct(raw_mae, deterministic_mae), 1),
+        "deterministic_improvement_vs_raw_pct": rounded(
+            improvement_pct(raw_mae, deterministic_mae), 1
+        ),
         "ml_improvement_vs_raw_pct": rounded(improvement_pct(raw_mae, ml_mae), 1),
-        "ml_improvement_vs_deterministic_pct": rounded(improvement_pct(deterministic_mae, ml_mae), 1),
+        "ml_improvement_vs_deterministic_pct": rounded(
+            improvement_pct(deterministic_mae, ml_mae), 1
+        ),
     }
 
 
@@ -186,15 +194,17 @@ def write_error(message):
         "production_eligible": False,
         "error": str(message)[:1000],
     }
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    OUT.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(json.dumps(payload, ensure_ascii=False))
 
 
 def main():
     try:
         import numpy as np
-        from sklearn.ensemble import HistGradientBoostingRegressor
         import sklearn
+        from sklearn.ensemble import HistGradientBoostingRegressor
     except Exception as exc:
         write_error(f"ML dependency unavailable: {exc}")
         return
@@ -203,10 +213,19 @@ def main():
         history, history_storage = history_cases(return_storage=True)
         live = live_cases()
         cases = history + live
-        cases.sort(key=lambda case: (case["target_at_utc"], case["model"], case["lead_h"], case["source"]))
+        cases.sort(
+            key=lambda case: (
+                case["target_at_utc"],
+                case["model"],
+                case["lead_h"],
+                case["source"],
+            )
+        )
         train, test, cutoff = chronological_split(cases)
         if len(train) < 500 or len(test) < 200:
-            write_error(f"Not enough chronologically split cases: train={len(train)}, test={len(test)}")
+            write_error(
+                f"Not enough chronologically split cases: train={len(train)}, test={len(test)}"
+            )
             return
 
         deterministic_rows, deterministic_overall, _, _, _ = evaluate(train, test)
@@ -215,28 +234,61 @@ def main():
         y_train = np.asarray([float(case["error_c"]) for case in train], dtype=float)
         x_test = np.asarray([case_features(case) for case in test], dtype=float)
 
+        # Previous-runs coverage differs by model and era. In particular, some
+        # variables can be entirely absent from the chronological training set.
+        # sklearn's histogram binner must never receive an all-null / near-empty
+        # column, so filter those deterministically before fitting.
+        minimum_finite_training_cases = max(30, int(len(train) * 0.01))
+        finite_counts = np.isfinite(x_train).sum(axis=0)
+        keep_mask = finite_counts >= minimum_finite_training_cases
+        if not np.any(keep_mask):
+            write_error("No usable ML features after finite-value coverage filtering.")
+            return
+
+        features_used = [
+            name for name, keep in zip(FEATURE_NAMES, keep_mask) if bool(keep)
+        ]
+        features_dropped = [
+            {
+                "feature": name,
+                "finite_train_n": int(count),
+            }
+            for name, count, keep in zip(FEATURE_NAMES, finite_counts, keep_mask)
+            if not bool(keep)
+        ]
+        x_train = x_train[:, keep_mask]
+        x_test = x_test[:, keep_mask]
+
         model = HistGradientBoostingRegressor(**MODEL_PARAMS)
         model.fit(x_train, y_train)
         predicted_error = model.predict(x_test)
 
         evaluated = []
-        for case, deterministic_row, prediction in zip(test, deterministic_rows, predicted_error):
+        for case, deterministic_row, prediction in zip(
+            test, deterministic_rows, predicted_error
+        ):
             raw_error = float(case["error_c"])
             deterministic_error = float(deterministic_row["corrected_error_c"])
             ml_error = raw_error - float(prediction)
-            evaluated.append({
-                **case,
-                "raw_error_c": raw_error,
-                "deterministic_error_c": deterministic_error,
-                "deterministic_correction_c": float(deterministic_row["correction_c"]),
-                "predicted_error_c": float(prediction),
-                "ml_error_c": ml_error,
-            })
+            evaluated.append(
+                {
+                    **case,
+                    "raw_error_c": raw_error,
+                    "deterministic_error_c": deterministic_error,
+                    "deterministic_correction_c": float(
+                        deterministic_row["correction_c"]
+                    ),
+                    "predicted_error_c": float(prediction),
+                    "ml_error_c": ml_error,
+                }
+            )
 
         overall = metrics(evaluated)
         by_model = {
             key: metrics([row for row in evaluated if row.get("model") == key])
-            for key in sorted({row.get("model") for row in evaluated if row.get("model")})
+            for key in sorted(
+                {row.get("model") for row in evaluated if row.get("model")}
+            )
         }
         lead_order = ("0–6 h", "6–12 h", "12–24 h", "24–48 h", "48–72 h")
         by_lead = {
@@ -246,14 +298,26 @@ def main():
         }
         season_order = ("winter_DJF", "spring_MAM", "summer_JJA", "autumn_SON")
         by_season = {
-            key: metrics([row for row in evaluated if season_name(row.get("target_at_utc")) == key])
+            key: metrics(
+                [
+                    row
+                    for row in evaluated
+                    if season_name(row.get("target_at_utc")) == key
+                ]
+            )
             for key in season_order
-            if any(season_name(row.get("target_at_utc")) == key for row in evaluated)
+            if any(
+                season_name(row.get("target_at_utc")) == key for row in evaluated
+            )
         }
 
         deterministic_mae = overall["deterministic_mae_c"]
         ml_mae = overall["ml_mae_c"]
-        beats = bool(finite(deterministic_mae) and finite(ml_mae) and float(ml_mae) < float(deterministic_mae))
+        beats = bool(
+            finite(deterministic_mae)
+            and finite(ml_mae)
+            and float(ml_mae) < float(deterministic_mae)
+        )
         meaningful = bool(
             beats
             and float(deterministic_mae) - float(ml_mae) >= 0.02
@@ -261,25 +325,39 @@ def main():
         )
 
         recent = []
-        for row in sorted(evaluated, key=lambda item: item["target_at_utc"], reverse=True)[:12]:
+        for row in sorted(
+            evaluated, key=lambda item: item["target_at_utc"], reverse=True
+        )[:12]:
             raw_temp = float(row["forecast"]["temperature_c"])
-            recent.append({
-                "model": row["model"],
-                "source": row["source"],
-                "target_at_utc": row["target_at_utc"],
-                "lead_h": row["lead_h"],
-                "raw_temperature_c": rounded(raw_temp, 2),
-                "observed_temperature_c": rounded(row["truth_temperature_c"], 2),
-                "deterministic_temperature_c": rounded(raw_temp - row["deterministic_correction_c"], 2),
-                "ml_temperature_c": rounded(raw_temp - row["predicted_error_c"], 2),
-                "raw_error_c": rounded(row["raw_error_c"], 2),
-                "deterministic_error_c": rounded(row["deterministic_error_c"], 2),
-                "ml_error_c": rounded(row["ml_error_c"], 2),
-            })
+            recent.append(
+                {
+                    "model": row["model"],
+                    "source": row["source"],
+                    "target_at_utc": row["target_at_utc"],
+                    "lead_h": row["lead_h"],
+                    "raw_temperature_c": rounded(raw_temp, 2),
+                    "observed_temperature_c": rounded(
+                        row["truth_temperature_c"], 2
+                    ),
+                    "deterministic_temperature_c": rounded(
+                        raw_temp - row["deterministic_correction_c"], 2
+                    ),
+                    "ml_temperature_c": rounded(
+                        raw_temp - row["predicted_error_c"], 2
+                    ),
+                    "raw_error_c": rounded(row["raw_error_c"], 2),
+                    "deterministic_error_c": rounded(
+                        row["deterministic_error_c"], 2
+                    ),
+                    "ml_error_c": rounded(row["ml_error_c"], 2),
+                }
+            )
 
         payload = {
             "schema": 1,
-            "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "generated_at_utc": datetime.now(timezone.utc)
+            .isoformat()
+            .replace("+00:00", "Z"),
             "ok": True,
             "shadow_only": True,
             "allowed_to_affect_public_forecast": False,
@@ -310,7 +388,9 @@ def main():
                 "target": "forecast temperature error in °C; corrected = raw - predicted_error",
                 "sklearn_version": sklearn.__version__,
                 "params": MODEL_PARAMS,
-                "features": FEATURE_NAMES,
+                "features_used": features_used,
+                "features_dropped_for_training_coverage": features_dropped,
+                "minimum_finite_training_cases_per_feature": minimum_finite_training_cases,
                 "excluded_as_feature": [
                     "truth observations",
                     "data source/provenance",
@@ -334,8 +414,21 @@ def main():
             "recent_shadow_examples": recent,
         }
         OUT.parent.mkdir(parents=True, exist_ok=True)
-        OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(json.dumps({"overall": overall, "gate": payload["gate"]}, ensure_ascii=False))
+        OUT.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        print(
+            json.dumps(
+                {
+                    "overall": overall,
+                    "features_used": features_used,
+                    "features_dropped": features_dropped,
+                    "gate": payload["gate"],
+                },
+                ensure_ascii=False,
+            )
+        )
     except Exception as exc:
         write_error(f"ML shadow build failed: {type(exc).__name__}: {exc}")
 
