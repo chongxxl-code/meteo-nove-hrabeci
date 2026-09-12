@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import bisect
 import json
 import math
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
+
+from calibration_truth import (
+    DWD_DISTANCE_KM,
+    DWD_MATCH_MINUTES,
+    DWD_STATION_ID,
+    DWD_STATION_NAME,
+    load_local_dwd_truth,
+    nearest_truth,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -16,8 +24,6 @@ HISTORY = CAL / "history-v0.jsonl"
 OUT = CAL / "shadow-summary.json"
 TZ = ZoneInfo("Europe/Prague")
 
-DWD_MATCH_MIN = 45
-CHMI_MATCH_MIN = 60
 MIN_GROUP_N = 30
 TRAIN_FRACTION = 0.75
 
@@ -74,40 +80,6 @@ def load_jsonl_dir(folder, pattern):
     return rows
 
 
-def load_observations(pattern):
-    rows = []
-    seen = set()
-    for record in load_jsonl_dir(DATA / "observations", pattern):
-        if record.get("temperature_c") is None:
-            continue
-        stamp = parse_dt(record.get("observed_at_utc"))
-        if stamp is None:
-            continue
-        key = (record.get("station_id") or record.get("station_wsi"), stamp.isoformat())
-        if key in seen:
-            continue
-        seen.add(key)
-        rows.append((stamp, float(record["temperature_c"]), record))
-    rows.sort(key=lambda item: item[0])
-    return rows
-
-
-def nearest_obs(target, rows, tolerance_minutes):
-    if not rows:
-        return None
-    index = bisect.bisect_left(rows, target, key=lambda item: item[0])
-    candidates = []
-    if index < len(rows):
-        candidates.append(rows[index])
-    if index > 0:
-        candidates.append(rows[index - 1])
-    if not candidates:
-        return None
-    item = min(candidates, key=lambda value: abs((value[0] - target).total_seconds()))
-    delta = abs((item[0] - target).total_seconds()) / 60
-    return item if delta <= tolerance_minutes else None
-
-
 def lead_bin(hours):
     if hours < 0:
         return None
@@ -137,8 +109,7 @@ def hour_block(target):
 
 def live_cases():
     snapshots = load_jsonl_dir(DATA / "archive", "*.jsonl")
-    dwd = load_observations("dwd-sohland-*.jsonl")
-    chmi = load_observations("chmi-weather-*.jsonl")
+    dwd_truth, dwd_times = load_local_dwd_truth(DATA / "observations")
     now = datetime.now(timezone.utc)
     cases = []
 
@@ -160,13 +131,10 @@ def live_cases():
                 if bucket is None:
                     continue
 
-                obs = nearest_obs(target, dwd, DWD_MATCH_MIN)
-                truth_source = "dwd_sohland_10min"
-                if obs is None:
-                    obs = nearest_obs(target, chmi, CHMI_MATCH_MIN)
-                    truth_source = "chmi_nearest_temperature_station"
-                if obs is None:
+                matched = nearest_truth(target, dwd_truth, dwd_times)
+                if matched is None:
                     continue
+                observed_at, obs, match_delta = matched
 
                 forecast_temp = float(temps[index])
                 forecast = {}
@@ -175,7 +143,6 @@ def live_cases():
                     value = values[index] if index < len(values) else None
                     forecast[target_field] = value
 
-                meta = obs[2]
                 cases.append({
                     "source": "local_snapshot",
                     "model": model,
@@ -185,12 +152,14 @@ def live_cases():
                     "lead_bin": bucket,
                     "hour_block": hour_block(target),
                     "forecast": forecast,
-                    "truth_temperature_c": obs[1],
-                    "truth_source": truth_source,
-                    "truth_station": meta.get("station_name"),
-                    "truth_station_distance_km": meta.get("distance_to_nove_hrabeci_km", meta.get("distance_km")),
+                    "truth_temperature_c": float(obs["temperature_c"]),
+                    "truth_source": "dwd_sohland_10min",
+                    "truth_station": DWD_STATION_NAME,
+                    "truth_station_distance_km": DWD_DISTANCE_KM,
+                    "truth_observed_at_utc": observed_at.isoformat().replace("+00:00", "Z"),
+                    "truth_match_delta_minutes": round(match_delta, 1),
                     "is_nove_hrabeci_truth": False,
-                    "error_c": forecast_temp - obs[1],
+                    "error_c": forecast_temp - float(obs["temperature_c"]),
                 })
     return cases
 
@@ -220,6 +189,8 @@ def history_cases():
             "truth_source": "dwd_sohland_10min",
             "truth_station": truth.get("station_name"),
             "truth_station_distance_km": truth.get("distance_to_nove_hrabeci_km"),
+            "truth_observed_at_utc": truth.get("observed_at_utc"),
+            "truth_match_delta_minutes": truth.get("match_delta_minutes"),
             "is_nove_hrabeci_truth": False,
             "error_c": float(temp) - float(observed),
         })
@@ -363,7 +334,10 @@ def main():
         "allowed_to_affect_alerts": False,
         "target_truth": {
             "primary": "DWD Sohland/Spree 10-minute",
-            "fallback_live_only": "nearest ČHMÚ temperature station",
+            "station_id": DWD_STATION_ID,
+            "distance_to_nove_hrabeci_km": DWD_DISTANCE_KM,
+            "matching_tolerance_minutes": DWD_MATCH_MINUTES,
+            "matching_policy": "same canonical nearest-UTC matcher for historical and live calibration cases; no CHMI fallback",
             "is_nove_hrabeci_truth": False,
             "warning": "Benchmark measures correction against nearby proxy observations, not an on-site Nové Hraběcí station.",
         },
@@ -408,6 +382,8 @@ def main():
                 "lead_h": row["lead_h"],
                 "raw_temperature_c": row["forecast"].get("temperature_c"),
                 "observed_temperature_c": row["truth_temperature_c"],
+                "truth_observed_at_utc": row.get("truth_observed_at_utc"),
+                "truth_match_delta_minutes": row.get("truth_match_delta_minutes"),
                 "correction_c": rounded(row["correction_c"], 2),
                 "corrected_temperature_c": rounded(
                     float(row["forecast"].get("temperature_c")) - row["correction_c"], 2
