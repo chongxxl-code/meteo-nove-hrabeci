@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import math
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -21,6 +22,8 @@ from diagnose_calibration_bias import prepare_xy, rows_for_predictions, summariz
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "calibration" / "bias-per-model-diagnostic.json"
 VARIANTS = ("per_model_absolute", "per_model_squared")
+MIN_PER_MODEL_TRAIN = 500
+MIN_PER_MODEL_TEST = 100
 
 
 def rounded(value, digits=3):
@@ -40,7 +43,7 @@ def fit_per_model(train, test, loss):
         test_idx = [i for i, case in enumerate(test) if case.get("model") == model_key]
         model_train = [train[i] for i in train_idx]
         model_test = [test[i] for i in test_idx]
-        if len(model_train) < 500 or len(model_test) < 100:
+        if len(model_train) < MIN_PER_MODEL_TRAIN or len(model_test) < MIN_PER_MODEL_TEST:
             raise RuntimeError(
                 f"Insufficient per-model cases for {model_key}: train={len(model_train)} test={len(model_test)}"
             )
@@ -112,6 +115,7 @@ def main():
 
     all_rows = {name: [] for name in VARIANTS}
     fold_results = {name: [] for name in VARIANTS}
+    skipped_folds = []
 
     for fold_number, (start_index, end_index) in enumerate(fold_ranges(targets), start=1):
         test_start = targets[start_index]
@@ -130,6 +134,30 @@ def main():
             if available is not None and available <= as_of:
                 train.append(case)
         if len(train) < MIN_TRAIN_CASES or len(test) < MIN_TEST_CASES:
+            continue
+
+        train_counts = Counter(case.get("model") for case in train)
+        test_counts = Counter(case.get("model") for case in test)
+        insufficient = {
+            model: {
+                "train_cases": int(train_counts.get(model, 0)),
+                "test_cases": int(test_counts.get(model, 0)),
+            }
+            for model in sorted(test_counts)
+            if test_counts.get(model, 0) >= MIN_PER_MODEL_TEST
+            and train_counts.get(model, 0) < MIN_PER_MODEL_TRAIN
+        }
+        if insufficient:
+            skipped_folds.append(
+                {
+                    "fold": fold_number,
+                    "as_of_utc": as_of.isoformat().replace("+00:00", "Z"),
+                    "test_start_utc": test_start,
+                    "test_last_target_utc": test[-1]["target_at_utc"],
+                    "reason": "per-model challenger cannot be trained fairly before every tested model has enough prior history",
+                    "insufficient_models": insufficient,
+                }
+            )
             continue
 
         deterministic_rows, _, _, _, _ = evaluate(train, test)
@@ -157,7 +185,10 @@ def main():
             )
 
     if min(len(items) for items in fold_results.values()) < 3:
-        raise RuntimeError("Too few successful per-model diagnostic folds")
+        raise RuntimeError(
+            "Too few successful per-model diagnostic folds after fair-history filtering: "
+            f"successful={min(len(items) for items in fold_results.values())}, skipped={len(skipped_folds)}"
+        )
 
     candidates = {}
     ranking = []
@@ -191,7 +222,7 @@ def main():
     )
 
     payload = {
-        "schema": 1,
+        "schema": 2,
         "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "ok": True,
         "shadow_only": True,
@@ -205,15 +236,19 @@ def main():
             "live_archive_cases": len(live),
             "all_cases": len(cases),
             "folds_requested": FOLDS,
+            "successful_folds": min(len(items) for items in fold_results.values()),
+            "skipped_folds": skipped_folds,
+            "minimum_per_model_train_cases": MIN_PER_MODEL_TRAIN,
+            "minimum_per_model_test_cases": MIN_PER_MODEL_TEST,
         },
         "ranking": ranking,
         "candidates": candidates,
-        "decision_rule": "A challenger must pass both the strict aggregate guards and the original future-fold stability rule. No production use is allowed.",
+        "decision_rule": "A challenger must pass both the strict aggregate guards and the original future-fold stability rule. Folds before a tested model has enough prior history are excluded rather than borrowing information from another model. No production use is allowed.",
         "sklearn_version": sklearn.__version__,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"ranking": ranking}, ensure_ascii=False))
+    print(json.dumps({"ranking": ranking, "skipped_folds": skipped_folds}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
