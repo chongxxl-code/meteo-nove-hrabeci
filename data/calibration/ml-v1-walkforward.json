@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at_utc": "2026-09-12T17:36:27.572402Z",
+  "generated_at_utc": "2026-09-12T17:57:27.900507Z",
   "ok": true,
   "shadow_only": true,
   "allowed_to_affect_public_forecast": false,
@@ -30,8 +30,8 @@
       "history-2026-09.jsonl.gz"
     ],
     "history_cases": 40502,
-    "live_archive_cases": 18101,
-    "all_cases": 58603,
+    "live_archive_cases": 18149,
+    "all_cases": 58651,
     "first_target_utc": "2025-03-21T00:00:00Z",
     "last_target_utc": "2026-09-12T17:00:00Z"
   },
@@ -56,12 +56,12 @@
     "leakage_guard": "for each fold, training truth_observed_at_utc must be <= earliest issued_at_utc in the test block; target time is used only as fallback when truth observation time is absent"
   },
   "aggregate_metrics": {
-    "n": 51963,
-    "raw_mae_c": 2.037,
-    "deterministic_mae_c": 1.88,
-    "ml_mae_c": 1.632,
-    "raw_bias_c": 0.705,
-    "deterministic_bias_c": 0.561,
+    "n": 52011,
+    "raw_mae_c": 2.036,
+    "deterministic_mae_c": 1.879,
+    "ml_mae_c": 1.631,
+    "raw_bias_c": 0.703,
+    "deterministic_bias_c": 0.559,
     "ml_bias_c": 0.615,
     "deterministic_improvement_vs_raw_pct": 7.7,
     "ml_improvement_vs_raw_pct": 19.9,
@@ -337,7 +337,7 @@
       "test_start_utc": "2026-07-10T02:00:00Z",
       "test_last_target_utc": "2026-09-12T17:00:00Z",
       "train_cases": 30764,
-      "test_cases": 27413,
+      "test_cases": 27461,
       "features_used": [
         "model_chmi",
         "model_dwd",
@@ -371,27 +371,27 @@
       ],
       "minimum_finite_training_cases_per_feature": 307,
       "deterministic_reference_same_fold": {
-        "n": 27413,
-        "raw_mae_c": 2.15,
-        "raw_bias_c": 1.254,
-        "bias_corrected_mae_c": 1.927,
-        "bias_corrected_bias_c": 0.852,
+        "n": 27461,
+        "raw_mae_c": 2.147,
+        "raw_bias_c": 1.25,
+        "bias_corrected_mae_c": 1.926,
+        "bias_corrected_bias_c": 0.849,
         "mae_improvement_pct": 10.3
       },
       "metrics": {
-        "n": 27413,
-        "raw_mae_c": 2.15,
-        "deterministic_mae_c": 1.927,
-        "ml_mae_c": 1.677,
-        "raw_bias_c": 1.254,
-        "deterministic_bias_c": 0.852,
-        "ml_bias_c": 1.034,
+        "n": 27461,
+        "raw_mae_c": 2.147,
+        "deterministic_mae_c": 1.926,
+        "ml_mae_c": 1.674,
+        "raw_bias_c": 1.25,
+        "deterministic_bias_c": 0.849,
+        "ml_bias_c": 1.032,
         "deterministic_improvement_vs_raw_pct": 10.3,
         "ml_improvement_vs_raw_pct": 22.0,
-        "ml_improvement_vs_deterministic_pct": 13.0
+        "ml_improvement_vs_deterministic_pct": 13.1
       },
       "ml_beats_deterministic": true,
-      "ml_improvement_vs_deterministic_pct": 13.0
+      "ml_improvement_vs_deterministic_pct": 13.1
     }
   ],
   "gate": {

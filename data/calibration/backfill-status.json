@@ -1,6 +1,6 @@
 {
-  "schema": 2,
-  "generated_at_utc": "2026-09-12T17:32:38.138890Z",
+  "schema": 3,
+  "generated_at_utc": "2026-09-12T17:53:34.386859Z",
   "purpose": "shadow calibration only; never changes public forecast or alert ranks",
   "history_window_days_requested": 540,
   "query_chunk_days": 90,
@@ -17,6 +17,17 @@
     "matching_policy": "canonical nearest UTC Sohland observation within ±20 minutes; no CHMI fallback",
     "warning": "This is a nearby proxy target until an on-site NH station is available."
   },
+  "issue_observation_context": {
+    "source": "DWD Sohland/Spree 10-minute",
+    "rows_with_context": 40502,
+    "coverage_pct": 100.0,
+    "features": [
+      "latest temperature and relative humidity known at issuance",
+      "temperature 1 h / 3 h / 6 h before issuance",
+      "temperature change over 1 h / 3 h / 6 h"
+    ],
+    "leakage_rule": "current observation timestamp must be <= forecast issued_at_utc; lag observations are also constrained to times already in the past"
+  },
   "dwd_sources": [
     {
       "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/recent/10minutenwerte_TU_06129_akt.zip",
@@ -25,13 +36,13 @@
     },
     {
       "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/now/10minutenwerte_TU_06129_now.zip",
-      "points": 102,
+      "points": 105,
       "ok": true
     }
   ],
   "truth_available_from_utc": "2025-03-11T00:00:00Z",
-  "truth_available_to_utc": "2026-09-12T16:50:00Z",
-  "requested_start_utc": "2025-03-21T17:32:38.138890Z",
+  "truth_available_to_utc": "2026-09-12T17:20:00Z",
+  "requested_start_utc": "2025-03-21T17:53:34.386859Z",
   "actual_query_start_date": "2025-03-21",
   "actual_query_end_date": "2026-09-12",
   "model_status": {
@@ -215,117 +226,117 @@
         "file": "data/calibration/history-2025-03.jsonl.gz",
         "month": "2025-03",
         "rows": 264,
-        "compressed_bytes": 10331
+        "compressed_bytes": 20850
       },
       {
         "file": "data/calibration/history-2025-04.jsonl.gz",
         "month": "2025-04",
         "rows": 720,
-        "compressed_bytes": 26978
+        "compressed_bytes": 55604
       },
       {
         "file": "data/calibration/history-2025-05.jsonl.gz",
         "month": "2025-05",
         "rows": 744,
-        "compressed_bytes": 28255
+        "compressed_bytes": 57893
       },
       {
         "file": "data/calibration/history-2025-06.jsonl.gz",
         "month": "2025-06",
         "rows": 720,
-        "compressed_bytes": 27404
+        "compressed_bytes": 56759
       },
       {
         "file": "data/calibration/history-2025-07.jsonl.gz",
         "month": "2025-07",
         "rows": 744,
-        "compressed_bytes": 27841
+        "compressed_bytes": 57370
       },
       {
         "file": "data/calibration/history-2025-08.jsonl.gz",
         "month": "2025-08",
         "rows": 744,
-        "compressed_bytes": 27731
+        "compressed_bytes": 57597
       },
       {
         "file": "data/calibration/history-2025-09.jsonl.gz",
         "month": "2025-09",
         "rows": 720,
-        "compressed_bytes": 26908
+        "compressed_bytes": 55291
       },
       {
         "file": "data/calibration/history-2025-10.jsonl.gz",
         "month": "2025-10",
         "rows": 2904,
-        "compressed_bytes": 83372
+        "compressed_bytes": 168026
       },
       {
         "file": "data/calibration/history-2025-11.jsonl.gz",
         "month": "2025-11",
         "rows": 2880,
-        "compressed_bytes": 80195
+        "compressed_bytes": 165281
       },
       {
         "file": "data/calibration/history-2025-12.jsonl.gz",
         "month": "2025-12",
         "rows": 2976,
-        "compressed_bytes": 80506
+        "compressed_bytes": 164307
       },
       {
         "file": "data/calibration/history-2026-01.jsonl.gz",
         "month": "2026-01",
         "rows": 2976,
-        "compressed_bytes": 81486
+        "compressed_bytes": 166988
       },
       {
         "file": "data/calibration/history-2026-02.jsonl.gz",
         "month": "2026-02",
         "rows": 2688,
-        "compressed_bytes": 75194
+        "compressed_bytes": 152792
       },
       {
         "file": "data/calibration/history-2026-03.jsonl.gz",
         "month": "2026-03",
         "rows": 2544,
-        "compressed_bytes": 75333
+        "compressed_bytes": 155567
       },
       {
         "file": "data/calibration/history-2026-04.jsonl.gz",
         "month": "2026-04",
         "rows": 2090,
-        "compressed_bytes": 62331
+        "compressed_bytes": 128654
       },
       {
         "file": "data/calibration/history-2026-05.jsonl.gz",
         "month": "2026-05",
         "rows": 2976,
-        "compressed_bytes": 87087
+        "compressed_bytes": 180758
       },
       {
         "file": "data/calibration/history-2026-06.jsonl.gz",
         "month": "2026-06",
         "rows": 3192,
-        "compressed_bytes": 94692
+        "compressed_bytes": 188390
       },
       {
         "file": "data/calibration/history-2026-07.jsonl.gz",
         "month": "2026-07",
         "rows": 4464,
-        "compressed_bytes": 126834
+        "compressed_bytes": 234489
       },
       {
         "file": "data/calibration/history-2026-08.jsonl.gz",
         "month": "2026-08",
         "rows": 4464,
-        "compressed_bytes": 125715
+        "compressed_bytes": 235077
       },
       {
         "file": "data/calibration/history-2026-09.jsonl.gz",
         "month": "2026-09",
         "rows": 1692,
-        "compressed_bytes": 48248
+        "compressed_bytes": 89443
       }
     ],
-    "compressed_bytes_total": 1196441
+    "compressed_bytes_total": 2391136
   }
 }
