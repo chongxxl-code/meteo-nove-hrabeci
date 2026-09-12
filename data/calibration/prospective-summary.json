@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "generated_at_utc": "2026-09-12T18:21:49.734434Z",
+  "ok": true,
+  "shadow_only": true,
+  "allowed_to_affect_public_forecast": false,
+  "allowed_to_affect_alerts": false,
+  "production_eligible": false,
+  "purpose": "prospective, timestamped verification of observation_squared_v1 forecasts that were written before target truth existed",
+  "truth_reference": {
+    "station": "Sohland/Spree",
+    "station_id": "06129",
+    "distance_to_nove_hrabeci_km": 4.89,
+    "is_nove_hrabeci_truth": false,
+    "warning": "This validates prospective behavior against the Sohland proxy only; it cannot authorize NH production use."
+  },
+  "coverage": {
+    "prediction_rows": 0,
+    "forecast_issue_times": 0,
+    "matured_rows": 0,
+    "matured_issue_times": 0,
+    "pending_rows": 0,
+    "truth_unmatched_rows": 0,
+    "first_issue_utc": null,
+    "last_issue_utc": null
+  },
+  "prospective_metrics": {
+    "overall": {
+      "n": 0,
+      "raw": {
+        "n": 0,
+        "mae_c": null,
+        "rmse_c": null,
+        "bias_c": null,
+        "p95_abs_error_c": null
+      },
+      "deterministic": {
+        "n": 0,
+        "mae_c": null,
+        "rmse_c": null,
+        "bias_c": null,
+        "p95_abs_error_c": null
+      },
+      "ml": {
+        "n": 0,
+        "mae_c": null,
+        "rmse_c": null,
+        "bias_c": null,
+        "p95_abs_error_c": null
+      },
+      "ml_improvement_vs_raw_pct": null,
+      "ml_improvement_vs_deterministic_pct": null
+    },
+    "by_model": {},
+    "by_lead_bin": {}
+  },
+  "readiness": {
+    "minimum_matured_rows_for_signal": 30,
+    "enough_matured_rows_for_signal": false,
+    "candidate_beating_deterministic_so_far": false,
+    "production_eligible": false,
+    "next_gate": "Accumulate multiple forecast issue times across changing weather regimes, then repeat against an on-site Nové Hraběcí station before any production decision."
+  }
+}
