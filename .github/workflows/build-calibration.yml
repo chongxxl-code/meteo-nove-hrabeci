@@ -14,6 +14,7 @@ on:
       - 'scripts/build_calibration_ml_walkforward.py'
       - 'scripts/validate_calibration_strict.py'
       - 'scripts/diagnose_calibration_bias.py'
+      - 'scripts/build_calibration_observation_challenger.py'
       - '.github/workflows/build-calibration.yml'
 
 permissions:
@@ -48,6 +49,8 @@ jobs:
         run: python scripts/validate_calibration_strict.py
       - name: Diagnose model-specific bias variants
         run: python scripts/diagnose_calibration_bias.py
+      - name: Test issue-observation challenger
+        run: python scripts/build_calibration_observation_challenger.py
       - name: Commit calibration artifacts
         run: |
           set -e
@@ -61,6 +64,7 @@ jobs:
             python scripts/build_calibration_ml_walkforward.py
             python scripts/validate_calibration_strict.py
             python scripts/diagnose_calibration_bias.py
+            python scripts/build_calibration_observation_challenger.py
           }
 
           make_commit() {
