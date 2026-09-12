@@ -1,10 +1,13 @@
 name: Build NH calibration backfill
 
 on:
+  schedule:
+    - cron: '43 4 1 * *'
   workflow_dispatch:
   push:
     branches: [main]
     paths:
+      - 'scripts/calibration_truth.py'
       - 'scripts/backfill_calibration_history.py'
       - 'scripts/build_calibration_shadow.py'
       - '.github/workflows/build-calibration.yml'
@@ -19,7 +22,7 @@ concurrency:
 jobs:
   calibration:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,7 +30,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Backfill recent model history against DWD Sohland
+      - name: Backfill multi-season model history against DWD Sohland
         run: python scripts/backfill_calibration_history.py
       - name: Build shadow calibration benchmark
         run: python scripts/build_calibration_shadow.py
