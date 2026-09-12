@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/diagnose_calibration_bias.py'
+      - 'scripts/diagnose_calibration_per_model.py'
       - 'scripts/validate_calibration_strict.py'
       - 'scripts/build_calibration_ml_v11.py'
       - '.github/workflows/calibration-diagnostics.yml'
@@ -30,6 +31,8 @@ jobs:
         run: python scripts/diagnose_calibration_bias.py
       - name: Build ML v1.1 challenger
         run: python scripts/build_calibration_ml_v11.py
+      - name: Diagnose per-model challengers
+        run: python scripts/diagnose_calibration_per_model.py
       - name: Show compact diagnostic result
         run: |
           python - <<'PY'
@@ -37,10 +40,11 @@ jobs:
           from pathlib import Path
           p = json.loads(Path('data/calibration/bias-diagnostic.json').read_text())
           w = json.loads(Path('data/calibration/ml-v1.1-walkforward.json').read_text())
+          pm = json.loads(Path('data/calibration/bias-per-model-diagnostic.json').read_text())
           print(json.dumps({
-            'ranking': p.get('ranking'),
-            'successful_folds': p.get('data', {}).get('successful_folds'),
+            'pooled_variants': p.get('ranking'),
             'v11_walk_metrics': w.get('aggregate_metrics'),
-            'v11_walk_gate': w.get('gate')
+            'v11_walk_gate': w.get('gate'),
+            'per_model_variants': pm.get('ranking')
           }, ensure_ascii=False, indent=2))
           PY
