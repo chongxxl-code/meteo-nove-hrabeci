@@ -16,6 +16,9 @@ on:
       - 'scripts/calibration_truth.py'
       - 'scripts/build_calibration_shadow.py'
       - 'scripts/build_calibration_ml_shadow.py'
+      - 'scripts/build_calibration_observation_challenger.py'
+      - 'scripts/build_calibration_prospective.py'
+      - 'scripts/verify_calibration_prospective.py'
       - 'scripts/build_health_status.py'
       - 'scripts/apply_health_ui.py'
       - 'health-ui.js'
@@ -61,6 +64,10 @@ jobs:
         run: python scripts/build_calibration_shadow.py
       - name: Build ML v1 shadow calibration benchmark
         run: python scripts/build_calibration_ml_shadow.py
+      - name: Log prospective observation calibration shadow
+        run: python scripts/build_calibration_prospective.py
+      - name: Verify matured prospective calibration shadow
+        run: python scripts/verify_calibration_prospective.py
       - name: Build collector health status
         run: python scripts/build_health_status.py
       - name: Commit collected forecast, observations and health data
@@ -79,6 +86,8 @@ jobs:
             python scripts/verify_forecasts.py
             python scripts/build_calibration_shadow.py
             python scripts/build_calibration_ml_shadow.py
+            python scripts/build_calibration_prospective.py
+            python scripts/verify_calibration_prospective.py
             python scripts/build_health_status.py
           }
 
