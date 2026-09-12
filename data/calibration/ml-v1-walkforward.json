@@ -1,0 +1,402 @@
+{
+  "schema": 1,
+  "generated_at_utc": "2026-09-12T16:20:33.203328Z",
+  "ok": true,
+  "shadow_only": true,
+  "allowed_to_affect_public_forecast": false,
+  "allowed_to_affect_alerts": false,
+  "production_eligible": false,
+  "purpose": "expanding-window walk-forward test; each fold trains only on earlier target times and tests on the next unseen block",
+  "data": {
+    "history_storage_files": [
+      "history-2025-03.jsonl.gz",
+      "history-2025-04.jsonl.gz",
+      "history-2025-05.jsonl.gz",
+      "history-2025-06.jsonl.gz",
+      "history-2025-07.jsonl.gz",
+      "history-2025-08.jsonl.gz",
+      "history-2025-09.jsonl.gz",
+      "history-2025-10.jsonl.gz",
+      "history-2025-11.jsonl.gz",
+      "history-2025-12.jsonl.gz",
+      "history-2026-01.jsonl.gz",
+      "history-2026-02.jsonl.gz",
+      "history-2026-03.jsonl.gz",
+      "history-2026-04.jsonl.gz",
+      "history-2026-05.jsonl.gz",
+      "history-2026-06.jsonl.gz",
+      "history-2026-07.jsonl.gz",
+      "history-2026-08.jsonl.gz",
+      "history-2026-09.jsonl.gz"
+    ],
+    "history_cases": 40490,
+    "live_archive_cases": 18056,
+    "all_cases": 58546,
+    "first_target_utc": "2025-03-21T00:00:00Z",
+    "last_target_utc": "2026-09-12T15:00:00Z"
+  },
+  "method": {
+    "algorithm": "sklearn HistGradientBoostingRegressor",
+    "sklearn_version": "1.9.1",
+    "folds_requested": 5,
+    "successful_folds": 5,
+    "initial_train_fraction_of_unique_target_times": 0.4,
+    "window": "expanding training window; contiguous non-overlapping future test blocks",
+    "params": {
+      "loss": "absolute_error",
+      "learning_rate": 0.05,
+      "max_iter": 200,
+      "max_leaf_nodes": 15,
+      "min_samples_leaf": 40,
+      "l2_regularization": 1.0,
+      "early_stopping": false,
+      "random_state": 42
+    },
+    "feature_coverage_rule": "keep feature when finite in at least max(30, 1% of training cases)",
+    "leakage_guard": "fold boundaries use target_at_utc; no future target time is present in that fold's training set"
+  },
+  "aggregate_metrics": {
+    "n": 51910,
+    "raw_mae_c": 2.038,
+    "deterministic_mae_c": 1.88,
+    "ml_mae_c": 1.644,
+    "raw_bias_c": 0.707,
+    "deterministic_bias_c": 0.613,
+    "ml_bias_c": 0.791,
+    "deterministic_improvement_vs_raw_pct": 7.8,
+    "ml_improvement_vs_raw_pct": 19.3,
+    "ml_improvement_vs_deterministic_pct": 12.6
+  },
+  "folds": [
+    {
+      "fold": 1,
+      "ok": true,
+      "train_first_target_utc": "2025-03-21T00:00:00Z",
+      "train_last_target_utc": "2025-10-22T08:00:00Z",
+      "test_start_utc": "2025-10-22T09:00:00Z",
+      "test_last_target_utc": "2025-12-25T23:00:00Z",
+      "train_cases": 6636,
+      "test_cases": 6204,
+      "features_used": [
+        "model_chmi",
+        "model_dwd",
+        "model_ec",
+        "lead_h",
+        "temperature_c",
+        "relative_humidity_pct",
+        "dew_point_c",
+        "dewpoint_depression_c",
+        "precipitation_mm",
+        "pressure_msl_hpa",
+        "cloud_cover_pct",
+        "wind_speed_10m_kmh",
+        "weather_code",
+        "wind_direction_sin",
+        "wind_direction_cos",
+        "target_hour_sin",
+        "target_hour_cos",
+        "target_doy_sin",
+        "target_doy_cos"
+      ],
+      "features_dropped_for_training_coverage": [
+        {
+          "feature": "wind_gusts_10m_kmh",
+          "finite_train_n": 0
+        },
+        {
+          "feature": "cape_jkg",
+          "finite_train_n": 0
+        }
+      ],
+      "minimum_finite_training_cases_per_feature": 66,
+      "deterministic_reference_same_fold": {
+        "n": 6204,
+        "raw_mae_c": 1.46,
+        "raw_bias_c": -0.356,
+        "bias_corrected_mae_c": 1.423,
+        "bias_corrected_bias_c": -0.127,
+        "mae_improvement_pct": 2.5
+      },
+      "metrics": {
+        "n": 6204,
+        "raw_mae_c": 1.46,
+        "deterministic_mae_c": 1.423,
+        "ml_mae_c": 1.31,
+        "raw_bias_c": -0.356,
+        "deterministic_bias_c": -0.127,
+        "ml_bias_c": 0.439,
+        "deterministic_improvement_vs_raw_pct": 2.5,
+        "ml_improvement_vs_raw_pct": 10.3,
+        "ml_improvement_vs_deterministic_pct": 7.9
+      },
+      "ml_beats_deterministic": true,
+      "ml_improvement_vs_deterministic_pct": 7.9
+    },
+    {
+      "fold": 2,
+      "ok": true,
+      "train_first_target_utc": "2025-03-21T00:00:00Z",
+      "train_last_target_utc": "2025-12-25T23:00:00Z",
+      "test_start_utc": "2025-12-26T00:00:00Z",
+      "test_last_target_utc": "2026-02-28T14:00:00Z",
+      "train_cases": 12840,
+      "test_cases": 6204,
+      "features_used": [
+        "model_chmi",
+        "model_dwd",
+        "model_ec",
+        "lead_h",
+        "temperature_c",
+        "relative_humidity_pct",
+        "dew_point_c",
+        "dewpoint_depression_c",
+        "precipitation_mm",
+        "pressure_msl_hpa",
+        "cloud_cover_pct",
+        "wind_speed_10m_kmh",
+        "weather_code",
+        "wind_direction_sin",
+        "wind_direction_cos",
+        "target_hour_sin",
+        "target_hour_cos",
+        "target_doy_sin",
+        "target_doy_cos"
+      ],
+      "features_dropped_for_training_coverage": [
+        {
+          "feature": "wind_gusts_10m_kmh",
+          "finite_train_n": 0
+        },
+        {
+          "feature": "cape_jkg",
+          "finite_train_n": 0
+        }
+      ],
+      "minimum_finite_training_cases_per_feature": 128,
+      "deterministic_reference_same_fold": {
+        "n": 6204,
+        "raw_mae_c": 1.662,
+        "raw_bias_c": -0.518,
+        "bias_corrected_mae_c": 1.607,
+        "bias_corrected_bias_c": -0.267,
+        "mae_improvement_pct": 3.3
+      },
+      "metrics": {
+        "n": 6204,
+        "raw_mae_c": 1.662,
+        "deterministic_mae_c": 1.607,
+        "ml_mae_c": 1.482,
+        "raw_bias_c": -0.518,
+        "deterministic_bias_c": -0.267,
+        "ml_bias_c": 0.259,
+        "deterministic_improvement_vs_raw_pct": 3.3,
+        "ml_improvement_vs_raw_pct": 10.8,
+        "ml_improvement_vs_deterministic_pct": 7.8
+      },
+      "ml_beats_deterministic": true,
+      "ml_improvement_vs_deterministic_pct": 7.8
+    },
+    {
+      "fold": 3,
+      "ok": true,
+      "train_first_target_utc": "2025-03-21T00:00:00Z",
+      "train_last_target_utc": "2026-02-28T14:00:00Z",
+      "test_start_utc": "2026-02-28T15:00:00Z",
+      "test_last_target_utc": "2026-05-06T09:00:00Z",
+      "train_cases": 19044,
+      "test_cases": 5190,
+      "features_used": [
+        "model_chmi",
+        "model_dwd",
+        "model_ec",
+        "lead_h",
+        "temperature_c",
+        "relative_humidity_pct",
+        "dew_point_c",
+        "dewpoint_depression_c",
+        "precipitation_mm",
+        "pressure_msl_hpa",
+        "cloud_cover_pct",
+        "wind_speed_10m_kmh",
+        "weather_code",
+        "wind_direction_sin",
+        "wind_direction_cos",
+        "target_hour_sin",
+        "target_hour_cos",
+        "target_doy_sin",
+        "target_doy_cos"
+      ],
+      "features_dropped_for_training_coverage": [
+        {
+          "feature": "wind_gusts_10m_kmh",
+          "finite_train_n": 0
+        },
+        {
+          "feature": "cape_jkg",
+          "finite_train_n": 0
+        }
+      ],
+      "minimum_finite_training_cases_per_feature": 190,
+      "deterministic_reference_same_fold": {
+        "n": 5190,
+        "raw_mae_c": 2.689,
+        "raw_bias_c": 1.071,
+        "bias_corrected_mae_c": 2.572,
+        "bias_corrected_bias_c": 1.335,
+        "mae_improvement_pct": 4.3
+      },
+      "metrics": {
+        "n": 5190,
+        "raw_mae_c": 2.689,
+        "deterministic_mae_c": 2.572,
+        "ml_mae_c": 2.108,
+        "raw_bias_c": 1.071,
+        "deterministic_bias_c": 1.335,
+        "ml_bias_c": 0.936,
+        "deterministic_improvement_vs_raw_pct": 4.3,
+        "ml_improvement_vs_raw_pct": 21.6,
+        "ml_improvement_vs_deterministic_pct": 18.1
+      },
+      "ml_beats_deterministic": true,
+      "ml_improvement_vs_deterministic_pct": 18.1
+    },
+    {
+      "fold": 4,
+      "ok": true,
+      "train_first_target_utc": "2025-03-21T00:00:00Z",
+      "train_last_target_utc": "2026-05-06T09:00:00Z",
+      "test_start_utc": "2026-05-06T10:00:00Z",
+      "test_last_target_utc": "2026-07-10T00:00:00Z",
+      "train_cases": 24234,
+      "test_cases": 6950,
+      "features_used": [
+        "model_chmi",
+        "model_dwd",
+        "model_ec",
+        "lead_h",
+        "temperature_c",
+        "relative_humidity_pct",
+        "dew_point_c",
+        "dewpoint_depression_c",
+        "precipitation_mm",
+        "pressure_msl_hpa",
+        "cloud_cover_pct",
+        "wind_speed_10m_kmh",
+        "weather_code",
+        "wind_direction_sin",
+        "wind_direction_cos",
+        "target_hour_sin",
+        "target_hour_cos",
+        "target_doy_sin",
+        "target_doy_cos"
+      ],
+      "features_dropped_for_training_coverage": [
+        {
+          "feature": "wind_gusts_10m_kmh",
+          "finite_train_n": 0
+        },
+        {
+          "feature": "cape_jkg",
+          "finite_train_n": 0
+        }
+      ],
+      "minimum_finite_training_cases_per_feature": 242,
+      "deterministic_reference_same_fold": {
+        "n": 6950,
+        "raw_mae_c": 1.956,
+        "raw_bias_c": 0.3,
+        "bias_corrected_mae_c": 1.8,
+        "bias_corrected_bias_c": 0.28,
+        "mae_improvement_pct": 8.0
+      },
+      "metrics": {
+        "n": 6950,
+        "raw_mae_c": 1.956,
+        "deterministic_mae_c": 1.8,
+        "ml_mae_c": 1.391,
+        "raw_bias_c": 0.3,
+        "deterministic_bias_c": 0.28,
+        "ml_bias_c": 0.042,
+        "deterministic_improvement_vs_raw_pct": 8.0,
+        "ml_improvement_vs_raw_pct": 28.9,
+        "ml_improvement_vs_deterministic_pct": 22.7
+      },
+      "ml_beats_deterministic": true,
+      "ml_improvement_vs_deterministic_pct": 22.7
+    },
+    {
+      "fold": 5,
+      "ok": true,
+      "train_first_target_utc": "2025-03-21T00:00:00Z",
+      "train_last_target_utc": "2026-07-10T00:00:00Z",
+      "test_start_utc": "2026-07-10T01:00:00Z",
+      "test_last_target_utc": "2026-09-12T15:00:00Z",
+      "train_cases": 31184,
+      "test_cases": 27362,
+      "features_used": [
+        "model_chmi",
+        "model_dwd",
+        "model_ec",
+        "lead_h",
+        "temperature_c",
+        "relative_humidity_pct",
+        "dew_point_c",
+        "dewpoint_depression_c",
+        "precipitation_mm",
+        "pressure_msl_hpa",
+        "cloud_cover_pct",
+        "wind_speed_10m_kmh",
+        "weather_code",
+        "wind_direction_sin",
+        "wind_direction_cos",
+        "target_hour_sin",
+        "target_hour_cos",
+        "target_doy_sin",
+        "target_doy_cos"
+      ],
+      "features_dropped_for_training_coverage": [
+        {
+          "feature": "wind_gusts_10m_kmh",
+          "finite_train_n": 0
+        },
+        {
+          "feature": "cape_jkg",
+          "finite_train_n": 0
+        }
+      ],
+      "minimum_finite_training_cases_per_feature": 311,
+      "deterministic_reference_same_fold": {
+        "n": 27362,
+        "raw_mae_c": 2.152,
+        "raw_bias_c": 1.26,
+        "bias_corrected_mae_c": 1.935,
+        "bias_corrected_bias_c": 0.928,
+        "mae_improvement_pct": 10.1
+      },
+      "metrics": {
+        "n": 27362,
+        "raw_mae_c": 2.152,
+        "deterministic_mae_c": 1.935,
+        "ml_mae_c": 1.733,
+        "raw_bias_c": 1.26,
+        "deterministic_bias_c": 0.928,
+        "ml_bias_c": 1.155,
+        "deterministic_improvement_vs_raw_pct": 10.1,
+        "ml_improvement_vs_raw_pct": 19.5,
+        "ml_improvement_vs_deterministic_pct": 10.4
+      },
+      "ml_beats_deterministic": true,
+      "ml_improvement_vs_deterministic_pct": 10.4
+    }
+  ],
+  "gate": {
+    "fold_wins": 5,
+    "required_fold_wins": 4,
+    "worst_fold_improvement_vs_deterministic_pct": 7.8,
+    "aggregate_improvement_vs_deterministic_pct": 12.6,
+    "stable_walk_forward_win": true,
+    "rule": "ML must beat deterministic baseline in at least 80% of successful folds, improve aggregate MAE by at least 3%, and no fold may be worse by 5% or more.",
+    "production_eligible": false,
+    "production_blocker": "No on-site Nové Hraběcí truth station yet; walk-forward results remain shadow-only."
+  }
+}
