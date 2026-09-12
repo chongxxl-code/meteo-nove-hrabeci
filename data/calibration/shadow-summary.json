@@ -1,0 +1,287 @@
+{
+  "schema": 1,
+  "generated_at_utc": "2026-09-12T15:16:47.761238Z",
+  "ok": true,
+  "shadow_only": true,
+  "allowed_to_affect_public_forecast": false,
+  "allowed_to_affect_alerts": false,
+  "target_truth": {
+    "primary": "DWD Sohland/Spree 10-minute",
+    "fallback_live_only": "nearest ČHMÚ temperature station",
+    "is_nove_hrabeci_truth": false,
+    "warning": "Benchmark measures correction against nearby proxy observations, not an on-site Nové Hraběcí station."
+  },
+  "method": {
+    "split": "chronological by target time; no random shuffle",
+    "train_fraction_target_times": 0.75,
+    "cutoff_target_utc": "2026-08-20T11:00:00Z",
+    "bias_hierarchy": [
+      "model + lead bin + daypart (minimum 30 training cases)",
+      "model + lead bin (minimum 30)",
+      "model (minimum 30)",
+      "global mean error fallback"
+    ],
+    "correction_formula": "corrected_temperature = raw_temperature - mean_training_error",
+    "note": "This is a deterministic benchmark, not ML. It exists to give any later ML model a baseline it must beat."
+  },
+  "coverage": {
+    "history_backfill_cases": 10515,
+    "live_archive_cases": 18024,
+    "all_cases": 28539,
+    "train_cases": 7798,
+    "test_cases": 20741,
+    "first_target_utc": "2026-06-12T00:00:00Z",
+    "last_target_utc": "2026-09-12T14:00:00Z"
+  },
+  "test_metrics": {
+    "overall": {
+      "n": 20741,
+      "raw_mae_c": 2.081,
+      "raw_bias_c": 1.261,
+      "bias_corrected_mae_c": 1.76,
+      "bias_corrected_bias_c": 0.342,
+      "mae_improvement_pct": 15.4
+    },
+    "by_model": {
+      "chmi": {
+        "n": 7134,
+        "raw_mae_c": 2.26,
+        "raw_bias_c": 1.263,
+        "bias_corrected_mae_c": 1.845,
+        "bias_corrected_bias_c": 0.321,
+        "mae_improvement_pct": 18.3
+      },
+      "dwd": {
+        "n": 6426,
+        "raw_mae_c": 1.941,
+        "raw_bias_c": 1.269,
+        "bias_corrected_mae_c": 1.767,
+        "bias_corrected_bias_c": 0.178,
+        "mae_improvement_pct": 8.9
+      },
+      "ec": {
+        "n": 7181,
+        "raw_mae_c": 2.029,
+        "raw_bias_c": 1.251,
+        "bias_corrected_mae_c": 1.668,
+        "bias_corrected_bias_c": 0.511,
+        "mae_improvement_pct": 17.8
+      }
+    },
+    "by_source": {
+      "local_snapshot": {
+        "n": 17961,
+        "raw_mae_c": 2.081,
+        "raw_bias_c": 1.288,
+        "bias_corrected_mae_c": 1.783,
+        "bias_corrected_bias_c": 0.366,
+        "mae_improvement_pct": 14.4
+      },
+      "open_meteo_previous_runs": {
+        "n": 2780,
+        "raw_mae_c": 2.079,
+        "raw_bias_c": 1.085,
+        "bias_corrected_mae_c": 1.613,
+        "bias_corrected_bias_c": 0.186,
+        "mae_improvement_pct": 22.4
+      }
+    },
+    "by_lead_bin": {
+      "0–6 h": {
+        "n": 2337,
+        "raw_mae_c": 2.147,
+        "raw_bias_c": 1.409,
+        "bias_corrected_mae_c": 2.108,
+        "bias_corrected_bias_c": 0.47,
+        "mae_improvement_pct": 1.8
+      },
+      "6–12 h": {
+        "n": 2382,
+        "raw_mae_c": 2.044,
+        "raw_bias_c": 1.17,
+        "bias_corrected_mae_c": 2.07,
+        "bias_corrected_bias_c": 0.231,
+        "mae_improvement_pct": -1.3
+      },
+      "12–24 h": {
+        "n": 6357,
+        "raw_mae_c": 2.047,
+        "raw_bias_c": 1.215,
+        "bias_corrected_mae_c": 1.529,
+        "bias_corrected_bias_c": 0.327,
+        "mae_improvement_pct": 25.3
+      },
+      "24–48 h": {
+        "n": 9665,
+        "raw_mae_c": 2.096,
+        "raw_bias_c": 1.277,
+        "bias_corrected_mae_c": 1.751,
+        "bias_corrected_bias_c": 0.349,
+        "mae_improvement_pct": 16.5
+      }
+    }
+  },
+  "readiness": {
+    "enough_cases_for_useful_shadow_benchmark": true,
+    "production_eligible": false,
+    "next_gate": "On-site NH station becomes truth target; then compare this deterministic bias baseline with a small ML model on a later chronological holdout."
+  },
+  "recent_shadow_examples": [
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 3.3,
+      "raw_temperature_c": 18.3,
+      "observed_temperature_c": 19.5,
+      "correction_c": 0.96,
+      "corrected_temperature_c": 17.34,
+      "raw_error_c": -1.2,
+      "corrected_error_c": -2.16,
+      "correction_level": "model"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 9.496,
+      "raw_temperature_c": 18.3,
+      "observed_temperature_c": 19.5,
+      "correction_c": 0.96,
+      "corrected_temperature_c": 17.34,
+      "raw_error_c": -1.2,
+      "corrected_error_c": -2.16,
+      "correction_level": "model"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 14.758,
+      "raw_temperature_c": 18.1,
+      "observed_temperature_c": 19.5,
+      "correction_c": -0.78,
+      "corrected_temperature_c": 18.88,
+      "raw_error_c": -1.4,
+      "corrected_error_c": -0.62,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 17.069,
+      "raw_temperature_c": 18.3,
+      "observed_temperature_c": 19.5,
+      "correction_c": -0.78,
+      "corrected_temperature_c": 19.08,
+      "raw_error_c": -1.2,
+      "corrected_error_c": -0.42,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 21.57,
+      "raw_temperature_c": 18.3,
+      "observed_temperature_c": 19.5,
+      "correction_c": -0.78,
+      "corrected_temperature_c": 19.08,
+      "raw_error_c": -1.2,
+      "corrected_error_c": -0.42,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "open_meteo_previous_runs",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 24.0,
+      "raw_temperature_c": 18.3,
+      "observed_temperature_c": 19.8,
+      "correction_c": -0.78,
+      "corrected_temperature_c": 19.08,
+      "raw_error_c": -1.5,
+      "corrected_error_c": -0.72,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 26.729,
+      "raw_temperature_c": 18.6,
+      "observed_temperature_c": 19.5,
+      "correction_c": -0.93,
+      "corrected_temperature_c": 19.53,
+      "raw_error_c": -0.9,
+      "corrected_error_c": 0.03,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 33.412,
+      "raw_temperature_c": 18.0,
+      "observed_temperature_c": 19.5,
+      "correction_c": -0.93,
+      "corrected_temperature_c": 18.93,
+      "raw_error_c": -1.5,
+      "corrected_error_c": -0.57,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 38.868,
+      "raw_temperature_c": 18.7,
+      "observed_temperature_c": 19.5,
+      "correction_c": -0.93,
+      "corrected_temperature_c": 19.63,
+      "raw_error_c": -0.8,
+      "corrected_error_c": 0.13,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 41.176,
+      "raw_temperature_c": 18.6,
+      "observed_temperature_c": 19.5,
+      "correction_c": -0.93,
+      "corrected_temperature_c": 19.53,
+      "raw_error_c": -0.9,
+      "corrected_error_c": 0.03,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "local_snapshot",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 45.637,
+      "raw_temperature_c": 18.6,
+      "observed_temperature_c": 19.5,
+      "correction_c": -0.93,
+      "corrected_temperature_c": 19.53,
+      "raw_error_c": -0.9,
+      "corrected_error_c": 0.03,
+      "correction_level": "model+lead+daypart"
+    },
+    {
+      "model": "chmi",
+      "source": "open_meteo_previous_runs",
+      "target_at_utc": "2026-09-12T14:00:00Z",
+      "lead_h": 48.0,
+      "raw_temperature_c": 18.6,
+      "observed_temperature_c": 19.8,
+      "correction_c": -0.93,
+      "corrected_temperature_c": 19.53,
+      "raw_error_c": -1.2,
+      "corrected_error_c": -0.27,
+      "correction_level": "model+lead+daypart"
+    }
+  ]
+}
