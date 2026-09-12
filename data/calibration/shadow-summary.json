@@ -1,6 +1,6 @@
 {
-  "schema": 1,
-  "generated_at_utc": "2026-09-12T15:35:09.617348Z",
+  "schema": 2,
+  "generated_at_utc": "2026-09-12T15:39:43.072731Z",
   "ok": true,
   "shadow_only": true,
   "allowed_to_affect_public_forecast": false,
@@ -29,6 +29,9 @@
   },
   "coverage": {
     "history_backfill_cases": 10520,
+    "history_storage_files": [
+      "history-v0.jsonl"
+    ],
     "live_archive_cases": 18056,
     "all_cases": 28576,
     "train_cases": 7821,
@@ -127,7 +130,7 @@
   "readiness": {
     "enough_cases_for_useful_shadow_benchmark": true,
     "production_eligible": false,
-    "next_gate": "On-site NH station becomes truth target; then compare this deterministic bias baseline with a small ML model on a later chronological holdout."
+    "next_gate": "Compare deterministic bias baseline with ML v1 on the same later chronological holdout; on-site NH station is still required before production use."
   },
   "recent_shadow_examples": [
     {
