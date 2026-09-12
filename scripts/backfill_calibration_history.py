@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import gzip
 import io
 import json
 import math
@@ -9,11 +10,13 @@ import time
 import urllib.parse
 import urllib.request
 import zipfile
-from datetime import datetime, timezone, timedelta
+from collections import defaultdict
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
 from calibration_truth import (
     DWD_DISTANCE_KM,
+    DWD_MATCH_MINUTES,
     DWD_STATION_ID,
     DWD_STATION_NAME,
     nearest_truth,
@@ -22,13 +25,14 @@ from calibration_truth import (
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "data" / "calibration"
-OUT = OUT_DIR / "history-v0.jsonl"
+LEGACY_OUT = OUT_DIR / "history-v0.jsonl"
 STATUS = OUT_DIR / "backfill-status.json"
 
 LAT = 51.0162
 LON = 14.4398
-UA = "nove-hrabeci-calibration/0.2 (+github-actions)"
-PAST_DAYS = 92
+UA = "nove-hrabeci-calibration/0.3 (+github-actions)"
+HISTORY_DAYS = 540
+QUERY_CHUNK_DAYS = 90
 DWD_RECENT = (
     "https://opendata.dwd.de/climate_environment/CDC/observations_germany/"
     "climate/10_minutes/air_temperature/recent/"
@@ -45,7 +49,7 @@ MODELS = {
     "chmi": "chmi_aladin_cz_1km",
     "ec": "ecmwf_ifs",
 }
-LEADS = (1, 2)
+LEADS = (1, 2, 3)
 CORE_VARIABLES = (
     "temperature_2m",
     "relative_humidity_2m",
@@ -64,7 +68,7 @@ def get_bytes(url: str, tries: int = 4) -> bytes:
     for attempt in range(tries):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*"})
-            with urllib.request.urlopen(req, timeout=45) as response:
+            with urllib.request.urlopen(req, timeout=60) as response:
                 return response.read()
         except Exception as exc:
             err = exc
@@ -143,7 +147,15 @@ def parse_utc_hour(value):
     return parsed.astimezone(timezone.utc)
 
 
-def build_query(model_id: str):
+def date_chunks(start: date, end: date, chunk_days=QUERY_CHUNK_DAYS):
+    cursor = start
+    while cursor <= end:
+        chunk_end = min(end, cursor + timedelta(days=chunk_days - 1))
+        yield cursor, chunk_end
+        cursor = chunk_end + timedelta(days=1)
+
+
+def build_query(model_id: str, start_date: date, end_date: date):
     hourly = []
     for variable in CORE_VARIABLES:
         for day in LEADS:
@@ -152,8 +164,8 @@ def build_query(model_id: str):
         "latitude": LAT,
         "longitude": LON,
         "models": model_id,
-        "past_days": PAST_DAYS,
-        "forecast_days": 1,
+        "start_date": start_date.isoformat(),
+        "end_date": end_date.isoformat(),
         "timezone": "GMT",
         "wind_speed_unit": "kmh",
         "hourly": ",".join(hourly),
@@ -168,8 +180,8 @@ def feature_value(hourly, variable, day, index):
     return values[index]
 
 
-def model_rows(model_key, model_id, truth, truth_times, now):
-    url = build_query(model_id)
+def model_rows(model_key, model_id, truth, truth_times, now, start_date, end_date):
+    url = build_query(model_id, start_date, end_date)
     payload = get_json(url)
     hourly = payload.get("hourly") or {}
     times = hourly.get("time") or []
@@ -210,7 +222,7 @@ def model_rows(model_key, model_id, truth, truth_times, now):
             }
             issued = target - timedelta(days=day)
             row = {
-                "schema": 1,
+                "schema": 2,
                 "source": "open_meteo_previous_runs",
                 "model": model_key,
                 "model_id": model_id,
@@ -232,31 +244,96 @@ def model_rows(model_key, model_id, truth, truth_times, now):
     return rows, url
 
 
+def encode_rows(rows):
+    text = "".join(
+        json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
+        for row in rows
+    ).encode("utf-8")
+    return gzip.compress(text, compresslevel=9, mtime=0)
+
+
+def write_monthly_shards(rows):
+    grouped = defaultdict(list)
+    for row in rows:
+        grouped[row["target_at_utc"][:7]].append(row)
+
+    produced = set()
+    manifest = []
+    for month, month_rows in sorted(grouped.items()):
+        path = OUT_DIR / f"history-{month}.jsonl.gz"
+        blob = encode_rows(month_rows)
+        path.write_bytes(blob)
+        produced.add(path.name)
+        manifest.append({
+            "file": f"data/calibration/{path.name}",
+            "month": month,
+            "rows": len(month_rows),
+            "compressed_bytes": len(blob),
+        })
+
+    for path in OUT_DIR.glob("history-*.jsonl.gz"):
+        if path.name not in produced:
+            path.unlink()
+    if LEGACY_OUT.exists():
+        LEGACY_OUT.unlink()
+    return manifest
+
+
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc)
     truth, truth_times, dwd_sources = load_dwd_truth()
 
+    requested_start = now - timedelta(days=HISTORY_DAYS)
+    earliest_truth = truth_times[0]
+    latest_truth = truth_times[-1]
+    start_dt = max(requested_start, earliest_truth)
+    end_dt = min(now, latest_truth + timedelta(minutes=DWD_MATCH_MINUTES))
+    start_date = start_dt.date()
+    end_date = end_dt.date()
+    chunks = list(date_chunks(start_date, end_date))
+
     all_rows = []
     model_status = {}
+    failures = []
     for model_key, model_id in MODELS.items():
-        try:
-            rows, url = model_rows(model_key, model_id, truth, truth_times, now)
-            all_rows.extend(rows)
-            model_status[model_key] = {
-                "ok": True,
-                "model_id": model_id,
-                "rows": len(rows),
-                "request_url": url,
-            }
-        except Exception as exc:
-            model_status[model_key] = {
-                "ok": False,
-                "model_id": model_id,
-                "rows": 0,
-                "error": str(exc)[:500],
-            }
+        model_rows_all = []
+        chunk_status = []
+        for chunk_start, chunk_end in chunks:
+            try:
+                rows, url = model_rows(
+                    model_key, model_id, truth, truth_times, now, chunk_start, chunk_end
+                )
+                model_rows_all.extend(rows)
+                chunk_status.append({
+                    "start": chunk_start.isoformat(),
+                    "end": chunk_end.isoformat(),
+                    "rows": len(rows),
+                    "ok": True,
+                    "request_url": url,
+                })
+            except Exception as exc:
+                failure = {
+                    "model": model_key,
+                    "start": chunk_start.isoformat(),
+                    "end": chunk_end.isoformat(),
+                    "error": str(exc)[:500],
+                }
+                failures.append(failure)
+                chunk_status.append({**failure, "ok": False, "rows": 0})
+        all_rows.extend(model_rows_all)
+        model_status[model_key] = {
+            "ok": not any(not item["ok"] for item in chunk_status),
+            "model_id": model_id,
+            "rows": len(model_rows_all),
+            "chunks": chunk_status,
+        }
 
+    if failures:
+        raise RuntimeError(
+            "Historical backfill incomplete; refusing to replace existing shards: "
+            + json.dumps(failures[:4], ensure_ascii=False)
+        )
     if not all_rows:
         raise RuntimeError("Backfill produced zero calibration rows")
 
@@ -265,33 +342,48 @@ def main():
         key = (row["model"], row["target_at_utc"], row["lead_h"])
         unique[key] = row
     rows = sorted(unique.values(), key=lambda r: (r["target_at_utc"], r["model"], r["lead_h"]))
-
-    with OUT.open("w", encoding="utf-8") as handle:
-        for row in rows:
-            handle.write(json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n")
+    manifest = write_monthly_shards(rows)
 
     status = {
-        "schema": 1,
+        "schema": 2,
         "generated_at_utc": now.isoformat().replace("+00:00", "Z"),
         "purpose": "shadow calibration only; never changes public forecast or alert ranks",
-        "history_window_days_requested": PAST_DAYS,
+        "history_window_days_requested": HISTORY_DAYS,
+        "query_chunk_days": QUERY_CHUNK_DAYS,
+        "lead_offsets_days": list(LEADS),
         "truth_reference": {
             "station": DWD_STATION_NAME,
             "station_id": DWD_STATION_ID,
             "distance_to_nove_hrabeci_km": DWD_DISTANCE_KM,
             "is_nove_hrabeci_truth": False,
-            "matching_policy": "canonical nearest UTC Sohland observation within ±20 minutes; no CHMI fallback",
+            "matching_policy": f"canonical nearest UTC Sohland observation within ±{DWD_MATCH_MINUTES} minutes; no CHMI fallback",
             "warning": "This is a nearby proxy target until an on-site NH station is available.",
         },
         "dwd_sources": dwd_sources,
+        "truth_available_from_utc": earliest_truth.isoformat().replace("+00:00", "Z"),
+        "truth_available_to_utc": latest_truth.isoformat().replace("+00:00", "Z"),
+        "requested_start_utc": requested_start.isoformat().replace("+00:00", "Z"),
+        "actual_query_start_date": start_date.isoformat(),
+        "actual_query_end_date": end_date.isoformat(),
         "model_status": model_status,
         "rows": len(rows),
         "first_target_utc": rows[0]["target_at_utc"],
         "last_target_utc": rows[-1]["target_at_utc"],
-        "output": "data/calibration/history-v0.jsonl",
+        "storage": {
+            "format": "monthly deterministic gzip JSONL shards",
+            "legacy_history_v0_removed": True,
+            "shards": manifest,
+            "compressed_bytes_total": sum(item["compressed_bytes"] for item in manifest),
+        },
     }
     STATUS.write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps(status, ensure_ascii=False))
+    print(json.dumps({
+        "rows": status["rows"],
+        "first_target_utc": status["first_target_utc"],
+        "last_target_utc": status["last_target_utc"],
+        "shards": len(manifest),
+        "compressed_bytes_total": status["storage"]["compressed_bytes_total"],
+    }, ensure_ascii=False))
 
 
 if __name__ == "__main__":
