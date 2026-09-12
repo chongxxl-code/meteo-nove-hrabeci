@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from build_calibration_shadow import evaluate, history_cases, live_cases
-from build_calibration_ml_shadow import FEATURE_NAMES, MODEL_PARAMS, case_features, finite, improvement_pct
+from build_calibration_ml_shadow import FEATURE_NAMES, MODEL_PARAMS, case_features, finite
 from build_calibration_ml_walkforward import (
     MIN_FEATURE_FINITE_FRACTION,
     MIN_FEATURE_FINITE_N,
@@ -22,12 +22,11 @@ from diagnose_calibration_bias import rows_for_predictions, summarize
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "calibration" / "per-model-challenger.json"
 
-# The first three case_features are one-hot source-model flags. They are constant inside
-# a source-specific estimator, so the per-model challenger deliberately excludes them.
 PER_MODEL_FEATURE_NAMES = FEATURE_NAMES[3:]
 MODELS = ("chmi", "dwd", "ec")
 MIN_MODEL_TRAIN_CASES = 1000
 MIN_MODEL_TEST_CASES = 100
+MIN_SUCCESSFUL_MODEL_FOLDS = 3
 
 
 def rounded(value, digits=3):
@@ -42,11 +41,9 @@ def model_features(case):
 
 def prepare_xy(train, test):
     import numpy as np
-
     x_train = np.asarray([model_features(case) for case in train], dtype=float)
     y_train = np.asarray([float(case["error_c"]) for case in train], dtype=float)
     x_test = np.asarray([model_features(case) for case in test], dtype=float)
-
     minimum = max(MIN_FEATURE_FINITE_N, int(len(train) * MIN_FEATURE_FINITE_FRACTION))
     finite_counts = np.isfinite(x_train).sum(axis=0)
     keep = []
@@ -59,7 +56,6 @@ def prepare_xy(train, test):
     keep_mask = np.asarray(keep, dtype=bool)
     if not np.any(keep_mask):
         raise RuntimeError("No usable non-degenerate features for per-model estimator")
-
     used = [name for name, flag in zip(PER_MODEL_FEATURE_NAMES, keep_mask) if bool(flag)]
     dropped = [
         {
@@ -77,7 +73,6 @@ def prepare_xy(train, test):
 
 def fit_predict(train, test):
     from sklearn.ensemble import HistGradientBoostingRegressor
-
     x_train, y_train, x_test, used, dropped, minimum = prepare_xy(train, test)
     params = dict(MODEL_PARAMS)
     params["loss"] = "absolute_error"
@@ -86,17 +81,13 @@ def fit_predict(train, test):
     return model.predict(x_test), used, dropped, minimum
 
 
-def fold_model_stability(folds, model_name):
-    values = []
-    wins = 0
-    for fold in folds:
-        model = (fold.get("by_model") or {}).get(model_name) or {}
-        value = ((model.get("ml_improvement_vs_deterministic_pct") or {}).get("mae"))
-        if finite(value):
-            value = float(value)
-            values.append(value)
-            if value > 0:
-                wins += 1
+def fold_stability(folds):
+    values = [
+        float(fold["ml_improvement_vs_deterministic_pct"])
+        for fold in folds
+        if fold.get("ok") and finite(fold.get("ml_improvement_vs_deterministic_pct"))
+    ]
+    wins = sum(1 for value in values if value > 0)
     required = math.ceil(len(values) * 0.60) if values else 0
     worst = min(values) if values else None
     return {
@@ -105,7 +96,10 @@ def fold_model_stability(folds, model_name):
         "required_fold_wins": required,
         "worst_fold_improvement_vs_deterministic_pct": rounded(worst, 1),
         "development_stability_pass": bool(
-            values and wins >= required and finite(worst) and float(worst) > -10.0
+            len(values) >= MIN_SUCCESSFUL_MODEL_FOLDS
+            and wins >= required
+            and finite(worst)
+            and float(worst) > -10.0
         ),
     }
 
@@ -121,151 +115,212 @@ def main():
             case["target_at_utc"], case["model"], case["lead_h"], case["source"]
         )
     )
-    targets = sorted({case["target_at_utc"] for case in cases})
 
-    folds = []
+    model_results = {}
     all_rows = []
 
-    for fold_number, (start_index, end_index) in enumerate(fold_ranges(targets), start=1):
-        test_start = targets[start_index]
-        test_end = targets[end_index] if end_index < len(targets) else None
-        test = [
-            case for case in cases
-            if case["target_at_utc"] >= test_start
-            and (test_end is None or case["target_at_utc"] < test_end)
-        ]
-        as_of = earliest_test_issue(test)
-        if as_of is None:
-            continue
+    for model_name in MODELS:
+        model_cases = [case for case in cases if case.get("model") == model_name]
+        model_targets = sorted({case["target_at_utc"] for case in model_cases})
+        ranges = fold_ranges(model_targets)
+        model_folds = []
+        model_rows = []
 
-        train = []
-        for case in cases:
-            available = truth_available_at(case)
-            if available is not None and available <= as_of:
-                train.append(case)
-        if len(train) < MIN_TRAIN_CASES or len(test) < MIN_TEST_CASES:
-            continue
-
-        deterministic_rows, _, _, _, _ = evaluate(train, test)
-        indices_by_model = {
-            model_name: [i for i, case in enumerate(test) if case.get("model") == model_name]
-            for model_name in MODELS
-        }
-
-        fold_rows = []
-        fit_info = {}
-        complete = True
-        for model_name in MODELS:
-            train_model = [case for case in train if case.get("model") == model_name]
-            indices = indices_by_model[model_name]
-            test_model = [test[i] for i in indices]
-            deterministic_model = [deterministic_rows[i] for i in indices]
-            if len(train_model) < MIN_MODEL_TRAIN_CASES or len(test_model) < MIN_MODEL_TEST_CASES:
-                fit_info[model_name] = {
-                    "ok": False,
-                    "train_cases": len(train_model),
-                    "test_cases": len(test_model),
-                    "error": "insufficient source-specific train/test cases",
-                }
-                complete = False
+        for fold_number, (start_index, end_index) in enumerate(ranges, start=1):
+            test_start = model_targets[start_index]
+            test_end = model_targets[end_index] if end_index < len(model_targets) else None
+            test = [
+                case
+                for case in model_cases
+                if case["target_at_utc"] >= test_start
+                and (test_end is None or case["target_at_utc"] < test_end)
+            ]
+            as_of = earliest_test_issue(test)
+            if as_of is None:
+                model_folds.append(
+                    {
+                        "fold": fold_number,
+                        "ok": False,
+                        "test_start_utc": test_start,
+                        "test_cases": len(test),
+                        "error": "test cases have no usable issuance timestamps",
+                    }
+                )
                 continue
 
+            train = []
+            for case in model_cases:
+                available = truth_available_at(case)
+                if available is not None and available <= as_of:
+                    train.append(case)
+
+            if len(train) < MIN_MODEL_TRAIN_CASES or len(test) < MIN_MODEL_TEST_CASES:
+                model_folds.append(
+                    {
+                        "fold": fold_number,
+                        "ok": False,
+                        "as_of_utc": as_of.isoformat().replace("+00:00", "Z"),
+                        "test_start_utc": test_start,
+                        "test_last_target_utc": test[-1]["target_at_utc"] if test else None,
+                        "train_cases": len(train),
+                        "test_cases": len(test),
+                        "error": "insufficient source-specific train/test cases",
+                    }
+                )
+                continue
+
+            deterministic_rows, _, _, _, _ = evaluate(train, test)
             try:
-                predictions, used, dropped, minimum = fit_predict(train_model, test_model)
+                predictions, used, dropped, minimum = fit_predict(train, test)
             except Exception as exc:
-                fit_info[model_name] = {
-                    "ok": False,
-                    "train_cases": len(train_model),
-                    "test_cases": len(test_model),
-                    "error": f"{type(exc).__name__}: {exc}"[:500],
-                }
-                complete = False
+                model_folds.append(
+                    {
+                        "fold": fold_number,
+                        "ok": False,
+                        "as_of_utc": as_of.isoformat().replace("+00:00", "Z"),
+                        "test_start_utc": test_start,
+                        "test_last_target_utc": test[-1]["target_at_utc"] if test else None,
+                        "train_cases": len(train),
+                        "test_cases": len(test),
+                        "error": f"{type(exc).__name__}: {exc}"[:500],
+                    }
+                )
                 continue
 
-            rows = rows_for_predictions(test_model, deterministic_model, predictions)
-            fold_rows.extend(rows)
-            fit_info[model_name] = {
-                "ok": True,
-                "train_cases": len(train_model),
-                "test_cases": len(test_model),
-                "features_used": used,
-                "features_dropped": dropped,
-                "minimum_finite_training_cases_per_feature": minimum,
-            }
-
-        if not complete or not fold_rows:
-            folds.append(
+            rows = rows_for_predictions(test, deterministic_rows, predictions)
+            rows.sort(
+                key=lambda row: (
+                    row["target_at_utc"], row["model"], row["lead_h"], row["source"]
+                )
+            )
+            summary = summarize(rows)
+            improvement = summary["metrics"]["ml_improvement_vs_deterministic_pct"]["mae"]
+            model_folds.append(
                 {
                     "fold": fold_number,
-                    "ok": False,
+                    "ok": True,
                     "as_of_utc": as_of.isoformat().replace("+00:00", "Z"),
+                    "train_first_target_utc": train[0]["target_at_utc"],
+                    "train_last_target_utc": train[-1]["target_at_utc"],
                     "test_start_utc": test_start,
-                    "test_last_target_utc": test[-1]["target_at_utc"] if test else None,
-                    "source_models": fit_info,
-                    "error": "not all source-specific estimators were available",
+                    "test_last_target_utc": test[-1]["target_at_utc"],
+                    "train_cases": len(train),
+                    "test_cases": len(test),
+                    "features_used": used,
+                    "features_dropped": dropped,
+                    "minimum_finite_training_cases_per_feature": minimum,
+                    "metrics": summary["metrics"],
+                    "extreme_temperature": summary["extreme_temperature"],
+                    "strict_guard": summary["strict_guard"],
+                    "ml_improvement_vs_deterministic_pct": rounded(improvement, 1),
                 }
             )
-            continue
+            model_rows.extend(rows)
 
-        fold_rows.sort(
-            key=lambda row: (row["target_at_utc"], row["model"], row["lead_h"], row["source"])
+        successful = [fold for fold in model_folds if fold.get("ok")]
+        if model_rows:
+            model_summary = summarize(model_rows)
+            aggregate_improvement = (
+                model_summary["metrics"]["ml_improvement_vs_deterministic_pct"]["mae"]
+            )
+            strict_pass = bool(model_summary["strict_guard"]["strict_holdout_pass"])
+        else:
+            model_summary = None
+            aggregate_improvement = None
+            strict_pass = False
+
+        stability = fold_stability(successful)
+        enough_folds = len(successful) >= MIN_SUCCESSFUL_MODEL_FOLDS
+        development_signal = bool(
+            enough_folds
+            and stability["development_stability_pass"]
+            and strict_pass
+            and finite(aggregate_improvement)
+            and float(aggregate_improvement) >= 3.0
         )
-        summary = summarize(fold_rows)
-        improvement = summary["metrics"]["ml_improvement_vs_deterministic_pct"]["mae"]
-        folds.append(
-            {
-                "fold": fold_number,
-                "ok": True,
-                "as_of_utc": as_of.isoformat().replace("+00:00", "Z"),
-                "test_start_utc": test_start,
-                "test_last_target_utc": test[-1]["target_at_utc"],
-                "train_cases": len(train),
-                "test_cases": len(test),
-                "source_models": fit_info,
-                "metrics": summary["metrics"],
-                "by_model": summary["by_model"],
-                "extreme_temperature": summary["extreme_temperature"],
-                "strict_guard": summary["strict_guard"],
-                "ml_improvement_vs_deterministic_pct": rounded(improvement, 1),
-            }
-        )
-        all_rows.extend(fold_rows)
+        model_results[model_name] = {
+            "cases": len(model_cases),
+            "unique_target_times": len(model_targets),
+            "folds_requested": len(ranges),
+            "successful_folds": len(successful),
+            "folds": model_folds,
+            "aggregate": model_summary,
+            "stability": stability,
+            "aggregate_improvement_vs_deterministic_pct": rounded(
+                aggregate_improvement, 1
+            ),
+            "strict_guard_pass": strict_pass,
+            "development_signal": development_signal,
+        }
+        all_rows.extend(model_rows)
 
-    successful = [fold for fold in folds if fold.get("ok")]
-    if len(successful) < 3 or not all_rows:
-        raise RuntimeError(f"Too few successful per-model challenger folds: {len(successful)}")
-
-    overall = summarize(all_rows)
-    improvements = [
-        float(fold["ml_improvement_vs_deterministic_pct"])
-        for fold in successful
-        if finite(fold.get("ml_improvement_vs_deterministic_pct"))
+    usable_models = [
+        model_name
+        for model_name, result in model_results.items()
+        if result["successful_folds"] >= MIN_SUCCESSFUL_MODEL_FOLDS
     ]
-    wins = sum(1 for value in improvements if value > 0)
-    required_wins = math.ceil(len(improvements) * 0.80)
-    worst = min(improvements) if improvements else None
-    aggregate_improvement = overall["metrics"]["ml_improvement_vs_deterministic_pct"]["mae"]
+    if len(usable_models) != len(MODELS) or not all_rows:
+        payload = {
+            "schema": 2,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "ok": False,
+            "shadow_only": True,
+            "allowed_to_affect_public_forecast": False,
+            "allowed_to_affect_alerts": False,
+            "production_eligible": False,
+            "confirmatory_valid": False,
+            "error": "insufficient source-specific walk-forward evidence",
+            "data": {
+                "history_storage_files": storage,
+                "history_cases": len(history),
+                "live_archive_cases": len(live),
+                "all_cases": len(cases),
+            },
+            "model_results": model_results,
+        }
+        OUT.parent.mkdir(parents=True, exist_ok=True)
+        OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "usable_models": usable_models,
+                    "required_models": list(MODELS),
+                    "successful_folds_by_model": {
+                        name: model_results[name]["successful_folds"] for name in MODELS
+                    },
+                },
+                ensure_ascii=False,
+            )
+        )
+        return
 
-    model_stability = {
-        model_name: fold_model_stability(successful, model_name)
-        for model_name in MODELS
-    }
-    temporal_pass = bool(
-        improvements
-        and wins >= required_wins
-        and finite(worst)
-        and float(worst) > -5.0
-        and finite(aggregate_improvement)
-        and float(aggregate_improvement) >= 3.0
+    all_rows.sort(
+        key=lambda row: (
+            row["target_at_utc"], row["model"], row["lead_h"], row["source"]
+        )
     )
+    overall = summarize(all_rows)
     strict_pass = bool(overall["strict_guard"]["strict_holdout_pass"])
-    per_model_temporal_pass = all(
-        item["development_stability_pass"] for item in model_stability.values()
+    per_model_pass = all(model_results[name]["development_signal"] for name in MODELS)
+    development_signal = bool(strict_pass and per_model_pass)
+
+    model_balanced_det_mae = sum(
+        float(model_results[name]["aggregate"]["metrics"]["deterministic"]["mae_c"])
+        for name in MODELS
+    ) / len(MODELS)
+    model_balanced_ml_mae = sum(
+        float(model_results[name]["aggregate"]["metrics"]["ml"]["mae_c"])
+        for name in MODELS
+    ) / len(MODELS)
+    model_balanced_improvement = (
+        (model_balanced_det_mae - model_balanced_ml_mae) / model_balanced_det_mae * 100.0
+        if model_balanced_det_mae
+        else None
     )
-    development_signal = bool(temporal_pass and strict_pass and per_model_temporal_pass)
 
     payload = {
-        "schema": 1,
+        "schema": 2,
         "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "ok": True,
         "shadow_only": True,
@@ -284,14 +339,17 @@ def main():
             "params": {**MODEL_PARAMS, "loss": "absolute_error"},
             "models": list(MODELS),
             "features": PER_MODEL_FEATURE_NAMES,
-            "window": "same expanding as-of-time walk-forward folds as ML v1",
+            "window": (
+                "independent source-specific expanding as-of-time walk-forward folds; "
+                "each NWP source is evaluated only across its own available history"
+            ),
             "leakage_guard": (
                 "training truth must be observable by earliest issuance in each future fold; "
                 "each estimator trains only on its own NWP source"
             ),
             "development_only_warning": (
                 "This architecture was chosen after inspecting previous results on these historical folds. "
-                "These folds are therefore exploratory development data, not an independent confirmation."
+                "These folds are exploratory development data, not an independent confirmation."
             ),
         },
         "data": {
@@ -299,24 +357,30 @@ def main():
             "history_cases": len(history),
             "live_archive_cases": len(live),
             "all_cases": len(cases),
-            "successful_folds": len(successful),
+            "evaluated_rows": len(all_rows),
         },
+        "model_results": model_results,
         "aggregate": overall,
-        "folds": folds,
+        "model_balanced": {
+            "deterministic_mae_c": rounded(model_balanced_det_mae),
+            "ml_mae_c": rounded(model_balanced_ml_mae),
+            "improvement_vs_deterministic_pct": rounded(model_balanced_improvement, 1),
+        },
         "development_gate": {
-            "aggregate_improvement_vs_deterministic_pct": rounded(aggregate_improvement, 1),
-            "fold_wins_vs_deterministic": wins,
-            "required_fold_wins": required_wins,
-            "worst_fold_improvement_vs_deterministic_pct": rounded(worst, 1),
-            "temporal_pass": temporal_pass,
             "strict_guard_pass": strict_pass,
-            "per_model_temporal_stability": model_stability,
+            "all_source_models_pass": per_model_pass,
+            "per_model_development_signal": {
+                name: model_results[name]["development_signal"] for name in MODELS
+            },
+            "model_balanced_improvement_vs_deterministic_pct": rounded(
+                model_balanced_improvement, 1
+            ),
             "development_signal": development_signal,
             "confirmatory_pass": False,
             "rule": (
-                "A development signal requires >=80% aggregate fold wins, >=3% aggregate MAE gain, "
-                "no aggregate fold <= -5%, strict guard pass, and each source model to win >=60% "
-                "of folds with no source-model fold <= -10%."
+                "Each source needs >=3 successful source-specific folds, >=60% fold wins, no fold <= -10%, "
+                ">=3% aggregate MAE gain and strict guard pass. Combined development signal also requires "
+                "the aggregate strict guard to pass. Historical results remain development-only."
             ),
         },
         "next_if_development_signal": (
@@ -324,7 +388,8 @@ def main():
             "forecast issues may provide confirmatory evidence."
         ),
         "next_if_no_signal": (
-            "Keep pooled ML v1 as shadow benchmark and do not add more complexity from the same holdout."
+            "Keep pooled squared-error ML as the current shadow research leader and do not add more "
+            "complexity from the same historical folds."
         ),
         "production_blocker": (
             "No on-site Nové Hraběcí truth station and no independent prospective confirmation."
@@ -337,11 +402,16 @@ def main():
             {
                 "aggregate_mae_c": overall["metrics"]["ml"]["mae_c"],
                 "deterministic_mae_c": overall["metrics"]["deterministic"]["mae_c"],
-                "aggregate_improvement_vs_deterministic_pct": rounded(aggregate_improvement, 1),
+                "model_balanced_improvement_vs_deterministic_pct": rounded(
+                    model_balanced_improvement, 1
+                ),
                 "strict_guard_pass": strict_pass,
-                "fold_wins": wins,
-                "worst_fold_improvement_pct": rounded(worst, 1),
-                "per_model_temporal_stability": model_stability,
+                "per_model_development_signal": {
+                    name: model_results[name]["development_signal"] for name in MODELS
+                },
+                "successful_folds_by_model": {
+                    name: model_results[name]["successful_folds"] for name in MODELS
+                },
                 "development_signal": development_signal,
                 "confirmatory_valid": False,
             },
