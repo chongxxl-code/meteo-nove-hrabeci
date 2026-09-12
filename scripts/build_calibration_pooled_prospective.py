@@ -14,6 +14,7 @@ from build_calibration_shadow import (
     build_bias_tables,
     correction_for,
     history_cases,
+    hour_block,
     lead_bin,
     live_cases,
     load_jsonl_dir,
@@ -174,6 +175,7 @@ def build_future_cases(snapshot, issued):
                     "target_at_utc": iso_utc(target),
                     "lead_h": round(lead_h, 3),
                     "lead_bin": bucket,
+                    "hour_block": hour_block(target),
                     "forecast": forecast,
                 }
             )
