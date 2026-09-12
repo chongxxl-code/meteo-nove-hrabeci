@@ -6,7 +6,7 @@ import math
 from datetime import datetime, timezone
 from pathlib import Path
 
-from build_calibration_shadow import evaluate, history_cases, live_cases
+from build_calibration_shadow import evaluate, history_cases, live_cases, parse_dt
 from build_calibration_ml_shadow import (
     FEATURE_NAMES,
     MODEL_PARAMS,
@@ -35,7 +35,7 @@ def rounded(value, digits=3):
 def write_error(message):
     OUT.parent.mkdir(parents=True, exist_ok=True)
     payload = {
-        "schema": 1,
+        "schema": 2,
         "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "ok": False,
         "shadow_only": True,
@@ -62,10 +62,22 @@ def fold_ranges(targets):
         end = initial_index + (remaining * (fold + 1)) // FOLDS
         if fold == FOLDS - 1:
             end = len(targets)
-        if start >= end:
-            continue
-        ranges.append((start, end))
+        if start < end:
+            ranges.append((start, end))
     return ranges
+
+
+def truth_available_at(case):
+    observed = parse_dt(case.get("truth_observed_at_utc"))
+    if observed is not None:
+        return observed
+    return parse_dt(case.get("target_at_utc"))
+
+
+def earliest_test_issue(test):
+    issued = [parse_dt(case.get("issued_at_utc")) for case in test]
+    issued = [value for value in issued if value is not None]
+    return min(issued) if issued else None
 
 
 def main():
@@ -102,7 +114,6 @@ def main():
             test_start = targets[start_index]
             test_end_exclusive = targets[end_index] if end_index < len(targets) else None
 
-            train = [case for case in cases if case["target_at_utc"] < test_start]
             if test_end_exclusive is None:
                 test = [case for case in cases if case["target_at_utc"] >= test_start]
             else:
@@ -112,11 +123,37 @@ def main():
                     if test_start <= case["target_at_utc"] < test_end_exclusive
                 ]
 
+            as_of = earliest_test_issue(test)
+            if as_of is None:
+                fold_summaries.append(
+                    {
+                        "fold": fold_number,
+                        "ok": False,
+                        "test_start_utc": test_start,
+                        "test_end_exclusive_utc": test_end_exclusive,
+                        "test_cases": len(test),
+                        "error": "test cases have no usable issuance timestamps",
+                    }
+                )
+                continue
+
+            # Operational leakage guard: a fold may only train on cases whose
+            # verifying observation was already available at the moment the
+            # earliest forecast in this test block was issued. This is stricter
+            # than target-time splitting and prevents a 48–72 h forecast from
+            # learning from observations that occurred after its issuance.
+            train = []
+            for case in cases:
+                available = truth_available_at(case)
+                if available is not None and available <= as_of:
+                    train.append(case)
+
             if len(train) < MIN_TRAIN_CASES or len(test) < MIN_TEST_CASES:
                 fold_summaries.append(
                     {
                         "fold": fold_number,
                         "ok": False,
+                        "as_of_utc": as_of.isoformat().replace("+00:00", "Z"),
                         "test_start_utc": test_start,
                         "test_end_exclusive_utc": test_end_exclusive,
                         "train_cases": len(train),
@@ -143,6 +180,7 @@ def main():
                     {
                         "fold": fold_number,
                         "ok": False,
+                        "as_of_utc": as_of.isoformat().replace("+00:00", "Z"),
                         "test_start_utc": test_start,
                         "test_end_exclusive_utc": test_end_exclusive,
                         "train_cases": len(train),
@@ -187,6 +225,7 @@ def main():
                 {
                     "fold": fold_number,
                     "ok": True,
+                    "as_of_utc": as_of.isoformat().replace("+00:00", "Z"),
                     "train_first_target_utc": train[0]["target_at_utc"],
                     "train_last_target_utc": train[-1]["target_at_utc"],
                     "test_start_utc": test_start,
@@ -235,14 +274,14 @@ def main():
         )
 
         payload = {
-            "schema": 1,
+            "schema": 2,
             "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "ok": True,
             "shadow_only": True,
             "allowed_to_affect_public_forecast": False,
             "allowed_to_affect_alerts": False,
             "production_eligible": False,
-            "purpose": "expanding-window walk-forward test; each fold trains only on earlier target times and tests on the next unseen block",
+            "purpose": "strict as-of-time expanding-window walk-forward test; every fold trains only on truth that was already observable when the earliest forecast in that future block was issued",
             "data": {
                 "history_storage_files": history_storage,
                 "history_cases": len(history),
@@ -257,10 +296,10 @@ def main():
                 "folds_requested": FOLDS,
                 "successful_folds": len(successful),
                 "initial_train_fraction_of_unique_target_times": INITIAL_TRAIN_FRACTION,
-                "window": "expanding training window; contiguous non-overlapping future test blocks",
+                "window": "expanding training window; contiguous non-overlapping future target blocks",
                 "params": MODEL_PARAMS,
                 "feature_coverage_rule": f"keep feature when finite in at least max({MIN_FEATURE_FINITE_N}, {MIN_FEATURE_FINITE_FRACTION:.0%} of training cases)",
-                "leakage_guard": "fold boundaries use target_at_utc; no future target time is present in that fold's training set",
+                "leakage_guard": "for each fold, training truth_observed_at_utc must be <= earliest issued_at_utc in the test block; target time is used only as fallback when truth observation time is absent",
             },
             "aggregate_metrics": aggregate,
             "folds": fold_summaries,
