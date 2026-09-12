@@ -18,6 +18,7 @@ from build_calibration_ml_shadow import finite, improvement_pct
 OUT = CAL / "prospective-summary.json"
 CANDIDATE_ID = "pooled_squared_v1"
 PREDICTION_GLOB = "prospective-pooled-????-??.jsonl"
+CONFIRMATORY_SOURCE_EVENT = "schedule"
 MIN_EARLY_SIGNAL_ROWS = 100
 MIN_EARLY_SIGNAL_ISSUE_TIMES = 5
 MIN_CONFIRMATORY_ROWS = 500
@@ -106,6 +107,13 @@ def load_predictions():
     return rows
 
 
+def confirmatory_eligible(row):
+    return bool(
+        row.get("confirmatory_eligible") is True
+        and row.get("source_event") == CONFIRMATORY_SOURCE_EVENT
+    )
+
+
 def issue_span_days(issue_times):
     parsed = [parse_dt(value) for value in issue_times]
     parsed = [value for value in parsed if value is not None]
@@ -125,7 +133,8 @@ def not_worse_pct(candidate, reference, allowance_pct):
 
 
 def main():
-    predictions = load_predictions()
+    archived_predictions = load_predictions()
+    predictions = [row for row in archived_predictions if confirmatory_eligible(row)]
     truth, truth_times = load_local_dwd_truth(DATA / "observations")
     now = datetime.now(timezone.utc)
     matured = []
@@ -166,9 +175,16 @@ def main():
         if subset:
             by_lead[bucket] = summarize(subset)
 
+    archived_issue_times = sorted(
+        {row.get("issued_at_utc") for row in archived_predictions if row.get("issued_at_utc")}
+    )
     issue_times = sorted({row.get("issued_at_utc") for row in predictions if row.get("issued_at_utc")})
     matured_issue_times = sorted({row.get("issued_at_utc") for row in matured if row.get("issued_at_utc")})
     matured_span_days = issue_span_days(matured_issue_times)
+    archived_event_counts = {}
+    for row in archived_predictions:
+        event = row.get("source_event") or "legacy_or_unknown"
+        archived_event_counts[event] = archived_event_counts.get(event, 0) + 1
 
     early_ready = bool(
         overall["n"] >= MIN_EARLY_SIGNAL_ROWS
@@ -209,7 +225,7 @@ def main():
     )
 
     payload = {
-        "schema": 2,
+        "schema": 3,
         "generated_at_utc": now.isoformat().replace("+00:00", "Z"),
         "ok": True,
         "shadow_only": True,
@@ -221,6 +237,14 @@ def main():
             "prospective timestamped verification of the frozen pooled squared-error candidate; "
             "predictions are persisted before target truth exists"
         ),
+        "sampling_policy": {
+            "confirmatory_source_event": CONFIRMATORY_SOURCE_EVENT,
+            "rule": (
+                "Only automatically scheduled collection runs count toward early/confirmatory metrics. "
+                "Push and manual development runs remain archived smoke-test predictions but are excluded "
+                "to prevent developer-triggered timing from biasing the prospective sample."
+            ),
+        },
         "truth_reference": {
             "station": DWD_STATION_NAME,
             "station_id": DWD_STATION_ID,
@@ -232,15 +256,18 @@ def main():
             ),
         },
         "coverage": {
-            "prediction_rows": len(predictions),
-            "forecast_issue_times": len(issue_times),
+            "archived_prediction_rows": len(archived_predictions),
+            "archived_forecast_issue_times": len(archived_issue_times),
+            "archived_rows_by_source_event": archived_event_counts,
+            "confirmatory_prediction_rows": len(predictions),
+            "confirmatory_forecast_issue_times": len(issue_times),
             "matured_rows": len(matured),
             "matured_issue_times": len(matured_issue_times),
             "matured_issue_span_days": rounded(matured_span_days, 2),
             "pending_rows": pending,
             "truth_unmatched_rows": unmatched,
-            "first_issue_utc": issue_times[0] if issue_times else None,
-            "last_issue_utc": issue_times[-1] if issue_times else None,
+            "first_confirmatory_issue_utc": issue_times[0] if issue_times else None,
+            "last_confirmatory_issue_utc": issue_times[-1] if issue_times else None,
         },
         "prospective_metrics": {
             "overall": overall,
@@ -267,13 +294,14 @@ def main():
                 "all_models_nonnegative_vs_deterministic": per_model_nonnegative,
                 "metrics_pass": confirmatory_metrics_pass,
                 "rule": (
-                    "After >=30 days and adequate coverage, ML must beat deterministic MAE, not worsen RMSE, "
-                    "keep p95 within +2%, abs bias within +0.15 °C, and be non-worse in each NWP source."
+                    "After >=30 days and adequate scheduled-run coverage, ML must beat deterministic MAE, "
+                    "not worsen RMSE, keep p95 within +2%, abs bias within +0.15 °C, and be non-worse "
+                    "in each NWP source."
                 ),
                 "production_eligible": False,
             },
             "next_gate": (
-                "Accumulate untouched future forecast issues for at least 30 days. Even a proxy-confirmatory "
+                "Accumulate untouched scheduled forecast issues for at least 30 days. Even a proxy-confirmatory "
                 "pass remains shadow-only until repeated against an on-site Nové Hraběcí truth station."
             ),
         },
