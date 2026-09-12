@@ -12,6 +12,7 @@ on:
       - 'scripts/build_calibration_shadow.py'
       - 'scripts/build_calibration_ml_shadow.py'
       - 'scripts/build_calibration_ml_walkforward.py'
+      - 'scripts/validate_calibration_strict.py'
       - '.github/workflows/build-calibration.yml'
 
 permissions:
@@ -42,6 +43,8 @@ jobs:
         run: python scripts/build_calibration_ml_shadow.py
       - name: Build ML v1 walk-forward backtest
         run: python scripts/build_calibration_ml_walkforward.py
+      - name: Run strict validation guards
+        run: python scripts/validate_calibration_strict.py
       - name: Commit calibration artifacts
         run: |
           set -e
@@ -53,6 +56,7 @@ jobs:
             python scripts/build_calibration_shadow.py
             python scripts/build_calibration_ml_shadow.py
             python scripts/build_calibration_ml_walkforward.py
+            python scripts/validate_calibration_strict.py
           }
 
           make_commit() {
