@@ -10,6 +10,8 @@ on:
       - 'scripts/calibration_truth.py'
       - 'scripts/backfill_calibration_history.py'
       - 'scripts/build_calibration_shadow.py'
+      - 'scripts/build_calibration_ml_shadow.py'
+      - 'scripts/build_calibration_ml_walkforward.py'
       - '.github/workflows/build-calibration.yml'
 
 permissions:
@@ -22,7 +24,7 @@ concurrency:
 jobs:
   calibration:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,10 +32,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+      - name: Install shadow ML dependency
+        run: pip install --disable-pip-version-check scikit-learn
       - name: Backfill multi-season model history against DWD Sohland
         run: python scripts/backfill_calibration_history.py
-      - name: Build shadow calibration benchmark
+      - name: Build deterministic shadow calibration benchmark
         run: python scripts/build_calibration_shadow.py
+      - name: Build ML v1 shadow calibration benchmark
+        run: python scripts/build_calibration_ml_shadow.py
+      - name: Build ML v1 walk-forward backtest
+        run: python scripts/build_calibration_ml_walkforward.py
       - name: Commit calibration artifacts
         run: |
           set -e
@@ -43,6 +51,8 @@ jobs:
           rebuild_data() {
             python scripts/backfill_calibration_history.py
             python scripts/build_calibration_shadow.py
+            python scripts/build_calibration_ml_shadow.py
+            python scripts/build_calibration_ml_walkforward.py
           }
 
           make_commit() {
