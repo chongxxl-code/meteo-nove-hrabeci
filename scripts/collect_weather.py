@@ -20,9 +20,34 @@ TZ = 'Europe/Prague'
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data'
 ARCHIVE = DATA / 'archive'
-HOURLY = ['temperature_2m', 'precipitation', 'cloud_cover', 'wind_speed_10m', 'wind_gusts_10m']
-CURRENT = ['temperature_2m', 'relative_humidity_2m', 'precipitation', 'cloud_cover', 'pressure_msl', 'wind_speed_10m', 'wind_gusts_10m']
-UA = 'nove-hrabeci-meteo/0.6 (+github-actions)'
+# Preserve a richer common feature set for future local calibration. These
+# fields are descriptive inputs only; no production forecast is corrected here.
+HOURLY = [
+    'temperature_2m',
+    'relative_humidity_2m',
+    'dew_point_2m',
+    'precipitation',
+    'cloud_cover',
+    'pressure_msl',
+    'wind_speed_10m',
+    'wind_direction_10m',
+    'wind_gusts_10m',
+    'cape',
+    'weather_code',
+]
+CURRENT = [
+    'temperature_2m',
+    'relative_humidity_2m',
+    'dew_point_2m',
+    'precipitation',
+    'cloud_cover',
+    'pressure_msl',
+    'wind_speed_10m',
+    'wind_direction_10m',
+    'wind_gusts_10m',
+    'weather_code',
+]
+UA = 'nove-hrabeci-meteo/0.7 (+github-actions)'
 DWD_ROOT = 'https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/hourly'
 DWD_MAX_AGE_HOURS = 12
 
@@ -226,7 +251,16 @@ def main():
             errors.append(f'dwd_observation_{kind}: {exc}')
     if not models:
         raise SystemExit('No forecast model could be collected.')
-    snapshot = {'collected_at_utc': now_utc.isoformat().replace('+00:00', 'Z'), 'collected_at_local': now_local.isoformat(), 'location': {'name': 'Nové Hraběcí', 'latitude': LAT, 'longitude': LON, 'timezone': TZ}, 'current': current, 'observations': observations, 'models': {n: trim_hourly(p) for n, p in models.items()}}
+    snapshot = {
+        'schema': 2,
+        'collected_at_utc': now_utc.isoformat().replace('+00:00', 'Z'),
+        'collected_at_local': now_local.isoformat(),
+        'location': {'name': 'Nové Hraběcí', 'latitude': LAT, 'longitude': LON, 'timezone': TZ},
+        'current': current,
+        'observations': observations,
+        'models': {n: trim_hourly(p) for n, p in models.items()},
+        'calibration_note': 'Richer raw forecast variables are preserved for shadow local calibration; no model correction is applied to production output.',
+    }
     month = ARCHIVE / f'{now_local:%Y-%m}.jsonl'
     with month.open('a', encoding='utf-8') as f:
         f.write(json.dumps(snapshot, ensure_ascii=False, separators=(',', ':')) + '\n')
@@ -245,7 +279,7 @@ def main():
         p = models.get(name)
         vals = ((p or {}).get('hourly') or {}).get('temperature_2m') or []
         model_status[name] = {'ok': bool(p), 'temperature_2m': vals[0] if vals else None}
-    status = {'schema': 3, 'collected_at_utc': snapshot['collected_at_utc'], 'collected_at_local': snapshot['collected_at_local'], 'total_snapshots': prev + 1, 'archive_file': f'data/archive/{month.name}', 'models': model_status, 'current': current, 'observations': observations, 'radar': {'rainviewer_frames': len(frames), 'rainviewer_latest_unix': latest, 'rainviewer_latest_local': datetime.fromtimestamp(latest, timezone.utc).astimezone(ZoneInfo(TZ)).strftime('%d.%m.%Y %H:%M') if latest else None}, 'errors': errors, 'note': 'Forecasts plus fresh official DWD observations when available; stale nearby stations are rejected. ČHMÚ Šluknov rain gauge integration is next.'}
+    status = {'schema': 4, 'collected_at_utc': snapshot['collected_at_utc'], 'collected_at_local': snapshot['collected_at_local'], 'total_snapshots': prev + 1, 'archive_file': f'data/archive/{month.name}', 'models': model_status, 'current': current, 'observations': observations, 'radar': {'rainviewer_frames': len(frames), 'rainviewer_latest_unix': latest, 'rainviewer_latest_local': datetime.fromtimestamp(latest, timezone.utc).astimezone(ZoneInfo(TZ)).strftime('%d.%m.%Y %H:%M') if latest else None}, 'errors': errors, 'note': 'Forecast archive now preserves calibration-ready model variables. Official ČHMÚ and DWD 10-minute observations are collected by dedicated collectors and joined later by timestamp.'}
     status_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'ok': True, 'models': list(models), 'observations': observations, 'archive': str(month), 'errors': errors}, ensure_ascii=False))
 
