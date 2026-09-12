@@ -11,6 +11,11 @@ DWD_STATION_NAME = "Sohland/Spree"
 DWD_DISTANCE_KM = 4.89
 DWD_MATCH_MINUTES = 20
 DWD_ISSUE_MAX_AGE_MINUTES = 30
+# DWD 10-minute observations arrive operationally with a publication delay. Historical
+# archives only carry the observation timestamp, not the time the value became public.
+# A conservative 60-minute availability lag prevents retrospective backtests from using
+# an observation that would not yet have been retrievable when the forecast was issued.
+DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES = 60
 
 
 def parse_utc(value):
@@ -47,12 +52,7 @@ def nearest_truth(target, truth, times, tolerance_minutes=DWD_MATCH_MINUTES):
 
 
 def latest_truth_at_or_before(target, truth, times, max_age_minutes=DWD_ISSUE_MAX_AGE_MINUTES):
-    """Return only an observation that was already available at *target*.
-
-    This differs intentionally from nearest_truth(): the nearest observation may be
-    a future sample. Calibration features representing the situation at forecast
-    issuance must never see such a sample, so this matcher only searches backward.
-    """
+    """Return the latest observation at or before *target*, never a future sample."""
     if not times:
         return None
     index = bisect.bisect_right(times, target) - 1
@@ -66,35 +66,47 @@ def latest_truth_at_or_before(target, truth, times, max_age_minutes=DWD_ISSUE_MA
 
 
 def issue_observation_context(issued_at, truth, times):
-    """Build compact, leakage-safe recent-observation features at issuance time."""
-    current = latest_truth_at_or_before(issued_at, truth, times)
+    """Build recent-observation features using only data plausibly available at issuance.
+
+    Archived DWD rows know when an observation was measured but not exactly when DWD
+    published it. Therefore an observation is treated as usable only if its timestamp is
+    at least DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES older than the forecast issuance.
+    The 1/3/6 h trends are then measured backward from that actually usable observation.
+    """
+    availability_cutoff = issued_at - timedelta(
+        minutes=DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES
+    )
+    current = latest_truth_at_or_before(availability_cutoff, truth, times)
     if current is None:
         return None
-    observed_at, record, age_minutes = current
+    observed_at, record, _ = current
     current_temp = record.get("temperature_c")
     if current_temp is None:
         return None
 
+    actual_age_minutes = (issued_at - observed_at).total_seconds() / 60.0
     context = {
         "station_id": DWD_STATION_ID,
         "station_name": DWD_STATION_NAME,
         "observed_at_utc": observed_at.isoformat().replace("+00:00", "Z"),
-        "age_minutes_at_issue": round(float(age_minutes), 1),
+        "age_minutes_at_issue": round(float(actual_age_minutes), 1),
         "temperature_c": float(current_temp),
         "relative_humidity_pct": record.get("relative_humidity_pct"),
-        "leakage_guard": "current observation timestamp <= forecast issued_at_utc",
+        "operational_availability_lag_minutes_assumed": DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES,
+        "availability_cutoff_utc": availability_cutoff.isoformat().replace("+00:00", "Z"),
+        "leakage_guard": (
+            "observation timestamp <= forecast issued_at_utc minus assumed DWD publication lag"
+        ),
     }
 
     for hours in (1, 3, 6):
-        target = issued_at - timedelta(hours=hours)
+        target = observed_at - timedelta(hours=hours)
         matched = nearest_truth(target, truth, times)
         lag_temp = None
         lag_stamp = None
         if matched is not None:
             stamp, lag_record, _ = matched
-            # The entire lag-search window is in the past, but retain an explicit
-            # guard in case the lag definition changes later.
-            if stamp <= issued_at and lag_record.get("temperature_c") is not None:
+            if stamp <= observed_at and lag_record.get("temperature_c") is not None:
                 lag_stamp = stamp
                 lag_temp = float(lag_record["temperature_c"])
         context[f"temperature_{hours}h_ago_c"] = lag_temp
