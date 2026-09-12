@@ -16,6 +16,7 @@ DWD_ISSUE_MAX_AGE_MINUTES = 30
 # A conservative 60-minute availability lag prevents retrospective backtests from using
 # an observation that would not yet have been retrievable when the forecast was issued.
 DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES = 60
+DWD_ISSUE_CONTEXT_POLICY_VERSION = "dwd_publication_lag_60m_v1"
 
 
 def parse_utc(value):
@@ -93,6 +94,7 @@ def issue_observation_context(issued_at, truth, times):
         "temperature_c": float(current_temp),
         "relative_humidity_pct": record.get("relative_humidity_pct"),
         "operational_availability_lag_minutes_assumed": DWD_OPERATIONAL_AVAILABILITY_LAG_MINUTES,
+        "issue_context_policy_version": DWD_ISSUE_CONTEXT_POLICY_VERSION,
         "availability_cutoff_utc": availability_cutoff.isoformat().replace("+00:00", "Z"),
         "leakage_guard": (
             "observation timestamp <= forecast issued_at_utc minus assumed DWD publication lag"
