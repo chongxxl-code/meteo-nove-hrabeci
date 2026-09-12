@@ -1,6 +1,6 @@
 {
-  "schema": 2,
-  "generated_at_utc": "2026-09-12T19:59:46.199860Z",
+  "schema": 3,
+  "generated_at_utc": "2026-09-12T20:06:19.927074Z",
   "ok": true,
   "shadow_only": true,
   "allowed_to_affect_public_forecast": false,
@@ -8,6 +8,10 @@
   "production_eligible": false,
   "candidate": "pooled_squared_v1",
   "purpose": "prospective timestamped verification of the frozen pooled squared-error candidate; predictions are persisted before target truth exists",
+  "sampling_policy": {
+    "confirmatory_source_event": "schedule",
+    "rule": "Only automatically scheduled collection runs count toward early/confirmatory metrics. Push and manual development runs remain archived smoke-test predictions but are excluded to prevent developer-triggered timing from biasing the prospective sample."
+  },
   "truth_reference": {
     "station": "Sohland/Spree",
     "station_id": "06129",
@@ -16,15 +20,21 @@
     "warning": "This is independent prospective evidence only against the Sohland proxy; it cannot authorize Nové Hraběcí production use."
   },
   "coverage": {
-    "prediction_rows": 36,
-    "forecast_issue_times": 2,
+    "archived_prediction_rows": 56,
+    "archived_forecast_issue_times": 3,
+    "archived_rows_by_source_event": {
+      "legacy_or_unknown": 18,
+      "push": 38
+    },
+    "confirmatory_prediction_rows": 0,
+    "confirmatory_forecast_issue_times": 0,
     "matured_rows": 0,
     "matured_issue_times": 0,
     "matured_issue_span_days": 0.0,
-    "pending_rows": 36,
+    "pending_rows": 0,
     "truth_unmatched_rows": 0,
-    "first_issue_utc": "2026-09-12T19:51:38.259086Z",
-    "last_issue_utc": "2026-09-12T19:56:44.583995Z"
+    "first_confirmatory_issue_utc": null,
+    "last_confirmatory_issue_utc": null
   },
   "prospective_metrics": {
     "overall": {
@@ -75,9 +85,9 @@
       "all_models_covered": false,
       "all_models_nonnegative_vs_deterministic": false,
       "metrics_pass": false,
-      "rule": "After >=30 days and adequate coverage, ML must beat deterministic MAE, not worsen RMSE, keep p95 within +2%, abs bias within +0.15 °C, and be non-worse in each NWP source.",
+      "rule": "After >=30 days and adequate scheduled-run coverage, ML must beat deterministic MAE, not worsen RMSE, keep p95 within +2%, abs bias within +0.15 °C, and be non-worse in each NWP source.",
       "production_eligible": false
     },
-    "next_gate": "Accumulate untouched future forecast issues for at least 30 days. Even a proxy-confirmatory pass remains shadow-only until repeated against an on-site Nové Hraběcí truth station."
+    "next_gate": "Accumulate untouched scheduled forecast issues for at least 30 days. Even a proxy-confirmatory pass remains shadow-only until repeated against an on-site Nové Hraběcí truth station."
   }
 }
