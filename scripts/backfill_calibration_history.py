@@ -19,6 +19,7 @@ from calibration_truth import (
     DWD_MATCH_MINUTES,
     DWD_STATION_ID,
     DWD_STATION_NAME,
+    issue_observation_context,
     nearest_truth,
     truth_metadata,
 )
@@ -30,7 +31,7 @@ STATUS = OUT_DIR / "backfill-status.json"
 
 LAT = 51.0162
 LON = 14.4398
-UA = "nove-hrabeci-calibration/0.3 (+github-actions)"
+UA = "nove-hrabeci-calibration/0.4 (+github-actions)"
 HISTORY_DAYS = 540
 QUERY_CHUNK_DAYS = 90
 DWD_RECENT = (
@@ -221,8 +222,9 @@ def model_rows(model_key, model_id, truth, truth_times, now, start_date, end_dat
                 "wind_direction_10m_deg": feature_value(hourly, "wind_direction_10m", day, index),
             }
             issued = target - timedelta(days=day)
+            observed_context = issue_observation_context(issued, truth, truth_times)
             row = {
-                "schema": 2,
+                "schema": 3,
                 "source": "open_meteo_previous_runs",
                 "model": model_key,
                 "model_id": model_id,
@@ -230,6 +232,7 @@ def model_rows(model_key, model_id, truth, truth_times, now, start_date, end_dat
                 "target_at_utc": target.isoformat().replace("+00:00", "Z"),
                 "lead_h": day * 24,
                 "forecast": forecast,
+                "observed_context_at_issue": observed_context,
                 "truth": truth_metadata(observed_at, obs, match_delta),
                 "error_c": round(forecast_temp - float(obs["temperature_c"]), 3),
                 "terrain_nh_ref": {
@@ -343,9 +346,10 @@ def main():
         unique[key] = row
     rows = sorted(unique.values(), key=lambda r: (r["target_at_utc"], r["model"], r["lead_h"]))
     manifest = write_monthly_shards(rows)
+    context_rows = sum(1 for row in rows if row.get("observed_context_at_issue"))
 
     status = {
-        "schema": 2,
+        "schema": 3,
         "generated_at_utc": now.isoformat().replace("+00:00", "Z"),
         "purpose": "shadow calibration only; never changes public forecast or alert ranks",
         "history_window_days_requested": HISTORY_DAYS,
@@ -358,6 +362,17 @@ def main():
             "is_nove_hrabeci_truth": False,
             "matching_policy": f"canonical nearest UTC Sohland observation within ±{DWD_MATCH_MINUTES} minutes; no CHMI fallback",
             "warning": "This is a nearby proxy target until an on-site NH station is available.",
+        },
+        "issue_observation_context": {
+            "source": "DWD Sohland/Spree 10-minute",
+            "rows_with_context": context_rows,
+            "coverage_pct": round(context_rows / len(rows) * 100.0, 1),
+            "features": [
+                "latest temperature and relative humidity known at issuance",
+                "temperature 1 h / 3 h / 6 h before issuance",
+                "temperature change over 1 h / 3 h / 6 h",
+            ],
+            "leakage_rule": "current observation timestamp must be <= forecast issued_at_utc; lag observations are also constrained to times already in the past",
         },
         "dwd_sources": dwd_sources,
         "truth_available_from_utc": earliest_truth.isoformat().replace("+00:00", "Z"),
@@ -379,6 +394,8 @@ def main():
     STATUS.write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
         "rows": status["rows"],
+        "rows_with_issue_context": context_rows,
+        "issue_context_coverage_pct": status["issue_observation_context"]["coverage_pct"],
         "first_target_utc": status["first_target_utc"],
         "last_target_utc": status["last_target_utc"],
         "shards": len(manifest),
