@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import gzip
 import json
 import math
 from collections import defaultdict
@@ -20,7 +21,7 @@ from calibration_truth import (
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 CAL = DATA / "calibration"
-HISTORY = CAL / "history-v0.jsonl"
+LEGACY_HISTORY = CAL / "history-v0.jsonl"
 OUT = CAL / "shadow-summary.json"
 TZ = ZoneInfo("Europe/Prague")
 
@@ -78,6 +79,24 @@ def load_jsonl_dir(folder, pattern):
     for path in sorted(folder.glob(pattern)):
         rows.extend(load_jsonl(path))
     return rows
+
+
+def load_history_rows():
+    rows = []
+    shards = sorted(CAL.glob("history-????-??.jsonl.gz"))
+    if shards:
+        for path in shards:
+            try:
+                with gzip.open(path, "rt", encoding="utf-8") as handle:
+                    for line in handle:
+                        try:
+                            rows.append(json.loads(line))
+                        except Exception:
+                            pass
+            except Exception:
+                continue
+        return rows, [path.name for path in shards]
+    return load_jsonl(LEGACY_HISTORY), ([LEGACY_HISTORY.name] if LEGACY_HISTORY.exists() else [])
 
 
 def lead_bin(hours):
@@ -164,9 +183,10 @@ def live_cases():
     return cases
 
 
-def history_cases():
+def history_cases(return_storage=False):
     cases = []
-    for row in load_jsonl(HISTORY):
+    rows, storage = load_history_rows()
+    for row in rows:
         target = parse_dt(row.get("target_at_utc"))
         forecast = row.get("forecast") or {}
         truth = row.get("truth") or {}
@@ -194,6 +214,8 @@ def history_cases():
             "is_nove_hrabeci_truth": False,
             "error_c": float(temp) - float(observed),
         })
+    if return_storage:
+        return cases, storage
     return cases
 
 
@@ -305,7 +327,7 @@ def evaluate(train, test):
 
 def main():
     CAL.mkdir(parents=True, exist_ok=True)
-    history = history_cases()
+    history, history_storage = history_cases(return_storage=True)
     live = live_cases()
     cases = history + live
     if not cases:
@@ -326,7 +348,7 @@ def main():
 
     useful = overall["n"] >= 200 and overall["mae_improvement_pct"] is not None
     summary = {
-        "schema": 1,
+        "schema": 2,
         "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "ok": True,
         "shadow_only": True,
@@ -356,6 +378,7 @@ def main():
         },
         "coverage": {
             "history_backfill_cases": len(history),
+            "history_storage_files": history_storage,
             "live_archive_cases": len(live),
             "all_cases": len(cases),
             "train_cases": len(train),
@@ -372,7 +395,7 @@ def main():
         "readiness": {
             "enough_cases_for_useful_shadow_benchmark": useful,
             "production_eligible": False,
-            "next_gate": "On-site NH station becomes truth target; then compare this deterministic bias baseline with a small ML model on a later chronological holdout.",
+            "next_gate": "Compare deterministic bias baseline with ML v1 on the same later chronological holdout; on-site NH station is still required before production use.",
         },
         "recent_shadow_examples": [
             {
