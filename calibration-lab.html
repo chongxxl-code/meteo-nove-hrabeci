@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kalibrační laboratoř · Nové Hraběcí</title>
+<meta name="theme-color" content="#071117">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark;--bg:#071117;--p:#0d2028;--p2:#09171d;--line:#1f3a44;--tx:#edf8fb;--mu:#94adb7;--a:#65d8cf;--b:#76b7ff;--w:#ffc36b;--g:#70e2a1;--r:#ff6f66}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#12303b,#071117 42%,#050b0f);font:15px Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--tx)}main{max-width:1240px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.eye{color:var(--a);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:800}h1{font-size:clamp(34px,6vw,54px);line-height:1;margin:7px 0}.sub,.muted{color:var(--mu)}.back{display:inline-flex;align-items:center;text-decoration:none;border:1px solid var(--line);background:#0a1a21;color:var(--mu);border-radius:11px;padding:9px 12px;font-weight:800;font-size:12px}.back:hover{border-color:var(--a);color:var(--tx)}.status{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.badge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;background:var(--p2);color:var(--mu)}.badge.good{border-color:#2b6d50;color:var(--g)}.badge.warn{border-color:#6f5b2c;color:var(--w)}.badge.bad{border-color:#693734;color:var(--r)}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:18px}.card{background:linear-gradient(180deg,rgba(16,38,48,.95),rgba(8,23,30,.97));border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}.full{grid-column:span 12}.half{grid-column:span 6}.label{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.14em;font-weight:800}.sect{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.sect h2{font-size:18px;margin:0}.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.kpi,.stat{background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:12px}.kpi b,.stat b{display:block;font-size:24px;line-height:1.15}.kpi span,.stat span{display:block;font-size:11px;color:var(--mu);margin-top:5px;line-height:1.35}.kpi.good b{color:var(--g)}.kpi.blue b{color:var(--b)}.kpi.warn b{color:var(--w)}.gate{display:grid;grid-template-columns:1.6fr 1fr;gap:12px}.gatebox{background:var(--p2);border:1px solid var(--line);border-radius:14px;padding:15px}.gatebig{font-size:24px;font-weight:900;margin:4px 0 8px}.gatebig.good{color:var(--g)}.gatebig.warn{color:var(--w)}.note{font-size:12px;color:var(--mu);line-height:1.55}.foldgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.fold{background:var(--p2);border:1px solid var(--line);border-radius:13px;padding:12px}.fold.win{border-color:#265a45}.fold.lose{border-color:#693734}.foldhead{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:900}.foldpct{color:var(--g)}.fold.lose .foldpct{color:var(--r)}.foldperiod{font-size:11px;color:var(--mu);margin:7px 0 10px;line-height:1.4}.mini{display:grid;grid-template-columns:auto 1fr auto;gap:6px;align-items:center;font-size:11px;margin-top:6px}.track{height:6px;background:#051016;border:1px solid var(--line);border-radius:999px;overflow:hidden}.track i{display:block;height:100%;background:var(--a)}.track.det i{background:var(--b)}.track.raw i{background:var(--mu)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px 8px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}thead th{color:var(--mu);font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-top:0}.positive{color:var(--g);font-weight:900}.negative{color:var(--r);font-weight:900}.small{font-size:11px;color:var(--mu)}.tablewrap{overflow-x:auto}.features{display:flex;flex-wrap:wrap;gap:6px}.chip{background:var(--p2);border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:11px;color:var(--mu)}.chip.on{color:var(--tx);border-color:#2c5962}.chip.off{color:#c89087;text-decoration:line-through}.loading{padding:24px;text-align:center;color:var(--mu)}.error{border-color:#693734;color:#ffd5d1}.foot{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:16px;color:var(--mu);font-size:11px}.foot a{color:var(--a);text-decoration:none;font-weight:800}@media(max-width:900px){.half{grid-column:span 12}.kpis{grid-template-columns:repeat(2,1fr)}.foldgrid{grid-template-columns:1fr 1fr}.gate{grid-template-columns:1fr}}@media(max-width:520px){main{padding:12px}.card{padding:14px}.top{flex-direction:column}.status{justify-content:flex-start}.kpis,.foldgrid{grid-template-columns:1fr}.kpi b{font-size:22px}}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+  <div><div class="eye">interní diagnostika · shadow only</div><h1>KALIBRAČNÍ LABORATOŘ</h1><div class="sub">Nové Hraběcí · RAW modely → bias benchmark → ML v1 → walk-forward ověření</div></div>
+  <div class="status"><a class="back" href="./index.html">← hlavní observatoř</a><span class="badge" id="liveBadge">načítám</span></div>
+</header>
+<div class="grid">
+  <section class="card full">
+    <div class="sect"><h2>Výsledek walk-forward testu</h2><span class="muted" id="updated">—</span></div>
+    <div class="kpis" id="heroKpis"><div class="loading">Načítám živá kalibrační data…</div></div>
+  </section>
+
+  <section class="card full">
+    <div class="gate">
+      <div class="gatebox"><div class="label">Stabilita v čase</div><div class="gatebig" id="gateTitle">—</div><div class="note" id="gateText">Načítám pět nezávislých budoucích bloků…</div></div>
+      <div class="gatebox"><div class="label">Produkční stav</div><div class="gatebig warn">SHADOW ONLY</div><div class="note" id="prodText">Kalibrace nesmí měnit veřejnou předpověď ani výstrahy.</div></div>
+    </div>
+  </section>
+
+  <section class="card full">
+    <div class="sect"><h2>5× walk-forward</h2><span class="muted">každý blok se učí jen z dřívější reality</span></div>
+    <div class="foldgrid" id="folds"><div class="loading">Načítám foldy…</div></div>
+  </section>
+
+  <section class="card half">
+    <div class="sect"><h2>Modely</h2><span class="muted">jeden chronologický holdout</span></div>
+    <div class="tablewrap"><table><thead><tr><th>model</th><th>RAW MAE</th><th>bias MAE</th><th>ML MAE</th><th>ML vs bias</th></tr></thead><tbody id="models"></tbody></table></div>
+  </section>
+
+  <section class="card half">
+    <div class="sect"><h2>Horizont předpovědi</h2><span class="muted">lead-time</span></div>
+    <div class="tablewrap"><table><thead><tr><th>horizont</th><th>RAW</th><th>bias</th><th>ML</th><th>ML vs bias</th></tr></thead><tbody id="leads"></tbody></table></div>
+  </section>
+
+  <section class="card full">
+    <div class="sect"><h2>Co ML skutečně používá</h2><span class="muted">feature coverage z aktuálního tréninku</span></div>
+    <div class="features" id="features"></div>
+    <div class="note" style="margin-top:10px">Proměnné bez dostatečného historického pokrytí se automaticky vyřazují. Jakmile se nový archiv naplní, mohou se do budoucích experimentů vrátit.</div>
+  </section>
+
+  <section class="card full">
+    <div class="sect"><h2>Poslední ověřené příklady</h2><span class="muted">RAW → jednoduchá korekce → ML</span></div>
+    <div class="tablewrap"><table><thead><tr><th>model / cíl</th><th>skutečnost</th><th>RAW</th><th>bias</th><th>ML</th><th>|chyba ML|</th></tr></thead><tbody id="examples"></tbody></table></div>
+  </section>
+
+  <section class="card full">
+    <div class="sect"><h2>Metodická pojistka</h2><span class="muted">proč tomu zatím neříkáme produkční AI</span></div>
+    <div class="kpis" style="grid-template-columns:repeat(4,1fr)" id="methodKpis"></div>
+    <p class="note" id="truthNote">—</p>
+  </section>
+</div>
+<div class="foot"><span>Kalibrační laboratoř není součást veřejného forecastového rozhodování.</span><a href="./validation.html">časová řada / ověřování →</a></div>
+</main>
+<script>
+(() => {
+  const LIVE='https://raw.githubusercontent.com/chongxxl-code/meteo-nove-hrabeci/main/';
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const num=(v,d=3)=>Number.isFinite(Number(v))?Number(v).toFixed(d):'—';
+  const pct=v=>Number.isFinite(Number(v))?`${Number(v).toFixed(1)} %`:'—';
+  const mae=v=>Number.isFinite(Number(v))?`${Number(v).toFixed(3)} °C`:'—';
+  const dt=v=>{if(!v)return'—';try{return new Intl.DateTimeFormat('cs-CZ',{timeZone:'Europe/Prague',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(v))}catch{return String(v)}};
+  const shortDate=v=>{if(!v)return'—';try{return new Intl.DateTimeFormat('cs-CZ',{timeZone:'Europe/Prague',day:'2-digit',month:'2-digit',year:'2-digit'}).format(new Date(v))}catch{return String(v)}};
+  const modelName=k=>({dwd:'ICON-D2',chmi:'ALADIN',ec:'ECMWF'}[k]||k);
+
+  async function liveJson(path){
+    const ts=Date.now();
+    try{const r=await fetch(`${LIVE}${path}?ts=${ts}`,{cache:'no-store',mode:'cors'});if(!r.ok)throw new Error(`HTTP ${r.status}`);return await r.json()}
+    catch(e){const r=await fetch(`./${path}?ts=${ts}`,{cache:'no-store'});if(!r.ok)throw e;return await r.json()}
+  }
+
+  function metricRow(label,m){
+    const imp=Number(m?.ml_improvement_vs_deterministic_pct);
+    return `<tr><td><b>${esc(label)}</b><div class="small">n=${esc(m?.n??'—')}</div></td><td>${mae(m?.raw_mae_c)}</td><td>${mae(m?.deterministic_mae_c)}</td><td><b>${mae(m?.ml_mae_c)}</b></td><td class="${imp>=0?'positive':'negative'}">${pct(imp)}</td></tr>`;
+  }
+
+  function barWidth(v,max){return Math.max(4,Math.min(100,Number(v||0)/max*100))}
+
+  async function render(){
+    try{
+      const [wf,ml]=await Promise.all([
+        liveJson('data/calibration/ml-v1-walkforward.json'),
+        liveJson('data/calibration/ml-v1-shadow.json')
+      ]);
+      if(!wf.ok||!ml.ok)throw new Error(wf.error||ml.error||'Kalibrační výstup není OK');
+
+      const a=wf.aggregate_metrics||{};
+      const gate=wf.gate||{};
+      $('liveBadge').className=`badge ${gate.stable_walk_forward_win?'good':'warn'}`;
+      $('liveBadge').textContent=gate.stable_walk_forward_win?'stabilní shadow výhra':'shadow test';
+      $('updated').textContent=`aktualizováno ${dt(wf.generated_at_utc)}`;
+      $('heroKpis').innerHTML=`
+        <div class="kpi"><b>${mae(a.raw_mae_c)}</b><span>RAW MAE · původní modely</span></div>
+        <div class="kpi blue"><b>${mae(a.deterministic_mae_c)}</b><span>jednoduchá bias korekce</span></div>
+        <div class="kpi good"><b>${mae(a.ml_mae_c)}</b><span>ML v1 · walk-forward MAE</span></div>
+        <div class="kpi good"><b>${pct(a.ml_improvement_vs_deterministic_pct)}</b><span>ML zlepšení proti bias benchmarku</span></div>
+        <div class="kpi"><b>${Number(a.n||0).toLocaleString('cs-CZ')}</b><span>případů ve walk-forward testech</span></div>`;
+
+      $('gateTitle').className=`gatebig ${gate.stable_walk_forward_win?'good':'warn'}`;
+      $('gateTitle').textContent=gate.stable_walk_forward_win?`${gate.fold_wins}/${(wf.method?.successful_folds||5)} FOLDŮ VYHRÁNO`:'STABILITA NEPOTVRZENA';
+      $('gateText').textContent=`Požadavek: min. ${gate.required_fold_wins} výhry, agregované zlepšení ≥3 %, žádný fold horší o 5 % nebo více. Aktuálně nejhorší fold: ${pct(gate.worst_fold_improvement_vs_deterministic_pct)}, agregovaně: ${pct(gate.aggregate_improvement_vs_deterministic_pct)}.`;
+      $('prodText').textContent=gate.production_blocker||'Bez místní truth stanice zůstává vše pouze ve shadow režimu.';
+
+      const folds=wf.folds||[];
+      const maxMae=Math.max(3,...folds.flatMap(f=>[f.metrics?.raw_mae_c||0,f.metrics?.deterministic_mae_c||0,f.metrics?.ml_mae_c||0]));
+      $('folds').innerHTML=folds.map(f=>{
+        const m=f.metrics||{},win=!!f.ml_beats_deterministic;
+        return `<div class="fold ${win?'win':'lose'}"><div class="foldhead"><span>Fold ${esc(f.fold)}</span><span class="foldpct">${pct(f.ml_improvement_vs_deterministic_pct)}</span></div><div class="foldperiod">${shortDate(f.test_start_utc)} → ${shortDate(f.test_last_target_utc)}<br>train ${Number(f.train_cases||0).toLocaleString('cs-CZ')} · test ${Number(f.test_cases||0).toLocaleString('cs-CZ')}</div><div class="mini"><span>RAW</span><div class="track raw"><i style="width:${barWidth(m.raw_mae_c,maxMae)}%"></i></div><b>${num(m.raw_mae_c)}</b></div><div class="mini"><span>BIAS</span><div class="track det"><i style="width:${barWidth(m.deterministic_mae_c,maxMae)}%"></i></div><b>${num(m.deterministic_mae_c)}</b></div><div class="mini"><span>ML</span><div class="track"><i style="width:${barWidth(m.ml_mae_c,maxMae)}%"></i></div><b>${num(m.ml_mae_c)}</b></div></div>`;
+      }).join('');
+
+      const byModel=ml.metrics?.by_model||{};
+      $('models').innerHTML=['dwd','chmi','ec'].filter(k=>byModel[k]).map(k=>metricRow(modelName(k),byModel[k])).join('');
+      const leads=ml.metrics?.by_lead_bin||{};
+      $('leads').innerHTML=['0–6 h','6–12 h','12–24 h','24–48 h','48–72 h'].filter(k=>leads[k]).map(k=>metricRow(k,leads[k])).join('');
+
+      const used=ml.model?.features_used||[], dropped=ml.model?.features_dropped_for_training_coverage||[];
+      $('features').innerHTML=used.map(x=>`<span class="chip on">${esc(x)}</span>`).join('')+dropped.map(x=>`<span class="chip off" title="finite train n=${esc(x.finite_train_n)}">${esc(x.feature)}</span>`).join('');
+
+      $('examples').innerHTML=(ml.recent_shadow_examples||[]).slice(0,8).map(x=>`<tr><td><b>${esc(modelName(x.model))}</b><div class="small">${dt(x.target_at_utc)} · +${num(x.lead_h,0)} h</div></td><td>${num(x.observed_temperature_c,1)} °C</td><td>${num(x.raw_temperature_c,1)} °C</td><td>${num(x.deterministic_temperature_c,1)} °C</td><td><b>${num(x.ml_temperature_c,1)} °C</b></td><td>${num(Math.abs(Number(x.ml_error_c)),2)} °C</td></tr>`).join('');
+
+      const d=wf.data||{}, method=wf.method||{};
+      $('methodKpis').innerHTML=`<div class="stat"><b>${Number(d.all_cases||0).toLocaleString('cs-CZ')}</b><span>všech kalibračních případů</span></div><div class="stat"><b>${shortDate(d.first_target_utc)}</b><span>začátek historie</span></div><div class="stat"><b>${method.successful_folds||0}/${method.folds_requested||0}</b><span>úspěšných walk-forward foldů</span></div><div class="stat"><b>0×</b><span>povolených zásahů do produkce</span></div>`;
+      $('truthNote').innerHTML=`Truth reference je zatím <b>Sohland/Spree</b> (proxy přibližně 4,89 km od NH), nikoli stanice přímo v Novém Hraběcí. Proto i dobrý backtest zůstává pouze experimentální. Leakage guard navíc hlídá, že každý fold smí použít jen měření, která už byla známa v okamžiku vydání testovaných forecastů.`;
+    }catch(e){
+      $('liveBadge').className='badge bad';$('liveBadge').textContent='data nedostupná';
+      $('heroKpis').innerHTML=`<div class="loading error">Kalibrační data se nepodařilo načíst: ${esc(e.message||e)}</div>`;
+    }
+  }
+  render();
+  setInterval(render,60000);
+  window.addEventListener('focus',render);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)render()});
+})();
+</script>
+</body>
+</html>
