@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at_utc": "2026-09-12T16:45:10.250769Z",
+  "generated_at_utc": "2026-09-12T17:28:09.101014Z",
   "ok": true,
   "shadow_only": true,
   "allowed_to_affect_public_forecast": false,
@@ -15,7 +15,7 @@
   },
   "evaluation": {
     "split": "same chronological target-time split as deterministic shadow benchmark; no random shuffle",
-    "cutoff_target_utc": "2026-05-01T01:00:00Z",
+    "cutoff_target_utc": "2026-05-01T02:00:00Z",
     "history_storage_files": [
       "history-2025-03.jsonl.gz",
       "history-2025-04.jsonl.gz",
@@ -37,14 +37,14 @@
       "history-2026-08.jsonl.gz",
       "history-2026-09.jsonl.gz"
     ],
-    "history_cases": 40496,
+    "history_cases": 40502,
     "live_archive_cases": 18101,
-    "train_cases": 23718,
-    "test_cases": 34879,
+    "train_cases": 23722,
+    "test_cases": 34881,
     "train_first_target_utc": "2025-03-21T00:00:00Z",
-    "train_last_target_utc": "2026-05-01T00:00:00Z",
-    "test_first_target_utc": "2026-05-01T01:00:00Z",
-    "test_last_target_utc": "2026-09-12T16:00:00Z"
+    "train_last_target_utc": "2026-05-01T01:00:00Z",
+    "test_first_target_utc": "2026-05-01T02:00:00Z",
+    "test_last_target_utc": "2026-09-12T17:00:00Z"
   },
   "model": {
     "algorithm": "sklearn HistGradientBoostingRegressor",
@@ -100,53 +100,53 @@
   },
   "metrics": {
     "overall": {
-      "n": 34879,
-      "raw_mae_c": 2.13,
-      "deterministic_mae_c": 2.032,
-      "ml_mae_c": 1.699,
-      "raw_bias_c": 1.061,
-      "deterministic_bias_c": 0.962,
-      "ml_bias_c": 0.93,
+      "n": 34881,
+      "raw_mae_c": 2.129,
+      "deterministic_mae_c": 2.031,
+      "ml_mae_c": 1.708,
+      "raw_bias_c": 1.06,
+      "deterministic_bias_c": 0.96,
+      "ml_bias_c": 0.945,
       "deterministic_improvement_vs_raw_pct": 4.6,
-      "ml_improvement_vs_raw_pct": 20.2,
-      "ml_improvement_vs_deterministic_pct": 16.4
+      "ml_improvement_vs_raw_pct": 19.8,
+      "ml_improvement_vs_deterministic_pct": 15.9
     },
     "by_model": {
       "chmi": {
-        "n": 9919,
+        "n": 9921,
         "raw_mae_c": 2.295,
-        "deterministic_mae_c": 2.284,
+        "deterministic_mae_c": 2.283,
         "ml_mae_c": 1.984,
         "raw_bias_c": 1.173,
-        "deterministic_bias_c": 1.041,
-        "ml_bias_c": 1.381,
+        "deterministic_bias_c": 1.04,
+        "ml_bias_c": 1.4,
         "deterministic_improvement_vs_raw_pct": 0.5,
-        "ml_improvement_vs_raw_pct": 13.6,
+        "ml_improvement_vs_raw_pct": 13.5,
         "ml_improvement_vs_deterministic_pct": 13.1
       },
       "dwd": {
         "n": 9148,
         "raw_mae_c": 1.911,
         "deterministic_mae_c": 1.73,
-        "ml_mae_c": 1.317,
+        "ml_mae_c": 1.323,
         "raw_bias_c": 1.205,
-        "deterministic_bias_c": 0.525,
-        "ml_bias_c": 0.495,
+        "deterministic_bias_c": 0.524,
+        "ml_bias_c": 0.527,
         "deterministic_improvement_vs_raw_pct": 9.5,
-        "ml_improvement_vs_raw_pct": 31.1,
-        "ml_improvement_vs_deterministic_pct": 23.9
+        "ml_improvement_vs_raw_pct": 30.8,
+        "ml_improvement_vs_deterministic_pct": 23.5
       },
       "ec": {
         "n": 15812,
         "raw_mae_c": 2.152,
-        "deterministic_mae_c": 2.049,
-        "ml_mae_c": 1.742,
-        "raw_bias_c": 0.906,
-        "deterministic_bias_c": 1.165,
-        "ml_bias_c": 0.898,
+        "deterministic_mae_c": 2.047,
+        "ml_mae_c": 1.758,
+        "raw_bias_c": 0.905,
+        "deterministic_bias_c": 1.162,
+        "ml_bias_c": 0.901,
         "deterministic_improvement_vs_raw_pct": 4.8,
-        "ml_improvement_vs_raw_pct": 19.1,
-        "ml_improvement_vs_deterministic_pct": 15.0
+        "ml_improvement_vs_raw_pct": 18.3,
+        "ml_improvement_vs_deterministic_pct": 14.1
       }
     },
     "by_lead_bin": {
@@ -154,108 +154,108 @@
         "n": 2427,
         "raw_mae_c": 2.097,
         "deterministic_mae_c": 2.096,
-        "ml_mae_c": 1.718,
+        "ml_mae_c": 1.736,
         "raw_bias_c": 1.348,
-        "deterministic_bias_c": 1.159,
-        "ml_bias_c": 1.341,
+        "deterministic_bias_c": 1.158,
+        "ml_bias_c": 1.374,
         "deterministic_improvement_vs_raw_pct": 0.0,
-        "ml_improvement_vs_raw_pct": 18.0,
-        "ml_improvement_vs_deterministic_pct": 18.0
+        "ml_improvement_vs_raw_pct": 17.2,
+        "ml_improvement_vs_deterministic_pct": 17.2
       },
       "6–12 h": {
         "n": 2388,
         "raw_mae_c": 2.041,
-        "deterministic_mae_c": 2.05,
-        "ml_mae_c": 1.689,
+        "deterministic_mae_c": 2.049,
+        "ml_mae_c": 1.691,
         "raw_bias_c": 1.165,
-        "deterministic_bias_c": 0.975,
-        "ml_bias_c": 1.269,
+        "deterministic_bias_c": 0.974,
+        "ml_bias_c": 1.293,
         "deterministic_improvement_vs_raw_pct": -0.4,
-        "ml_improvement_vs_raw_pct": 17.3,
-        "ml_improvement_vs_deterministic_pct": 17.6
+        "ml_improvement_vs_raw_pct": 17.2,
+        "ml_improvement_vs_deterministic_pct": 17.5
       },
       "12–24 h": {
-        "n": 13108,
-        "raw_mae_c": 2.073,
-        "deterministic_mae_c": 1.915,
-        "ml_mae_c": 1.557,
-        "raw_bias_c": 1.029,
-        "deterministic_bias_c": 0.847,
-        "ml_bias_c": 0.749,
+        "n": 13109,
+        "raw_mae_c": 2.072,
+        "deterministic_mae_c": 1.914,
+        "ml_mae_c": 1.568,
+        "raw_bias_c": 1.028,
+        "deterministic_bias_c": 0.845,
+        "ml_bias_c": 0.761,
         "deterministic_improvement_vs_raw_pct": 7.6,
-        "ml_improvement_vs_raw_pct": 24.9,
-        "ml_improvement_vs_deterministic_pct": 18.7
+        "ml_improvement_vs_raw_pct": 24.3,
+        "ml_improvement_vs_deterministic_pct": 18.1
       },
       "24–48 h": {
-        "n": 13724,
+        "n": 13725,
         "raw_mae_c": 2.157,
-        "deterministic_mae_c": 2.087,
-        "ml_mae_c": 1.812,
+        "deterministic_mae_c": 2.086,
+        "ml_mae_c": 1.818,
         "raw_bias_c": 1.104,
-        "deterministic_bias_c": 1.037,
-        "ml_bias_c": 1.097,
+        "deterministic_bias_c": 1.036,
+        "ml_bias_c": 1.115,
         "deterministic_improvement_vs_raw_pct": 3.3,
-        "ml_improvement_vs_raw_pct": 16.0,
-        "ml_improvement_vs_deterministic_pct": 13.2
+        "ml_improvement_vs_raw_pct": 15.7,
+        "ml_improvement_vs_deterministic_pct": 12.9
       },
       "48–72 h": {
         "n": 3232,
-        "raw_mae_c": 2.333,
-        "deterministic_mae_c": 2.214,
-        "ml_mae_c": 1.786,
-        "raw_bias_c": 0.711,
-        "deterministic_bias_c": 0.948,
-        "ml_bias_c": 0.388,
+        "raw_mae_c": 2.331,
+        "deterministic_mae_c": 2.212,
+        "ml_mae_c": 1.807,
+        "raw_bias_c": 0.709,
+        "deterministic_bias_c": 0.945,
+        "ml_bias_c": 0.385,
         "deterministic_improvement_vs_raw_pct": 5.1,
-        "ml_improvement_vs_raw_pct": 23.4,
-        "ml_improvement_vs_deterministic_pct": 19.3
+        "ml_improvement_vs_raw_pct": 22.5,
+        "ml_improvement_vs_deterministic_pct": 18.3
       }
     },
     "by_season": {
       "spring_MAM": {
-        "n": 2972,
-        "raw_mae_c": 2.173,
-        "deterministic_mae_c": 1.982,
-        "ml_mae_c": 1.499,
-        "raw_bias_c": 0.513,
-        "deterministic_bias_c": 0.531,
-        "ml_bias_c": 0.07,
+        "n": 2968,
+        "raw_mae_c": 2.168,
+        "deterministic_mae_c": 1.977,
+        "ml_mae_c": 1.513,
+        "raw_bias_c": 0.506,
+        "deterministic_bias_c": 0.524,
+        "ml_bias_c": 0.028,
         "deterministic_improvement_vs_raw_pct": 8.8,
-        "ml_improvement_vs_raw_pct": 31.0,
-        "ml_improvement_vs_deterministic_pct": 24.3
+        "ml_improvement_vs_raw_pct": 30.2,
+        "ml_improvement_vs_deterministic_pct": 23.5
       },
       "summer_JJA": {
         "n": 22161,
         "raw_mae_c": 2.207,
         "deterministic_mae_c": 2.102,
-        "ml_mae_c": 1.738,
+        "ml_mae_c": 1.76,
         "raw_bias_c": 1.154,
-        "deterministic_bias_c": 1.058,
-        "ml_bias_c": 0.931,
+        "deterministic_bias_c": 1.057,
+        "ml_bias_c": 0.961,
         "deterministic_improvement_vs_raw_pct": 4.8,
-        "ml_improvement_vs_raw_pct": 21.3,
-        "ml_improvement_vs_deterministic_pct": 17.3
+        "ml_improvement_vs_raw_pct": 20.3,
+        "ml_improvement_vs_deterministic_pct": 16.3
       },
       "autumn_SON": {
-        "n": 9746,
-        "raw_mae_c": 1.94,
-        "deterministic_mae_c": 1.889,
-        "ml_mae_c": 1.672,
-        "raw_bias_c": 1.016,
-        "deterministic_bias_c": 0.874,
-        "ml_bias_c": 1.188,
+        "n": 9752,
+        "raw_mae_c": 1.939,
+        "deterministic_mae_c": 1.888,
+        "ml_mae_c": 1.651,
+        "raw_bias_c": 1.015,
+        "deterministic_bias_c": 0.872,
+        "ml_bias_c": 1.187,
         "deterministic_improvement_vs_raw_pct": 2.7,
-        "ml_improvement_vs_raw_pct": 13.8,
-        "ml_improvement_vs_deterministic_pct": 11.5
+        "ml_improvement_vs_raw_pct": 14.9,
+        "ml_improvement_vs_deterministic_pct": 12.5
       }
     }
   },
   "deterministic_reference_same_holdout": {
-    "n": 34879,
-    "raw_mae_c": 2.13,
-    "raw_bias_c": 1.061,
-    "bias_corrected_mae_c": 2.032,
-    "bias_corrected_bias_c": 0.962,
+    "n": 34881,
+    "raw_mae_c": 2.129,
+    "raw_bias_c": 1.06,
+    "bias_corrected_mae_c": 2.031,
+    "bias_corrected_bias_c": 0.96,
     "mae_improvement_pct": 4.6
   },
   "gate": {
@@ -268,16 +268,94 @@
   "recent_shadow_examples": [
     {
       "model": "chmi",
+      "source": "open_meteo_previous_runs",
+      "target_at_utc": "2026-09-12T17:00:00Z",
+      "lead_h": 24.0,
+      "raw_temperature_c": 16.2,
+      "observed_temperature_c": 17.1,
+      "deterministic_temperature_c": 16.07,
+      "ml_temperature_c": 16.99,
+      "raw_error_c": -0.9,
+      "deterministic_error_c": -1.03,
+      "ml_error_c": -0.11
+    },
+    {
+      "model": "chmi",
+      "source": "open_meteo_previous_runs",
+      "target_at_utc": "2026-09-12T17:00:00Z",
+      "lead_h": 48.0,
+      "raw_temperature_c": 16.5,
+      "observed_temperature_c": 17.1,
+      "deterministic_temperature_c": 16.37,
+      "ml_temperature_c": 17.17,
+      "raw_error_c": -0.6,
+      "deterministic_error_c": -0.73,
+      "ml_error_c": 0.07
+    },
+    {
+      "model": "dwd",
+      "source": "open_meteo_previous_runs",
+      "target_at_utc": "2026-09-12T17:00:00Z",
+      "lead_h": 24.0,
+      "raw_temperature_c": 16.8,
+      "observed_temperature_c": 17.1,
+      "deterministic_temperature_c": 17.1,
+      "ml_temperature_c": 16.37,
+      "raw_error_c": -0.3,
+      "deterministic_error_c": 0.0,
+      "ml_error_c": -0.73
+    },
+    {
+      "model": "ec",
+      "source": "open_meteo_previous_runs",
+      "target_at_utc": "2026-09-12T17:00:00Z",
+      "lead_h": 24.0,
+      "raw_temperature_c": 15.4,
+      "observed_temperature_c": 17.1,
+      "deterministic_temperature_c": 16.36,
+      "ml_temperature_c": 15.79,
+      "raw_error_c": -1.7,
+      "deterministic_error_c": -0.74,
+      "ml_error_c": -1.31
+    },
+    {
+      "model": "ec",
+      "source": "open_meteo_previous_runs",
+      "target_at_utc": "2026-09-12T17:00:00Z",
+      "lead_h": 48.0,
+      "raw_temperature_c": 15.5,
+      "observed_temperature_c": 17.1,
+      "deterministic_temperature_c": 16.39,
+      "ml_temperature_c": 15.98,
+      "raw_error_c": -1.6,
+      "deterministic_error_c": -0.71,
+      "ml_error_c": -1.12
+    },
+    {
+      "model": "ec",
+      "source": "open_meteo_previous_runs",
+      "target_at_utc": "2026-09-12T17:00:00Z",
+      "lead_h": 72.0,
+      "raw_temperature_c": 16.1,
+      "observed_temperature_c": 17.1,
+      "deterministic_temperature_c": 16.94,
+      "ml_temperature_c": 16.43,
+      "raw_error_c": -1.0,
+      "deterministic_error_c": -0.16,
+      "ml_error_c": -0.67
+    },
+    {
+      "model": "chmi",
       "source": "local_snapshot",
       "target_at_utc": "2026-09-12T16:00:00Z",
       "lead_h": 0.04,
       "raw_temperature_c": 17.6,
       "observed_temperature_c": 18.8,
       "deterministic_temperature_c": 17.47,
-      "ml_temperature_c": 17.82,
+      "ml_temperature_c": 17.87,
       "raw_error_c": -1.2,
       "deterministic_error_c": -1.33,
-      "ml_error_c": -0.98
+      "ml_error_c": -0.93
     },
     {
       "model": "chmi",
@@ -287,10 +365,10 @@
       "raw_temperature_c": 17.6,
       "observed_temperature_c": 18.8,
       "deterministic_temperature_c": 17.47,
-      "ml_temperature_c": 17.82,
+      "ml_temperature_c": 17.87,
       "raw_error_c": -1.2,
       "deterministic_error_c": -1.33,
-      "ml_error_c": -0.98
+      "ml_error_c": -0.93
     },
     {
       "model": "chmi",
@@ -300,10 +378,10 @@
       "raw_temperature_c": 17.6,
       "observed_temperature_c": 18.8,
       "deterministic_temperature_c": 17.47,
-      "ml_temperature_c": 17.82,
+      "ml_temperature_c": 17.87,
       "raw_error_c": -1.2,
       "deterministic_error_c": -1.33,
-      "ml_error_c": -0.98
+      "ml_error_c": -0.93
     },
     {
       "model": "chmi",
@@ -313,10 +391,10 @@
       "raw_temperature_c": 17.5,
       "observed_temperature_c": 18.8,
       "deterministic_temperature_c": 17.37,
-      "ml_temperature_c": 17.95,
+      "ml_temperature_c": 18.04,
       "raw_error_c": -1.3,
       "deterministic_error_c": -1.43,
-      "ml_error_c": -0.85
+      "ml_error_c": -0.76
     },
     {
       "model": "chmi",
@@ -326,10 +404,10 @@
       "raw_temperature_c": 17.5,
       "observed_temperature_c": 18.8,
       "deterministic_temperature_c": 17.37,
-      "ml_temperature_c": 17.95,
+      "ml_temperature_c": 18.04,
       "raw_error_c": -1.3,
       "deterministic_error_c": -1.43,
-      "ml_error_c": -0.85
+      "ml_error_c": -0.76
     },
     {
       "model": "chmi",
@@ -339,88 +417,10 @@
       "raw_temperature_c": 17.5,
       "observed_temperature_c": 18.8,
       "deterministic_temperature_c": 17.37,
-      "ml_temperature_c": 17.95,
+      "ml_temperature_c": 18.04,
       "raw_error_c": -1.3,
       "deterministic_error_c": -1.43,
-      "ml_error_c": -0.85
-    },
-    {
-      "model": "chmi",
-      "source": "local_snapshot",
-      "target_at_utc": "2026-09-12T16:00:00Z",
-      "lead_h": 5.3,
-      "raw_temperature_c": 17.5,
-      "observed_temperature_c": 18.8,
-      "deterministic_temperature_c": 17.37,
-      "ml_temperature_c": 18.59,
-      "raw_error_c": -1.3,
-      "deterministic_error_c": -1.43,
-      "ml_error_c": -0.21
-    },
-    {
-      "model": "chmi",
-      "source": "local_snapshot",
-      "target_at_utc": "2026-09-12T16:00:00Z",
-      "lead_h": 11.496,
-      "raw_temperature_c": 17.6,
-      "observed_temperature_c": 18.8,
-      "deterministic_temperature_c": 17.47,
-      "ml_temperature_c": 18.82,
-      "raw_error_c": -1.2,
-      "deterministic_error_c": -1.33,
-      "ml_error_c": 0.02
-    },
-    {
-      "model": "chmi",
-      "source": "local_snapshot",
-      "target_at_utc": "2026-09-12T16:00:00Z",
-      "lead_h": 16.758,
-      "raw_temperature_c": 17.4,
-      "observed_temperature_c": 18.8,
-      "deterministic_temperature_c": 17.27,
-      "ml_temperature_c": 18.65,
-      "raw_error_c": -1.4,
-      "deterministic_error_c": -1.53,
-      "ml_error_c": -0.15
-    },
-    {
-      "model": "chmi",
-      "source": "local_snapshot",
-      "target_at_utc": "2026-09-12T16:00:00Z",
-      "lead_h": 19.069,
-      "raw_temperature_c": 17.6,
-      "observed_temperature_c": 18.8,
-      "deterministic_temperature_c": 17.47,
-      "ml_temperature_c": 18.76,
-      "raw_error_c": -1.2,
-      "deterministic_error_c": -1.33,
-      "ml_error_c": -0.04
-    },
-    {
-      "model": "chmi",
-      "source": "local_snapshot",
-      "target_at_utc": "2026-09-12T16:00:00Z",
-      "lead_h": 23.57,
-      "raw_temperature_c": 17.6,
-      "observed_temperature_c": 18.8,
-      "deterministic_temperature_c": 17.47,
-      "ml_temperature_c": 18.76,
-      "raw_error_c": -1.2,
-      "deterministic_error_c": -1.33,
-      "ml_error_c": -0.04
-    },
-    {
-      "model": "chmi",
-      "source": "open_meteo_previous_runs",
-      "target_at_utc": "2026-09-12T16:00:00Z",
-      "lead_h": 24.0,
-      "raw_temperature_c": 17.6,
-      "observed_temperature_c": 18.8,
-      "deterministic_temperature_c": 17.47,
-      "ml_temperature_c": 18.63,
-      "raw_error_c": -1.2,
-      "deterministic_error_c": -1.33,
-      "ml_error_c": -0.17
+      "ml_error_c": -0.76
     }
   ]
 }
