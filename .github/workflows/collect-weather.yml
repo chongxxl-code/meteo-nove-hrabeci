@@ -13,7 +13,9 @@ on:
       - 'scripts/build_radar_nowcast.py'
       - 'scripts/archive_radar_observation.py'
       - 'scripts/verify_forecasts.py'
+      - 'scripts/calibration_truth.py'
       - 'scripts/build_calibration_shadow.py'
+      - 'scripts/build_calibration_ml_shadow.py'
       - 'scripts/build_health_status.py'
       - 'scripts/apply_health_ui.py'
       - 'health-ui.js'
@@ -52,8 +54,13 @@ jobs:
         run: python scripts/archive_radar_observation.py
       - name: Verify matured forecasts against observations
         run: python scripts/verify_forecasts.py
-      - name: Rebuild shadow calibration benchmark
+      - name: Install shadow ML dependency
+        continue-on-error: true
+        run: pip install --disable-pip-version-check scikit-learn
+      - name: Rebuild deterministic shadow calibration benchmark
         run: python scripts/build_calibration_shadow.py
+      - name: Build ML v1 shadow calibration benchmark
+        run: python scripts/build_calibration_ml_shadow.py
       - name: Build collector health status
         run: python scripts/build_health_status.py
       - name: Commit collected forecast, observations and health data
@@ -71,6 +78,7 @@ jobs:
             python scripts/archive_radar_observation.py
             python scripts/verify_forecasts.py
             python scripts/build_calibration_shadow.py
+            python scripts/build_calibration_ml_shadow.py
             python scripts/build_health_status.py
           }
 
