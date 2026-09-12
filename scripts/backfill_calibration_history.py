@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import bisect
 import csv
 import io
 import json
@@ -13,6 +12,14 @@ import zipfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+from calibration_truth import (
+    DWD_DISTANCE_KM,
+    DWD_STATION_ID,
+    DWD_STATION_NAME,
+    nearest_truth,
+    truth_metadata,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "data" / "calibration"
 OUT = OUT_DIR / "history-v0.jsonl"
@@ -20,11 +27,8 @@ STATUS = OUT_DIR / "backfill-status.json"
 
 LAT = 51.0162
 LON = 14.4398
-UA = "nove-hrabeci-calibration/0.1 (+github-actions)"
+UA = "nove-hrabeci-calibration/0.2 (+github-actions)"
 PAST_DAYS = 92
-DWD_STATION_ID = "06129"
-DWD_STATION_NAME = "Sohland/Spree"
-DWD_DISTANCE_KM = 4.89
 DWD_RECENT = (
     "https://opendata.dwd.de/climate_environment/CDC/observations_germany/"
     "climate/10_minutes/air_temperature/recent/"
@@ -132,23 +136,6 @@ def load_dwd_truth():
     return merged, times, sources
 
 
-def nearest_truth(target, truth, times, tolerance_minutes=20):
-    # DWD is a dense ten-minute series; binary search keeps the backfill cheap.
-    index = bisect.bisect_left(times, target)
-    candidates = []
-    if index < len(times):
-        candidates.append(times[index])
-    if index > 0:
-        candidates.append(times[index - 1])
-    if not candidates:
-        return None
-    stamp = min(candidates, key=lambda value: abs((value - target).total_seconds()))
-    delta = abs((stamp - target).total_seconds()) / 60
-    if delta > tolerance_minutes:
-        return None
-    return stamp, truth[stamp], delta
-
-
 def parse_utc_hour(value):
     parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
     if parsed.tzinfo is None:
@@ -231,17 +218,7 @@ def model_rows(model_key, model_id, truth, truth_times, now):
                 "target_at_utc": target.isoformat().replace("+00:00", "Z"),
                 "lead_h": day * 24,
                 "forecast": forecast,
-                "truth": {
-                    "source": "DWD CDC 10-minute",
-                    "station_id": DWD_STATION_ID,
-                    "station_name": DWD_STATION_NAME,
-                    "distance_to_nove_hrabeci_km": DWD_DISTANCE_KM,
-                    "observed_at_utc": observed_at.isoformat().replace("+00:00", "Z"),
-                    "match_delta_minutes": round(match_delta, 1),
-                    "temperature_c": obs["temperature_c"],
-                    "relative_humidity_pct": obs.get("relative_humidity_pct"),
-                    "is_nove_hrabeci_truth": False,
-                },
+                "truth": truth_metadata(observed_at, obs, match_delta),
                 "error_c": round(forecast_temp - float(obs["temperature_c"]), 3),
                 "terrain_nh_ref": {
                     "elevation_m_bpv": 349.87,
@@ -303,6 +280,7 @@ def main():
             "station_id": DWD_STATION_ID,
             "distance_to_nove_hrabeci_km": DWD_DISTANCE_KM,
             "is_nove_hrabeci_truth": False,
+            "matching_policy": "canonical nearest UTC Sohland observation within ±20 minutes; no CHMI fallback",
             "warning": "This is a nearby proxy target until an on-site NH station is available.",
         },
         "dwd_sources": dwd_sources,
