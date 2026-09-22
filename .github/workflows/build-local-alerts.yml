@@ -76,22 +76,72 @@ jobs:
           ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
         run: python scripts/send_critical_push.py || echo "::warning::Critical push delivery failed; next scheduled run will retry."
       - name: Commit only meaningful alert / radar / push-state changes
+        env:
+          METEOMATICS_USER: ${{ secrets.METEOMATICS_USER }}
+          METEOMATICS_PASSWORD: ${{ secrets.METEOMATICS_PASSWORD }}
+          ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          for f in data/alerts.json data/radar-nowcast.json data/chmi-radar.json data/chmi-radar-forecast.json data/push-state.json data/push-config.json data/push-health.json; do
-            if [ -e "$f" ]; then
-              git add "$f"
-            fi
-          done
-
-          if git diff --cached --quiet; then
-            echo "Local risk and radar state unchanged."
-            exit 0
+          push_state_tmp="$(mktemp)"
+          if [ -e data/push-state.json ]; then
+            cp data/push-state.json "$push_state_tmp"
+          else
+            : > "$push_state_tmp"
           fi
 
-          git commit -m "data: local risk state $(date -u +'%Y-%m-%d %H:%M UTC')"
-          git pull --rebase origin main
-          git push
+          rebuild_data() {
+            python scripts/build_radar_nowcast.py
+            python scripts/build_chmi_radar.py
+            python scripts/build_chmi_radar_forecast.py
+            python scripts/build_local_alerts.py
+            python scripts/enrich_local_alerts_nowcast.py
+            python scripts/enrich_alerts_chmi_radar.py
+            python scripts/enrich_alerts_chmi_forecast.py
+            python scripts/sync_push_config.py
+            python scripts/check_onesignal_health.py
+
+            # Never resend a critical push during a git-conflict retry.
+            # Preserve the state written by the already-completed send step.
+            if [ -s "$push_state_tmp" ]; then
+              cp "$push_state_tmp" data/push-state.json
+            fi
+          }
+
+          make_commit() {
+            for f in data/alerts.json data/radar-nowcast.json data/chmi-radar.json data/chmi-radar-forecast.json data/push-state.json data/push-config.json data/push-health.json; do
+              if [ -e "$f" ]; then
+                git add "$f"
+              fi
+            done
+
+            if git diff --cached --quiet; then
+              echo "Local risk and radar state unchanged."
+              return 1
+            fi
+
+            git commit -m "data: local risk state $(date -u +'%Y-%m-%d %H:%M UTC')"
+          }
+
+          make_commit || exit 0
+
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+
+            echo "Concurrent repository update detected; rebuilding on latest main (attempt ${attempt}/3)."
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            git reset --hard origin/main
+            rebuild_data
+            make_commit || exit 0
+            sleep $((attempt * 5))
+          done
+
+          echo "Unable to push local alert data after 3 retries."
+          exit 1
 # OneSignal health check enabled
