@@ -29,7 +29,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Collect EMOS indoor live snapshot
+      - name: Collect and commit EMOS indoor live data
         env:
           EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}
           EMOS_PASSWORD: ${{ secrets.EMOS_PASSWORD }}
@@ -39,30 +39,33 @@ jobs:
           EMOS_CERT_SHA256: ${{ secrets.EMOS_CERT_SHA256 }}
           EMOS_LIVE_MODE: '1'
           EMOS_LIVE_HEARTBEAT_MINUTES: '30'
-        run: python scripts/collect_indoor_emos.py
-      - name: Commit material indoor changes
         run: |
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Live runs intentionally do not create a commit just because status timestamps changed.
-          git restore data/indoor-history-status.json data/indoor-collector-status.json 2>/dev/null || true
-          git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json
-          if git diff --cached --quiet; then
-            echo "No material indoor change; nothing to commit."
-            exit 0
-          fi
-
-          git commit -m "data: indoor live $(date -u +'%Y-%m-%d %H:%M UTC')"
-
           for attempt in 1 2 3; do
-            if git pull --rebase origin main && git push origin HEAD:main; then
+            # Scheduled runs can wait behind the 3-hour writer. Always recollect from
+            # the newest main after the concurrency queue instead of rebasing stale data.
+            git fetch origin main
+            git reset --hard origin/main
+
+            python scripts/collect_indoor_emos.py
+
+            # Live runs intentionally do not commit status-only timestamp churn.
+            git restore data/indoor-history-status.json data/indoor-collector-status.json 2>/dev/null || true
+            git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json
+            if git diff --cached --quiet; then
+              echo "No material indoor change; nothing to commit."
               exit 0
             fi
-            git rebase --abort 2>/dev/null || true
-            git fetch origin main
-            git rebase origin/main
+
+            git commit -m "data: indoor live $(date -u +'%Y-%m-%d %H:%M UTC')"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            echo "Concurrent main update detected; recollecting from latest main (attempt ${attempt}/3)."
             sleep $((attempt * 3))
           done
 
