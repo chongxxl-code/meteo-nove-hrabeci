@@ -26,3 +26,10 @@ GitHub Pages URL otevřeš v mobilu jako normální web. Na iPhonu ji lze přes 
 ## Lokální učení
 
 Centrální archiv zatím ukládá předpovědi jednotlivých modelů. Dokud nepřidáme spolehlivý observační zdroj / vlastní meteostanici, aplikace nebude tvrdit, že některý model pro Nové Hraběcí prokazatelně vyhrává. Další fáze bude verifikace modelových chyb proti skutečnosti.
+## Teplota uvnitř — EMOS/Tuya cloud
+
+- `scripts/collect_indoor_emos.py` se přihlašuje přímo do EMOS/Tuya cloudu; PC ani Android emulátor nejsou potřeba pro běžný provoz.
+- Collector běží ve stejném GitHub Actions cyklu jako počasí, tedy každé 3 hodiny.
+- Ukládá aktuální teplotu, setpoint a raw DP2 do `data/indoor-cloud/YYYY-MM.jsonl`, `data/indoor-latest.json` a slučuje je s referenčním backfillem v `data/indoor-history.json`.
+- Přihlašovací údaje a aplikační kryptografické hodnoty musí být pouze v GitHub Actions Secrets: `EMOS_USERNAME`, `EMOS_PASSWORD`, `EMOS_APP_ID`, `EMOS_APP_SECRET`, `EMOS_BMP_KEY`, `EMOS_CERT_SHA256`. Bez nich se indoor collector bezpečně přeskočí a meteorologický sběr pokračuje.
+- `indoor.html` zobrazuje cloudové body na skutečné časové ose; historický 15min backfill může mít jemnější rozlišení než nové tříhodinové snapshoty.
