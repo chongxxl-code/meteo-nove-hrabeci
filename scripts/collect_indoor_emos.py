@@ -356,5 +356,37 @@ def main():
     return 0
 
 
+def write_status(payload):
+    DATA.mkdir(exist_ok=True)
+    status = {
+        "generated_at": datetime.now(TZ).replace(microsecond=0).isoformat(),
+        **payload,
+    }
+    (DATA / "indoor-collector-status.json").write_text(
+        json.dumps(status, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        code = main()
+        write_status({"ok": code == 0, "stage": "completed"})
+        raise SystemExit(code)
+    except SystemExit:
+        raise
+    except Exception as exc:
+        message = str(exc).replace("\n", " ")[:240]
+        write_status({
+            "ok": False,
+            "stage": "error",
+            "error_type": type(exc).__name__,
+            "error": message,
+        })
+        print(json.dumps({
+            "ok": False,
+            "stage": "error",
+            "error_type": type(exc).__name__,
+            "error": message,
+        }, ensure_ascii=False))
+        raise SystemExit(0)
