@@ -1,16 +1,16 @@
 {
-  "schema": 2,
-  "generated_at": "2026-09-25T20:06:48.803109Z",
+  "schema": 3,
+  "generated_at": "2026-09-25T20:13:50.343455Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
-  "coverage_days": 6.98,
-  "indoor_raw_points": 2068,
+  "coverage_days": 7.0,
+  "indoor_raw_points": 2070,
   "indoor_30m_bins": 326,
-  "weather_30m_bins": 1765,
-  "paired_candidate_bins": 324,
+  "weather_30m_bins": 1766,
+  "paired_candidate_bins": 325,
   "fit_samples": 10,
   "all_accepted_windows": 21,
   "night_windows": 10,
@@ -20,7 +20,7 @@
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
       "DWD Sohland": 1765,
-      "ČHMÚ Varnsdorf": 0
+      "ČHMÚ Varnsdorf": 1
     },
     "dwd_archives": [
       "data/observations/dwd-sohland-06129-2026-08.jsonl",
@@ -53,11 +53,78 @@
   },
   "current_passive_estimate": {
     "inside_c": 15.3,
-    "outside_c": 9.6,
+    "outside_c": 8.7,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": 5.7,
+    "inside_minus_outside_c": 6.6,
     "passive_fit_rate_c_per_h": -0.02,
     "note": "passive nighttime loss estimate; not a heating-control command"
+  },
+  "passive_forecast": {
+    "mode": "no_active_heating",
+    "start_timestamp_local": "2026-09-25T22:13:42+02:00",
+    "start_inside_c": 15.3,
+    "weather_models": [
+      "chmi",
+      "dwd",
+      "ec"
+    ],
+    "coupling_candidates_per_h": [
+      0.00282,
+      0.0034,
+      0.00416
+    ],
+    "horizons": [
+      {
+        "hours": 12,
+        "timestamp_local": "2026-09-26T10:00:00+02:00",
+        "inside_median_c": 15.1,
+        "inside_q25_c": 15.0,
+        "inside_q75_c": 15.1,
+        "inside_min_scenario_c": 15.0,
+        "inside_max_scenario_c": 15.1,
+        "outside_model_median_c": 13.4,
+        "scenario_count": 9
+      },
+      {
+        "hours": 24,
+        "timestamp_local": "2026-09-26T22:00:00+02:00",
+        "inside_median_c": 15.1,
+        "inside_q25_c": 15.0,
+        "inside_q75_c": 15.1,
+        "inside_min_scenario_c": 15.0,
+        "inside_max_scenario_c": 15.1,
+        "outside_model_median_c": 11.7,
+        "scenario_count": 9
+      },
+      {
+        "hours": 36,
+        "timestamp_local": "2026-09-27T10:00:00+02:00",
+        "inside_median_c": 14.9,
+        "inside_q25_c": 14.9,
+        "inside_q75_c": 15.0,
+        "inside_min_scenario_c": 14.8,
+        "inside_max_scenario_c": 15.0,
+        "outside_model_median_c": 14.9,
+        "scenario_count": 9
+      },
+      {
+        "hours": 48,
+        "timestamp_local": "2026-09-27T21:00:00+02:00",
+        "inside_median_c": 15.0,
+        "inside_q25_c": 15.0,
+        "inside_q75_c": 15.1,
+        "inside_min_scenario_c": 14.9,
+        "inside_max_scenario_c": 15.1,
+        "outside_model_median_c": 14.4,
+        "scenario_count": 6
+      }
+    ],
+    "range_note": "q25-q75 reflects weather-model and fitted-coupling spread only; it is not a full prediction interval",
+    "assumptions": [
+      "No active central heating or wood-stove heat is added.",
+      "No major door/window ventilation or unusual internal heat gain occurs.",
+      "Passive thermal response remains similar to the learned nighttime behaviour."
+    ]
   },
   "filters": {
     "bucket_minutes": 30,
