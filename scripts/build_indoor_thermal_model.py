@@ -5,11 +5,15 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from statistics import median
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 OBS = DATA / "observations"
+TZ = ZoneInfo("Europe/Prague")
 BUCKET_SECONDS = 30 * 60
+WINDOW_HOURS = 6
+WINDOW_BINS = int(WINDOW_HOURS * 3600 / BUCKET_SECONDS)
 
 
 def as_float(value):
@@ -33,7 +37,11 @@ def parse_dt(value):
         return None
 
 
-def quantile(values, p):
+def bucket(dt):
+    return int(dt.timestamp() // BUCKET_SECONDS)
+
+
+def q(values, p):
     vals = sorted(values)
     if not vals:
         return None
@@ -50,12 +58,15 @@ def rounded(value, digits=3):
     return None if value is None else round(float(value), digits)
 
 
-def bucket(dt):
-    return int(dt.timestamp() // BUCKET_SECONDS)
+def load_json(path, default):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return default
 
 
 def load_indoor_bins():
-    payload = json.loads((DATA / "indoor-history.json").read_text(encoding="utf-8"))
+    payload = load_json(DATA / "indoor-history.json", {"points": []})
     grouped = {}
     for row in payload.get("points") or []:
         if not isinstance(row, dict):
@@ -64,42 +75,22 @@ def load_indoor_bins():
         temp = as_float(row.get("indoor_c"))
         if dt is None or temp is None:
             continue
-        key = bucket(dt)
-        item = grouped.setdefault(key, {"temps": [], "sets": [], "times": []})
+        item = grouped.setdefault(bucket(dt), {"temps": [], "sets": []})
         item["temps"].append(temp)
         sp = as_float(row.get("setpoint_c"))
         if sp is not None:
             item["sets"].append(sp)
-        item["times"].append(dt)
     out = {}
     for key, item in grouped.items():
         out[key] = {
             "temperature_c": median(item["temps"]),
             "setpoint_c": median(item["sets"]) if item["sets"] else None,
-            "timestamp_utc": min(item["times"]).isoformat(),
             "raw_points": len(item["temps"]),
         }
     return out, payload
 
 
-def weather_paths():
-    status_path = DATA / "chmi-status.json"
-    status = {}
-    if status_path.exists():
-        try:
-            status = json.loads(status_path.read_text(encoding="utf-8"))
-        except Exception:
-            status = {}
-    wsi = str(status.get("weather_station_wsi") or "").replace("-", "_")
-    if wsi:
-        paths = sorted(OBS.glob(f"chmi-weather-{wsi}-*.jsonl"))
-        if paths:
-            return paths, status
-    return sorted(OBS.glob("chmi-weather-*.jsonl")), status
-
-
-def load_weather_bins():
-    paths, status = weather_paths()
+def load_weather_archive(paths):
     grouped = {}
     for path in paths:
         try:
@@ -115,178 +106,222 @@ def load_weather_bins():
             temp = as_float(row.get("temperature_c"))
             if dt is None or temp is None:
                 continue
-            key = bucket(dt)
-            item = grouped.setdefault(key, {"temps": [], "winds": []})
-            item["temps"].append(temp)
-            wind = as_float(row.get("wind_speed_ms"))
-            if wind is not None:
-                item["winds"].append(wind)
-    out = {}
-    for key, item in grouped.items():
-        out[key] = {
-            "temperature_c": median(item["temps"]),
-            "wind_speed_ms": median(item["winds"]) if item["winds"] else None,
-        }
-    return out, status, paths
+            grouped.setdefault(bucket(dt), []).append(temp)
+    return {key: median(vals) for key, vals in grouped.items() if vals}
 
 
-def fit_line(samples):
-    if len(samples) < 2:
+def weather_bins():
+    chmi_status = load_json(DATA / "chmi-status.json", {})
+    chmi_wsi = str(chmi_status.get("weather_station_wsi") or "").replace("-", "_")
+    chmi_paths = sorted(OBS.glob(f"chmi-weather-{chmi_wsi}-*.jsonl")) if chmi_wsi else []
+    if not chmi_paths:
+        chmi_paths = sorted(OBS.glob("chmi-weather-*.jsonl"))
+    dwd_paths = sorted(OBS.glob("dwd-sohland-06129-*.jsonl"))
+
+    chmi = load_weather_archive(chmi_paths)
+    dwd = load_weather_archive(dwd_paths)
+    keys = sorted(set(chmi) | set(dwd))
+    merged = {}
+    source_counts = {"DWD Sohland": 0, "ČHMÚ Varnsdorf": 0}
+    for key in keys:
+        if key in dwd:
+            merged[key] = {"temperature_c": dwd[key], "source": "DWD Sohland"}
+            source_counts["DWD Sohland"] += 1
+        elif key in chmi:
+            merged[key] = {"temperature_c": chmi[key], "source": "ČHMÚ Varnsdorf"}
+            source_counts["ČHMÚ Varnsdorf"] += 1
+    return merged, chmi_status, chmi_paths, dwd_paths, source_counts
+
+
+def build_windows(indoor, weather):
+    windows = []
+    rejected = {"gap": 0, "setpoint": 0, "warming": 0, "coverage": 0}
+    common = sorted(set(indoor) & set(weather))
+    common_set = set(common)
+    for start in common:
+        if start % WINDOW_BINS != 0:
+            continue
+        end = start + WINDOW_BINS
+        if end not in indoor:
+            continue
+        weather_keys = [key for key in range(start, end + 1) if key in weather]
+        if len(weather_keys) < WINDOW_BINS - 2:
+            rejected["coverage"] += 1
+            continue
+        a, b = indoor[start], indoor[end]
+        tin_start = a["temperature_c"]
+        tin_end = b["temperature_c"]
+        tin_mean = (tin_start + tin_end) / 2
+        tout_values = [weather[key]["temperature_c"] for key in weather_keys]
+        tout_mean = sum(tout_values) / len(tout_values)
+        gap = tin_mean - tout_mean
+
+        setpoints = [v for v in (a.get("setpoint_c"), b.get("setpoint_c")) if v is not None]
+        setpoint = max(setpoints) if setpoints else None
+        if setpoint is not None and setpoint > min(tin_start, tin_end) - 1.5:
+            rejected["setpoint"] += 1
+            continue
+        if gap < 2.0:
+            rejected["gap"] += 1
+            continue
+
+        rate = (tin_end - tin_start) / WINDOW_HOURS
+        if rate > 0.08:
+            rejected["warming"] += 1
+            continue
+
+        midpoint = datetime.fromtimestamp(
+            (start * BUCKET_SECONDS) + (WINDOW_HOURS * 1800),
+            timezone.utc,
+        ).astimezone(TZ)
+        night = midpoint.hour >= 21 or midpoint.hour < 6
+        source_names = [weather[key]["source"] for key in weather_keys]
+        windows.append({
+            "start_bucket": start,
+            "midpoint_local": midpoint.isoformat(),
+            "night": night,
+            "inside_c": tin_mean,
+            "outside_c": tout_mean,
+            "inside_minus_outside_c": gap,
+            "slope_c_per_h": rate,
+            "dominant_weather_source": max(set(source_names), key=source_names.count),
+        })
+    return windows, rejected, len(common_set)
+
+
+def passive_fit(samples):
+    if len(samples) < 3:
         return None
-    xs = [s["outside_minus_inside_c"] for s in samples]
-    ys = [s["slope_c_per_h"] for s in samples]
-    xbar = sum(xs) / len(xs)
-    ybar = sum(ys) / len(ys)
-    sxx = sum((x - xbar) ** 2 for x in xs)
-    if sxx <= 1e-12:
+    ratios = []
+    for sample in samples:
+        gap = sample["inside_minus_outside_c"]
+        if gap <= 0:
+            continue
+        ratios.append(-sample["slope_c_per_h"] / gap)
+    if len(ratios) < 3:
         return None
-    slope = sum((x - xbar) * (y - ybar) for x, y in zip(xs, ys)) / sxx
-    intercept = ybar - slope * xbar
-    ss_tot = sum((y - ybar) ** 2 for y in ys)
-    ss_res = sum((y - (intercept + slope * x)) ** 2 for x, y in zip(xs, ys))
-    r2 = None if ss_tot <= 1e-12 else 1 - ss_res / ss_tot
-    return intercept, slope, r2
+    coupling = median(ratios)
+    if coupling <= 0:
+        return None
+    predictions = [-coupling * s["inside_minus_outside_c"] for s in samples]
+    errors = [abs(s["slope_c_per_h"] - pred) for s, pred in zip(samples, predictions)]
+    return {
+        "equation": "dTin/dt = coupling * (Tout - Tin)",
+        "method": f"median through-origin slope on {WINDOW_HOURS}h windows",
+        "coupling_per_h": rounded(coupling, 5),
+        "time_constant_h": rounded(1.0 / coupling, 1),
+        "mae_c_per_h": rounded(sum(errors) / len(errors), 3),
+        "median_abs_error_c_per_h": rounded(median(errors), 3),
+        "coupling_p25_per_h": rounded(q(ratios, 0.25), 5),
+        "coupling_p75_per_h": rounded(q(ratios, 0.75), 5),
+        "sample_count": len(samples),
+    }
 
 
 def main():
     indoor, indoor_payload = load_indoor_bins()
-    weather, chmi_status, paths = load_weather_bins()
-    common = sorted(set(indoor).intersection(weather))
+    weather, chmi_status, chmi_paths, dwd_paths, source_counts = weather_bins()
+    windows, rejected, paired_bins = build_windows(indoor, weather)
 
-    samples = []
-    rejected_warming = 0
-    rejected_gap = 0
-    rejected_setpoint = 0
-    for key in common:
-        nxt = key + 1
-        if nxt not in indoor or nxt not in weather:
-            continue
-        a, b = indoor[key], indoor[nxt]
-        tin_a = a["temperature_c"]
-        tin_b = b["temperature_c"]
-        tin = (tin_a + tin_b) / 2
-        tout = (weather[key]["temperature_c"] + weather[nxt]["temperature_c"]) / 2
-        setpoints = [v for v in (a.get("setpoint_c"), b.get("setpoint_c")) if v is not None]
-        setpoint = max(setpoints) if setpoints else None
-        if setpoint is not None and setpoint > min(tin_a, tin_b) - 1.5:
-            rejected_setpoint += 1
-            continue
-        gap = tin - tout
-        if gap < 2.0:
-            rejected_gap += 1
-            continue
-        slope_c_per_h = (tin_b - tin_a) / 0.5
-        # Strong warming is likely sun, stove, occupants or active heating. DP2 is deliberately
-        # not used here because its semantics as a boiler/relay state are not yet confirmed.
-        if slope_c_per_h > 0.2:
-            rejected_warming += 1
-            continue
-        if slope_c_per_h < -2.0:
-            continue
-        samples.append({
-            "outside_minus_inside_c": tout - tin,
-            "inside_minus_outside_c": gap,
-            "slope_c_per_h": slope_c_per_h,
-            "outside_c": tout,
-            "inside_c": tin,
-        })
+    night = [w for w in windows if w["night"]]
+    fit_basis = night if len(night) >= 6 else windows
+    fit = passive_fit(fit_basis)
 
-    fit = fit_line(samples)
-    cooling = [s["slope_c_per_h"] for s in samples if s["slope_c_per_h"] < 0]
-    gaps = [s["inside_minus_outside_c"] for s in samples]
-    slopes = [s["slope_c_per_h"] for s in samples]
+    rates = [w["slope_c_per_h"] for w in fit_basis]
+    cooling_rates = [r for r in rates if r < -0.01]
+    gaps = [w["inside_minus_outside_c"] for w in fit_basis]
 
-    first_key = min(common) if common else None
-    last_key = max(common) if common else None
-    coverage_days = None
-    if first_key is not None and last_key is not None:
-        coverage_days = (last_key - first_key) * BUCKET_SECONDS / 86400.0
+    first_key = min(set(indoor) & set(weather)) if set(indoor) & set(weather) else None
+    last_key = max(set(indoor) & set(weather)) if set(indoor) & set(weather) else None
+    coverage_days = None if first_key is None else (last_key - first_key) * BUCKET_SECONDS / 86400.0
 
-    model = None
-    current_estimate = None
-    if fit:
-        intercept, coupling, r2 = fit
-        tau = 1.0 / coupling if coupling > 0 else None
-        model = {
-            "equation": "dTin/dt = intercept + coupling * (Tout - Tin)",
-            "intercept_c_per_h": rounded(intercept),
-            "coupling_per_h": rounded(coupling, 5),
-            "time_constant_h": rounded(tau, 1) if tau and tau < 1000 else None,
-            "r2": rounded(r2, 3),
-        }
-        latest_path = DATA / "indoor-latest.json"
-        if latest_path.exists():
-            latest = json.loads(latest_path.read_text(encoding="utf-8"))
-            tin_now = as_float(latest.get("latest_indoor_c"))
-            tout_now = as_float(chmi_status.get("temperature_c"))
-            if tin_now is not None and tout_now is not None:
-                current_estimate = {
-                    "inside_c": tin_now,
-                    "outside_c": tout_now,
-                    "inside_minus_outside_c": rounded(tin_now - tout_now, 1),
-                    "passive_fit_rate_c_per_h": rounded(intercept + coupling * (tout_now - tin_now), 2),
-                    "note": "fit only; not a heating-control command",
-                }
-
-    sample_count = len(samples)
-    if sample_count < 24:
-        status = "insufficient_data"
-    elif coverage_days is not None and coverage_days < 3:
+    if fit and len(fit_basis) >= 10 and coverage_days and coverage_days >= 5:
+        status = "preliminary_learning"
+    elif fit and len(fit_basis) >= 6:
         status = "early_learning"
     else:
-        status = "preliminary_learning"
+        status = "insufficient_data"
+
+    current = None
+    latest = load_json(DATA / "indoor-latest.json", {})
+    tin_now = as_float(latest.get("latest_indoor_c"))
+    tout_now = as_float(chmi_status.get("temperature_c"))
+    if fit and tin_now is not None and tout_now is not None:
+        gap_now = tin_now - tout_now
+        current = {
+            "inside_c": tin_now,
+            "outside_c": tout_now,
+            "outside_source": chmi_status.get("weather_station_name") or "ČHMÚ",
+            "inside_minus_outside_c": rounded(gap_now, 1),
+            "passive_fit_rate_c_per_h": rounded(-fit["coupling_per_h"] * gap_now, 2),
+            "note": "passive nighttime loss estimate; not a heating-control command",
+        }
 
     output = {
+        "schema": 2,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
         "dp2_used_as_heating_state": False,
+        "analysis_window_hours": WINDOW_HOURS,
+        "fit_basis": "nighttime windows" if fit_basis is night else "all passive windows fallback",
         "coverage_days": rounded(coverage_days, 2),
         "indoor_raw_points": len(indoor_payload.get("points") or []),
         "indoor_30m_bins": len(indoor),
         "weather_30m_bins": len(weather),
-        "paired_candidate_bins": len(common),
-        "fit_samples": sample_count,
-        "weather_station": {
-            "name": chmi_status.get("weather_station_name"),
-            "wsi": chmi_status.get("weather_station_wsi"),
-            "distance_km": chmi_status.get("weather_station_distance_km"),
-            "archives": [str(p.relative_to(ROOT)) for p in paths],
+        "paired_candidate_bins": paired_bins,
+        "fit_samples": len(fit_basis),
+        "all_accepted_windows": len(windows),
+        "night_windows": len(night),
+        "weather_sources": {
+            "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
+            "DWD_Sohland_distance_km": 4.89,
+            "CHMI_Varnsdorf_distance_km": chmi_status.get("weather_station_distance_km"),
+            "bin_counts": source_counts,
+            "dwd_archives": [str(p.relative_to(ROOT)) for p in dwd_paths],
+            "chmi_archives": [str(p.relative_to(ROOT)) for p in chmi_paths],
         },
         "empirical": {
-            "median_cooling_c_per_h": rounded(median(cooling), 2) if cooling else None,
-            "cooling_p25_c_per_h": rounded(quantile(cooling, 0.25), 2),
-            "cooling_p75_c_per_h": rounded(quantile(cooling, 0.75), 2),
-            "median_all_slope_c_per_h": rounded(median(slopes), 2) if slopes else None,
-            "observed_inside_minus_outside_median_c": rounded(median(gaps), 1) if gaps else None,
-            "observed_inside_minus_outside_min_c": rounded(min(gaps), 1) if gaps else None,
-            "observed_inside_minus_outside_max_c": rounded(max(gaps), 1) if gaps else None,
+            "median_cooling_c_per_h": rounded(median(cooling_rates), 3) if cooling_rates else None,
+            "cooling_p25_c_per_h": rounded(q(cooling_rates, 0.25), 3),
+            "cooling_p75_c_per_h": rounded(q(cooling_rates, 0.75), 3),
+            "median_passive_window_rate_c_per_h": rounded(median(rates), 3) if rates else None,
+            "inside_minus_outside_median_c": rounded(median(gaps), 1) if gaps else None,
+            "inside_minus_outside_min_c": rounded(min(gaps), 1) if gaps else None,
+            "inside_minus_outside_max_c": rounded(max(gaps), 1) if gaps else None,
         },
-        "fit": model,
-        "current_passive_estimate": current_estimate,
+        "fit": fit,
+        "current_passive_estimate": current,
         "filters": {
             "bucket_minutes": 30,
+            "window_hours": WINDOW_HOURS,
             "minimum_inside_minus_outside_c": 2.0,
             "setpoint_margin_c": 1.5,
-            "excluded_strong_warming_intervals": rejected_warming,
-            "excluded_low_temperature_gap_intervals": rejected_gap,
-            "excluded_possible_thermostat_call_intervals": rejected_setpoint,
+            "maximum_allowed_warming_c_per_h": 0.08,
+            "night_midpoint_hours_local": "21:00-05:59",
+            "rejected": rejected,
         },
         "limitations": [
             "DP2 semantics are not independently verified, so it is not treated as boiler or relay state.",
-            "Wood-stove heat, solar gains, occupants, doors and windows are not independently observed yet.",
-            "The fit is observational and preliminary; it must not control heating until heating-state evidence and broader weather coverage exist."
-        ]
+            "The passive fit preferentially uses nighttime 6-hour windows to reduce solar-gain and 0.1 °C sensor-quantization noise.",
+            "Wood-stove heat, occupants, open doors/windows and other heat gains are not independently observed yet.",
+            "DWD Sohland is preferred for historical outdoor temperature because it is closer; ČHMÚ Varnsdorf fills missing periods.",
+            "The fit is observational and preliminary; it must not control heating until heating-state evidence and more seasonal data exist."
+        ],
     }
     (DATA / "indoor-thermal-model.json").write_text(
-        json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(output, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
     )
     print(json.dumps({
         "ok": True,
+        "schema": 2,
         "status": status,
-        "fit_samples": sample_count,
-        "coverage_days": rounded(coverage_days, 2),
-        "model": model
+        "fit_basis": output["fit_basis"],
+        "fit_samples": len(fit_basis),
+        "coverage_days": output["coverage_days"],
+        "fit": fit,
+        "current": current,
     }, ensure_ascii=False))
 
 
