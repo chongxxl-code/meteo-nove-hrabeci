@@ -1,0 +1,70 @@
+name: Collect EMOS indoor live
+
+on:
+  schedule:
+    - cron: '*/7 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_indoor_emos.py'
+      - '.github/workflows/collect-indoor-live.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: meteo-data-writer
+  cancel-in-progress: false
+
+jobs:
+  collect-indoor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Collect EMOS indoor live snapshot
+        env:
+          EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}
+          EMOS_PASSWORD: ${{ secrets.EMOS_PASSWORD }}
+          EMOS_APP_ID: ${{ secrets.EMOS_APP_ID }}
+          EMOS_APP_SECRET: ${{ secrets.EMOS_APP_SECRET }}
+          EMOS_BMP_KEY: ${{ secrets.EMOS_BMP_KEY }}
+          EMOS_CERT_SHA256: ${{ secrets.EMOS_CERT_SHA256 }}
+          EMOS_LIVE_MODE: '1'
+          EMOS_LIVE_HEARTBEAT_MINUTES: '30'
+        run: python scripts/collect_indoor_emos.py
+      - name: Commit material indoor changes
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Live runs intentionally do not create a commit just because status timestamps changed.
+          git restore data/indoor-history-status.json data/indoor-collector-status.json 2>/dev/null || true
+          git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json
+          if git diff --cached --quiet; then
+            echo "No material indoor change; nothing to commit."
+            exit 0
+          fi
+
+          git commit -m "data: indoor live $(date -u +'%Y-%m-%d %H:%M UTC')"
+
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            git rebase origin/main
+            sleep $((attempt * 3))
+          done
+
+          echo "Unable to push indoor live data after 3 retries."
+          exit 1

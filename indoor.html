@@ -11,11 +11,11 @@ main{max-width:1160px;margin:auto;padding:20px}a{color:var(--a)}.top{display:fle
 .label{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.14em;font-weight:800}.temp{font-size:72px;font-weight:800;line-height:1;margin:14px 0 8px}.temp small{font-size:28px;color:var(--mu)}
 .facts{display:flex;gap:14px;flex-wrap:wrap;color:var(--mu)}.facts b{color:var(--tx)}.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .stat{background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:11px}.stat b{display:block;font-size:19px}.stat span{font-size:11px;color:var(--mu)}.sect{display:flex;justify-content:space-between;gap:10px;align-items:center}.sect h2{font-size:18px;margin:0}
-svg{width:100%;height:330px;margin-top:10px}.note{font-size:12px;color:var(--mu);line-height:1.55;margin-top:10px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.chip{border:1px solid var(--line);background:var(--p2);border-radius:999px;padding:7px 10px;color:var(--mu);font-size:12px}
+svg{width:100%;height:330px;margin-top:10px}.note{font-size:12px;color:var(--mu);line-height:1.55;margin-top:10px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.chip{border:1px solid var(--line);background:var(--p2);border-radius:999px;padding:7px 10px;color:var(--mu);font-size:12px}.charttools{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;align-items:center}.charttools button{border:1px solid var(--line);background:var(--p2);color:var(--mu);border-radius:10px;padding:7px 10px;cursor:pointer;font:inherit;font-size:12px}.charttools button:hover,.charttools button.active{color:var(--tx);border-color:var(--a);background:#10313a}.chartset{margin-left:auto;color:var(--mu);font-size:12px}
 @media(max-width:800px){.hero,.summary{grid-column:span 12}.kpi{grid-template-columns:1fr 1fr}.top{flex-direction:column}.temp{font-size:60px}}@media(max-width:520px){main{padding:12px}.card{padding:14px}.kpi{grid-template-columns:1fr}}
-</style></head><body><main><header class="top"><div><div class="eye">Meteo Nové Hraběcí · dům</div><h1>TEPLOTA UVNITŘ</h1><div class="sub">EMOS GoSmart P56S11 · dlouhodobý tepelný profil chalupy</div></div><a class="back" href="./index.html">← zpět na Meteo</a></header><div class="grid"><section class="card hero"><div class="label">Poslední uložená hodnota</div><div class="temp"><span id="latest">--</span><small> °C</small></div><div class="facts"><span>nastaveno <b id="setpoint">--</b></span><span>DP2 raw <b id="dp2raw">--</b></span><span>čas <b id="lasttime">--</b></span></div><div class="chips"><span class="chip" id="source">EMOS · načítám</span><span class="chip">cloud sync 3 h · historie ~5 min</span><span class="chip">DP2 není potvrzený stav kotle</span></div></section>
-<section class="card summary"><div class="sect"><h2>Souhrn uložené historie</h2><span class="muted" id="range">—</span></div><div class="kpi"><div class="stat"><b id="min">—</b><span>minimum</span></div><div class="stat"><b id="max">—</b><span>maximum</span></div><div class="stat"><b id="delta">—</b><span>změna za poslední celý den</span></div><div class="stat"><b id="points">—</b><span>uložených bodů</span></div></div><p class="note">Každé 3 hodiny se Meteo přihlásí přímo do EMOS/Tuya cloudu a stáhne překryvnou historii. Běžná teplotní data přicházejí zhruba po 5 minutách; při prvním běhu nebo delším výpadku se collector vrací až 7 dní zpět. Původní 15min grafová řada zůstává jen jako starší referenční backfill.</p></section>
-<section class="card chart"><div class="sect"><h2>Průběh teploty uvnitř</h2><span class="muted">zelená = uvnitř · modrá = nastavená</span></div><svg id="chart" viewBox="0 0 1000 330" preserveAspectRatio="none"></svg><div class="note" id="chartnote">Načítám historii…</div></section>
+</style></head><body><main><header class="top"><div><div class="eye">Meteo Nové Hraběcí · dům</div><h1>TEPLOTA UVNITŘ</h1><div class="sub">EMOS GoSmart P56S11 · dlouhodobý tepelný profil chalupy</div></div><a class="back" href="./index.html">← zpět na Meteo</a></header><div class="grid"><section class="card hero"><div class="label">Poslední uložená hodnota</div><div class="temp"><span id="latest">--</span><small> °C</small></div><div class="facts"><span>nastaveno <b id="setpoint">--</b></span><span>DP2 raw <b id="dp2raw">--</b></span><span>čas <b id="lasttime">--</b></span></div><div class="chips"><span class="chip" id="source">EMOS · načítám</span><span class="chip">živý sběr ~7 min · historie ~5 min</span><span class="chip">3h backfill zůstává jako pojistka</span><span class="chip">DP2 není potvrzený stav kotle</span></div></section>
+<section class="card summary"><div class="sect"><h2>Souhrn uložené historie</h2><span class="muted" id="range">—</span></div><div class="kpi"><div class="stat"><b id="min">—</b><span>minimum</span></div><div class="stat"><b id="max">—</b><span>maximum</span></div><div class="stat"><b id="delta">—</b><span>změna za poslední celý den</span></div><div class="stat"><b id="points">—</b><span>uložených bodů</span></div></div><p class="note">Lehký EMOS collector se spouští přibližně každých 7 minut. Pokud se nic nezmění, ukládá jen 30min heartbeat, aby Git nebyl zahlcený zbytečnými commity. Každé 3 hodiny zůstává plný backfill, který z cloudu doplní jemnou historii zařízení přibližně po 5 minutách a opraví případné výpadky živého sběru.</p></section>
+<section class="card chart"><div class="sect"><h2>Průběh teploty uvnitř</h2><span class="muted">zelená = uvnitř · modrá = nastavená</span></div><div class="charttools"><button data-hours="6">6 h</button><button data-hours="24" class="active">24 h</button><button data-hours="48">48 h</button><button data-hours="168">7 dní</button><button data-hours="720">30 dní</button><button id="zoomIn" title="Přiblížit">＋</button><button id="zoomOut" title="Oddálit">−</button><span class="chartset" id="chartsetnote"></span></div><svg id="chart" viewBox="0 0 1000 330" preserveAspectRatio="none"></svg><div class="note" id="chartnote">Načítám historii…</div></section>
 <section class="card model"><div class="sect"><h2>Tepelný model chalupy</h2><span class="muted" id="modelstatus">učí se z reality</span></div><div class="kpi"><div class="stat"><b id="modelpairs">—</b><span>30min úseků pro fit</span></div><div class="stat"><b id="coolrate">—</b><span>medián chladnutí</span></div><div class="stat"><b id="tau">—</b><span>pasivní časová konstanta τ</span></div><div class="stat"><b id="r2">—</b><span>MAE pasivního modelu</span></div></div><p class="note" id="modelnote">Model používá jen naměřenou vnitřní teplotu a venkovní pozorování. DP2 se zatím nepovažuje za stav kotle. Dřevo, slunce, otevřená okna a další tepelné zisky se budou oddělovat až podle reálných dat.</p></section>
 <section class="card model"><div class="sect"><h2>Bez topení · výhled uvnitř</h2><span class="muted" id="forecaststatus">předběžný pasivní scénář</span></div><div class="kpi"><div class="stat"><b id="f12">—</b><span>za 12 hodin</span></div><div class="stat"><b id="f24">—</b><span>za 24 hodin</span></div><div class="stat"><b id="f36">—</b><span>za 36 hodin</span></div><div class="stat"><b id="f48">—</b><span>za 48 hodin</span></div></div><p class="note" id="forecastnote">Počítá se z aktuální vnitřní teploty, pasivní odezvy chalupy a ensemble DWD + ČHMÚ + ECMWF. Nezahrnuje přitápění dřevem ani jiné mimořádné tepelné zisky.</p></section>
 </div></main><script>
@@ -25,23 +25,48 @@ async function getJsonOptional(u){try{return await getJson(u)}catch(e){return nu
 function num(v,d=1){return Number.isFinite(Number(v))?Number(v).toFixed(d):'—'}
 function fmt(ts){if(!ts)return'—';return new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(ts))}
 function dayKey(ts){return String(ts||'').slice(0,10)}
+let allIndoorPoints=[],chartWindowHours=24;
+function chartWindowLabel(h){if(h<24)return Math.round(h)+' h';if(h===24)return'24 h';if(h===48)return'48 h';if(h===168)return'7 dní';if(h===720)return'30 dní';return h<168?num(h/24,1)+' dne':num(h/24,0)+' dní'}
+function selectedChartPoints(){
+ if(!allIndoorPoints.length)return[];
+ const lastMs=new Date(allIndoorPoints[allIndoorPoints.length-1].timestamp_local).getTime(),cut=lastMs-chartWindowHours*3600000;
+ return allIndoorPoints.filter(p=>new Date(p.timestamp_local).getTime()>=cut);
+}
+function setChartWindow(hours){
+ chartWindowHours=Math.max(1.5,Math.min(720,Number(hours)||24));
+ document.querySelectorAll('[data-hours]').forEach(b=>b.classList.toggle('active',Number(b.dataset.hours)===chartWindowHours));
+ renderSelectedChart();
+}
+function renderSelectedChart(){
+ const shown=selectedChartPoints();renderChart(shown);
+ el('chartnote').textContent='Zobrazeno '+chartWindowLabel(chartWindowHours)+' · '+shown.length.toLocaleString('cs-CZ')+' bodů. Živý sběr běží přibližně po 7 minutách; 3h backfill doplňuje jemnou cloud historii a výpadky.';
+}
 function renderChart(points){
  const svg=el('chart'),W=1000,H=330,pL=54,pR=20,pT=20,pB=34;
- const vals=points.map(x=>Number(x.indoor_c)).filter(Number.isFinite),sets=points.map(x=>Number(x.setpoint_c)).filter(Number.isFinite);
- if(!vals.length){svg.innerHTML='';return}
- const all=vals.concat(sets),mn=Math.floor(Math.min.apply(null,all)-1),mx=Math.ceil(Math.max.apply(null,all)+1);
+ const vals=points.map(x=>Number(x.indoor_c)).filter(Number.isFinite),sets=points.map(x=>x.setpoint_c==null?NaN:Number(x.setpoint_c)).filter(Number.isFinite);
+ if(!vals.length){svg.innerHTML='';el('chartsetnote').textContent='';return}
+ const vmin=Math.min.apply(null,vals),vmax=Math.max.apply(null,vals),closeSets=sets.filter(v=>v>=vmin-2&&v<=vmax+2),scaleVals=vals.concat(closeSets);
+ const rawMin=Math.min.apply(null,scaleVals),rawMax=Math.max.apply(null,scaleVals),span=Math.max(.6,rawMax-rawMin),pad=Math.max(.25,span*.15);
+ const mn=Math.floor((rawMin-pad)*2)/2,mx=Math.ceil((rawMax+pad)*2)/2;
  const times=points.map(r=>new Date(r.timestamp_local).getTime()),minT=Math.min.apply(null,times),maxT=Math.max.apply(null,times);
  const x=i=>pL+(times[i]-minT)*(W-pL-pR)/Math.max(1,maxT-minT),y=v=>H-pB-(v-mn)*(H-pT-pB)/(mx-mn||1);
- let out='',step=Math.max(1,Math.ceil((mx-mn)/5));
- for(let v=mn;v<=mx;v+=step)out+='<line x1="'+pL+'" y1="'+y(v)+'" x2="'+(W-pR)+'" y2="'+y(v)+'" stroke="#1f3a44"/><text x="5" y="'+(y(v)+4)+'" fill="#94adb7" font-size="12">'+v+'°</text>';
+ let out='',step=(mx-mn)<=3?.5:1;
+ for(let v=mn;v<=mx+.001;v+=step)out+='<line x1="'+pL+'" y1="'+y(v)+'" x2="'+(W-pR)+'" y2="'+y(v)+'" stroke="#1f3a44"/><text x="5" y="'+(y(v)+4)+'" fill="#94adb7" font-size="12">'+num(v,1)+'°</text>';
  const p1=points.map((r,i)=>x(i)+','+y(Number(r.indoor_c))).join(' ');
- const p2=points.map((r,i)=>x(i)+','+y(Number(r.setpoint_c))).join(' ');
  out+='<polyline points="'+p1+'" fill="none" stroke="#70e2a1" stroke-width="3" vector-effect="non-scaling-stroke"/>';
- out+='<polyline points="'+p2+'" fill="none" stroke="#76b7ff" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+ let setSeg=[],setPaths=[];
+ points.forEach((r,i)=>{const v=r.setpoint_c==null?NaN:Number(r.setpoint_c);if(Number.isFinite(v)&&v>=mn&&v<=mx)setSeg.push(x(i)+','+y(v));else if(setSeg.length){setPaths.push(setSeg);setSeg=[]}});
+ if(setSeg.length)setPaths.push(setSeg);
+ setPaths.filter(s=>s.length>1).forEach(s=>out+='<polyline points="'+s.join(' ')+'" fill="none" stroke="#76b7ff" stroke-width="2" vector-effect="non-scaling-stroke"/>');
+ const latestSet=sets.length?sets[sets.length-1]:NaN,offScale=Number.isFinite(latestSet)&&(latestSet<mn||latestSet>mx);
+ el('chartsetnote').textContent=offScale?'nastavená '+num(latestSet)+' °C · mimo detailní osu':'';
  const marks=[0,Math.floor((points.length-1)/2),points.length-1];
  marks.forEach(i=>{const t=(points[i]&&points[i].timestamp_local||'').slice(5,16).replace('T',' ');const a=i===0?'start':i===points.length-1?'end':'middle';out+='<text x="'+x(i)+'" y="'+(H-8)+'" fill="#94adb7" font-size="11" text-anchor="'+a+'">'+t+'</text>'});
  svg.innerHTML=out;
 }
+document.querySelectorAll('[data-hours]').forEach(b=>b.addEventListener('click',()=>setChartWindow(Number(b.dataset.hours))));
+el('zoomIn').addEventListener('click',()=>setChartWindow(chartWindowHours/2));
+el('zoomOut').addEventListener('click',()=>setChartWindow(chartWindowHours*2));
 async function load(){
  try{
   const data=await Promise.all([getJson('./data/indoor-history.json?_='+Date.now()),getJson('./data/indoor-latest.json?_='+Date.now()),getJsonOptional('./data/indoor-thermal-model.json?_='+Date.now())]);
@@ -53,7 +78,7 @@ async function load(){
    const vals=pts.map(x=>Number(x.indoor_c)).filter(Number.isFinite);el('min').textContent=num(Math.min.apply(null,vals))+' °C';el('max').textContent=num(Math.max.apply(null,vals))+' °C';
    const lastDay=dayKey(pts[pts.length-1].timestamp_local),day=pts.filter(x=>dayKey(x.timestamp_local)===lastDay),d=day.length>1?Number(day[day.length-1].indoor_c)-Number(day[0].indoor_c):NaN;
    el('delta').textContent=Number.isFinite(d)?(d>0?'+':'')+num(d)+' °C':'—';el('range').textContent=dayKey(pts[0].timestamp_local)+' → '+lastDay;
-   const lastMs=new Date(pts[pts.length-1].timestamp_local).getTime(),shown=pts.filter(p=>new Date(p.timestamp_local).getTime()>=lastMs-7*86400000);renderChart(shown);el('chartnote').textContent='Zobrazeno posledních 7 dnů · '+shown.length+' bodů. Cloud se synchronizuje každé 3 hodiny, ale přebírá jemnou historii zařízení přibližně po 5 minutách.';
+   allIndoorPoints=pts.slice().sort((a,b)=>new Date(a.timestamp_local)-new Date(b.timestamp_local));renderSelectedChart();
   }
   if(model){
    el('modelpairs').textContent=Number(model.fit_samples||0).toLocaleString('cs-CZ');

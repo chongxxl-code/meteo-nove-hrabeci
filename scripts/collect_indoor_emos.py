@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# GitHub Actions: this collector is intentionally triggered by the shared 3-hour weather workflow.
+# GitHub Actions: used by both the ~7-minute live indoor poll and the 3-hour weather/backfill workflow.
 from __future__ import annotations
 
 import hashlib
@@ -239,6 +239,39 @@ def load_json(path: Path, default):
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return default
+
+
+def env_flag(name: str) -> bool:
+    return env(name).casefold() in {"1", "true", "yes", "on"}
+
+
+def parse_timestamp(value):
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=TZ)
+        return dt.astimezone(TZ)
+    except ValueError:
+        return None
+
+
+def live_snapshot_should_persist(previous, now, indoor, setpoint, dp2_raw, heartbeat_minutes):
+    if not isinstance(previous, dict) or not previous:
+        return True
+    same_values = (
+        previous.get("latest_indoor_c") == indoor
+        and previous.get("latest_setpoint_c") == setpoint
+        and str(previous.get("dp2_raw")) == str(dp2_raw)
+    )
+    if not same_values:
+        return True
+    last = parse_timestamp(previous.get("last_timestamp") or previous.get("generated_at"))
+    if last is None:
+        return True
+    age_minutes = (now - last).total_seconds() / 60.0
+    return age_minutes >= heartbeat_minutes
 
 
 def history_row_local_timestamp(row):
@@ -529,20 +562,40 @@ def main():
 
     now = datetime.now(TZ).replace(microsecond=0)
     timestamp = now.isoformat()
+    dp2_raw = get_dp(dps, 2)
     point = {
         "timestamp_local": timestamp,
         "indoor_c": indoor,
         "setpoint_c": setpoint,
-        "dp2_raw": get_dp(dps, 2),
+        "dp2_raw": dp2_raw,
         "source": "EMOS/Tuya cloud snapshot",
     }
 
     DATA.mkdir(exist_ok=True)
+    previous_latest = load_json(DATA / "indoor-latest.json", {})
+    live_mode = env_flag("EMOS_LIVE_MODE")
+    try:
+        heartbeat_minutes = max(7, int(env("EMOS_LIVE_HEARTBEAT_MINUTES") or "30"))
+    except ValueError:
+        heartbeat_minutes = 30
+    persist_snapshot = (
+        not live_mode
+        or live_snapshot_should_persist(
+            previous_latest,
+            now,
+            indoor,
+            setpoint,
+            dp2_raw,
+            heartbeat_minutes,
+        )
+    )
+
     archive_dir = DATA / "indoor-cloud"
     archive_dir.mkdir(exist_ok=True)
     archive_file = archive_dir / f"{now:%Y-%m}.jsonl"
-    with archive_file.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(point, ensure_ascii=False, separators=(",", ":")) + "\n")
+    if persist_snapshot:
+        with archive_file.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(point, ensure_ascii=False, separators=(",", ":")) + "\n")
 
     events_file, new_event_count = append_raw_history_events(archive_dir, now, history_rows)
     cloud_points = history_temperature_points(
@@ -571,44 +624,56 @@ def main():
         for item in points
         if isinstance(item, dict) and item.get("timestamp_local")
     }
+    history_changed = False
     for cloud_point in cloud_points:
-        by_ts[str(cloud_point["timestamp_local"])] = cloud_point
-    by_ts[timestamp] = point
+        key = str(cloud_point["timestamp_local"])
+        if by_ts.get(key) != cloud_point:
+            history_changed = True
+        by_ts[key] = cloud_point
+    if persist_snapshot:
+        if by_ts.get(timestamp) != point:
+            history_changed = True
+        by_ts[timestamp] = point
     merged = [by_ts[key] for key in sorted(by_ts)]
 
-    history.update({
-        "generated_at": now.isoformat(),
-        "resolution_minutes": None,
-        "source": "EMOS GoSmart / Tuya cloud history + snapshots + display backfill",
-        "source_quality": "cloud_history" if history_status.get("ok") else "mixed",
-        "points": merged,
-    })
-    history_path.write_text(
-        json.dumps(history, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    if history_changed:
+        history.update({
+            "generated_at": now.isoformat(),
+            "resolution_minutes": None,
+            "source": "EMOS GoSmart / Tuya cloud history + snapshots + display backfill",
+            "source_quality": "cloud_history" if history_status.get("ok") else "mixed",
+            "points": merged,
+        })
+        history_path.write_text(
+            json.dumps(history, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
 
-    latest = {
-        "generated_at": now.isoformat(),
-        "points": len(merged),
-        "first_timestamp": merged[0]["timestamp_local"] if merged else None,
-        "last_timestamp": timestamp,
-        "latest_indoor_c": indoor,
-        "latest_setpoint_c": setpoint,
-        "dp2_raw": get_dp(dps, 2),
-        "source": "EMOS/Tuya cloud snapshot",
-    }
-    (DATA / "indoor-latest.json").write_text(
-        json.dumps(latest, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    if persist_snapshot:
+        latest = {
+            "generated_at": now.isoformat(),
+            "points": len(merged),
+            "first_timestamp": merged[0]["timestamp_local"] if merged else None,
+            "last_timestamp": timestamp,
+            "latest_indoor_c": indoor,
+            "latest_setpoint_c": setpoint,
+            "dp2_raw": dp2_raw,
+            "source": "EMOS/Tuya cloud snapshot",
+        }
+        (DATA / "indoor-latest.json").write_text(
+            json.dumps(latest, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
 
     print(json.dumps({
         "ok": True,
         "indoor_c": indoor,
         "setpoint_c": setpoint,
         "points": len(merged),
-        "archive": str(archive_file.relative_to(ROOT)),
+        "live_mode": live_mode,
+        "persist_snapshot": persist_snapshot,
+        "history_changed": history_changed,
+        "archive": str(archive_file.relative_to(ROOT)) if persist_snapshot else None,
         "history_ok": bool(history_status.get("ok")),
         "history_rows": len(history_rows),
         "history_temperature_points": len(cloud_points),
