@@ -252,16 +252,38 @@ def history_row_local_timestamp(row):
     return datetime.fromtimestamp(raw, timezone.utc).astimezone(TZ).replace(microsecond=0).isoformat()
 
 
-def fetch_cloud_history(api, dev_id, home_id):
-    end_ms = int(time.time() * 1000)
-    start_ms = end_ms - 12 * 60 * 60 * 1000
+def existing_cloud_event_bounds():
+    archive_dir = DATA / "indoor-cloud"
+    if not archive_dir.exists():
+        return None, None
+    stamps = []
+    for path in archive_dir.glob("events-*.jsonl"):
+        try:
+            lines = path.read_text(encoding="utf-8").splitlines()
+        except Exception:
+            continue
+        for line in lines:
+            try:
+                item = json.loads(line)
+                raw = float(item.get("timeStamp"))
+                if raw > 1_000_000_000_000:
+                    raw /= 1000.0
+                stamps.append(raw)
+            except Exception:
+                continue
+    if not stamps:
+        return None, None
+    return min(stamps), max(stamps)
+
+
+def request_history_window(api, dev_id, home_id, start_ms, end_ms):
     payload = {
         "devId": dev_id,
         "dpIds": "2,3,24,106",
         "offset": 0,
         "limit": 999,
-        "startTime": start_ms,
-        "endTime": end_ms,
+        "startTime": int(start_ms),
+        "endTime": int(end_ms),
         "sortType": "ASC",
     }
     attempts = []
@@ -291,7 +313,6 @@ def fetch_cloud_history(api, dev_id, home_id):
                         "rows": len(rows),
                         "total": result.get("total"),
                         "has_next": bool(result.get("hasNext")),
-                        "window_hours": 12,
                     }
                 attempts.append({"api": api_name, "error": "success_without_dps"})
             else:
@@ -306,7 +327,62 @@ def fetch_cloud_history(api, dev_id, home_id):
                 "error_type": type(exc).__name__,
                 "error": str(exc)[:180],
             })
-    return [], {"ok": False, "attempts": attempts, "window_hours": 12}
+    return [], {"ok": False, "attempts": attempts}
+
+
+def fetch_cloud_history(api, dev_id, home_id):
+    now_s = time.time()
+    earliest, latest = existing_cloud_event_bounds()
+    day_s = 24 * 60 * 60
+    if earliest is None or latest is None or latest - earliest < 5 * day_s or now_s - latest > day_s:
+        start_s = now_s - 7 * day_s
+        mode = "retention_backfill"
+    else:
+        start_s = max(now_s - 7 * day_s, latest - 6 * 60 * 60)
+        mode = "incremental_overlap"
+
+    all_rows = []
+    windows = []
+    cursor = start_s
+    while cursor < now_s:
+        window_end = min(cursor + day_s, now_s)
+        rows, status = request_history_window(
+            api,
+            dev_id,
+            home_id,
+            cursor * 1000,
+            window_end * 1000,
+        )
+        windows.append({
+            "start": datetime.fromtimestamp(cursor, timezone.utc).isoformat(),
+            "end": datetime.fromtimestamp(window_end, timezone.utc).isoformat(),
+            **status,
+        })
+        if not status.get("ok"):
+            return all_rows, {
+                "ok": False,
+                "mode": mode,
+                "windows": windows,
+                "rows": len(all_rows),
+            }
+        all_rows.extend(rows)
+        cursor = window_end
+
+    dedup = {}
+    for row in all_rows:
+        if not isinstance(row, dict):
+            continue
+        key = (row.get("timeStamp"), row.get("dpId"), str(row.get("value")))
+        dedup[key] = row
+    rows = list(dedup.values())
+    rows.sort(key=lambda row: float(row.get("timeStamp") or 0))
+    return rows, {
+        "ok": True,
+        "mode": mode,
+        "windows": windows,
+        "rows": len(rows),
+        "window_days": round((now_s - start_s) / day_s, 2),
+    }
 
 
 def append_raw_history_events(archive_dir: Path, now: datetime, rows):
