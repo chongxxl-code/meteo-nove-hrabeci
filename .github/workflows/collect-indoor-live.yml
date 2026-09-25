@@ -1,8 +1,8 @@
-name: Collect EMOS indoor live
+﻿name: Collect EMOS indoor live
 
 on:
   schedule:
-    - cron: '*/7 * * * *'
+    # Explicit off-peak minutes: 7-8 minute cadence without minute 0 scheduler load.\r\n    - cron: '4,11,19,26,34,41,49,56 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -71,3 +71,4 @@ jobs:
 
           echo "Unable to push indoor live data after 3 retries."
           exit 1
+
