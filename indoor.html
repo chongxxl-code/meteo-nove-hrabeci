@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Teplota uvnitř · Nové Hraběcí</title><meta name="theme-color" content="#071117"><link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark;--bg:#071117;--p:#0d2028;--p2:#09171d;--line:#1f3a44;--tx:#edf8fb;--mu:#94adb7;--a:#65d8cf;--b:#76b7ff;--w:#ffc36b;--g:#70e2a1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#12303b,#071117 42%,#050b0f);font:15px Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--tx)}
+main{max-width:1160px;margin:auto;padding:20px}a{color:var(--a)}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.eye{color:var(--a);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:800}h1{font-size:clamp(34px,6vw,54px);line-height:1;margin:7px 0}.sub,.muted{color:var(--mu)}
+.back{display:inline-flex;text-decoration:none;border:1px solid var(--line);border-radius:11px;padding:9px 12px;color:var(--tx);background:#0a1a21}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:18px}
+.card{background:linear-gradient(180deg,rgba(16,38,48,.95),rgba(8,23,30,.97));border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}.hero{grid-column:span 5}.summary{grid-column:span 7}.chart,.model{grid-column:span 12}
+.label{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.14em;font-weight:800}.temp{font-size:72px;font-weight:800;line-height:1;margin:14px 0 8px}.temp small{font-size:28px;color:var(--mu)}
+.facts{display:flex;gap:14px;flex-wrap:wrap;color:var(--mu)}.facts b{color:var(--tx)}.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.stat{background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:11px}.stat b{display:block;font-size:19px}.stat span{font-size:11px;color:var(--mu)}.sect{display:flex;justify-content:space-between;gap:10px;align-items:center}.sect h2{font-size:18px;margin:0}
+svg{width:100%;height:330px;margin-top:10px}.note{font-size:12px;color:var(--mu);line-height:1.55;margin-top:10px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.chip{border:1px solid var(--line);background:var(--p2);border-radius:999px;padding:7px 10px;color:var(--mu);font-size:12px}
+@media(max-width:800px){.hero,.summary{grid-column:span 12}.kpi{grid-template-columns:1fr 1fr}.top{flex-direction:column}.temp{font-size:60px}}@media(max-width:520px){main{padding:12px}.card{padding:14px}.kpi{grid-template-columns:1fr}}
+</style></head><body><main><header class="top"><div><div class="eye">Meteo Nové Hraběcí · dům</div><h1>TEPLOTA UVNITŘ</h1><div class="sub">EMOS GoSmart P56S11 · dlouhodobý tepelný profil chalupy</div></div><a class="back" href="./index.html">← zpět na Meteo</a></header><div class="grid"><section class="card hero"><div class="label">Poslední uložená hodnota</div><div class="temp"><span id="latest">--</span><small> °C</small></div><div class="facts"><span>nastaveno <b id="setpoint">--</b></span><span>čas <b id="lasttime">--</b></span></div><div class="chips"><span class="chip" id="source">EMOS · načítám</span><span class="chip">15min řada</span></div></section>
+<section class="card summary"><div class="sect"><h2>Souhrn uložené historie</h2><span class="muted" id="range">—</span></div><div class="kpi"><div class="stat"><b id="min">—</b><span>minimum</span></div><div class="stat"><b id="max">—</b><span>maximum</span></div><div class="stat"><b id="delta">—</b><span>změna za poslední celý den</span></div><div class="stat"><b id="points">—</b><span>uložených bodů</span></div></div><p class="note">Řada je nyní získávána automaticky z grafu EMOS. Je vhodná pro dlouhodobé učení chování domu; přesná surová 5–7min data z exportu EMOS se budou používat jako referenční vrstva, jakmile bude jejich automatický přenos stabilní.</p></section>
+<section class="card chart"><div class="sect"><h2>Průběh teploty uvnitř</h2><span class="muted">zelená = uvnitř · modrá = nastavená</span></div><svg id="chart" viewBox="0 0 1000 330" preserveAspectRatio="none"></svg><div class="note" id="chartnote">Načítám historii…</div></section>
+<section class="card model"><div class="sect"><h2>Datový základ pro vytápění</h2><span class="muted">model se bude kalibrovat z reality</span></div><div class="kpi"><div class="stat"><b>uvnitř</b><span>teplota, setpoint, stav topení</span></div><div class="stat"><b>venku</b><span>teplota, vítr, vlhkost, slunce, srážky</span></div><div class="stat"><b>dům</b><span>objem, zateplení, střecha, okna, výkon topení</span></div><div class="stat"><b>výsledek</b><span>rychlost chladnutí, ohřevu a čas startu</span></div></div><p class="note">Cíl není obecná tabulka pro „starou chalupu“, ale model konkrétního domu v Novém Hraběcím: jak reaguje na skutečné počasí, jakou má tepelnou setrvačnost a kdy začít topit pro požadovanou teplotu v konkrétní čas.</p></section>
+</div></main><script>
+const el=id=>document.getElementById(id),TZ='Europe/Prague';
+async function getJson(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw Error(r.status);return r.json()}
+function num(v,d=1){return Number.isFinite(Number(v))?Number(v).toFixed(d):'—'}
+function fmt(ts){if(!ts)return'—';return new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(ts))}
+function dayKey(ts){return String(ts||'').slice(0,10)}
+function renderChart(points){
+ const svg=el('chart'),W=1000,H=330,pL=54,pR=20,pT=20,pB=34;
+ const vals=points.map(x=>Number(x.indoor_c)).filter(Number.isFinite),sets=points.map(x=>Number(x.setpoint_c)).filter(Number.isFinite);
+ if(!vals.length){svg.innerHTML='';return}
+ const all=vals.concat(sets),mn=Math.floor(Math.min.apply(null,all)-1),mx=Math.ceil(Math.max.apply(null,all)+1);
+ const x=i=>pL+i*(W-pL-pR)/Math.max(1,points.length-1),y=v=>H-pB-(v-mn)*(H-pT-pB)/(mx-mn||1);
+ let out='',step=Math.max(1,Math.ceil((mx-mn)/5));
+ for(let v=mn;v<=mx;v+=step)out+='<line x1="'+pL+'" y1="'+y(v)+'" x2="'+(W-pR)+'" y2="'+y(v)+'" stroke="#1f3a44"/><text x="5" y="'+(y(v)+4)+'" fill="#94adb7" font-size="12">'+v+'°</text>';
+ const p1=points.map((r,i)=>x(i)+','+y(Number(r.indoor_c))).join(' ');
+ const p2=points.map((r,i)=>x(i)+','+y(Number(r.setpoint_c))).join(' ');
+ out+='<polyline points="'+p1+'" fill="none" stroke="#70e2a1" stroke-width="3" vector-effect="non-scaling-stroke"/>';
+ out+='<polyline points="'+p2+'" fill="none" stroke="#76b7ff" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+ const marks=[0,Math.floor((points.length-1)/2),points.length-1];
+ marks.forEach(i=>{const t=(points[i]&&points[i].timestamp_local||'').slice(5,16).replace('T',' ');const a=i===0?'start':i===points.length-1?'end':'middle';out+='<text x="'+x(i)+'" y="'+(H-8)+'" fill="#94adb7" font-size="11" text-anchor="'+a+'">'+t+'</text>'});
+ svg.innerHTML=out;
+}
+async function load(){
+ try{
+  const data=await Promise.all([getJson('./data/indoor-history.json?_='+Date.now()),getJson('./data/indoor-latest.json?_='+Date.now())]);
+  const hist=data[0],latest=data[1],pts=Array.isArray(hist.points)?hist.points:[];
+  el('latest').textContent=num(latest.latest_indoor_c);el('setpoint').textContent=latest.latest_setpoint_c!=null?num(latest.latest_setpoint_c)+' °C':'—';el('lasttime').textContent=fmt(latest.last_timestamp);
+  el('points').textContent=pts.length.toLocaleString('cs-CZ');el('source').textContent='EMOS · '+(hist.source_quality==='display_series'?'grafová řada':'data');
+  if(pts.length){
+   const vals=pts.map(x=>Number(x.indoor_c)).filter(Number.isFinite);el('min').textContent=num(Math.min.apply(null,vals))+' °C';el('max').textContent=num(Math.max.apply(null,vals))+' °C';
+   const lastDay=dayKey(pts[pts.length-1].timestamp_local),day=pts.filter(x=>dayKey(x.timestamp_local)===lastDay),d=day.length>1?Number(day[day.length-1].indoor_c)-Number(day[0].indoor_c):NaN;
+   el('delta').textContent=Number.isFinite(d)?(d>0?'+':'')+num(d)+' °C':'—';el('range').textContent=dayKey(pts[0].timestamp_local)+' → '+lastDay;
+   const shown=pts.slice(-7*96);renderChart(shown);el('chartnote').textContent='Zobrazeno posledních '+Math.ceil(shown.length/96)+' dnů · '+shown.length+' bodů. Data se doplňují automaticky jednou denně.';
+  }
+ }catch(e){el('chartnote').textContent='Vnitřní data se zatím nepodařilo načíst.'}
+}
+load();
+</script></body></html>
