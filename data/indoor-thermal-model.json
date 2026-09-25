@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-09-25T19:57:09.836559Z",
+  "status": "preliminary_learning",
+  "validated_for_heating_control": false,
+  "dp2_used_as_heating_state": false,
+  "coverage_days": 6.96,
+  "indoor_raw_points": 2065,
+  "indoor_30m_bins": 325,
+  "weather_30m_bins": 1617,
+  "paired_candidate_bins": 313,
+  "fit_samples": 260,
+  "weather_station": {
+    "name": "Varnsdorf",
+    "wsi": "0-203-0-11551",
+    "distance_km": 16.76,
+    "archives": [
+      "data/observations/chmi-weather-0_203_0_11551-2026-08.jsonl",
+      "data/observations/chmi-weather-0_203_0_11551-2026-09.jsonl"
+    ]
+  },
+  "empirical": {
+    "median_cooling_c_per_h": -0.2,
+    "cooling_p25_c_per_h": -0.2,
+    "cooling_p75_c_per_h": -0.2,
+    "median_all_slope_c_per_h": 0.0,
+    "observed_inside_minus_outside_median_c": 5.7,
+    "observed_inside_minus_outside_min_c": 2.0,
+    "observed_inside_minus_outside_max_c": 11.9
+  },
+  "fit": {
+    "equation": "dTin/dt = intercept + coupling * (Tout - Tin)",
+    "intercept_c_per_h": -0.018,
+    "coupling_per_h": 0.0025,
+    "time_constant_h": 399.6,
+    "r2": 0.004
+  },
+  "current_passive_estimate": {
+    "inside_c": 15.3,
+    "outside_c": 9.6,
+    "inside_minus_outside_c": 5.7,
+    "passive_fit_rate_c_per_h": -0.03,
+    "note": "fit only; not a heating-control command"
+  },
+  "filters": {
+    "bucket_minutes": 30,
+    "minimum_inside_minus_outside_c": 2.0,
+    "setpoint_margin_c": 1.5,
+    "excluded_strong_warming_intervals": 4,
+    "excluded_low_temperature_gap_intervals": 43,
+    "excluded_possible_thermostat_call_intervals": 0
+  },
+  "limitations": [
+    "DP2 semantics are not independently verified, so it is not treated as boiler or relay state.",
+    "Wood-stove heat, solar gains, occupants, doors and windows are not independently observed yet.",
+    "The fit is observational and preliminary; it must not control heating until heating-state evidence and broader weather coverage exist."
+  ]
+}
