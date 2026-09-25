@@ -11,11 +11,11 @@ main{max-width:1160px;margin:auto;padding:20px}a{color:var(--a)}.top{display:fle
 .label{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.14em;font-weight:800}.temp{font-size:72px;font-weight:800;line-height:1;margin:14px 0 8px}.temp small{font-size:28px;color:var(--mu)}
 .facts{display:flex;gap:14px;flex-wrap:wrap;color:var(--mu)}.facts b{color:var(--tx)}.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .stat{background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:11px}.stat b{display:block;font-size:19px}.stat span{font-size:11px;color:var(--mu)}.sect{display:flex;justify-content:space-between;gap:10px;align-items:center}.sect h2{font-size:18px;margin:0}
-svg{width:100%;height:330px;margin-top:10px}.note{font-size:12px;color:var(--mu);line-height:1.55;margin-top:10px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.chip{border:1px solid var(--line);background:var(--p2);border-radius:999px;padding:7px 10px;color:var(--mu);font-size:12px}.charttools{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;align-items:center}.charttools button{border:1px solid var(--line);background:var(--p2);color:var(--mu);border-radius:10px;padding:7px 10px;cursor:pointer;font:inherit;font-size:12px}.charttools button:hover,.charttools button.active{color:var(--tx);border-color:var(--a);background:#10313a}.chartset{margin-left:auto;color:var(--mu);font-size:12px}
+svg{width:100%;height:330px;display:block}.note{font-size:12px;color:var(--mu);line-height:1.55;margin-top:10px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.chip{border:1px solid var(--line);background:var(--p2);border-radius:999px;padding:7px 10px;color:var(--mu);font-size:12px}.serieslegend,.charttools{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.serieslegend{margin-top:12px}.charttools{margin-top:8px}.seriesbtn,.charttools button{border:1px solid var(--line);background:var(--p2);color:var(--mu);border-radius:10px;padding:7px 10px;cursor:pointer;font:inherit;font-size:12px}.seriesbtn{display:inline-flex;align-items:center;gap:7px;transition:.15s}.seriesbtn .dot{width:9px;height:9px;border-radius:50%;display:inline-block}.seriesbtn b{font-weight:700;color:var(--tx)}.seriesbtn.off{opacity:.42}.seriesbtn:hover,.charttools button:hover,.charttools button.active{color:var(--tx);border-color:var(--a);background:#10313a}.chartset{margin-left:auto;color:var(--mu);font-size:12px}.chartwrap{position:relative;margin-top:10px}.charttip{position:absolute;display:none;pointer-events:none;z-index:3;min-width:168px;padding:9px 10px;border:1px solid #294650;border-radius:10px;background:rgba(5,17,23,.96);box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:12px;line-height:1.5}.charttip .t{color:var(--mu);margin-bottom:4px}.charttip .v{display:flex;justify-content:space-between;gap:14px}.charttip .v b{font-weight:750}.charttip .in{color:#70e2a1}.charttip .out{color:#ff6b6b}.charttip .set{color:#76b7ff}
 @media(max-width:800px){.hero,.summary{grid-column:span 12}.kpi{grid-template-columns:1fr 1fr}.top{flex-direction:column}.temp{font-size:60px}}@media(max-width:520px){main{padding:12px}.card{padding:14px}.kpi{grid-template-columns:1fr}}
 </style></head><body><main><header class="top"><div><div class="eye">Meteo Nové Hraběcí · dům</div><h1>TEPLOTA UVNITŘ</h1><div class="sub">EMOS GoSmart P56S11 · dlouhodobý tepelný profil chalupy</div></div><a class="back" href="./index.html">← zpět na Meteo</a></header><div class="grid"><section class="card hero"><div class="label">Poslední uložená hodnota</div><div class="temp"><span id="latest">--</span><small> °C</small></div><div class="facts"><span>nastaveno <b id="setpoint">--</b></span><span>DP2 raw <b id="dp2raw">--</b></span><span>čas <b id="lasttime">--</b></span></div><div class="chips"><span class="chip" id="source">EMOS · načítám</span><span class="chip">živý sběr ~7 min · historie ~5 min</span><span class="chip">3h backfill zůstává jako pojistka</span><span class="chip">DP2 není potvrzený stav kotle</span></div></section>
 <section class="card summary"><div class="sect"><h2>Souhrn uložené historie</h2><span class="muted" id="range">—</span></div><div class="kpi"><div class="stat"><b id="min">—</b><span>minimum</span></div><div class="stat"><b id="max">—</b><span>maximum</span></div><div class="stat"><b id="delta">—</b><span>změna za poslední celý den</span></div><div class="stat"><b id="points">—</b><span>uložených bodů</span></div></div><p class="note">Lehký EMOS collector se spouští přibližně každých 7 minut. Pokud se nic nezmění, ukládá jen 30min heartbeat, aby Git nebyl zahlcený zbytečnými commity. Každé 3 hodiny zůstává plný backfill, který z cloudu doplní jemnou historii zařízení přibližně po 5 minutách a opraví případné výpadky živého sběru.</p></section>
-<section class="card chart"><div class="sect"><h2>Průběh teploty uvnitř</h2><span class="muted">zelená = uvnitř · modrá = nastavená</span></div><div class="charttools"><button data-hours="6">6 h</button><button data-hours="24" class="active">24 h</button><button data-hours="48">48 h</button><button data-hours="168">7 dní</button><button data-hours="720">30 dní</button><button id="zoomIn" title="Přiblížit">＋</button><button id="zoomOut" title="Oddálit">−</button><span class="chartset" id="chartsetnote"></span></div><svg id="chart" viewBox="0 0 1000 330" preserveAspectRatio="none"></svg><div class="note" id="chartnote">Načítám historii…</div></section>
+<section class="card chart"><div class="sect"><h2>Průběh teplot</h2><span class="muted">porovnání domu a počasí</span></div><div class="serieslegend"><button class="seriesbtn" data-series="indoor"><span class="dot" style="background:#70e2a1"></span>Uvnitř <b id="legendIndoor">—</b></button><button class="seriesbtn" data-series="outside"><span class="dot" style="background:#ff6b6b"></span>Venku <b id="legendOutside">—</b></button><button class="seriesbtn" data-series="setpoint"><span class="dot" style="background:#76b7ff"></span>Nastavená <b id="legendSetpoint">—</b></button></div><div class="charttools"><button data-hours="6">6 h</button><button data-hours="24" class="active">24 h</button><button data-hours="48">48 h</button><button data-hours="168">7 dní</button><button data-hours="720">30 dní</button><button id="zoomIn" title="Přiblížit">＋</button><button id="zoomOut" title="Oddálit">−</button><span class="chartset" id="chartsetnote"></span></div><div class="chartwrap" id="chartwrap"><svg id="chart" viewBox="0 0 1000 330" preserveAspectRatio="none"></svg><div class="charttip" id="charttip"></div></div><div class="note" id="chartnote">Načítám historii…</div></section>
 <section class="card model"><div class="sect"><h2>Tepelný model chalupy</h2><span class="muted" id="modelstatus">učí se z reality</span></div><div class="kpi"><div class="stat"><b id="modelpairs">—</b><span>30min úseků pro fit</span></div><div class="stat"><b id="coolrate">—</b><span>medián chladnutí</span></div><div class="stat"><b id="tau">—</b><span>pasivní časová konstanta τ</span></div><div class="stat"><b id="r2">—</b><span>MAE pasivního modelu</span></div></div><p class="note" id="modelnote">Model používá jen naměřenou vnitřní teplotu a venkovní pozorování. DP2 se zatím nepovažuje za stav kotle. Dřevo, slunce, otevřená okna a další tepelné zisky se budou oddělovat až podle reálných dat.</p></section>
 <section class="card model"><div class="sect"><h2>Bez topení · výhled uvnitř</h2><span class="muted" id="forecaststatus">předběžný pasivní scénář</span></div><div class="kpi"><div class="stat"><b id="f12">—</b><span>za 12 hodin</span></div><div class="stat"><b id="f24">—</b><span>za 24 hodin</span></div><div class="stat"><b id="f36">—</b><span>za 36 hodin</span></div><div class="stat"><b id="f48">—</b><span>za 48 hodin</span></div></div><p class="note" id="forecastnote">Počítá se z aktuální vnitřní teploty, pasivní odezvy chalupy a ensemble DWD + ČHMÚ + ECMWF. Nezahrnuje přitápění dřevem ani jiné mimořádné tepelné zisky.</p></section>
 </div></main><script>
@@ -25,60 +25,111 @@ async function getJsonOptional(u){try{return await getJson(u)}catch(e){return nu
 function num(v,d=1){return Number.isFinite(Number(v))?Number(v).toFixed(d):'—'}
 function fmt(ts){if(!ts)return'—';return new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(ts))}
 function dayKey(ts){return String(ts||'').slice(0,10)}
-let allIndoorPoints=[],chartWindowHours=24;
+async function getTextOptional(u){try{const r=await fetch(u,{cache:'no-store'});if(!r.ok)return null;return r.text()}catch(e){return null}}
+let allIndoorPoints=[],allOutdoorPoints=[],chartWindowHours=24;
+const seriesVisible={indoor:true,outside:true,setpoint:true};
+let chartState=null;
 function chartWindowLabel(h){if(h<24)return Math.round(h)+' h';if(h===24)return'24 h';if(h===48)return'48 h';if(h===168)return'7 dní';if(h===720)return'30 dní';return h<168?num(h/24,1)+' dne':num(h/24,0)+' dní'}
-function selectedChartPoints(){
- if(!allIndoorPoints.length)return[];
- const lastMs=new Date(allIndoorPoints[allIndoorPoints.length-1].timestamp_local).getTime(),cut=lastMs-chartWindowHours*3600000;
- return allIndoorPoints.filter(p=>new Date(p.timestamp_local).getTime()>=cut);
+function monthKey(dt,offset){const d=new Date(Date.UTC(dt.getUTCFullYear(),dt.getUTCMonth()+offset,1));return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')}
+async function loadOutdoorHistory(anchor){
+ const d=new Date(anchor||Date.now()),keys=[monthKey(d,-1),monthKey(d,0)],rows=[];
+ for(const key of keys){
+  const txt=await getTextOptional('./data/observations/dwd-sohland-06129-'+key+'.jsonl?_='+Date.now());
+  if(!txt)continue;
+  txt.split(/\r?\n/).forEach(line=>{if(!line.trim())return;try{const r=JSON.parse(line),v=Number(r.temperature_c);if(r.observed_at_utc&&Number.isFinite(v))rows.push({timestamp_local:r.observed_at_utc,outside_c:v})}catch(e){}});
+ }
+ const byTs=new Map();rows.forEach(r=>byTs.set(r.timestamp_local,r));
+ return [...byTs.values()].sort((a,b)=>new Date(a.timestamp_local)-new Date(b.timestamp_local));
 }
-function setChartWindow(hours){
- chartWindowHours=Math.max(1.5,Math.min(720,Number(hours)||24));
- document.querySelectorAll('[data-hours]').forEach(b=>b.classList.toggle('active',Number(b.dataset.hours)===chartWindowHours));
- renderSelectedChart();
+function windowBounds(){
+ const lastIndoor=allIndoorPoints.length?new Date(allIndoorPoints[allIndoorPoints.length-1].timestamp_local).getTime():Date.now();
+ return{maxT:lastIndoor,minT:lastIndoor-chartWindowHours*3600000};
 }
+function selectedIndoor(){const b=windowBounds();return allIndoorPoints.filter(p=>{const t=new Date(p.timestamp_local).getTime();return t>=b.minT&&t<=b.maxT})}
+function selectedOutdoor(){const b=windowBounds();return allOutdoorPoints.filter(p=>{const t=new Date(p.timestamp_local).getTime();return t>=b.minT&&t<=b.maxT})}
+function averageSample(points,valueKey,maxPoints=220){
+ if(points.length<=maxPoints)return points.map(p=>({...p}));
+ const size=Math.ceil(points.length/maxPoints),out=[];
+ for(let i=0;i<points.length;i+=size){const bucket=points.slice(i,i+size),vals=bucket.map(p=>Number(p[valueKey])).filter(Number.isFinite);if(!vals.length)continue;const ts=bucket.map(p=>new Date(p.timestamp_local).getTime()).filter(Number.isFinite);const row={timestamp_local:new Date(ts.reduce((a,b)=>a+b,0)/ts.length).toISOString()};row[valueKey]=vals.reduce((a,b)=>a+b,0)/vals.length;if(valueKey==='indoor_c'){const sets=bucket.map(p=>p.setpoint_c==null?NaN:Number(p.setpoint_c)).filter(Number.isFinite);row.setpoint_c=sets.length?sets[sets.length-1]:null}out.push(row)}
+ return out;
+}
+function monotonePath(coords){
+ if(!coords.length)return'';if(coords.length===1)return'M'+coords[0][0]+','+coords[0][1];
+ const n=coords.length,d=[],m=new Array(n);
+ for(let i=0;i<n-1;i++){const h=coords[i+1][0]-coords[i][0];d[i]=h?((coords[i+1][1]-coords[i][1])/h):0}
+ m[0]=d[0];m[n-1]=d[n-2];
+ for(let i=1;i<n-1;i++)m[i]=d[i-1]*d[i]<=0?0:(d[i-1]+d[i])/2;
+ for(let i=0;i<n-1;i++){if(d[i]===0){m[i]=0;m[i+1]=0;continue}const a=m[i]/d[i],b=m[i+1]/d[i],s=a*a+b*b;if(s>9){const q=3/Math.sqrt(s);m[i]=q*a*d[i];m[i+1]=q*b*d[i]}}
+ let p='M'+coords[0][0].toFixed(2)+','+coords[0][1].toFixed(2);
+ for(let i=0;i<n-1;i++){const h=coords[i+1][0]-coords[i][0],c1x=coords[i][0]+h/3,c1y=coords[i][1]+m[i]*h/3,c2x=coords[i+1][0]-h/3,c2y=coords[i+1][1]-m[i+1]*h/3;p+=' C'+c1x.toFixed(2)+','+c1y.toFixed(2)+' '+c2x.toFixed(2)+','+c2y.toFixed(2)+' '+coords[i+1][0].toFixed(2)+','+coords[i+1][1].toFixed(2)}
+ return p;
+}
+function axisRange(vals,minSpan=.8){if(!vals.length)return null;const lo=Math.min(...vals),hi=Math.max(...vals),span=Math.max(minSpan,hi-lo),pad=Math.max(.25,span*.14);return{min:Math.floor((lo-pad)*2)/2,max:Math.ceil((hi+pad)*2)/2}}
+function axisTicks(range,count=4){if(!range)return[];const step=(range.max-range.min)/count;return Array.from({length:count+1},(_,i)=>range.min+i*step)}
+function fmtAxis(ms){const opts=chartWindowHours<=48?{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}:{day:'2-digit',month:'2-digit'};return new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,...opts}).format(new Date(ms))}
+function setChartWindow(hours){chartWindowHours=Math.max(1.5,Math.min(720,Number(hours)||24));document.querySelectorAll('[data-hours]').forEach(b=>b.classList.toggle('active',Number(b.dataset.hours)===chartWindowHours));renderSelectedChart()}
 function renderSelectedChart(){
- const shown=selectedChartPoints();renderChart(shown);
- el('chartnote').textContent='Zobrazeno '+chartWindowLabel(chartWindowHours)+' · '+shown.length.toLocaleString('cs-CZ')+' bodů. Živý sběr běží přibližně po 7 minutách; 3h backfill doplňuje jemnou cloud historii a výpadky.';
+ const inside=selectedIndoor(),outside=selectedOutdoor();renderChart(inside,outside);
+ const sampled=inside.length>220||outside.length>220?' · křivka je pro čitelnost pixelově zjemněná':'';
+ el('chartnote').textContent='Zobrazeno '+chartWindowLabel(chartWindowHours)+' · uvnitř '+inside.length.toLocaleString('cs-CZ')+' bodů · venku '+outside.length.toLocaleString('cs-CZ')+' bodů (DWD Sohland/Spree)'+sampled+'. Přesné hodnoty ukáže kurzor.';
 }
-function renderChart(points){
- const svg=el('chart'),W=1000,H=330,pL=54,pR=20,pT=20,pB=34;
- const vals=points.map(x=>Number(x.indoor_c)).filter(Number.isFinite),sets=points.map(x=>x.setpoint_c==null?NaN:Number(x.setpoint_c)).filter(Number.isFinite);
- if(!vals.length){svg.innerHTML='';el('chartsetnote').textContent='';return}
- const vmin=Math.min.apply(null,vals),vmax=Math.max.apply(null,vals),closeSets=sets.filter(v=>v>=vmin-2&&v<=vmax+2),scaleVals=vals.concat(closeSets);
- const rawMin=Math.min.apply(null,scaleVals),rawMax=Math.max.apply(null,scaleVals),span=Math.max(.6,rawMax-rawMin),pad=Math.max(.25,span*.15);
- const mn=Math.floor((rawMin-pad)*2)/2,mx=Math.ceil((rawMax+pad)*2)/2;
- const times=points.map(r=>new Date(r.timestamp_local).getTime()),minT=Math.min.apply(null,times),maxT=Math.max.apply(null,times);
- const x=i=>pL+(times[i]-minT)*(W-pL-pR)/Math.max(1,maxT-minT),y=v=>H-pB-(v-mn)*(H-pT-pB)/(mx-mn||1);
- let out='',step=(mx-mn)<=3?.5:1;
- for(let v=mn;v<=mx+.001;v+=step)out+='<line x1="'+pL+'" y1="'+y(v)+'" x2="'+(W-pR)+'" y2="'+y(v)+'" stroke="#1f3a44"/><text x="5" y="'+(y(v)+4)+'" fill="#94adb7" font-size="12">'+num(v,1)+'°</text>';
- const p1=points.map((r,i)=>x(i)+','+y(Number(r.indoor_c))).join(' ');
- out+='<polyline points="'+p1+'" fill="none" stroke="#70e2a1" stroke-width="3" vector-effect="non-scaling-stroke"/>';
- let setSeg=[],setPaths=[];
- points.forEach((r,i)=>{const v=r.setpoint_c==null?NaN:Number(r.setpoint_c);if(Number.isFinite(v)&&v>=mn&&v<=mx)setSeg.push(x(i)+','+y(v));else if(setSeg.length){setPaths.push(setSeg);setSeg=[]}});
- if(setSeg.length)setPaths.push(setSeg);
- setPaths.filter(s=>s.length>1).forEach(s=>out+='<polyline points="'+s.join(' ')+'" fill="none" stroke="#76b7ff" stroke-width="2" vector-effect="non-scaling-stroke"/>');
- const latestSet=sets.length?sets[sets.length-1]:NaN,offScale=Number.isFinite(latestSet)&&(latestSet<mn||latestSet>mx);
- el('chartsetnote').textContent=offScale?'nastavená '+num(latestSet)+' °C · mimo detailní osu':'';
- const marks=[0,Math.floor((points.length-1)/2),points.length-1];
- marks.forEach(i=>{const t=(points[i]&&points[i].timestamp_local||'').slice(5,16).replace('T',' ');const a=i===0?'start':i===points.length-1?'end':'middle';out+='<text x="'+x(i)+'" y="'+(H-8)+'" fill="#94adb7" font-size="11" text-anchor="'+a+'">'+t+'</text>'});
- svg.innerHTML=out;
+function renderChart(indoorRaw,outdoorRaw){
+ const svg=el('chart'),W=1000,H=330,pL=54,pR=seriesVisible.outside?58:20,pT=18,pB=36,b=windowBounds(),plotW=W-pL-pR,plotH=H-pT-pB;
+ const indoor=averageSample(indoorRaw,'indoor_c'),outside=averageSample(outdoorRaw,'outside_c');
+ const indoorVals=indoorRaw.map(x=>Number(x.indoor_c)).filter(Number.isFinite),outsideVals=outdoorRaw.map(x=>Number(x.outside_c)).filter(Number.isFinite),setVals=indoorRaw.map(x=>x.setpoint_c==null?NaN:Number(x.setpoint_c)).filter(Number.isFinite);
+ if(!indoorVals.length&&!outsideVals.length){svg.innerHTML='';return}
+ const leftRange=axisRange(indoorVals.length?indoorVals:setVals),rightRange=axisRange(outsideVals,2);
+ const x=t=>pL+(t-b.minT)*plotW/Math.max(1,b.maxT-b.minT),yL=v=>pT+(leftRange.max-v)*plotH/(leftRange.max-leftRange.min||1),yR=v=>pT+(rightRange.max-v)*plotH/(rightRange.max-rightRange.min||1);
+ let out='<defs><linearGradient id="ig" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#70e2a1" stop-opacity=".16"/><stop offset="100%" stop-color="#70e2a1" stop-opacity="0"/></linearGradient></defs>';
+ const ticks=leftRange?axisTicks(leftRange):axisTicks(rightRange);
+ ticks.forEach((v,i)=>{const yy=leftRange?yL(v):yR(v);out+='<line x1="'+pL+'" y1="'+yy+'" x2="'+(W-pR)+'" y2="'+yy+'" stroke="#17313a" stroke-width="1"/>';if(leftRange)out+='<text x="4" y="'+(yy+4)+'" fill="#8ca8b2" font-size="11">'+num(v,1)+'°</text>'});
+ if(seriesVisible.outside&&rightRange)axisTicks(rightRange).forEach(v=>{const yy=yR(v);out+='<text x="'+(W-3)+'" y="'+(yy+4)+'" fill="#d98a8a" font-size="11" text-anchor="end">'+num(v,1)+'°</text>'});
+ const marks=[b.minT,(b.minT+b.maxT)/2,b.maxT];marks.forEach((t,i)=>{const a=i===0?'start':i===2?'end':'middle';out+='<text x="'+x(t)+'" y="'+(H-8)+'" fill="#8ca8b2" font-size="11" text-anchor="'+a+'">'+fmtAxis(t)+'</text>'});
+ if(seriesVisible.indoor&&leftRange&&indoor.length){
+  const coords=indoor.map(r=>[x(new Date(r.timestamp_local).getTime()),yL(Number(r.indoor_c))]),path=monotonePath(coords),area=path+' L'+coords[coords.length-1][0].toFixed(2)+','+(H-pB)+' L'+coords[0][0].toFixed(2)+','+(H-pB)+' Z';
+  out+='<path d="'+area+'" fill="url(#ig)"/><path d="'+path+'" fill="none" stroke="#70e2a1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>';
+ }
+ if(seriesVisible.outside&&rightRange&&outside.length){const coords=outside.map(r=>[x(new Date(r.timestamp_local).getTime()),yR(Number(r.outside_c))]);out+='<path d="'+monotonePath(coords)+'" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'}
+ const latestSet=setVals.length?setVals[setVals.length-1]:NaN,offScale=leftRange&&Number.isFinite(latestSet)&&(latestSet<leftRange.min||latestSet>leftRange.max);
+ if(seriesVisible.setpoint&&leftRange&&!offScale&&setVals.length){const coords=indoorRaw.filter(r=>r.setpoint_c!=null&&Number.isFinite(Number(r.setpoint_c))).map(r=>[x(new Date(r.timestamp_local).getTime()),yL(Number(r.setpoint_c))]);if(coords.length>1)out+='<path d="'+monotonePath(coords)+'" fill="none" stroke="#76b7ff" stroke-width="1.8" stroke-dasharray="7 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'}
+ el('chartsetnote').textContent=seriesVisible.setpoint&&offScale?'nastavená '+num(latestSet)+' °C · mimo detailní osu':'';
+ svg.innerHTML=out;chartState={W,H,pL,pR,minT:b.minT,maxT:b.maxT};
+}
+function nearest(points,target,key,maxGapMs=3600000){
+ if(!points.length)return null;let lo=0,hi=points.length-1;while(lo<hi){const mid=Math.floor((lo+hi)/2);if(new Date(points[mid].timestamp_local).getTime()<target)lo=mid+1;else hi=mid}const c=[points[lo],points[Math.max(0,lo-1)]].filter(Boolean).sort((a,b)=>Math.abs(new Date(a.timestamp_local)-target)-Math.abs(new Date(b.timestamp_local)-target))[0];return c&&Math.abs(new Date(c.timestamp_local).getTime()-target)<=maxGapMs?c:null
+}
+function updateTooltip(ev){
+ if(!chartState)return;const wrap=el('chartwrap'),rect=wrap.getBoundingClientRect(),px=ev.clientX-rect.left,scaled=px/rect.width*chartState.W;if(scaled<chartState.pL||scaled>chartState.W-chartState.pR){el('charttip').style.display='none';return}
+ const target=chartState.minT+(scaled-chartState.pL)/(chartState.W-chartState.pL-chartState.pR)*(chartState.maxT-chartState.minT),i=nearest(allIndoorPoints,target,'indoor_c',45*60000),o=nearest(allOutdoorPoints,target,'outside_c',75*60000);
+ if(!i&&!o){el('charttip').style.display='none';return}
+ const stamp=i?.timestamp_local||o?.timestamp_local,tip=el('charttip'),rows=[];
+ if(seriesVisible.indoor&&i)rows.push('<div class="v in"><span>Uvnitř</span><b>'+num(i.indoor_c)+' °C</b></div>');
+ if(seriesVisible.outside&&o)rows.push('<div class="v out"><span>Venku</span><b>'+num(o.outside_c)+' °C</b></div>');
+ if(seriesVisible.setpoint&&i&&i.setpoint_c!=null)rows.push('<div class="v set"><span>Nastavená</span><b>'+num(i.setpoint_c)+' °C</b></div>');
+ tip.innerHTML='<div class="t">'+fmt(stamp)+'</div>'+rows.join('');tip.style.display='block';const tw=tip.offsetWidth,th=tip.offsetHeight;tip.style.left=Math.max(6,Math.min(rect.width-tw-6,px+14))+'px';tip.style.top=Math.max(6,Math.min(rect.height-th-6,ev.clientY-rect.top-th/2))+'px';
 }
 document.querySelectorAll('[data-hours]').forEach(b=>b.addEventListener('click',()=>setChartWindow(Number(b.dataset.hours))));
-el('zoomIn').addEventListener('click',()=>setChartWindow(chartWindowHours/2));
-el('zoomOut').addEventListener('click',()=>setChartWindow(chartWindowHours*2));
+document.querySelectorAll('[data-series]').forEach(b=>b.addEventListener('click',()=>{const key=b.dataset.series;seriesVisible[key]=!seriesVisible[key];b.classList.toggle('off',!seriesVisible[key]);renderSelectedChart()}));
+el('zoomIn').addEventListener('click',()=>setChartWindow(chartWindowHours/2));el('zoomOut').addEventListener('click',()=>setChartWindow(chartWindowHours*2));
+el('chartwrap').addEventListener('pointermove',updateTooltip);el('chartwrap').addEventListener('pointerleave',()=>el('charttip').style.display='none');
 async function load(){
  try{
   const data=await Promise.all([getJson('./data/indoor-history.json?_='+Date.now()),getJson('./data/indoor-latest.json?_='+Date.now()),getJsonOptional('./data/indoor-thermal-model.json?_='+Date.now())]);
   const hist=data[0],latest=data[1],model=data[2],pts=Array.isArray(hist.points)?hist.points:[];
+  allIndoorPoints=pts.slice().sort((a,b)=>new Date(a.timestamp_local)-new Date(b.timestamp_local));
+  allOutdoorPoints=await loadOutdoorHistory(latest.last_timestamp||Date.now());
+  const latestOutdoor=allOutdoorPoints.length?allOutdoorPoints[allOutdoorPoints.length-1]:null;
   el('latest').textContent=num(latest.latest_indoor_c);el('setpoint').textContent=latest.latest_setpoint_c!=null?num(latest.latest_setpoint_c)+' °C':'—';el('lasttime').textContent=fmt(latest.last_timestamp);
+  el('legendIndoor').textContent=latest.latest_indoor_c!=null?num(latest.latest_indoor_c)+' °C':'—';
+  el('legendSetpoint').textContent=latest.latest_setpoint_c!=null?num(latest.latest_setpoint_c)+' °C':'—';
+  el('legendOutside').textContent=latestOutdoor?num(latestOutdoor.outside_c)+' °C':'—';
   const hs=latest.dp2_raw;el('dp2raw').textContent=hs==null?'—':String(hs);
   el('points').textContent=pts.length.toLocaleString('cs-CZ');el('source').textContent='EMOS · '+(hist.source_quality==='display_series'?'grafový backfill':hist.source_quality==='mixed'?'cloud + backfill':'cloud');
   if(pts.length){
    const vals=pts.map(x=>Number(x.indoor_c)).filter(Number.isFinite);el('min').textContent=num(Math.min.apply(null,vals))+' °C';el('max').textContent=num(Math.max.apply(null,vals))+' °C';
    const lastDay=dayKey(pts[pts.length-1].timestamp_local),day=pts.filter(x=>dayKey(x.timestamp_local)===lastDay),d=day.length>1?Number(day[day.length-1].indoor_c)-Number(day[0].indoor_c):NaN;
    el('delta').textContent=Number.isFinite(d)?(d>0?'+':'')+num(d)+' °C':'—';el('range').textContent=dayKey(pts[0].timestamp_local)+' → '+lastDay;
-   allIndoorPoints=pts.slice().sort((a,b)=>new Date(a.timestamp_local)-new Date(b.timestamp_local));renderSelectedChart();
+   renderSelectedChart();
   }
   if(model){
    el('modelpairs').textContent=Number(model.fit_samples||0).toLocaleString('cs-CZ');
