@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# GitHub Actions: this collector is intentionally triggered by the shared 3-hour weather workflow.
 from __future__ import annotations
 
 import hashlib
