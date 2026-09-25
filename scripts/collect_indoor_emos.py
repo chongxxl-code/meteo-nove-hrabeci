@@ -12,7 +12,7 @@ import unicodedata
 import urllib.parse
 import urllib.request
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -242,6 +242,143 @@ def load_json(path: Path, default):
         return default
 
 
+def history_row_local_timestamp(row):
+    try:
+        raw = float(row.get("timeStamp"))
+    except (TypeError, ValueError, AttributeError):
+        return None
+    if raw > 1_000_000_000_000:
+        raw /= 1000.0
+    return datetime.fromtimestamp(raw, timezone.utc).astimezone(TZ).replace(microsecond=0).isoformat()
+
+
+def fetch_cloud_history(api, dev_id, home_id):
+    end_ms = int(time.time() * 1000)
+    start_ms = end_ms - 12 * 60 * 60 * 1000
+    payload = {
+        "devId": dev_id,
+        "dpIds": "2,3,24,106",
+        "offset": 0,
+        "limit": 999,
+        "startTime": start_ms,
+        "endTime": end_ms,
+        "sortType": "ASC",
+    }
+    attempts = []
+    for api_name in (
+        "tuya.m.smart.operate.all.log",
+        "thing.m.smart.operate.all.log",
+        "smartlife.m.smart.operate.all.log",
+    ):
+        try:
+            extra = {"sp": "1"}
+            if home_id is not None:
+                extra["gid"] = home_id
+            response = api.request(
+                api_name,
+                "1.0",
+                payload,
+                sid=api.sid,
+                extra=extra,
+            )
+            if response.get("success"):
+                result = response.get("result") or {}
+                rows = result.get("dps") if isinstance(result, dict) else None
+                if isinstance(rows, list):
+                    return rows, {
+                        "ok": True,
+                        "api": api_name,
+                        "rows": len(rows),
+                        "total": result.get("total"),
+                        "has_next": bool(result.get("hasNext")),
+                        "window_hours": 12,
+                    }
+                attempts.append({"api": api_name, "error": "success_without_dps"})
+            else:
+                attempts.append({
+                    "api": api_name,
+                    "error_code": response.get("errorCode") or response.get("code"),
+                    "error": response.get("errorMsg") or response.get("msg"),
+                })
+        except Exception as exc:
+            attempts.append({
+                "api": api_name,
+                "error_type": type(exc).__name__,
+                "error": str(exc)[:180],
+            })
+    return [], {"ok": False, "attempts": attempts, "window_hours": 12}
+
+
+def append_raw_history_events(archive_dir: Path, now: datetime, rows):
+    path = archive_dir / f"events-{now:%Y-%m}.jsonl"
+    existing = set()
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            try:
+                item = json.loads(line)
+                existing.add((item.get("timeStamp"), item.get("dpId"), str(item.get("value"))))
+            except Exception:
+                continue
+    new_items = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        key = (row.get("timeStamp"), row.get("dpId"), str(row.get("value")))
+        if key in existing:
+            continue
+        existing.add(key)
+        item = {
+            "timeStamp": row.get("timeStamp"),
+            "timeStr": row.get("timeStr"),
+            "timestamp_local": history_row_local_timestamp(row),
+            "dpId": row.get("dpId"),
+            "value": row.get("value"),
+            "source": "EMOS/Tuya cloud history",
+        }
+        new_items.append(item)
+    if new_items:
+        with path.open("a", encoding="utf-8") as handle:
+            for item in new_items:
+                handle.write(json.dumps(item, ensure_ascii=False, separators=(",", ":")) + "\n")
+    return path, len(new_items)
+
+
+def history_temperature_points(rows, current_setpoint, current_dp2):
+    state_setpoint = current_setpoint
+    state_dp2 = current_dp2
+    points = []
+    def sort_key(row):
+        try:
+            return float(row.get("timeStamp") or 0)
+        except Exception:
+            return 0
+    for row in sorted((r for r in rows if isinstance(r, dict)), key=sort_key):
+        try:
+            dp_id = int(row.get("dpId"))
+        except (TypeError, ValueError):
+            continue
+        value = row.get("value")
+        if dp_id == 3:
+            parsed = temp_c(value)
+            if parsed is not None:
+                state_setpoint = parsed
+        elif dp_id == 2:
+            state_dp2 = value
+        elif dp_id == 24:
+            indoor = temp_c(value)
+            timestamp = history_row_local_timestamp(row)
+            if indoor is None or not timestamp:
+                continue
+            points.append({
+                "timestamp_local": timestamp,
+                "indoor_c": indoor,
+                "setpoint_c": state_setpoint,
+                "dp2_raw": state_dp2,
+                "source": "EMOS/Tuya cloud history",
+            })
+    return points
+
+
 def main():
     required = {
         "EMOS_USERNAME": env("EMOS_USERNAME"),
@@ -313,6 +450,8 @@ def main():
     if indoor is None:
         raise RuntimeError("DP24 current temperature missing from EMOS cloud device record")
 
+    history_rows, history_status = fetch_cloud_history(api, dev_id, target_home_id)
+
     now = datetime.now(TZ).replace(microsecond=0)
     timestamp = now.isoformat()
     point = {
@@ -330,6 +469,25 @@ def main():
     with archive_file.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(point, ensure_ascii=False, separators=(",", ":")) + "\n")
 
+    events_file, new_event_count = append_raw_history_events(archive_dir, now, history_rows)
+    cloud_points = history_temperature_points(
+        history_rows,
+        setpoint,
+        get_dp(dps, 2),
+    )
+    history_status.update({
+        "new_events_saved": new_event_count,
+        "temperature_points": len(cloud_points),
+        "events_file": str(events_file.relative_to(ROOT)),
+    })
+    (DATA / "indoor-history-status.json").write_text(
+        json.dumps({
+            "generated_at": now.isoformat(),
+            **history_status,
+        }, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
     history_path = DATA / "indoor-history.json"
     history = load_json(history_path, {"points": []})
     points = history.get("points") if isinstance(history.get("points"), list) else []
@@ -338,14 +496,16 @@ def main():
         for item in points
         if isinstance(item, dict) and item.get("timestamp_local")
     }
+    for cloud_point in cloud_points:
+        by_ts[str(cloud_point["timestamp_local"])] = cloud_point
     by_ts[timestamp] = point
     merged = [by_ts[key] for key in sorted(by_ts)]
 
     history.update({
         "generated_at": now.isoformat(),
         "resolution_minutes": None,
-        "source": "EMOS GoSmart / Tuya cloud + display backfill",
-        "source_quality": "mixed",
+        "source": "EMOS GoSmart / Tuya cloud history + snapshots + display backfill",
+        "source_quality": "cloud_history" if history_status.get("ok") else "mixed",
         "points": merged,
     })
     history_path.write_text(
@@ -374,6 +534,9 @@ def main():
         "setpoint_c": setpoint,
         "points": len(merged),
         "archive": str(archive_file.relative_to(ROOT)),
+        "history_ok": bool(history_status.get("ok")),
+        "history_rows": len(history_rows),
+        "history_temperature_points": len(cloud_points),
     }, ensure_ascii=False))
     return 0
 
