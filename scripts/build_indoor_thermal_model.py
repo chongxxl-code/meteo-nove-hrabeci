@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+import math
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from statistics import median
 from zoneinfo import ZoneInfo
@@ -218,6 +219,134 @@ def passive_fit(samples):
     }
 
 
+
+def load_latest_forecast_snapshot():
+    status = load_json(DATA / "status.json", {})
+    archive_rel = status.get("archive_file")
+    if not archive_rel:
+        return None
+    path = ROOT / archive_rel
+    if not path.exists():
+        return None
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except Exception:
+        return None
+    for line in reversed(lines):
+        try:
+            item = json.loads(line)
+            if isinstance(item, dict) and isinstance(item.get("models"), dict):
+                return item
+        except Exception:
+            continue
+    return None
+
+
+def parse_forecast_local(value):
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        dt = datetime.fromisoformat(value)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=TZ)
+        return dt.astimezone(TZ)
+    except ValueError:
+        return None
+
+
+def build_passive_forecast(latest, fit):
+    snapshot = load_latest_forecast_snapshot()
+    if not snapshot or not fit:
+        return None
+    start_temp = as_float(latest.get("latest_indoor_c"))
+    start_dt = parse_dt(latest.get("last_timestamp") or latest.get("generated_at"))
+    if start_temp is None or start_dt is None:
+        return None
+    start_local = start_dt.astimezone(TZ)
+
+    k_values = [
+        as_float(fit.get("coupling_p25_per_h")),
+        as_float(fit.get("coupling_per_h")),
+        as_float(fit.get("coupling_p75_per_h")),
+    ]
+    k_values = sorted({k for k in k_values if k is not None and k > 0})
+    if not k_values:
+        return None
+
+    scenarios_by_time = {}
+    outside_by_time = {}
+    used_models = []
+    for model_name, payload in (snapshot.get("models") or {}).items():
+        if not isinstance(payload, dict):
+            continue
+        times = payload.get("time") or []
+        temps = payload.get("temperature_2m") or []
+        series = []
+        for raw_time, raw_temp in zip(times, temps):
+            dt = parse_forecast_local(raw_time)
+            temp = as_float(raw_temp)
+            if dt is None or temp is None or dt <= start_local:
+                continue
+            series.append((dt, temp))
+        if not series:
+            continue
+        used_models.append(model_name)
+        for dt, temp in series:
+            outside_by_time.setdefault(dt.isoformat(), []).append(temp)
+
+        for coupling in k_values:
+            tin = start_temp
+            prev_dt = start_local
+            for dt, tout in series:
+                dt_h = (dt - prev_dt).total_seconds() / 3600.0
+                if dt_h <= 0 or dt_h > 3.0:
+                    prev_dt = dt
+                    continue
+                decay = math.exp(-coupling * dt_h)
+                tin = tout + (tin - tout) * decay
+                scenarios_by_time.setdefault(dt.isoformat(), []).append(tin)
+                prev_dt = dt
+
+    if not scenarios_by_time:
+        return None
+
+    horizons = []
+    keys = sorted(scenarios_by_time, key=lambda x: parse_forecast_local(x))
+    for hours in (12, 24, 36, 48):
+        target = start_local + timedelta(hours=hours)
+        key = min(keys, key=lambda x: abs((parse_forecast_local(x) - target).total_seconds()))
+        dt = parse_forecast_local(key)
+        if abs((dt - target).total_seconds()) > 5400:
+            continue
+        vals = scenarios_by_time[key]
+        outside_vals = outside_by_time.get(key) or []
+        horizons.append({
+            "hours": hours,
+            "timestamp_local": key,
+            "inside_median_c": rounded(median(vals), 1),
+            "inside_q25_c": rounded(q(vals, 0.25), 1),
+            "inside_q75_c": rounded(q(vals, 0.75), 1),
+            "inside_min_scenario_c": rounded(min(vals), 1),
+            "inside_max_scenario_c": rounded(max(vals), 1),
+            "outside_model_median_c": rounded(median(outside_vals), 1) if outside_vals else None,
+            "scenario_count": len(vals),
+        })
+
+    return {
+        "mode": "no_active_heating",
+        "start_timestamp_local": start_local.isoformat(),
+        "start_inside_c": start_temp,
+        "weather_models": sorted(set(used_models)),
+        "coupling_candidates_per_h": [rounded(k, 5) for k in k_values],
+        "horizons": horizons,
+        "range_note": "q25-q75 reflects weather-model and fitted-coupling spread only; it is not a full prediction interval",
+        "assumptions": [
+            "No active central heating or wood-stove heat is added.",
+            "No major door/window ventilation or unusual internal heat gain occurs.",
+            "Passive thermal response remains similar to the learned nighttime behaviour.",
+        ],
+    }
+
 def main():
     indoor, indoor_payload = load_indoor_bins()
     weather, chmi_status, chmi_paths, dwd_paths, source_counts = weather_bins()
@@ -257,8 +386,10 @@ def main():
             "note": "passive nighttime loss estimate; not a heating-control command",
         }
 
+    passive_forecast = build_passive_forecast(latest, fit)
+
     output = {
-        "schema": 2,
+        "schema": 3,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
@@ -292,6 +423,7 @@ def main():
         },
         "fit": fit,
         "current_passive_estimate": current,
+        "passive_forecast": passive_forecast,
         "filters": {
             "bucket_minutes": 30,
             "window_hours": WINDOW_HOURS,
@@ -315,13 +447,14 @@ def main():
     )
     print(json.dumps({
         "ok": True,
-        "schema": 2,
+        "schema": 3,
         "status": status,
         "fit_basis": output["fit_basis"],
         "fit_samples": len(fit_basis),
         "coverage_days": output["coverage_days"],
         "fit": fit,
         "current": current,
+        "passive_forecast_horizons": None if passive_forecast is None else passive_forecast.get("horizons"),
     }, ensure_ascii=False))
 
 

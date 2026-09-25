@@ -17,6 +17,7 @@ svg{width:100%;height:330px;margin-top:10px}.note{font-size:12px;color:var(--mu)
 <section class="card summary"><div class="sect"><h2>Souhrn uložené historie</h2><span class="muted" id="range">—</span></div><div class="kpi"><div class="stat"><b id="min">—</b><span>minimum</span></div><div class="stat"><b id="max">—</b><span>maximum</span></div><div class="stat"><b id="delta">—</b><span>změna za poslední celý den</span></div><div class="stat"><b id="points">—</b><span>uložených bodů</span></div></div><p class="note">Každé 3 hodiny se Meteo přihlásí přímo do EMOS/Tuya cloudu a stáhne překryvnou historii. Běžná teplotní data přicházejí zhruba po 5 minutách; při prvním běhu nebo delším výpadku se collector vrací až 7 dní zpět. Původní 15min grafová řada zůstává jen jako starší referenční backfill.</p></section>
 <section class="card chart"><div class="sect"><h2>Průběh teploty uvnitř</h2><span class="muted">zelená = uvnitř · modrá = nastavená</span></div><svg id="chart" viewBox="0 0 1000 330" preserveAspectRatio="none"></svg><div class="note" id="chartnote">Načítám historii…</div></section>
 <section class="card model"><div class="sect"><h2>Tepelný model chalupy</h2><span class="muted" id="modelstatus">učí se z reality</span></div><div class="kpi"><div class="stat"><b id="modelpairs">—</b><span>30min úseků pro fit</span></div><div class="stat"><b id="coolrate">—</b><span>medián chladnutí</span></div><div class="stat"><b id="tau">—</b><span>pasivní časová konstanta τ</span></div><div class="stat"><b id="r2">—</b><span>MAE pasivního modelu</span></div></div><p class="note" id="modelnote">Model používá jen naměřenou vnitřní teplotu a venkovní pozorování. DP2 se zatím nepovažuje za stav kotle. Dřevo, slunce, otevřená okna a další tepelné zisky se budou oddělovat až podle reálných dat.</p></section>
+<section class="card model"><div class="sect"><h2>Bez topení · výhled uvnitř</h2><span class="muted" id="forecaststatus">předběžný pasivní scénář</span></div><div class="kpi"><div class="stat"><b id="f12">—</b><span>za 12 hodin</span></div><div class="stat"><b id="f24">—</b><span>za 24 hodin</span></div><div class="stat"><b id="f36">—</b><span>za 36 hodin</span></div><div class="stat"><b id="f48">—</b><span>za 48 hodin</span></div></div><p class="note" id="forecastnote">Počítá se z aktuální vnitřní teploty, pasivní odezvy chalupy a ensemble DWD + ČHMÚ + ECMWF. Nezahrnuje přitápění dřevem ani jiné mimořádné tepelné zisky.</p></section>
 </div></main><script>
 const el=id=>document.getElementById(id),TZ='Europe/Prague';
 async function getJson(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw Error(r.status);return r.json()}
@@ -62,7 +63,15 @@ async function load(){
    el('r2').textContent=fit.mae_c_per_h==null?'—':num(fit.mae_c_per_h,2)+' °C/h';
    el('modelstatus').textContent=model.status==='preliminary_learning'?'předběžný · stále se učí':model.status==='early_learning'?'raná fáze učení':'zatím málo dat';
    const cp=model.current_passive_estimate;
-   el('modelnote').textContent='DP2 není použit jako stav kotle. Model má '+num(model.coverage_days,1)+' dne dat z interiéru + ČHMÚ.'+(cp&&cp.passive_fit_rate_c_per_h!=null?' Při aktuálním rozdílu uvnitř/venku dává fit '+num(cp.passive_fit_rate_c_per_h,2)+' °C/h; jde jen o pozorovací odhad, ne povel k topení.':'')+' Dřevo, slunce, otevřená okna a další tepelné zisky zatím nejsou samostatně měřené.';
+   el('modelnote').textContent='DP2 není použit jako stav kotle. Model má '+num(model.coverage_days,1)+' dne dat; historická venkovní teplota preferuje DWD Sohland/Spree.'+(cp&&cp.passive_fit_rate_c_per_h!=null?' Při aktuálním rozdílu uvnitř/venku dává pasivní odhad '+num(cp.passive_fit_rate_c_per_h,2)+' °C/h; nejde o povel k topení.':'')+' Dřevo, otevřená okna a další tepelné zisky zatím nejsou samostatně měřené.';
+   const pf=model.passive_forecast;
+   if(pf&&Array.isArray(pf.horizons)){
+    const byH={};pf.horizons.forEach(x=>byH[x.hours]=x);
+    [12,24,36,48].forEach(h=>{const x=byH[h],node=el('f'+h);if(x&&node)node.textContent=num(x.inside_median_c,1)+' °C'});
+    const h48=byH[48],models=(pf.weather_models||[]).map(x=>String(x).toUpperCase()).join(' + ');
+    el('forecaststatus').textContent='bez aktivního topení · '+(models||'ensemble');
+    el('forecastnote').textContent=(h48?'48h scénář: '+num(h48.inside_q25_c,1)+' až '+num(h48.inside_q75_c,1)+' °C (střed '+num(h48.inside_median_c,1)+' °C). ':'')+'Rozpětí zachycuje jen rozdíly modelů počasí a naučené pasivní odezvy; není to plný interval nejistoty. Předpoklad: bez kotle, kamen a výrazného větrání.';
+   }
   }
  }catch(e){el('chartnote').textContent='Vnitřní data se zatím nepodařilo načíst.'}
 }
