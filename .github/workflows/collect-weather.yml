@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/collect_weather.py'
+      - 'scripts/collect_indoor_emos.py'
       - 'scripts/collect_chmi.py'
       - 'scripts/collect_dwd_sohland.py'
       - 'scripts/build_radar_nowcast.py'
@@ -48,6 +49,16 @@ jobs:
         run: python scripts/apply_health_ui.py
       - name: Collect Nové Hraběcí forecast snapshot
         run: python scripts/collect_weather.py
+      - name: Collect EMOS indoor cloud snapshot
+        continue-on-error: true
+        env:
+          EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}
+          EMOS_PASSWORD: ${{ secrets.EMOS_PASSWORD }}
+          EMOS_APP_ID: ${{ secrets.EMOS_APP_ID }}
+          EMOS_APP_SECRET: ${{ secrets.EMOS_APP_SECRET }}
+          EMOS_BMP_KEY: ${{ secrets.EMOS_BMP_KEY }}
+          EMOS_CERT_SHA256: ${{ secrets.EMOS_CERT_SHA256 }}
+        run: python scripts/collect_indoor_emos.py
       - name: Fallback collect CHMI observations
         run: python scripts/collect_chmi.py
       - name: Fallback collect DWD Sohland observations
@@ -72,6 +83,13 @@ jobs:
       - name: Build collector health status
         run: python scripts/build_health_status.py
       - name: Commit collected forecast, observations and health data
+        env:
+          EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}
+          EMOS_PASSWORD: ${{ secrets.EMOS_PASSWORD }}
+          EMOS_APP_ID: ${{ secrets.EMOS_APP_ID }}
+          EMOS_APP_SECRET: ${{ secrets.EMOS_APP_SECRET }}
+          EMOS_BMP_KEY: ${{ secrets.EMOS_BMP_KEY }}
+          EMOS_CERT_SHA256: ${{ secrets.EMOS_CERT_SHA256 }}
         run: |
           set -e
           git config user.name "github-actions[bot]"
@@ -80,6 +98,7 @@ jobs:
           rebuild_data() {
             python scripts/apply_health_ui.py
             python scripts/collect_weather.py
+            python scripts/collect_indoor_emos.py || true
             python scripts/collect_chmi.py
             python scripts/collect_dwd_sohland.py
             python scripts/build_radar_nowcast.py
