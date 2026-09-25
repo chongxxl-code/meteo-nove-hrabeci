@@ -267,6 +267,7 @@ def main():
     api.login()
 
     target = None
+    target_home_id = None
     target_norm = normalize_name(TARGET)
     for home in api.homes():
         home_id = home.get("homeId") or home.get("gid") or home.get("id")
@@ -278,6 +279,7 @@ def main():
         for device in devices if isinstance(devices, list) else []:
             if target_norm in normalize_name(device.get("name")):
                 target = device
+                target_home_id = home_id
                 break
         if target:
             break
@@ -285,7 +287,26 @@ def main():
     if not target:
         raise RuntimeError("EMOS target device not found")
 
-    dps = target.get("dps") or {}
+    dev_id = target.get("devId") or target.get("id")
+    if not dev_id:
+        raise RuntimeError("EMOS target device has no devId")
+
+    detail_payload = {"devId": dev_id}
+    if target_home_id is not None:
+        detail_payload["gid"] = target_home_id
+
+    detail_response = api.request(
+        "thing.m.device.get",
+        "4.1",
+        detail_payload,
+        sid=api.sid,
+        extra={"gid": target_home_id} if target_home_id is not None else None,
+    )
+    detail = api.checked(detail_response, "device detail").get("result") or {}
+    if not isinstance(detail, dict):
+        detail = {}
+
+    dps = detail.get("dps") or target.get("dps") or {}
     indoor = temp_c(get_dp(dps, 24))
     setpoint = temp_c(get_dp(dps, 3))
     if indoor is None:
