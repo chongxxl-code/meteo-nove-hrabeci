@@ -13,13 +13,14 @@ main{max-width:1160px;margin:auto;padding:20px}a{color:var(--a)}.top{display:fle
 .stat{background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:11px}.stat b{display:block;font-size:19px}.stat span{font-size:11px;color:var(--mu)}.sect{display:flex;justify-content:space-between;gap:10px;align-items:center}.sect h2{font-size:18px;margin:0}
 svg{width:100%;height:330px;margin-top:10px}.note{font-size:12px;color:var(--mu);line-height:1.55;margin-top:10px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.chip{border:1px solid var(--line);background:var(--p2);border-radius:999px;padding:7px 10px;color:var(--mu);font-size:12px}
 @media(max-width:800px){.hero,.summary{grid-column:span 12}.kpi{grid-template-columns:1fr 1fr}.top{flex-direction:column}.temp{font-size:60px}}@media(max-width:520px){main{padding:12px}.card{padding:14px}.kpi{grid-template-columns:1fr}}
-</style></head><body><main><header class="top"><div><div class="eye">Meteo Nové Hraběcí · dům</div><h1>TEPLOTA UVNITŘ</h1><div class="sub">EMOS GoSmart P56S11 · dlouhodobý tepelný profil chalupy</div></div><a class="back" href="./index.html">← zpět na Meteo</a></header><div class="grid"><section class="card hero"><div class="label">Poslední uložená hodnota</div><div class="temp"><span id="latest">--</span><small> °C</small></div><div class="facts"><span>nastaveno <b id="setpoint">--</b></span><span>stav <b id="heatstate">--</b></span><span>čas <b id="lasttime">--</b></span></div><div class="chips"><span class="chip" id="source">EMOS · načítám</span><span class="chip">cloud sync 3 h · historie ~5 min</span></div></section>
+</style></head><body><main><header class="top"><div><div class="eye">Meteo Nové Hraběcí · dům</div><h1>TEPLOTA UVNITŘ</h1><div class="sub">EMOS GoSmart P56S11 · dlouhodobý tepelný profil chalupy</div></div><a class="back" href="./index.html">← zpět na Meteo</a></header><div class="grid"><section class="card hero"><div class="label">Poslední uložená hodnota</div><div class="temp"><span id="latest">--</span><small> °C</small></div><div class="facts"><span>nastaveno <b id="setpoint">--</b></span><span>DP2 raw <b id="dp2raw">--</b></span><span>čas <b id="lasttime">--</b></span></div><div class="chips"><span class="chip" id="source">EMOS · načítám</span><span class="chip">cloud sync 3 h · historie ~5 min</span><span class="chip">DP2 není potvrzený stav kotle</span></div></section>
 <section class="card summary"><div class="sect"><h2>Souhrn uložené historie</h2><span class="muted" id="range">—</span></div><div class="kpi"><div class="stat"><b id="min">—</b><span>minimum</span></div><div class="stat"><b id="max">—</b><span>maximum</span></div><div class="stat"><b id="delta">—</b><span>změna za poslední celý den</span></div><div class="stat"><b id="points">—</b><span>uložených bodů</span></div></div><p class="note">Každé 3 hodiny se Meteo přihlásí přímo do EMOS/Tuya cloudu a stáhne překryvnou historii. Běžná teplotní data přicházejí zhruba po 5 minutách; při prvním běhu nebo delším výpadku se collector vrací až 7 dní zpět. Původní 15min grafová řada zůstává jen jako starší referenční backfill.</p></section>
 <section class="card chart"><div class="sect"><h2>Průběh teploty uvnitř</h2><span class="muted">zelená = uvnitř · modrá = nastavená</span></div><svg id="chart" viewBox="0 0 1000 330" preserveAspectRatio="none"></svg><div class="note" id="chartnote">Načítám historii…</div></section>
-<section class="card model"><div class="sect"><h2>Datový základ pro vytápění</h2><span class="muted">model se bude kalibrovat z reality</span></div><div class="kpi"><div class="stat"><b>uvnitř</b><span>teplota, setpoint, stav topení</span></div><div class="stat"><b>venku</b><span>teplota, vítr, vlhkost, slunce, srážky</span></div><div class="stat"><b>dům</b><span>objem, zateplení, střecha, okna, výkon topení</span></div><div class="stat"><b>výsledek</b><span>rychlost chladnutí, ohřevu a čas startu</span></div></div><p class="note">Cíl není obecná tabulka pro „starou chalupu“, ale model konkrétního domu v Novém Hraběcím: jak reaguje na skutečné počasí, jakou má tepelnou setrvačnost a kdy začít topit pro požadovanou teplotu v konkrétní čas.</p></section>
+<section class="card model"><div class="sect"><h2>Tepelný model chalupy</h2><span class="muted" id="modelstatus">učí se z reality</span></div><div class="kpi"><div class="stat"><b id="modelpairs">—</b><span>30min úseků pro fit</span></div><div class="stat"><b id="coolrate">—</b><span>medián chladnutí</span></div><div class="stat"><b id="tau">—</b><span>časová konstanta τ</span></div><div class="stat"><b id="r2">—</b><span>R² předběžného fitu</span></div></div><p class="note" id="modelnote">Model používá jen naměřenou vnitřní teplotu a venkovní pozorování. DP2 se zatím nepovažuje za stav kotle. Dřevo, slunce, otevřená okna a další tepelné zisky se budou oddělovat až podle reálných dat.</p></section>
 </div></main><script>
 const el=id=>document.getElementById(id),TZ='Europe/Prague';
 async function getJson(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw Error(r.status);return r.json()}
+async function getJsonOptional(u){try{return await getJson(u)}catch(e){return null}}
 function num(v,d=1){return Number.isFinite(Number(v))?Number(v).toFixed(d):'—'}
 function fmt(ts){if(!ts)return'—';return new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(ts))}
 function dayKey(ts){return String(ts||'').slice(0,10)}
@@ -42,16 +43,26 @@ function renderChart(points){
 }
 async function load(){
  try{
-  const data=await Promise.all([getJson('./data/indoor-history.json?_='+Date.now()),getJson('./data/indoor-latest.json?_='+Date.now())]);
-  const hist=data[0],latest=data[1],pts=Array.isArray(hist.points)?hist.points:[];
+  const data=await Promise.all([getJson('./data/indoor-history.json?_='+Date.now()),getJson('./data/indoor-latest.json?_='+Date.now()),getJsonOptional('./data/indoor-thermal-model.json?_='+Date.now())]);
+  const hist=data[0],latest=data[1],model=data[2],pts=Array.isArray(hist.points)?hist.points:[];
   el('latest').textContent=num(latest.latest_indoor_c);el('setpoint').textContent=latest.latest_setpoint_c!=null?num(latest.latest_setpoint_c)+' °C':'—';el('lasttime').textContent=fmt(latest.last_timestamp);
-  const hs=latest.dp2_raw,hsn=hs==null?'—':(['off','false','0'].includes(String(hs).toLowerCase())?'vypnuto':(['on','true','1'].includes(String(hs).toLowerCase())?'zapnuto':String(hs)));el('heatstate').textContent=hsn;
+  const hs=latest.dp2_raw;el('dp2raw').textContent=hs==null?'—':String(hs);
   el('points').textContent=pts.length.toLocaleString('cs-CZ');el('source').textContent='EMOS · '+(hist.source_quality==='display_series'?'grafový backfill':hist.source_quality==='mixed'?'cloud + backfill':'cloud');
   if(pts.length){
    const vals=pts.map(x=>Number(x.indoor_c)).filter(Number.isFinite);el('min').textContent=num(Math.min.apply(null,vals))+' °C';el('max').textContent=num(Math.max.apply(null,vals))+' °C';
    const lastDay=dayKey(pts[pts.length-1].timestamp_local),day=pts.filter(x=>dayKey(x.timestamp_local)===lastDay),d=day.length>1?Number(day[day.length-1].indoor_c)-Number(day[0].indoor_c):NaN;
    el('delta').textContent=Number.isFinite(d)?(d>0?'+':'')+num(d)+' °C':'—';el('range').textContent=dayKey(pts[0].timestamp_local)+' → '+lastDay;
    const lastMs=new Date(pts[pts.length-1].timestamp_local).getTime(),shown=pts.filter(p=>new Date(p.timestamp_local).getTime()>=lastMs-7*86400000);renderChart(shown);el('chartnote').textContent='Zobrazeno posledních 7 dnů · '+shown.length+' bodů. Cloud se synchronizuje každé 3 hodiny, ale přebírá jemnou historii zařízení přibližně po 5 minutách.';
+  }
+  if(model){
+   el('modelpairs').textContent=Number(model.fit_samples||0).toLocaleString('cs-CZ');
+   const emp=model.empirical||{},fit=model.fit||{};
+   el('coolrate').textContent=emp.median_cooling_c_per_h==null?'—':num(emp.median_cooling_c_per_h,2)+' °C/h';
+   el('tau').textContent=fit.time_constant_h==null?'—':num(fit.time_constant_h,1)+' h';
+   el('r2').textContent=fit.r2==null?'—':num(fit.r2,2);
+   el('modelstatus').textContent=model.status==='preliminary_learning'?'předběžný · stále se učí':model.status==='early_learning'?'raná fáze učení':'zatím málo dat';
+   const cp=model.current_passive_estimate;
+   el('modelnote').textContent='DP2 není použit jako stav kotle. Model má '+num(model.coverage_days,1)+' dne dat z interiéru + ČHMÚ.'+(cp&&cp.passive_fit_rate_c_per_h!=null?' Při aktuálním rozdílu uvnitř/venku dává fit '+num(cp.passive_fit_rate_c_per_h,2)+' °C/h; jde jen o pozorovací odhad, ne povel k topení.':'')+' Dřevo, slunce, otevřená okna a další tepelné zisky zatím nejsou samostatně měřené.';
   }
  }catch(e){el('chartnote').textContent='Vnitřní data se zatím nepodařilo načíst.'}
 }
