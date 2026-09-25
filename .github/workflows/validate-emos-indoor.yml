@@ -1,0 +1,51 @@
+name: Validate EMOS indoor collector
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_indoor_emos.py'
+      - '.github/workflows/validate-emos-indoor.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Run EMOS collector
+        env:
+          EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}
+          EMOS_PASSWORD: ${{ secrets.EMOS_PASSWORD }}
+          EMOS_APP_ID: ${{ secrets.EMOS_APP_ID }}
+          EMOS_APP_SECRET: ${{ secrets.EMOS_APP_SECRET }}
+          EMOS_BMP_KEY: ${{ secrets.EMOS_BMP_KEY }}
+          EMOS_CERT_SHA256: ${{ secrets.EMOS_CERT_SHA256 }}
+        run: python scripts/collect_indoor_emos.py
+      - name: Commit validation result
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/indoor-latest.json data/indoor-history.json data/indoor-collector-status.json data/indoor-cloud/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No indoor changes."
+            exit 0
+          fi
+          git commit -m "data: validate EMOS indoor cloud collector"
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            git rebase origin/main
+            sleep $((attempt * 3))
+          done
+          exit 1
