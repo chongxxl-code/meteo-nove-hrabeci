@@ -306,7 +306,8 @@ def main():
     if not isinstance(detail, dict):
         detail = {}
 
-    dps = detail.get("dps") or target.get("dps") or {}
+    point_info = detail.get("dataPointInfo") if isinstance(detail.get("dataPointInfo"), dict) else {}
+    dps = point_info.get("dps") or detail.get("dps") or target.get("dps") or {}
     indoor = temp_c(get_dp(dps, 24))
     setpoint = temp_c(get_dp(dps, 3))
     if indoor is None:
