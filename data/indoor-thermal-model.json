@@ -1,25 +1,25 @@
 {
   "schema": 3,
-  "generated_at": "2026-09-25T21:33:54.838803Z",
-  "status": "preliminary_learning",
+  "generated_at": "2026-09-26T04:54:29.306400Z",
+  "status": "early_learning",
   "validated_for_heating_control": false,
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
-  "fit_basis": "nighttime windows",
-  "coverage_days": 7.04,
-  "indoor_raw_points": 2089,
-  "indoor_30m_bins": 329,
-  "weather_30m_bins": 1768,
-  "paired_candidate_bins": 327,
-  "fit_samples": 10,
-  "all_accepted_windows": 21,
-  "night_windows": 10,
+  "fit_basis": "all passive windows fallback",
+  "coverage_days": 2.17,
+  "indoor_raw_points": 308,
+  "indoor_30m_bins": 105,
+  "weather_30m_bins": 1783,
+  "paired_candidate_bins": 104,
+  "fit_samples": 6,
+  "all_accepted_windows": 6,
+  "night_windows": 2,
   "weather_sources": {
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 1768,
+      "DWD Sohland": 1783,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -32,79 +32,79 @@
     ]
   },
   "empirical": {
-    "median_cooling_c_per_h": -0.033,
+    "median_cooling_c_per_h": -0.025,
     "cooling_p25_c_per_h": -0.033,
-    "cooling_p75_c_per_h": -0.033,
-    "median_passive_window_rate_c_per_h": -0.033,
-    "inside_minus_outside_median_c": 9.2,
-    "inside_minus_outside_min_c": 5.1,
-    "inside_minus_outside_max_c": 12.7
+    "cooling_p75_c_per_h": -0.017,
+    "median_passive_window_rate_c_per_h": -0.017,
+    "inside_minus_outside_median_c": 4.0,
+    "inside_minus_outside_min_c": 3.6,
+    "inside_minus_outside_max_c": 8.7
   },
   "fit": {
     "equation": "dTin/dt = coupling * (Tout - Tin)",
     "method": "median through-origin slope on 6h windows",
-    "coupling_per_h": 0.0034,
-    "time_constant_h": 293.7,
-    "mae_c_per_h": 0.008,
-    "median_abs_error_c_per_h": 0.008,
-    "coupling_p25_per_h": 0.00282,
-    "coupling_p75_per_h": 0.00416,
-    "sample_count": 10
+    "coupling_per_h": 0.00396,
+    "time_constant_h": 252.6,
+    "mae_c_per_h": 0.006,
+    "median_abs_error_c_per_h": 0.002,
+    "coupling_p25_per_h": 0.00096,
+    "coupling_p75_per_h": 0.00415,
+    "sample_count": 6
   },
   "current_passive_estimate": {
-    "inside_c": 15.3,
-    "outside_c": 7.6,
+    "inside_c": 15.1,
+    "outside_c": 5.0,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": 7.7,
-    "passive_fit_rate_c_per_h": -0.03,
+    "inside_minus_outside_c": 10.1,
+    "passive_fit_rate_c_per_h": -0.04,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-09-25T23:33:48+02:00",
-    "start_inside_c": 15.3,
+    "start_timestamp_local": "2026-09-26T06:54:21+02:00",
+    "start_inside_c": 15.1,
     "weather_models": [
       "chmi",
       "dwd",
       "ec"
     ],
     "coupling_candidates_per_h": [
-      0.00282,
-      0.0034,
-      0.00416
+      0.00096,
+      0.00396,
+      0.00415
     ],
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-09-26T12:00:00+02:00",
+        "timestamp_local": "2026-09-26T19:00:00+02:00",
         "inside_median_c": 15.1,
         "inside_q25_c": 15.1,
         "inside_q75_c": 15.1,
-        "inside_min_scenario_c": 15.0,
+        "inside_min_scenario_c": 15.1,
         "inside_max_scenario_c": 15.1,
-        "outside_model_median_c": 16.4,
+        "outside_model_median_c": 13.5,
         "scenario_count": 9
       },
       {
         "hours": 24,
-        "timestamp_local": "2026-09-27T00:00:00+02:00",
-        "inside_median_c": 15.1,
-        "inside_q25_c": 15.0,
-        "inside_q75_c": 15.1,
-        "inside_min_scenario_c": 15.0,
+        "timestamp_local": "2026-09-27T07:00:00+02:00",
+        "inside_median_c": 15.0,
+        "inside_q25_c": 14.9,
+        "inside_q75_c": 15.0,
+        "inside_min_scenario_c": 14.8,
         "inside_max_scenario_c": 15.1,
-        "outside_model_median_c": 12.1,
+        "outside_model_median_c": 11.3,
         "scenario_count": 9
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-09-27T12:00:00+02:00",
-        "inside_median_c": 15.0,
-        "inside_q25_c": 14.9,
-        "inside_q75_c": 15.0,
+        "timestamp_local": "2026-09-27T19:00:00+02:00",
+        "inside_median_c": 15.1,
+        "inside_q25_c": 15.0,
+        "inside_q75_c": 15.1,
         "inside_min_scenario_c": 14.9,
         "inside_max_scenario_c": 15.1,
-        "outside_model_median_c": 17.3,
+        "outside_model_median_c": 15.3,
         "scenario_count": 9
       }
     ],
@@ -123,7 +123,7 @@
     "maximum_allowed_warming_c_per_h": 0.08,
     "night_midpoint_hours_local": "21:00-05:59",
     "rejected": {
-      "gap": 2,
+      "gap": 0,
       "setpoint": 0,
       "warming": 0,
       "coverage": 0
