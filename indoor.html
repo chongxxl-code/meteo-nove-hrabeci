@@ -20,12 +20,14 @@ svg{width:100%;height:330px;display:block}.note{font-size:12px;color:var(--mu);l
 <section class="card model"><div class="sect"><h2>Bez topení · výhled uvnitř</h2><span class="muted" id="forecaststatus">předběžný pasivní scénář</span></div><div class="kpi"><div class="stat"><b id="f12">—</b><span>za 12 hodin</span></div><div class="stat"><b id="f24">—</b><span>za 24 hodin</span></div><div class="stat"><b id="f36">—</b><span>za 36 hodin</span></div><div class="stat"><b id="f48">—</b><span>za 48 hodin</span></div></div><p class="note" id="forecastnote">Počítá se z aktuální vnitřní teploty, pasivní odezvy chalupy a ensemble DWD + ČHMÚ + ECMWF. Nezahrnuje přitápění dřevem ani jiné mimořádné tepelné zisky.</p></section>
 </div></main><script>
 const el=id=>document.getElementById(id),TZ='Europe/Prague';
-async function getJson(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw Error(r.status);return r.json()}
+const LIVE_DATA_ROOT='https://raw.githubusercontent.com/chongxxl-code/meteo-nove-hrabeci/main/';
+function liveSources(u){const s=String(u);return s.startsWith('./data/')?[LIVE_DATA_ROOT+s.slice(2),s]:[s]}
+async function getJson(u){let last;for(const src of liveSources(u)){try{const r=await fetch(src,{cache:'no-store'});if(!r.ok)throw Error(r.status);return await r.json()}catch(e){last=e}}throw last}
 async function getJsonOptional(u){try{return await getJson(u)}catch(e){return null}}
 function num(v,d=1){return Number.isFinite(Number(v))?Number(v).toFixed(d):'—'}
 function fmt(ts){if(!ts)return'—';return new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(ts))}
 function dayKey(ts){return String(ts||'').slice(0,10)}
-async function getTextOptional(u){try{const r=await fetch(u,{cache:'no-store'});if(!r.ok)return null;return r.text()}catch(e){return null}}
+async function getTextOptional(u){for(const src of liveSources(u)){try{const r=await fetch(src,{cache:'no-store'});if(r.ok)return await r.text()}catch(e){}}return null}
 let allIndoorPoints=[],allOutdoorPoints=[],chartWindowHours=24;
 const seriesVisible={indoor:true,outside:true,setpoint:true};
 let chartState=null;
@@ -151,5 +153,5 @@ async function load(){
   }
  }catch(e){el('chartnote').textContent='Vnitřní data se zatím nepodařilo načíst.'}
 }
-load();
+load();setInterval(load,300000);
 </script></body></html>
