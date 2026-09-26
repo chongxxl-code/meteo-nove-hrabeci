@@ -649,21 +649,20 @@ def main():
             encoding="utf-8",
         )
 
-    if persist_snapshot:
-        latest = {
-            "generated_at": now.isoformat(),
-            "points": len(merged),
-            "first_timestamp": merged[0]["timestamp_local"] if merged else None,
-            "last_timestamp": timestamp,
-            "latest_indoor_c": indoor,
-            "latest_setpoint_c": setpoint,
-            "dp2_raw": dp2_raw,
-            "source": "EMOS/Tuya cloud snapshot",
-        }
-        (DATA / "indoor-latest.json").write_text(
-            json.dumps(latest, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+    latest = {
+        "generated_at": now.isoformat(),
+        "points": len(merged),
+        "first_timestamp": merged[0]["timestamp_local"] if merged else None,
+        "last_timestamp": timestamp,
+        "latest_indoor_c": indoor,
+        "latest_setpoint_c": setpoint,
+        "dp2_raw": dp2_raw,
+        "source": "EMOS/Tuya cloud snapshot",
+    }
+    (DATA / "indoor-latest.json").write_text(
+        json.dumps(latest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
     print(json.dumps({
         "ok": True,
