@@ -1,14 +1,14 @@
 {
   "schema": 3,
-  "generated_at": "2026-09-26T05:21:43.188067Z",
+  "generated_at": "2026-09-26T05:32:53.663844Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
   "coverage_days": 2.19,
-  "indoor_raw_points": 315,
-  "indoor_30m_bins": 106,
+  "indoor_raw_points": 317,
+  "indoor_30m_bins": 107,
   "weather_30m_bins": 1784,
   "paired_candidate_bins": 105,
   "fit_samples": 6,
@@ -61,7 +61,7 @@
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-09-26T07:21:38+02:00",
+    "start_timestamp_local": "2026-09-26T07:32:49+02:00",
     "start_inside_c": 15.1,
     "weather_models": [
       "chmi",
@@ -76,47 +76,36 @@
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-09-26T19:00:00+02:00",
+        "timestamp_local": "2026-09-26T20:00:00+02:00",
         "inside_median_c": 15.1,
         "inside_q25_c": 15.1,
         "inside_q75_c": 15.1,
         "inside_min_scenario_c": 15.1,
         "inside_max_scenario_c": 15.1,
-        "outside_model_median_c": 13.5,
+        "outside_model_median_c": 12.3,
         "scenario_count": 9
       },
       {
         "hours": 24,
-        "timestamp_local": "2026-09-27T07:00:00+02:00",
+        "timestamp_local": "2026-09-27T08:00:00+02:00",
         "inside_median_c": 15.0,
         "inside_q25_c": 14.9,
         "inside_q75_c": 15.0,
-        "inside_min_scenario_c": 14.9,
+        "inside_min_scenario_c": 14.8,
         "inside_max_scenario_c": 15.1,
-        "outside_model_median_c": 11.3,
+        "outside_model_median_c": 11.5,
         "scenario_count": 9
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-09-27T19:00:00+02:00",
+        "timestamp_local": "2026-09-27T20:00:00+02:00",
         "inside_median_c": 15.1,
         "inside_q25_c": 15.0,
         "inside_q75_c": 15.1,
         "inside_min_scenario_c": 14.9,
         "inside_max_scenario_c": 15.1,
-        "outside_model_median_c": 15.3,
+        "outside_model_median_c": 14.2,
         "scenario_count": 9
-      },
-      {
-        "hours": 48,
-        "timestamp_local": "2026-09-28T06:00:00+02:00",
-        "inside_median_c": 15.0,
-        "inside_q25_c": 15.0,
-        "inside_q75_c": 15.0,
-        "inside_min_scenario_c": 14.9,
-        "inside_max_scenario_c": 15.1,
-        "outside_model_median_c": 12.2,
-        "scenario_count": 6
       }
     ],
     "range_note": "q25-q75 reflects weather-model and fitted-coupling spread only; it is not a full prediction interval",
