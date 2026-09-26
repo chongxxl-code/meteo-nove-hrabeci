@@ -1,16 +1,16 @@
 {
   "schema": 3,
-  "generated_at": "2026-09-26T11:24:57.906158Z",
+  "generated_at": "2026-09-26T12:36:51.194861Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
-  "coverage_days": 2.44,
-  "indoor_raw_points": 399,
-  "indoor_30m_bins": 118,
-  "weather_30m_bins": 1796,
-  "paired_candidate_bins": 117,
+  "coverage_days": 2.48,
+  "indoor_raw_points": 417,
+  "indoor_30m_bins": 121,
+  "weather_30m_bins": 1798,
+  "paired_candidate_bins": 119,
   "fit_samples": 7,
   "all_accepted_windows": 7,
   "night_windows": 3,
@@ -19,7 +19,7 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 1796,
+      "DWD Sohland": 1798,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -53,15 +53,15 @@
   },
   "current_passive_estimate": {
     "inside_c": 15.2,
-    "outside_c": 17.2,
+    "outside_c": 18.3,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": -2.0,
+    "inside_minus_outside_c": -3.1,
     "passive_fit_rate_c_per_h": 0.01,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-09-26T13:24:51+02:00",
+    "start_timestamp_local": "2026-09-26T14:36:44+02:00",
     "start_inside_c": 15.2,
     "weather_models": [
       "chmi",
@@ -76,47 +76,36 @@
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-09-27T01:00:00+02:00",
-        "inside_median_c": 15.2,
+        "timestamp_local": "2026-09-27T03:00:00+02:00",
+        "inside_median_c": 15.1,
         "inside_q25_c": 15.1,
         "inside_q75_c": 15.2,
         "inside_min_scenario_c": 15.1,
         "inside_max_scenario_c": 15.2,
-        "outside_model_median_c": 11.7,
+        "outside_model_median_c": 11.9,
         "scenario_count": 9
       },
       {
         "hours": 24,
-        "timestamp_local": "2026-09-27T13:00:00+02:00",
+        "timestamp_local": "2026-09-27T15:00:00+02:00",
         "inside_median_c": 15.1,
-        "inside_q25_c": 15.0,
+        "inside_q25_c": 15.1,
         "inside_q75_c": 15.2,
         "inside_min_scenario_c": 15.0,
         "inside_max_scenario_c": 15.2,
-        "outside_model_median_c": 18.4,
+        "outside_model_median_c": 19.0,
         "scenario_count": 9
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-09-28T01:00:00+02:00",
+        "timestamp_local": "2026-09-28T03:00:00+02:00",
         "inside_median_c": 15.1,
-        "inside_q25_c": 15.1,
-        "inside_q75_c": 15.2,
-        "inside_min_scenario_c": 15.1,
-        "inside_max_scenario_c": 15.2,
-        "outside_model_median_c": 13.4,
-        "scenario_count": 9
-      },
-      {
-        "hours": 48,
-        "timestamp_local": "2026-09-28T12:00:00+02:00",
-        "inside_median_c": 15.0,
         "inside_q25_c": 15.0,
-        "inside_q75_c": 15.1,
+        "inside_q75_c": 15.2,
         "inside_min_scenario_c": 15.0,
         "inside_max_scenario_c": 15.2,
-        "outside_model_median_c": 17.0,
-        "scenario_count": 6
+        "outside_model_median_c": 13.1,
+        "scenario_count": 9
       }
     ],
     "range_note": "q25-q75 reflects weather-model and fitted-coupling spread only; it is not a full prediction interval",
@@ -134,7 +123,7 @@
     "maximum_allowed_warming_c_per_h": 0.08,
     "night_midpoint_hours_local": "21:00-05:59",
     "rejected": {
-      "gap": 0,
+      "gap": 1,
       "setpoint": 0,
       "warming": 0,
       "coverage": 0
