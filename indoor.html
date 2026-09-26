@@ -119,13 +119,15 @@ async function load(){
   const data=await Promise.all([getJson('./data/indoor-history.json?_='+Date.now()),getJson('./data/indoor-latest.json?_='+Date.now()),getJsonOptional('./data/indoor-thermal-model.json?_='+Date.now())]);
   const hist=data[0],latest=data[1],model=data[2],pts=Array.isArray(hist.points)?hist.points:[];
   allIndoorPoints=pts.slice().sort((a,b)=>new Date(a.timestamp_local)-new Date(b.timestamp_local));
-  allOutdoorPoints=await loadOutdoorHistory(latest.last_timestamp||Date.now());
+  const lastHist=allIndoorPoints.at(-1),latestMs=new Date(latest.last_timestamp||0).getTime(),histMs=new Date(lastHist?.timestamp_local||0).getTime();
+  const shown=lastHist&&Number.isFinite(histMs)&&(!Number.isFinite(latestMs)||histMs>latestMs)?{...latest,last_timestamp:lastHist.timestamp_local,latest_indoor_c:lastHist.indoor_c,latest_setpoint_c:lastHist.setpoint_c,dp2_raw:lastHist.dp2_raw}:latest;
+  allOutdoorPoints=await loadOutdoorHistory(shown.last_timestamp||Date.now());
   const latestOutdoor=allOutdoorPoints.length?allOutdoorPoints[allOutdoorPoints.length-1]:null;
-  el('latest').textContent=num(latest.latest_indoor_c);el('setpoint').textContent=latest.latest_setpoint_c!=null?num(latest.latest_setpoint_c)+' °C':'—';el('lasttime').textContent=fmt(latest.last_timestamp);
-  el('legendIndoor').textContent=latest.latest_indoor_c!=null?num(latest.latest_indoor_c)+' °C':'—';
-  el('legendSetpoint').textContent=latest.latest_setpoint_c!=null?num(latest.latest_setpoint_c)+' °C':'—';
+  el('latest').textContent=num(shown.latest_indoor_c);el('setpoint').textContent=shown.latest_setpoint_c!=null?num(shown.latest_setpoint_c)+' °C':'—';el('lasttime').textContent=fmt(shown.last_timestamp);
+  el('legendIndoor').textContent=shown.latest_indoor_c!=null?num(shown.latest_indoor_c)+' °C':'—';
+  el('legendSetpoint').textContent=shown.latest_setpoint_c!=null?num(shown.latest_setpoint_c)+' °C':'—';
   el('legendOutside').textContent=latestOutdoor?num(latestOutdoor.outside_c)+' °C':'—';
-  const hs=latest.dp2_raw;el('dp2raw').textContent=hs==null?'—':String(hs).toUpperCase();
+  const hs=shown.dp2_raw;el('dp2raw').textContent=hs==null?'—':String(hs).toUpperCase();
   el('points').textContent=pts.length.toLocaleString('cs-CZ');el('source').textContent='EMOS · '+(hist.source_quality==='display_series'?'grafový backfill':hist.source_quality==='mixed'?'cloud + backfill':'cloud');
   if(pts.length){
    const vals=pts.map(x=>Number(x.indoor_c)).filter(Number.isFinite);el('min').textContent=num(Math.min.apply(null,vals))+' °C';el('max').textContent=num(Math.max.apply(null,vals))+' °C';
