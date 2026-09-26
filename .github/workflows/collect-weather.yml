@@ -3,8 +3,6 @@ name: Collect weather data
 on:
   schedule:
     - cron: '17 */3 * * *'
-    # Proven scheduler host for near-live indoor collection; staggered away from minute 0.
-    - cron: '6,14,21,29,36,44,51,59 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -32,68 +30,12 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: meteo-data-writer
+  cancel-in-progress: false
+
 jobs:
-  live-indoor:
-    concurrency:
-      group: meteo-indoor-live
-      cancel-in-progress: false
-    if: github.event_name == 'schedule' && github.event.schedule == '6,14,21,29,36,44,51,59 * * * *'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-      - name: Collect and commit EMOS indoor live data
-        env:
-          EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}
-          EMOS_PASSWORD: ${{ secrets.EMOS_PASSWORD }}
-          EMOS_APP_ID: ${{ secrets.EMOS_APP_ID }}
-          EMOS_APP_SECRET: ${{ secrets.EMOS_APP_SECRET }}
-          EMOS_BMP_KEY: ${{ secrets.EMOS_BMP_KEY }}
-          EMOS_CERT_SHA256: ${{ secrets.EMOS_CERT_SHA256 }}
-          EMOS_LIVE_MODE: '1'
-          EMOS_LIVE_HEARTBEAT_MINUTES: '30'
-        run: |
-          set -e
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-
-            python scripts/collect_indoor_emos.py
-
-            # Avoid status-only timestamp churn in near-live runs.
-            git restore data/indoor-history-status.json data/indoor-collector-status.json 2>/dev/null || true
-            git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json
-            if git diff --cached --quiet; then
-              echo "No material indoor change; nothing to commit."
-              exit 0
-            fi
-
-            git commit -m "data: indoor live $(date -u +'%Y-%m-%d %H:%M UTC')"
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-
-            echo "Concurrent main update detected; recollecting from latest main (attempt ${attempt}/3)."
-            sleep $((attempt * 3))
-          done
-
-          echo "Unable to push indoor live data after 3 retries."
-          exit 1
-
   collect:
-    concurrency:
-      group: meteo-data-writer
-      cancel-in-progress: false
-    if: github.event_name != 'schedule' || github.event.schedule == '17 */3 * * *'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

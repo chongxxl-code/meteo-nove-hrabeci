@@ -1,6 +1,10 @@
 name: Collect EMOS indoor live
 
 on:
+  schedule:
+    # GitHub cron is too irregular for direct 7-minute polling.
+    # Start/queue a long-lived session hourly; the session polls every 7 minutes.
+    - cron: '11 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -12,12 +16,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: meteo-data-writer
+  group: meteo-indoor-live-session
   cancel-in-progress: false
 
 jobs:
   collect-indoor:
     runs-on: ubuntu-latest
+    timeout-minutes: 355
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,7 +32,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Collect and commit EMOS indoor live data
+      - name: Collect EMOS indoor every 7 minutes
         env:
           EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}
           EMOS_PASSWORD: ${{ secrets.EMOS_PASSWORD }}
@@ -42,30 +47,43 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          for attempt in 1 2 3; do
-            # Scheduled runs can wait behind the 3-hour writer. Always recollect from
-            # the newest main after the concurrency queue instead of rebasing stale data.
-            git fetch origin main
-            git reset --hard origin/main
+          collect_once() {
+            for attempt in 1 2 3; do
+              # Always recollect from newest main. Other collectors may commit while
+              # this live session is sleeping.
+              git fetch origin main
+              git reset --hard origin/main
 
-            python scripts/collect_indoor_emos.py
+              python scripts/collect_indoor_emos.py
 
-            # Live runs intentionally do not commit status-only timestamp churn.
-            git restore data/indoor-history-status.json data/indoor-collector-status.json 2>/dev/null || true
-            git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json
-            if git diff --cached --quiet; then
-              echo "No material indoor change; nothing to commit."
-              exit 0
+              # Do not create commits for status-only timestamp churn.
+              git restore data/indoor-history-status.json data/indoor-collector-status.json 2>/dev/null || true
+              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json
+
+              if git diff --cached --quiet; then
+                echo "No material indoor change."
+                return 0
+              fi
+
+              git commit -m "data: indoor live $(date -u +'%Y-%m-%d %H:%M UTC')"
+              if git push origin HEAD:main; then
+                return 0
+              fi
+
+              echo "Concurrent main update; recollecting from latest main (attempt ${attempt}/3)."
+              sleep $((attempt * 3))
+            done
+
+            echo "Unable to push indoor live data after 3 retries."
+            return 1
+          }
+
+          # 48 cycles keep one session alive for roughly 5.5 hours. GitHub may delay
+          # scheduled starts by hours, so the long-lived session bridges those gaps.
+          for cycle in $(seq 1 48); do
+            echo "Indoor live cycle ${cycle}/48"
+            collect_once
+            if [ "${cycle}" -lt 48 ]; then
+              sleep 420
             fi
-
-            git commit -m "data: indoor live $(date -u +'%Y-%m-%d %H:%M UTC')"
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-
-            echo "Concurrent main update detected; recollecting from latest main (attempt ${attempt}/3)."
-            sleep $((attempt * 3))
           done
-
-          echo "Unable to push indoor live data after 3 retries."
-          exit 1
