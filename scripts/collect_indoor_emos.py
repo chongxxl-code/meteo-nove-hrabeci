@@ -734,4 +734,6 @@ if __name__ == "__main__":
             "error_type": type(exc).__name__,
             "error": message,
         }, ensure_ascii=False))
+        if "USER_SESSION_LIMIT" in message:
+            raise SystemExit(75)
         raise SystemExit(0)
