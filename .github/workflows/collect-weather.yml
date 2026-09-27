@@ -101,7 +101,6 @@ jobs:
           rebuild_data() {
             python scripts/apply_health_ui.py
             python scripts/collect_weather.py
-            python scripts/collect_indoor_emos.py || true
             python scripts/collect_chmi.py
             python scripts/collect_dwd_sohland.py
             python scripts/build_indoor_thermal_model.py
