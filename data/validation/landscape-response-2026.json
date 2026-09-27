@@ -1,8 +1,8 @@
 {
   "ok": true,
   "quality_status": "exploratory_not_causal",
-  "computed_at": "2026-09-20T16:29:06.984628+00:00",
-  "scene_count": 11,
+  "computed_at": "2026-09-27T17:17:33.787739+00:00",
+  "scene_count": 12,
   "zones_version": "nove-hrabeci-landscape-zones-v0.5",
   "method_note": "Exploratory relationships from 10 seasonal Sentinel scenes. Phenology, land cover and other confounders remain; correlations are not causal validation.",
   "terrain_scores": {
@@ -30,116 +30,116 @@
   "correlations": {
     "NH-OPEN-01": {
       "rain_7d_vs_ndmi": {
-        "n": 10,
-        "pearson_r": -0.177,
-        "spearman_rho": -0.612
+        "n": 11,
+        "pearson_r": -0.166,
+        "spearman_rho": -0.5
       },
       "rain_14d_vs_ndmi": {
-        "n": 10,
-        "pearson_r": -0.229,
-        "spearman_rho": -0.418
+        "n": 11,
+        "pearson_r": -0.227,
+        "spearman_rho": -0.355
       },
       "rain_30d_vs_ndmi": {
-        "n": 10,
+        "n": 11,
         "pearson_r": -0.215,
-        "spearman_rho": -0.411
+        "spearman_rho": -0.349
       }
     },
     "NH-FOREST-01": {
       "rain_7d_vs_ndmi": {
-        "n": 10,
-        "pearson_r": 0.358,
-        "spearman_rho": 0.442
+        "n": 11,
+        "pearson_r": 0.394,
+        "spearman_rho": 0.445
       },
       "rain_14d_vs_ndmi": {
-        "n": 10,
-        "pearson_r": 0.314,
-        "spearman_rho": 0.333
+        "n": 11,
+        "pearson_r": 0.339,
+        "spearman_rho": 0.327
       },
       "rain_30d_vs_ndmi": {
-        "n": 10,
-        "pearson_r": 0.649,
-        "spearman_rho": 0.571
+        "n": 11,
+        "pearson_r": 0.658,
+        "spearman_rho": 0.514
       }
     },
     "NH-RIDGE-01": {
       "rain_7d_vs_ndmi": {
-        "n": 11,
-        "pearson_r": 0.298,
-        "spearman_rho": 0.3
+        "n": 12,
+        "pearson_r": 0.327,
+        "spearman_rho": 0.224
       },
       "rain_14d_vs_ndmi": {
-        "n": 11,
-        "pearson_r": 0.411,
-        "spearman_rho": 0.409
+        "n": 12,
+        "pearson_r": 0.427,
+        "spearman_rho": 0.336
       },
       "rain_30d_vs_ndmi": {
-        "n": 11,
-        "pearson_r": 0.752,
-        "spearman_rho": 0.706
+        "n": 12,
+        "pearson_r": 0.758,
+        "spearman_rho": 0.641
       }
     },
     "NH-VALLEY-01": {
       "rain_7d_vs_ndmi": {
-        "n": 9,
-        "pearson_r": 0.25,
-        "spearman_rho": -0.017
+        "n": 10,
+        "pearson_r": 0.425,
+        "spearman_rho": 0.236
       },
       "rain_14d_vs_ndmi": {
-        "n": 9,
-        "pearson_r": 0.01,
-        "spearman_rho": -0.117
+        "n": 10,
+        "pearson_r": 0.116,
+        "spearman_rho": 0.067
       },
       "rain_30d_vs_ndmi": {
-        "n": 9,
-        "pearson_r": 0.362,
-        "spearman_rho": 0.343
+        "n": 10,
+        "pearson_r": 0.381,
+        "spearman_rho": 0.401
       }
     }
   },
   "contrasts": {
     "valley_minus_ridge": {
-      "valid_scenes": 9,
-      "positive_scenes": 8,
-      "positive_fraction": 0.889,
-      "median_ndmi_difference": 0.113,
-      "mean_ndmi_difference": 0.096
+      "valid_scenes": 10,
+      "positive_scenes": 9,
+      "positive_fraction": 0.9,
+      "median_ndmi_difference": 0.121,
+      "mean_ndmi_difference": 0.112
     },
     "forest_minus_open": {
-      "valid_scenes": 10,
-      "positive_scenes": 5,
-      "positive_fraction": 0.5,
-      "median_ndmi_difference": 0.03,
-      "mean_ndmi_difference": 0.05
+      "valid_scenes": 11,
+      "positive_scenes": 6,
+      "positive_fraction": 0.545,
+      "median_ndmi_difference": 0.071,
+      "mean_ndmi_difference": 0.055
     },
     "dry_vs_wet_thirds_by_rain14d": {
       "dry_rain14d_range_mm": [
         4.5,
-        14.8
+        17.2
       ],
       "wet_rain14d_range_mm": [
         27.2,
         77.4
       ],
       "dry_valley_minus_ridge": {
-        "n": 3,
-        "median": 0.101,
-        "mean": 0.109
+        "n": 4,
+        "median": 0.107,
+        "mean": 0.11
       },
       "wet_valley_minus_ridge": {
-        "n": 2,
-        "median": 0.028,
-        "mean": 0.028
+        "n": 3,
+        "median": 0.128,
+        "mean": 0.105
       },
       "dry_forest_minus_open": {
-        "n": 3,
-        "median": -0.187,
-        "mean": -0.173
+        "n": 4,
+        "median": -0.163,
+        "mean": -0.043
       },
       "wet_forest_minus_open": {
-        "n": 3,
-        "median": 0.216,
-        "mean": 0.154
+        "n": 4,
+        "median": 0.164,
+        "mean": 0.143
       }
     }
   },
@@ -451,6 +451,34 @@
       },
       "valley_minus_ridge_ndmi": 0.128,
       "forest_minus_open_ndmi": -0.01100000000000001
+    },
+    {
+      "scene_id": "S2A_T33UVS_20260926T101055_L2A",
+      "scene_datetime": "2026-09-26T10:16:50.982000Z",
+      "quality_status": "valid",
+      "rain_7d_mm": 30.0,
+      "rain_14d_mm": 45.8,
+      "rain_30d_mm": 68.4,
+      "zones": {
+        "NH-OPEN-01": {
+          "ndmi": 0.2279,
+          "ndvi": 0.7894
+        },
+        "NH-FOREST-01": {
+          "ndmi": 0.3401,
+          "ndvi": 0.8623
+        },
+        "NH-RIDGE-01": {
+          "ndmi": 0.1143,
+          "ndvi": 0.6895
+        },
+        "NH-VALLEY-01": {
+          "ndmi": 0.3719,
+          "ndvi": 0.8861
+        }
+      },
+      "valley_minus_ridge_ndmi": 0.2576,
+      "forest_minus_open_ndmi": 0.11220000000000002
     }
   ],
   "next_step": "Increase comparable open-land sampling zones and continue the time series; then test terrain wetness/drying scores within the same land-cover class rather than across mixed surfaces."
