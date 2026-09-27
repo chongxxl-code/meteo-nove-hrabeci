@@ -66,12 +66,14 @@ function renderIndoorCard(){
   $('ihOutside').textContent=Number.isFinite(fallbackOutside)?`${round(fallbackOutside)} °C`:'—';
   const diff=inside-fallbackOutside;$('ihDelta').textContent=Number.isFinite(diff)?`${diff>=0?'+':''}${round(diff)} °C`:'—';
  }
- const collectorFailed=indoorCollectorStatus&&indoorCollectorStatus.ok===false;
  const ageMin=indoorLatest?.last_timestamp?Math.max(0,Math.round((Date.now()-new Date(indoorLatest.last_timestamp).getTime())/60000)):null;
+ const collectorStatusMs=new Date(indoorCollectorStatus?.generated_at||0).getTime(),latestDataMs=new Date(indoorLatest?.last_timestamp||0).getTime();
+ const collectorFailed=indoorCollectorStatus&&indoorCollectorStatus.ok===false&&Number.isFinite(collectorStatusMs)&&(!Number.isFinite(latestDataMs)||collectorStatusMs>=latestDataMs);
+ const dataStale=Number.isFinite(ageMin)&&ageMin>30;
  const predictionReady=indoorModel?.prediction_ready===true;
  const horizons=predictionReady?(indoorModel?.passive_forecast?.horizons||[]):[],h12=horizons.find(x=>Number(x.hours)===12);
- if(collectorFailed){
-  $('ihForecast').textContent='Sběr EMOS je dočasně přerušený';
+ if(collectorFailed||dataStale){
+  $('ihForecast').textContent='Sběr EMOS má zpoždění';
   $('ihForecastMeta').textContent=Number.isFinite(ageMin)?`poslední platná data ${indoorAge(indoorLatest.last_timestamp)} · další běh doplní historii zpětně`:'další běh doplní historii zpětně';
  }else if(h12&&Number.isFinite(Number(h12.inside_median_c))){
   $('ihForecast').textContent=`Bez topení za 12 h ~ ${round(h12.inside_median_c)} °C`;
