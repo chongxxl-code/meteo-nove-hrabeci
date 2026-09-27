@@ -1,16 +1,18 @@
 {
   "schema": 3,
-  "generated_at": "2026-09-27T16:57:06.436467Z",
+  "generated_at": "2026-09-27T18:35:43.003090Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
+  "prediction_ready": false,
+  "prediction_blocker": "need at least 6 accepted nighttime windows; have 2",
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
-  "coverage_days": 3.67,
-  "indoor_raw_points": 470,
-  "indoor_30m_bins": 139,
-  "weather_30m_bins": 1855,
-  "paired_candidate_bins": 138,
+  "coverage_days": 3.73,
+  "indoor_raw_points": 502,
+  "indoor_30m_bins": 143,
+  "weather_30m_bins": 1858,
+  "paired_candidate_bins": 141,
   "fit_samples": 7,
   "all_accepted_windows": 7,
   "night_windows": 2,
@@ -19,7 +21,7 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 1855,
+      "DWD Sohland": 1858,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -52,69 +54,14 @@
     "sample_count": 7
   },
   "current_passive_estimate": {
-    "inside_c": 18.2,
-    "outside_c": 14.9,
+    "inside_c": 22.0,
+    "outside_c": 10.4,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": 3.3,
-    "passive_fit_rate_c_per_h": -0.01,
+    "inside_minus_outside_c": 11.6,
+    "passive_fit_rate_c_per_h": -0.05,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
-  "passive_forecast": {
-    "mode": "no_active_heating",
-    "start_timestamp_local": "2026-09-27T18:32:16+02:00",
-    "start_inside_c": 18.2,
-    "weather_models": [
-      "chmi",
-      "dwd",
-      "ec"
-    ],
-    "coupling_candidates_per_h": [
-      0.00203,
-      0.00418,
-      0.01014
-    ],
-    "horizons": [
-      {
-        "hours": 12,
-        "timestamp_local": "2026-09-28T07:00:00+02:00",
-        "inside_median_c": 18.0,
-        "inside_q25_c": 17.7,
-        "inside_q75_c": 18.1,
-        "inside_min_scenario_c": 17.5,
-        "inside_max_scenario_c": 18.1,
-        "outside_model_median_c": 12.5,
-        "scenario_count": 9
-      },
-      {
-        "hours": 24,
-        "timestamp_local": "2026-09-28T19:00:00+02:00",
-        "inside_median_c": 18.0,
-        "inside_q25_c": 17.8,
-        "inside_q75_c": 18.0,
-        "inside_min_scenario_c": 17.5,
-        "inside_max_scenario_c": 18.1,
-        "outside_model_median_c": 16.7,
-        "scenario_count": 9
-      },
-      {
-        "hours": 36,
-        "timestamp_local": "2026-09-29T07:00:00+02:00",
-        "inside_median_c": 17.8,
-        "inside_q25_c": 17.4,
-        "inside_q75_c": 17.9,
-        "inside_min_scenario_c": 17.1,
-        "inside_max_scenario_c": 18.0,
-        "outside_model_median_c": 13.4,
-        "scenario_count": 9
-      }
-    ],
-    "range_note": "q25-q75 reflects weather-model and fitted-coupling spread only; it is not a full prediction interval",
-    "assumptions": [
-      "No active central heating or wood-stove heat is added.",
-      "No major door/window ventilation or unusual internal heat gain occurs.",
-      "Passive thermal response remains similar to the learned nighttime behaviour."
-    ]
-  },
+  "passive_forecast": null,
   "filters": {
     "bucket_minutes": 30,
     "window_hours": 6,
@@ -123,7 +70,7 @@
     "maximum_allowed_warming_c_per_h": 0.08,
     "night_midpoint_hours_local": "21:00-05:59",
     "rejected": {
-      "gap": 0,
+      "gap": 1,
       "setpoint": 0,
       "warming": 0,
       "coverage": 0
@@ -134,6 +81,7 @@
     "The passive fit preferentially uses nighttime 6-hour windows to reduce solar-gain and 0.1 °C sensor-quantization noise.",
     "Wood-stove heat, occupants, open doors/windows and other heat gains are not independently observed yet.",
     "DWD Sohland is preferred for historical outdoor temperature because it is closer; ČHMÚ Varnsdorf fills missing periods.",
+    "A numeric passive forecast is withheld until there are at least 6 accepted nighttime windows and 5 days of paired coverage.",
     "The fit is observational and preliminary; it must not control heating until heating-state evidence and more seasonal data exist."
   ]
 }
