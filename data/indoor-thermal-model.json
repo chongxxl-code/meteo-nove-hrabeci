@@ -1,6 +1,6 @@
 {
   "schema": 3,
-  "generated_at": "2026-09-27T18:43:58.684243Z",
+  "generated_at": "2026-09-27T18:52:50.454631Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "prediction_ready": false,
@@ -8,11 +8,11 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
-  "coverage_days": 3.73,
-  "indoor_raw_points": 502,
+  "coverage_days": 3.75,
+  "indoor_raw_points": 505,
   "indoor_30m_bins": 143,
-  "weather_30m_bins": 1858,
-  "paired_candidate_bins": 141,
+  "weather_30m_bins": 1859,
+  "paired_candidate_bins": 142,
   "fit_samples": 7,
   "all_accepted_windows": 7,
   "night_windows": 2,
@@ -21,7 +21,7 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 1858,
+      "DWD Sohland": 1859,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -54,10 +54,10 @@
     "sample_count": 7
   },
   "current_passive_estimate": {
-    "inside_c": 22.0,
+    "inside_c": 22.2,
     "outside_c": 10.4,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": 11.6,
+    "inside_minus_outside_c": 11.8,
     "passive_fit_rate_c_per_h": -0.05,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
@@ -72,10 +72,10 @@
     "maximum_cumulative_positive_rise_per_window_c": 0.4,
     "night_midpoint_hours_local": "21:00-05:59",
     "rejected": {
-      "gap": 1,
+      "gap": 0,
       "setpoint": 0,
       "warming": 0,
-      "heat_gain": 0,
+      "heat_gain": 1,
       "coverage": 0
     }
   },
