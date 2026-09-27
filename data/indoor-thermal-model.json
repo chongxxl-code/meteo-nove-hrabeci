@@ -1,6 +1,6 @@
 {
   "schema": 3,
-  "generated_at": "2026-09-27T18:35:43.003090Z",
+  "generated_at": "2026-09-27T18:43:58.684243Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "prediction_ready": false,
@@ -68,18 +68,22 @@
     "minimum_inside_minus_outside_c": 2.0,
     "setpoint_margin_c": 1.5,
     "maximum_allowed_warming_c_per_h": 0.08,
+    "maximum_single_30m_rise_c": 0.2,
+    "maximum_cumulative_positive_rise_per_window_c": 0.4,
     "night_midpoint_hours_local": "21:00-05:59",
     "rejected": {
       "gap": 1,
       "setpoint": 0,
       "warming": 0,
+      "heat_gain": 0,
       "coverage": 0
     }
   },
   "limitations": [
     "DP2 semantics are not independently verified, so it is not treated as boiler or relay state.",
     "The passive fit preferentially uses nighttime 6-hour windows to reduce solar-gain and 0.1 °C sensor-quantization noise.",
-    "Wood-stove heat, occupants, open doors/windows and other heat gains are not independently observed yet.",
+    "Windows with strong short-term indoor warming are excluded to reduce contamination from wood-stove heat, solar gain and occupants.",
+    "Wood-stove heat is not independently measured yet; the filter detects heat-gain signatures rather than proving their source.",
     "DWD Sohland is preferred for historical outdoor temperature because it is closer; ČHMÚ Varnsdorf fills missing periods.",
     "A numeric passive forecast is withheld until there are at least 6 accepted nighttime windows and 5 days of paired coverage.",
     "The fit is observational and preliminary; it must not control heating until heating-state evidence and more seasonal data exist."
