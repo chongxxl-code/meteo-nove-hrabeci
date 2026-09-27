@@ -509,12 +509,33 @@ def main():
         required["EMOS_BMP_KEY"],
         required["EMOS_CERT_SHA256"],
     )
-    api.login()
+
+    # Reuse one Tuya/EMOS login across repeated polls in the same GitHub Actions job.
+    # The SID is stored only in the runner temp directory, never in the public repo.
+    session_file_raw = env("EMOS_SESSION_FILE")
+    session_file = Path(session_file_raw) if session_file_raw else None
+    homes = None
+    if session_file and session_file.exists():
+        try:
+            cached_sid = session_file.read_text(encoding="utf-8").strip()
+            if cached_sid:
+                api.sid = cached_sid
+                homes = api.homes()
+        except Exception:
+            api.sid = None
+            homes = None
+
+    if homes is None:
+        api.login()
+        if session_file:
+            session_file.parent.mkdir(parents=True, exist_ok=True)
+            session_file.write_text(api.sid or "", encoding="utf-8")
+        homes = api.homes()
 
     target = None
     target_home_id = None
     target_norm = normalize_name(TARGET)
-    for home in api.homes():
+    for home in homes:
         home_id = home.get("homeId") or home.get("gid") or home.get("id")
         if home_id is None:
             continue
