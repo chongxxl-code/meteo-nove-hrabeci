@@ -42,6 +42,7 @@ jobs:
           EMOS_CERT_SHA256: ${{ secrets.EMOS_CERT_SHA256 }}
           EMOS_LIVE_MODE: '1'
           EMOS_LIVE_HEARTBEAT_MINUTES: '30'
+          EMOS_SESSION_FILE: ${{ runner.temp }}/emos-session.sid
         run: |
           set -e
           git config user.name "github-actions[bot]"
