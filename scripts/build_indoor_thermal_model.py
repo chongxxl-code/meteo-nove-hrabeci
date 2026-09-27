@@ -386,13 +386,31 @@ def main():
             "note": "passive nighttime loss estimate; not a heating-control command",
         }
 
-    passive_forecast = build_passive_forecast(latest, fit)
+    prediction_ready = bool(
+        fit
+        and fit_basis is night
+        and len(night) >= 6
+        and coverage_days is not None
+        and coverage_days >= 5
+    )
+    prediction_blocker = None
+    if not prediction_ready:
+        if len(night) < 6:
+            prediction_blocker = f"need at least 6 accepted nighttime windows; have {len(night)}"
+        elif coverage_days is None or coverage_days < 5:
+            prediction_blocker = f"need at least 5 days of paired coverage; have {rounded(coverage_days, 2)}"
+        else:
+            prediction_blocker = "passive fit is not based on nighttime windows"
+
+    passive_forecast = build_passive_forecast(latest, fit) if prediction_ready else None
 
     output = {
         "schema": 3,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
+        "prediction_ready": prediction_ready,
+        "prediction_blocker": prediction_blocker,
         "dp2_used_as_heating_state": False,
         "analysis_window_hours": WINDOW_HOURS,
         "fit_basis": "nighttime windows" if fit_basis is night else "all passive windows fallback",
@@ -438,6 +456,7 @@ def main():
             "The passive fit preferentially uses nighttime 6-hour windows to reduce solar-gain and 0.1 °C sensor-quantization noise.",
             "Wood-stove heat, occupants, open doors/windows and other heat gains are not independently observed yet.",
             "DWD Sohland is preferred for historical outdoor temperature because it is closer; ČHMÚ Varnsdorf fills missing periods.",
+            "A numeric passive forecast is withheld until there are at least 6 accepted nighttime windows and 5 days of paired coverage.",
             "The fit is observational and preliminary; it must not control heating until heating-state evidence and more seasonal data exist."
         ],
     }
