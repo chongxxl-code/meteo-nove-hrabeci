@@ -2,9 +2,9 @@ name: Collect EMOS indoor live
 
 on:
   schedule:
-    # GitHub cron is too irregular for direct 7-minute polling.
-    # Start/queue a long-lived session hourly; the session polls every 7 minutes.
-    - cron: '11 * * * *'
+    # Keep one long-lived session for ~5.5 h and start a fresh one every 6 h.
+    # History backfill covers the short gap if GitHub starts a session late.
+    - cron: '11 */6 * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -55,7 +55,16 @@ jobs:
               git fetch origin main
               git reset --hard origin/main
 
+              set +e
               python scripts/collect_indoor_emos.py
+              rc=$?
+              set -e
+              if [ "${rc}" -eq 75 ]; then
+                return 75
+              fi
+              if [ "${rc}" -ne 0 ]; then
+                return "${rc}"
+              fi
 
               # Do not create commits for status-only timestamp churn.
               git restore data/indoor-history-status.json data/indoor-collector-status.json 2>/dev/null || true
@@ -79,11 +88,21 @@ jobs:
             return 1
           }
 
-          # 48 cycles keep one session alive for roughly 5.5 hours. GitHub may delay
-          # scheduled starts by hours, so the long-lived session bridges those gaps.
+          # 48 cycles keep one authenticated session alive for roughly 5.5 hours.
+          # A session-limit response stops this job immediately instead of hammering login.
           for cycle in $(seq 1 48); do
             echo "Indoor live cycle ${cycle}/48"
+            set +e
             collect_once
+            rc=$?
+            set -e
+            if [ "${rc}" -eq 75 ]; then
+              echo "EMOS session limit reached; stop this session and wait for the next scheduled window."
+              break
+            fi
+            if [ "${rc}" -ne 0 ]; then
+              exit "${rc}"
+            fi
             if [ "${cycle}" -lt 48 ]; then
               sleep 420
             fi
