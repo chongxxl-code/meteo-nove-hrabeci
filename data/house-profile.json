@@ -1,0 +1,45 @@
+{
+  "schema": "2026-09-28.house-profile-v1",
+  "updated_date_local": "2026-09-28",
+  "building": {
+    "heated_floor_area_m2_working_estimate": 100,
+    "heated_floor_area_m2_range": [90, 105],
+    "storeys_heated": 2,
+    "attic": "unheated",
+    "roof_covering": "Capacco"
+  },
+  "heating_system": {
+    "primary_electric_boiler": {
+      "manufacturer": "Protherm",
+      "model": "Ray 12 K",
+      "version": "13R1",
+      "year": 2013,
+      "type": "electric hydronic boiler",
+      "supply": "3x230/400 V, 50 Hz",
+      "electrical_input_kw": 12.0,
+      "rated_heat_output_kw": 12.1,
+      "label_efficiency_percent": 99.5,
+      "boiler_water_volume_l": 7,
+      "max_system_pressure_bar": 3,
+      "max_water_temperature_c": 85,
+      "evidence": "nameplate photo supplied 2026-09-28"
+    },
+    "hydronic_components_observed": [
+      "external expansion vessel",
+      "circulation pump",
+      "pressure gauge",
+      "copper distribution piping",
+      "isolation valves"
+    ],
+    "wood_heat": {
+      "present": true,
+      "connected_to_hydronic_system": true,
+      "exact_hydraulic_topology": "not yet mapped"
+    }
+  },
+  "model_usage": {
+    "treat_as_static_physical_context": true,
+    "measured_temperature_data_remains_primary": true,
+    "future_energy_model_should_use_boiler_rated_power_as_prior_not_as_measured_consumption": true
+  }
+}
