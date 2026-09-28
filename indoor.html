@@ -26,6 +26,7 @@ async function getJson(u){let last;for(const src of liveSources(u)){try{const r=
 async function getJsonOptional(u){try{return await getJson(u)}catch(e){return null}}
 function num(v,d=1){return Number.isFinite(Number(v))?Number(v).toFixed(d):'—'}
 function fmt(ts){if(!ts)return'—';return new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(ts))}
+function ageShort(ts){if(!ts)return'—';const m=Math.max(0,Math.round((Date.now()-new Date(ts).getTime())/60000));if(m<60)return`${m} min`;const h=Math.floor(m/60),r=m%60;return r?`${h} h ${r} min`:`${h} h`}
 function dayKey(ts){return String(ts||'').slice(0,10)}
 async function getTextOptional(u){for(const src of liveSources(u)){try{const r=await fetch(src,{cache:'no-store'});if(r.ok)return await r.text()}catch(e){}}return null}
 let allIndoorPoints=[],allOutdoorPoints=[],chartWindowHours=24;
@@ -125,7 +126,7 @@ async function load(){
   el('latest').textContent=num(shown.latest_indoor_c);el('setpoint').textContent=shown.latest_setpoint_c!=null?num(shown.latest_setpoint_c)+' °C':'—';el('lasttime').textContent=fmt(shown.last_timestamp);
   el('legendIndoor').textContent=shown.latest_indoor_c!=null?num(shown.latest_indoor_c)+' °C':'—';
   el('legendSetpoint').textContent=shown.latest_setpoint_c!=null?num(shown.latest_setpoint_c)+' °C':'—';
-  el('legendOutside').textContent=latestOutdoor?num(latestOutdoor.outside_c)+' °C':'—';
+  el('legendOutside').textContent=latestOutdoor?num(latestOutdoor.outside_c)+' °C · '+ageShort(latestOutdoor.timestamp_local)+' staré':'—';
   const hs=shown.dp2_raw;el('dp2raw').textContent=hs==null?'—':String(hs).toUpperCase();
   el('points').textContent=pts.length.toLocaleString('cs-CZ');el('source').textContent='EMOS · '+(hist.source_quality==='display_series'?'grafový backfill':hist.source_quality==='mixed'?'cloud + backfill':'cloud');
   if(pts.length){
