@@ -45,7 +45,12 @@ jobs:
           assert d["primary_command"] == "A1B6DP01"
           assert len(d["week_ahead"]) == 7
           assert all(day["timeline"] for day in d["week_ahead"])
-          assert all(day["nt_minutes"] >= 1190 for day in d["week_ahead"])
+          assert all(day["nt_minutes"] >= 1200 for day in d["week_ahead"])
+          assert all(day["nt_minutes"] + day["vt_minutes"] == 1440 for day in d["week_ahead"])
+          assert all(
+              max((seg["minutes"] for seg in day["timeline"] if seg["tariff"] == "VT"), default=0) <= 60
+              for day in d["week_ahead"]
+          )
           assert d["api_cost_czk"] == 0
           assert d["paid_provider_calls"] == 0
           print("HDO_VALIDATION_PASS", d["status"], d["schedule_checksum"][:12])
