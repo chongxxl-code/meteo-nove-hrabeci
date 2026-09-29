@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-state-v3",
+  "schema": "2026-09-29.house-state-v5",
   "updated_date_local": "2026-09-29",
   "electric_boiler": {
     "mains_power": "disconnected",
@@ -10,7 +10,7 @@
     "wood_stove_possible": true
   },
   "energy_pricing": {
-    "status": "invoice_verified",
+    "status": "current_2026_price_verified",
     "supplier": "ČEZ Prodej",
     "billing_period": "2025-05-03/2026-04-27",
     "distribution_rate": "D45d",
@@ -19,12 +19,32 @@
       "high_tariff": 5.72,
       "low_tariff": 4.91
     },
-    "tempering_incremental_price_czk_per_kwh": 4.91,
-    "tempering_price_basis": "low_tariff variable price incl. VAT; fixed monthly charges excluded because they are paid regardless of tempering",
+    "tempering_incremental_price_czk_per_kwh": 4.39393,
+    "tempering_price_basis": "current 2026 D45d low-tariff variable price incl. VAT from official ČEZ price list; fixed monthly charges excluded because they are paid regardless of tempering",
     "invoice_total_consumption_kwh": 1433,
     "invoice_consumption_kwh": {
       "high_tariff": 259,
       "low_tariff": 1174
+    },
+    "historical_invoice_average_variable_price_czk_per_kwh_vat": {
+      "billing_period": "2025-05-03/2026-04-27",
+      "high_tariff": 5.72,
+      "low_tariff": 4.91,
+      "note": "Historical average from the latest annual invoice; retained for audit only, not used as the current tempering price."
+    },
+    "current_variable_price_czk_per_kwh_vat": {
+      "effective_from": "2026-01-01",
+      "product": "Elektřina na dobu neurčitou",
+      "distribution_rate": "D45d",
+      "high_tariff": 5.28625,
+      "low_tariff": 4.39393,
+      "source": "official ČEZ 2026 household price list",
+      "includes": "energy supply + distribution + electricity tax + system services, VAT included; quantity-independent monthly charges excluded"
+    },
+    "hdo_boiler_blocking": {
+      "tariff_requirement": "D45d requires technical blocking of electric heating during high tariff",
+      "installation_status": "not_physically_verified",
+      "pricing_assumption": "Use NT price for the intended HDO-controlled boiler operation; retain VT price as a fallback sensitivity until the actual wiring is verified."
     }
   },
   "metering": {
