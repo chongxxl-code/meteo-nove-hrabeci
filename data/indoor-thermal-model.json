@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-09-29T14:35:20.518605Z",
+  "generated_at": "2026-09-29T14:46:13.837277Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "prediction_ready": false,
@@ -9,8 +9,8 @@
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
   "coverage_days": 5.56,
-  "indoor_raw_points": 757,
-  "indoor_30m_bins": 184,
+  "indoor_raw_points": 762,
+  "indoor_30m_bins": 185,
   "weather_30m_bins": 1946,
   "paired_candidate_bins": 183,
   "fit_samples": 8,
@@ -54,10 +54,10 @@
     "sample_count": 8
   },
   "current_passive_estimate": {
-    "inside_c": 18.7,
+    "inside_c": 18.8,
     "outside_c": 21.2,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": -2.5,
+    "inside_minus_outside_c": -2.4,
     "passive_fit_rate_c_per_h": 0.01,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
@@ -90,7 +90,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-09-29T16:27:15+02:00",
+      "start_timestamp_local": "2026-09-29T16:41:23+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -124,22 +124,22 @@
       "scope": "energy needed to maintain approximately 7.0 °C over the next 24 h; not direct metering"
     },
     "hdo_next_24h": {
-      "status": "live",
-      "schedule_source": "cez_live_api",
-      "checked_at": "2026-09-29T16:30:28.824933+02:00",
+      "status": "verified_export_monitored",
+      "schedule_source": "cez_dip_export_monitored_daily",
+      "checked_at": "2026-09-29T16:43:39.018120+02:00",
       "primary_command": "A1B6DP1",
       "distribution_area": "Sever",
       "horizon_hours": 24,
-      "low_tariff_hours": 20.0,
-      "high_tariff_hours": 4.0,
+      "low_tariff_hours": 20.03,
+      "high_tariff_hours": 3.97,
       "current_tariff": "NT",
       "next_transition_local": "2026-09-29T18:30:00+02:00",
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-09-29T16:27:15+02:00",
+          "start_local": "2026-09-29T16:41:23+02:00",
           "end_local": "2026-09-29T18:30:00+02:00",
-          "hours": 2.046
+          "hours": 1.81
         },
         {
           "tariff": "VT",
@@ -174,14 +174,14 @@
         {
           "tariff": "VT",
           "start_local": "2026-09-30T10:55:00+02:00",
-          "end_local": "2026-09-30T11:55:00+02:00",
-          "hours": 1.0
+          "end_local": "2026-09-30T11:53:00+02:00",
+          "hours": 0.967
         },
         {
           "tariff": "NT",
-          "start_local": "2026-09-30T11:55:00+02:00",
+          "start_local": "2026-09-30T11:53:00+02:00",
           "end_local": "2026-09-30T14:10:00+02:00",
-          "hours": 2.25
+          "hours": 2.283
         },
         {
           "tariff": "VT",
@@ -192,8 +192,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-09-30T15:10:00+02:00",
-          "end_local": "2026-09-30T16:27:15+02:00",
-          "hours": 1.288
+          "end_local": "2026-09-30T16:41:23+02:00",
+          "hours": 1.523
         }
       ],
       "note": "Exact HDO availability is ingested daily and is now an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
