@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.hdo-manual-baseline-v2",
+  "schema": "2026-09-29.hdo-manual-baseline-v3",
   "source": {
     "type": "manual_export",
     "supplied_date": "2026-09-29",
@@ -9,13 +9,13 @@
   },
   "distribution_area": "Sever",
   "distribution_rate": "D45d",
-  "primary_command": "A1B6DP1",
+  "primary_command": "A1B6DP01",
   "equivalent_tariff_commands": [
-    "A1B6DP1",
-    "A1B6DP2"
+    "A1B6DP01",
+    "A1B6DP02"
   ],
-  "observed_other_command": "A1B6DP3",
-  "selection_note": "DP1 and DP2 are identical in the supplied export and match the approximately 20 h/day D45d tariff pattern. DP3 is retained only as an observed separate program and is not used as the tariff timeline.",
+  "observed_other_command": "A1B6DP03",
+  "selection_note": "DP01 and DP02 are identical in the supplied ČEZ export and match the approximately 20 h/day D45d tariff pattern. DP03 is retained only as a separate observed program and is not used as the tariff timeline. The older public reference endpoint uses the shortened spelling A1B6DP1.",
   "nt_windows_by_weekday": {
     "monday": [
       [
@@ -171,5 +171,6 @@
         "24:00"
       ]
     ]
-  }
+  },
+  "legacy_reference_command": "A1B6DP1"
 }
