@@ -709,7 +709,7 @@ def build_actual_tempering_need(latest, snapshot, start_local, fit, prediction_r
     }
 
 
-def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, prediction_ready=False):
+def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, prediction_ready=False, extra_nt_block_h=0.0):
     if not hdo_context or not isinstance(band, list) or len(band) < 2:
         return None
     vt_hours = [
@@ -724,11 +724,13 @@ def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, predicti
         return None
 
     longest_vt_h = max(vt_hours)
+    conservative_unavailability_h = longest_vt_h + max(0.0, as_float(extra_nt_block_h) or 0.0)
 
     if outside_min >= lower_c:
         return {
             "horizon_hours": 24,
             "longest_vt_block_h": rounded(longest_vt_h, 2),
+            "conservative_unavailability_h": rounded(conservative_unavailability_h, 2),
             "forecast_min_outside_c": rounded(outside_min, 1),
             "reference_inside_c": rounded(lower_c, 1),
             "passive_drop_during_longest_vt_central_c": 0.0,
@@ -743,6 +745,7 @@ def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, predicti
         return {
             "horizon_hours": 24,
             "longest_vt_block_h": rounded(longest_vt_h, 2),
+            "conservative_unavailability_h": rounded(conservative_unavailability_h, 2),
             "forecast_min_outside_c": rounded(outside_min, 1),
             "reference_inside_c": rounded(lower_c, 1),
             "impact_level": "learning",
@@ -759,7 +762,7 @@ def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, predicti
     def passive_drop(k):
         if k is None or k <= 0 or outside_min >= lower_c:
             return 0.0
-        end_c = outside_min + (lower_c - outside_min) * math.exp(-k * longest_vt_h)
+        end_c = outside_min + (lower_c - outside_min) * math.exp(-k * conservative_unavailability_h)
         return max(0.0, lower_c - end_c)
 
     central_drop = passive_drop(k_mid)
@@ -779,6 +782,7 @@ def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, predicti
     return {
         "horizon_hours": 24,
         "longest_vt_block_h": rounded(longest_vt_h, 2),
+        "conservative_unavailability_h": rounded(conservative_unavailability_h, 2),
         "forecast_min_outside_c": rounded(outside_min, 1),
         "reference_inside_c": rounded(lower_c, 1),
         "passive_drop_during_longest_vt_central_c": rounded(central_drop, 2),
@@ -879,6 +883,9 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False):
         price,
     )
 
+    tariff_policy = (((cfg.get("optimization_policy") or {}).get("tariff_control") or {}) if isinstance(cfg, dict) else {})
+    extra_nt_block_h = as_float((((tariff_policy.get("additional_nt_heating_blocking") or {}).get("max_single_block_hours")))) or 0.0
+
     hdo_resilience = build_hdo_resilience(
         hdo_context,
         snapshot,
@@ -886,6 +893,7 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False):
         fit,
         band,
         prediction_ready,
+        extra_nt_block_h,
     )
 
     return {
