@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v4",
+  "schema": "2026-09-29.house-profile-v5",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -9,7 +9,36 @@
     ],
     "storeys_heated": 2,
     "attic": "unheated",
-    "roof_covering": "Capacco"
+    "roof_covering": "Capacco",
+    "heating_zone_layout": {
+      "downstairs": {
+        "thermostat_location": "near wood stove",
+        "spaces": [
+          "living room",
+          "kitchen",
+          "hall/corridor"
+        ],
+        "open_connection": "living room is connected to kitchen by corridor, so thermostat represents a larger connected downstairs air volume",
+        "radiators": {
+          "living_downstairs": 2,
+          "kitchen": 0,
+          "hall_corridor": 0
+        }
+      },
+      "upstairs": {
+        "rooms": [
+          {
+            "name": "largest room",
+            "radiators": 2
+          },
+          {
+            "name": "smaller room",
+            "radiators": 1
+          }
+        ],
+        "note": "Upstairs may settle at a different temperature than the downstairs thermostat because there is no separate upstairs sensor or zoning."
+      }
+    }
   },
   "heating_system": {
     "primary_electric_boiler": {
@@ -37,21 +66,29 @@
     "wood_heat": {
       "present": true,
       "connected_to_hydronic_system": true,
-      "exact_hydraulic_topology": "not yet mapped"
+      "exact_hydraulic_topology": "not yet mapped",
+      "control_effect_on_electric_boiler": "no direct control effect",
+      "note": "Wood stove operation is separate from the electric-boiler control decision; for electric tempering periods it is normally irrelevant because the stove is not being fed."
     },
     "control_topology": {
       "zoning": "whole_house_only",
       "all_rooms_heated_together": true,
       "individual_room_shutdown_for_tempering": false,
-      "note": "The hydronic system is operated as one whole-house zone; room-by-room isolation is not used."
+      "note": "The hydronic system is operated as one whole-house zone; room-by-room isolation is not used.",
+      "distribution_note": "One boiler call circulates heat through the whole hydronic system; model must not optimize rooms independently."
     },
     "thermostat_context": {
       "device": "EMOS GoSmart P56S11",
-      "location": "ground floor near the wood stove",
+      "location": "ground floor near the wood stove, in the larger connected downstairs air zone",
       "distance_from_wall_cm": 20,
       "model_role": "single control temperature for the house",
       "wood_stove_bias_risk": "high",
-      "note": "When wood heat is active, the local thermostat temperature may not represent cooler remote rooms; those periods should be excluded or down-weighted in thermal calibration."
+      "note": "When wood heat is active, the local thermostat temperature may not represent cooler remote rooms; those periods should be excluded or down-weighted in thermal calibration.",
+      "downstairs_radiators_near_control_zone": 2,
+      "kitchen_radiators": 0,
+      "upstairs_radiators_total": 3,
+      "interpretation": "The thermostat is a control point for the whole system, not a whole-house average temperature. Upstairs can remain cooler or warmer than the thermostat reading.",
+      "tempering_relevance": "During unattended electric tempering, wood-stove influence is absent; the main uncertainty is vertical temperature distribution between downstairs and upstairs."
     }
   },
   "model_usage": {
@@ -113,6 +150,13 @@
         "never preheat solely for price or carbon if forecast shows no thermal need",
         "never lower the configured 7 C target automatically"
       ]
+    },
+    "sensor_model": {
+      "control_sensor_scope": "downstairs connected zone, not whole-house mean",
+      "vertical_gradient_expected": true,
+      "upstairs_temperature_directly_measured": false,
+      "current_policy": "Use thermostat temperature for control simulation, but keep a separate uncertainty margin for upstairs rooms until a second sensor or enough empirical data constrains the vertical gradient.",
+      "wood_stove_policy": "Do not assume stove presence invalidates the thermostat. Only stove-active periods should be treated separately when learning electric-only thermal response."
     }
   }
 }
