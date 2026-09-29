@@ -76,6 +76,9 @@ def main():
     sohland = read_json('dwd-sohland-status.json') or {}
     radar = read_json('radar-nowcast.json') or {}
     verification = read_json('forecast-verification.json') or {}
+    indoor = read_json('indoor-latest.json') or {}
+    indoor_collector = read_json('indoor-collector-status.json') or {}
+    hdo = read_json('hdo-schedule.json') or {}
 
     radar_checked = radar.get('computed_at_utc')
     radar_observed = None
@@ -102,6 +105,12 @@ def main():
         source('verification','Verifikace', verification.get('generated_at_utc'), verification.get('generated_at_utc'), 240, 480,
                bool(verification),
                f"{(verification.get('coverage') or {}).get('temperature_cases',0)} T / {(verification.get('coverage') or {}).get('rain_cases',0)} déšť"),
+        source('indoor','EMOS uvnitř', indoor.get('generated_at'), indoor.get('last_timestamp'), 20, 45,
+               indoor.get('latest_indoor_c') is not None and indoor_collector.get('ok', True) is not False,
+               f"{indoor.get('latest_indoor_c','—')} °C · cíl {indoor.get('latest_setpoint_c','—')} °C"),
+        source('hdo','HDO ČEZ monitor', hdo.get('checked_at') or hdo.get('generated_at'), hdo.get('checked_at') or hdo.get('generated_at'), 1800, 2880,
+               hdo.get('status') in ('verified_export_monitored','live','live_stale','manual_fallback') and len(hdo.get('week_ahead') or []) == 7,
+               'ověřený export + denní veřejná kontrola'),
     ]
 
     rank = {'ok':0, 'delayed':1, 'stale':2, 'error':3}
@@ -117,6 +126,8 @@ def main():
             'regional_observations_stale_after_min': 240,
             'radar_stale_after_min': 90,
             'verification_stale_after_min': 480,
+            'indoor_stale_after_min': 45,
+            'hdo_monitor_stale_after_min': 2880,
             'note': 'Health stav sleduje čerstvost posledního úspěšného sběru; delayed je varování, stale znamená příliš stará data.'
         }
     }
