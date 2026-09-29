@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v10",
+  "schema": "2026-09-29.house-profile-v11",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -82,8 +82,8 @@
       "location": "ground floor near the wood stove, in the larger connected downstairs air zone",
       "distance_from_wall_cm": 20,
       "model_role": "single control temperature for the house",
-      "wood_stove_bias_risk": "high",
-      "note": "When wood heat is active, the local thermostat temperature may not represent cooler remote rooms; those periods should be excluded or down-weighted in thermal calibration.",
+      "wood_stove_bias_risk": "only_when_stove_active",
+      "note": "The downstairs thermostat is the sole control reference. Wood heat can bias it only during stove-active periods; unattended electric tempering is evaluated separately.",
       "downstairs_radiators_near_control_zone": 2,
       "kitchen_radiators": 0,
       "upstairs_radiators_total": 3,
@@ -136,7 +136,7 @@
         "low_tariff_hours_per_day_min": 20,
         "high_tariff_continuous_max_hours": 1,
         "exact_hdo_schedule_status": "current_cez_export_with_daily_change_monitor",
-        "rule": "Use the actual daily-refreshed HDO schedule. Do not assume low tariff means night.",
+        "rule": "Use the current customer-specific ČEZ export as the schedule and check public ČEZ sources once daily for changes. Do not imply that the CAPTCHA-protected customer export itself is refreshed automatically.",
         "source": "current ČEZ DIP export supplied 2026-09-29 + daily public ČEZ schedule/change monitor",
         "primary_command": "A1B6DP01",
         "distribution_area": "Sever",
