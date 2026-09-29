@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v13",
+  "schema": "2026-09-29.house-profile-v14",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -108,9 +108,14 @@
           "verified": true
         },
         "dp106": {
-          "meaning": "relay status candidate",
-          "verified": false,
-          "note": "Collected separately for an ON/OFF demand test before assigning control semantics."
+          "meaning": "not binary relay status",
+          "verified": true,
+          "observed_values": [
+            0,
+            10
+          ],
+          "test_evidence": "During manual heating-demand test, DP106 rose to 10; after setpoint was reduced below room temperature and heat demand should end, DP106 remained 10 for >10 minutes.",
+          "note": "Do not use DP106 as ON/OFF heat demand. It may be a timer/counter or another auxiliary value."
         }
       }
     }
