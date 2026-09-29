@@ -42,7 +42,7 @@ jobs:
           p = Path("data/hdo-schedule.json")
           d = json.loads(p.read_text(encoding="utf-8"))
           assert d["distribution_rate"] == "D45d"
-          assert d["primary_command"] == "A1B6DP1"
+          assert d["primary_command"] == "A1B6DP01"
           assert len(d["week_ahead"]) == 7
           assert all(day["timeline"] for day in d["week_ahead"])
           assert all(day["nt_minutes"] >= 1190 for day in d["week_ahead"])
