@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v2",
+  "schema": "2026-09-29.house-profile-v3",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -38,6 +38,20 @@
       "present": true,
       "connected_to_hydronic_system": true,
       "exact_hydraulic_topology": "not yet mapped"
+    },
+    "control_topology": {
+      "zoning": "whole_house_only",
+      "all_rooms_heated_together": true,
+      "individual_room_shutdown_for_tempering": false,
+      "note": "The hydronic system is operated as one whole-house zone; room-by-room isolation is not used."
+    },
+    "thermostat_context": {
+      "device": "EMOS GoSmart P56S11",
+      "location": "ground floor near the wood stove",
+      "distance_from_wall_cm": 20,
+      "model_role": "single control temperature for the house",
+      "wood_stove_bias_risk": "high",
+      "note": "When wood heat is active, the local thermostat temperature may not represent cooler remote rooms; those periods should be excluded or down-weighted in thermal calibration."
     }
   },
   "model_usage": {
@@ -61,6 +75,15 @@
       "central_case": 1.5,
       "high_heat_loss_case": 1
     },
-    "note": "This prior gives the absolute energy scale until winter observations can narrow it. Measured indoor/outdoor dynamics remain primary for timing and cooling behaviour."
+    "note": "This prior gives the absolute energy scale until winter observations can narrow it. Measured indoor/outdoor dynamics remain primary for timing and cooling behaviour.",
+    "control_principle": {
+      "setpoint_c": 7,
+      "hysteresis_c": 1,
+      "lower_switch_c": 6,
+      "upper_switch_c": 8,
+      "strategy": "Use the full 6–8 °C band and thermal inertia instead of trying to hold exactly 7.0 °C.",
+      "optimization_scope": "whole house",
+      "policy": "The model can compare costs of alternative targets, but it must not change the configured 7 °C target automatically."
+    }
   }
 }
