@@ -9,6 +9,9 @@ on:
     paths:
       - 'scripts/collect_weather.py'
       - 'scripts/build_indoor_thermal_model.py'
+      - 'scripts/audit_heating_system.py'
+      - 'data/house-profile.json'
+      - 'data/house-state.json'
       - 'data/hdo-schedule.json'
       - 'scripts/collect_chmi.py'
       - 'scripts/collect_dwd_sohland.py'
@@ -56,6 +59,8 @@ jobs:
         run: python scripts/collect_dwd_sohland.py
       - name: Build indoor thermal learning model
         run: python scripts/build_indoor_thermal_model.py
+      - name: Audit heating, pricing and HDO invariants
+        run: python scripts/audit_heating_system.py
       - name: Fallback rebuild radar nowcast
         run: python scripts/build_radar_nowcast.py
       - name: Fallback archive radar observation
@@ -87,6 +92,7 @@ jobs:
             python scripts/collect_chmi.py
             python scripts/collect_dwd_sohland.py
             python scripts/build_indoor_thermal_model.py
+            python scripts/audit_heating_system.py
             python scripts/build_radar_nowcast.py
             python scripts/archive_radar_observation.py
             python scripts/verify_forecasts.py
