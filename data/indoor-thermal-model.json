@@ -1,6 +1,6 @@
 {
-  "schema": 3,
-  "generated_at": "2026-09-29T09:45:47.366961Z",
+  "schema": 4,
+  "generated_at": "2026-09-29T12:54:56.367143Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "prediction_ready": false,
@@ -8,11 +8,11 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
-  "coverage_days": 5.35,
-  "indoor_raw_points": 695,
-  "indoor_30m_bins": 175,
-  "weather_30m_bins": 1936,
-  "paired_candidate_bins": 173,
+  "coverage_days": 5.5,
+  "indoor_raw_points": 734,
+  "indoor_30m_bins": 181,
+  "weather_30m_bins": 1943,
+  "paired_candidate_bins": 180,
   "fit_samples": 8,
   "all_accepted_windows": 8,
   "night_windows": 4,
@@ -21,7 +21,7 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 1936,
+      "DWD Sohland": 1943,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -55,13 +55,143 @@
   },
   "current_passive_estimate": {
     "inside_c": 18.5,
-    "outside_c": 18.4,
+    "outside_c": 21.2,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": 0.1,
-    "passive_fit_rate_c_per_h": -0.0,
+    "inside_minus_outside_c": -2.7,
+    "passive_fit_rate_c_per_h": 0.01,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
   "passive_forecast": null,
+  "heating_energy_model": {
+    "status": "provisional_physics_prior",
+    "absolute_energy_scale_calibrated": false,
+    "tempering_setpoint_c": 7.0,
+    "thermostat_hysteresis_c": 1.0,
+    "expected_thermostat_band_c": [
+      6.0,
+      8.0
+    ],
+    "boiler_efficiency_fraction": 0.995,
+    "price_czk_per_kwh": 4.91,
+    "price_basis": "low_tariff variable price incl. VAT; fixed monthly charges excluded because they are paid regardless of tempering",
+    "distribution_rate": "D45d",
+    "heat_loss_prior": {
+      "method": "installed boiler capacity / design temperature difference / oversizing factor",
+      "design_indoor_c": 20.0,
+      "design_outdoor_c": -15.0,
+      "design_delta_k": 35.0,
+      "boiler_thermal_output_kw": 12.1,
+      "w_per_k": {
+        "low": 172.9,
+        "central": 230.5,
+        "high": 345.7
+      },
+      "absolute_scale_calibrated": false
+    },
+    "forecast_next_24h": {
+      "horizon_hours": 24,
+      "start_timestamp_local": "2026-09-29T14:48:19+02:00",
+      "weather_models": [
+        "chmi",
+        "dwd",
+        "ec"
+      ],
+      "degree_hours_by_model": {
+        "dwd": {
+          "degree_hours_kh": 0.0,
+          "covered_hours": 24.0
+        },
+        "chmi": {
+          "degree_hours_kh": 0.0,
+          "covered_hours": 24.0
+        },
+        "ec": {
+          "degree_hours_kh": 0.0,
+          "covered_hours": 24.0
+        }
+      },
+      "degree_hours_median_kh": 0.0,
+      "electricity_kwh": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "incremental_cost_czk": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "scope": "energy needed to maintain approximately 7.0 °C over the next 24 h; not direct metering"
+    },
+    "reference_daily_costs": [
+      {
+        "outside_c": 5.0,
+        "electricity_kwh_per_day": {
+          "low": 8.3,
+          "central": 11.1,
+          "high": 16.7
+        },
+        "cost_czk_per_day": {
+          "low": 41.0,
+          "central": 55.0,
+          "high": 82.0
+        }
+      },
+      {
+        "outside_c": 0.0,
+        "electricity_kwh_per_day": {
+          "low": 29.2,
+          "central": 38.9,
+          "high": 58.4
+        },
+        "cost_czk_per_day": {
+          "low": 143.0,
+          "central": 191.0,
+          "high": 287.0
+        }
+      },
+      {
+        "outside_c": -5.0,
+        "electricity_kwh_per_day": {
+          "low": 50.0,
+          "central": 66.7,
+          "high": 100.1
+        },
+        "cost_czk_per_day": {
+          "low": 246.0,
+          "central": 328.0,
+          "high": 491.0
+        }
+      },
+      {
+        "outside_c": -10.0,
+        "electricity_kwh_per_day": {
+          "low": 70.9,
+          "central": 94.5,
+          "high": 141.8
+        },
+        "cost_czk_per_day": {
+          "low": 348.0,
+          "central": 464.0,
+          "high": 696.0
+        }
+      },
+      {
+        "outside_c": -15.0,
+        "electricity_kwh_per_day": {
+          "low": 91.7,
+          "central": 122.3,
+          "high": 183.4
+        },
+        "cost_czk_per_day": {
+          "low": 450.0,
+          "central": 601.0,
+          "high": 901.0
+        }
+      }
+    ],
+    "learning_note": "Weather and passive cooling are measured. The absolute kWh scale is still a boiler-sizing prior and will be narrowed when cold-season heating response provides calibration evidence."
+  },
   "filters": {
     "bucket_minutes": 30,
     "window_hours": 6,
@@ -72,7 +202,7 @@
     "maximum_cumulative_positive_rise_per_window_c": 0.4,
     "night_midpoint_hours_local": "21:00-05:59",
     "rejected": {
-      "gap": 2,
+      "gap": 3,
       "setpoint": 0,
       "warming": 0,
       "heat_gain": 1,
