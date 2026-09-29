@@ -418,6 +418,8 @@ def main():
         "checked_at": None if args.offline else now.isoformat(),
         "status": status,
         "schedule_source": schedule_source,
+        "authoritative_export_date": ((baseline.get("source") or {}).get("supplied_date")),
+        "schedule_scope": "Customer-specific CEZ export pattern projected by weekday; date-specific public CEZ notices are applied when detected.",
         "distribution_area": region,
         "distribution_rate": rate,
         "primary_command": command,
