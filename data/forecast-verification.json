@@ -1,6 +1,6 @@
 {
   "schema": 4,
-  "generated_at_utc": "2026-09-29T17:04:43.300333Z",
+  "generated_at_utc": "2026-09-29T18:05:02.530591Z",
   "method": {
     "temperature_truth_priority": "fresh DWD Sohland/Spree 10-minute T (~4.9 km), then nearest current ČHMÚ 10-minute T station, then DWD hourly observation",
     "temperature_station": "Sohland/Spree",
@@ -10,23 +10,23 @@
     "note": "Radar is rain/no-rain only; ČHMÚ gauge retains measured millimetres. Model weights are not changed automatically."
   },
   "coverage": {
-    "forecast_snapshots": 246,
-    "sohland_temperature_observations": 5853,
-    "chmi_temperature_observations": 5389,
-    "chmi_rain_observations": 5638,
+    "forecast_snapshots": 247,
+    "sohland_temperature_observations": 5859,
+    "chmi_temperature_observations": 5395,
+    "chmi_rain_observations": 5644,
     "dwd_temperature_observations": 13,
     "dwd_rain_observations": 13,
-    "radar_observations": 590,
-    "temperature_cases": 32464,
+    "radar_observations": 591,
+    "temperature_cases": 32512,
     "rain_cases": 32361
   },
   "summary": {
     "chmi": {
       "0–6 h": {
         "temperature": {
-          "n": 1426,
-          "mae_c": 2.57,
-          "bias_c": 1.67
+          "n": 1436,
+          "mae_c": 2.58,
+          "bias_c": 1.71
         },
         "rain": {
           "n": 1423,
@@ -41,8 +41,8 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 1400,
-          "mae_c": 2.57,
+          "n": 1401,
+          "mae_c": 2.58,
           "bias_c": 1.52
         },
         "rain": {
@@ -58,7 +58,7 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 2785,
+          "n": 2787,
           "mae_c": 2.37,
           "bias_c": 1.0
         },
@@ -75,7 +75,7 @@
       },
       "24–48 h": {
         "temperature": {
-          "n": 5286,
+          "n": 5289,
           "mae_c": 2.5,
           "bias_c": 1.22
         },
@@ -111,9 +111,9 @@
     "dwd": {
       "0–6 h": {
         "temperature": {
-          "n": 1438,
-          "mae_c": 2.38,
-          "bias_c": 1.64
+          "n": 1448,
+          "mae_c": 2.36,
+          "bias_c": 1.66
         },
         "rain": {
           "n": 1435,
@@ -128,9 +128,9 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 1412,
+          "n": 1413,
           "mae_c": 2.35,
-          "bias_c": 1.58
+          "bias_c": 1.59
         },
         "rain": {
           "n": 1407,
@@ -145,9 +145,9 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 2809,
+          "n": 2811,
           "mae_c": 1.95,
-          "bias_c": 1.11
+          "bias_c": 1.12
         },
         "rain": {
           "n": 2804,
@@ -162,9 +162,9 @@
       },
       "24–48 h": {
         "temperature": {
-          "n": 5011,
+          "n": 5014,
           "mae_c": 2.19,
-          "bias_c": 1.3
+          "bias_c": 1.31
         },
         "rain": {
           "n": 4991,
@@ -198,9 +198,9 @@
     "ec": {
       "0–6 h": {
         "temperature": {
-          "n": 1426,
+          "n": 1436,
           "mae_c": 2.42,
-          "bias_c": 1.64
+          "bias_c": 1.67
         },
         "rain": {
           "n": 1423,
@@ -215,9 +215,9 @@
       },
       "6–12 h": {
         "temperature": {
-          "n": 1400,
+          "n": 1401,
           "mae_c": 2.38,
-          "bias_c": 1.61
+          "bias_c": 1.62
         },
         "rain": {
           "n": 1395,
@@ -232,9 +232,9 @@
       },
       "12–24 h": {
         "temperature": {
-          "n": 2785,
+          "n": 2787,
           "mae_c": 2.12,
-          "bias_c": 1.25
+          "bias_c": 1.26
         },
         "rain": {
           "n": 2780,
@@ -249,7 +249,7 @@
       },
       "24–48 h": {
         "temperature": {
-          "n": 5286,
+          "n": 5289,
           "mae_c": 2.2,
           "bias_c": 1.26
         },
@@ -296,11 +296,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -314,11 +314,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -332,11 +332,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -350,11 +350,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -368,11 +368,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -386,11 +386,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -404,11 +404,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -422,11 +422,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -440,11 +440,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -458,11 +458,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -476,11 +476,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -494,11 +494,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -512,11 +512,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -530,11 +530,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -548,11 +548,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -566,11 +566,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -584,11 +584,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -602,11 +602,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -620,11 +620,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -638,11 +638,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -656,11 +656,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -674,11 +674,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -692,11 +692,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -710,11 +710,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -728,11 +728,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -746,11 +746,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -764,11 +764,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -782,11 +782,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -800,11 +800,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -818,11 +818,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -836,11 +836,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -854,11 +854,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -872,11 +872,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -890,11 +890,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -908,11 +908,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -926,11 +926,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -944,11 +944,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -962,11 +962,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -980,11 +980,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -998,11 +998,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -1016,11 +1016,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -1034,11 +1034,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -1052,11 +1052,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -1070,11 +1070,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -1088,11 +1088,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -1106,11 +1106,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -1124,11 +1124,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -1142,11 +1142,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -1160,11 +1160,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "chmi",
@@ -1178,11 +1178,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "ec",
@@ -1196,11 +1196,11 @@
       "outcome": "correct_dry",
       "verification_source": "local_radar",
       "radar_samples": 1,
-      "chmi_gauge_mm_window": null,
-      "chmi_gauge_samples": 0,
+      "chmi_gauge_mm_window": 0.0,
+      "chmi_gauge_samples": 4,
       "station_rain_mm": null,
-      "station": null,
-      "station_distance_km": null
+      "station": "Šluknov",
+      "station_distance_km": 1.85
     },
     {
       "model": "dwd",
@@ -1215,7 +1215,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1233,7 +1233,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1251,7 +1251,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1269,7 +1269,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1287,7 +1287,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1305,7 +1305,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1323,7 +1323,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1341,7 +1341,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1359,7 +1359,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1377,7 +1377,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1395,7 +1395,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1413,7 +1413,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1431,7 +1431,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1449,7 +1449,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1467,7 +1467,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1485,7 +1485,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1503,7 +1503,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1521,7 +1521,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1539,7 +1539,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1557,7 +1557,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1575,7 +1575,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1593,7 +1593,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1611,7 +1611,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1629,7 +1629,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1647,7 +1647,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1665,7 +1665,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1683,7 +1683,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1701,7 +1701,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1719,7 +1719,7 @@
       "verification_source": "local_radar",
       "radar_samples": 3,
       "chmi_gauge_mm_window": 0.0,
-      "chmi_gauge_samples": 4,
+      "chmi_gauge_samples": 9,
       "station_rain_mm": null,
       "station": "Šluknov",
       "station_distance_km": 1.85
@@ -1729,12 +1729,51 @@
     {
       "model": "dwd",
       "lead_bin": "0–6 h",
-      "lead_h": 0.58,
+      "lead_h": 0.96,
+      "issued_at_utc": "2026-09-29T17:02:06.164447Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.2,
+      "observed_c": 12.7,
+      "error_c": 2.5,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "chmi",
+      "lead_bin": "0–6 h",
+      "lead_h": 0.96,
+      "issued_at_utc": "2026-09-29T17:02:06.164447Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.7,
+      "observed_c": 12.7,
+      "error_c": 4.0,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "ec",
+      "lead_bin": "0–6 h",
+      "lead_h": 0.96,
+      "issued_at_utc": "2026-09-29T17:02:06.164447Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "dwd",
+      "lead_bin": "0–6 h",
+      "lead_h": 1.58,
       "issued_at_utc": "2026-09-29T16:25:06.898425Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 14.6,
+      "observed_c": 12.7,
+      "error_c": 1.9,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1742,12 +1781,12 @@
     {
       "model": "chmi",
       "lead_bin": "0–6 h",
-      "lead_h": 0.58,
+      "lead_h": 1.58,
       "issued_at_utc": "2026-09-29T16:25:06.898425Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.9,
-      "observed_c": 19.1,
-      "error_c": -2.2,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.7,
+      "observed_c": 12.7,
+      "error_c": 4.0,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1755,12 +1794,12 @@
     {
       "model": "ec",
       "lead_bin": "0–6 h",
-      "lead_h": 0.58,
+      "lead_h": 1.58,
       "issued_at_utc": "2026-09-29T16:25:06.898425Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1768,12 +1807,12 @@
     {
       "model": "dwd",
       "lead_bin": "0–6 h",
-      "lead_h": 0.85,
+      "lead_h": 1.85,
       "issued_at_utc": "2026-09-29T16:09:01.849555Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 14.6,
+      "observed_c": 12.7,
+      "error_c": 1.9,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1781,12 +1820,12 @@
     {
       "model": "chmi",
       "lead_bin": "0–6 h",
-      "lead_h": 0.85,
+      "lead_h": 1.85,
       "issued_at_utc": "2026-09-29T16:09:01.849555Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.9,
-      "observed_c": 19.1,
-      "error_c": -2.2,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.7,
+      "observed_c": 12.7,
+      "error_c": 4.0,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1794,12 +1833,12 @@
     {
       "model": "ec",
       "lead_bin": "0–6 h",
-      "lead_h": 0.85,
+      "lead_h": 1.85,
       "issued_at_utc": "2026-09-29T16:09:01.849555Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1807,12 +1846,12 @@
     {
       "model": "dwd",
       "lead_bin": "0–6 h",
-      "lead_h": 1.03,
+      "lead_h": 2.03,
       "issued_at_utc": "2026-09-29T15:58:09.769866Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 14.6,
+      "observed_c": 12.7,
+      "error_c": 1.9,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1820,12 +1859,12 @@
     {
       "model": "chmi",
       "lead_bin": "0–6 h",
-      "lead_h": 1.03,
+      "lead_h": 2.03,
       "issued_at_utc": "2026-09-29T15:58:09.769866Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.9,
-      "observed_c": 19.1,
-      "error_c": -2.2,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.7,
+      "observed_c": 12.7,
+      "error_c": 4.0,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1833,12 +1872,12 @@
     {
       "model": "ec",
       "lead_bin": "0–6 h",
-      "lead_h": 1.03,
+      "lead_h": 2.03,
       "issued_at_utc": "2026-09-29T15:58:09.769866Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1846,12 +1885,12 @@
     {
       "model": "dwd",
       "lead_bin": "0–6 h",
-      "lead_h": 1.14,
+      "lead_h": 2.14,
       "issued_at_utc": "2026-09-29T15:51:25.862989Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 14.6,
+      "observed_c": 12.7,
+      "error_c": 1.9,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1859,12 +1898,12 @@
     {
       "model": "chmi",
       "lead_bin": "0–6 h",
-      "lead_h": 1.14,
+      "lead_h": 2.14,
       "issued_at_utc": "2026-09-29T15:51:25.862989Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.9,
-      "observed_c": 19.1,
-      "error_c": -2.2,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.7,
+      "observed_c": 12.7,
+      "error_c": 4.0,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1872,12 +1911,12 @@
     {
       "model": "ec",
       "lead_bin": "0–6 h",
-      "lead_h": 1.14,
+      "lead_h": 2.14,
       "issued_at_utc": "2026-09-29T15:51:25.862989Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1885,12 +1924,12 @@
     {
       "model": "dwd",
       "lead_bin": "0–6 h",
-      "lead_h": 1.94,
+      "lead_h": 2.94,
       "issued_at_utc": "2026-09-29T15:03:18.796572Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 14.6,
+      "observed_c": 12.7,
+      "error_c": 1.9,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -1898,272 +1937,233 @@
     {
       "model": "chmi",
       "lead_bin": "0–6 h",
-      "lead_h": 1.94,
+      "lead_h": 2.94,
       "issued_at_utc": "2026-09-29T15:03:18.796572Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "ec",
-      "lead_bin": "0–6 h",
-      "lead_h": 1.94,
-      "issued_at_utc": "2026-09-29T15:03:18.796572Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "dwd",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.11,
-      "issued_at_utc": "2026-09-29T14:53:08.939844Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "chmi",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.11,
-      "issued_at_utc": "2026-09-29T14:53:08.939844Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "ec",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.11,
-      "issued_at_utc": "2026-09-29T14:53:08.939844Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "dwd",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.25,
-      "issued_at_utc": "2026-09-29T14:44:44.794674Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "chmi",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.25,
-      "issued_at_utc": "2026-09-29T14:44:44.794674Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "ec",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.25,
-      "issued_at_utc": "2026-09-29T14:44:44.794674Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "dwd",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.44,
-      "issued_at_utc": "2026-09-29T14:33:43.248192Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "chmi",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.44,
-      "issued_at_utc": "2026-09-29T14:33:43.248192Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "ec",
-      "lead_bin": "0–6 h",
-      "lead_h": 2.44,
-      "issued_at_utc": "2026-09-29T14:33:43.248192Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "dwd",
-      "lead_bin": "0–6 h",
-      "lead_h": 4.1,
-      "issued_at_utc": "2026-09-29T12:53:51.969335Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.1,
-      "observed_c": 19.1,
-      "error_c": -3.0,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "chmi",
-      "lead_bin": "0–6 h",
-      "lead_h": 4.1,
-      "issued_at_utc": "2026-09-29T12:53:51.969335Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "ec",
-      "lead_bin": "0–6 h",
-      "lead_h": 4.1,
-      "issued_at_utc": "2026-09-29T12:53:51.969335Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.8,
-      "observed_c": 19.1,
-      "error_c": -2.3,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "dwd",
-      "lead_bin": "6–12 h",
-      "lead_h": 7.24,
-      "issued_at_utc": "2026-09-29T09:45:34.192223Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.2,
-      "observed_c": 19.1,
-      "error_c": -2.9,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "chmi",
-      "lead_bin": "6–12 h",
-      "lead_h": 7.24,
-      "issued_at_utc": "2026-09-29T09:45:34.192223Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.1,
-      "observed_c": 19.1,
-      "error_c": -2.0,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "ec",
-      "lead_bin": "6–12 h",
-      "lead_h": 7.24,
-      "issued_at_utc": "2026-09-29T09:45:34.192223Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.8,
-      "observed_c": 19.1,
-      "error_c": -2.3,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "dwd",
-      "lead_bin": "12–24 h",
-      "lead_h": 16.03,
-      "issued_at_utc": "2026-09-29T00:58:08.046473Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
       "forecast_c": 16.4,
-      "observed_c": 19.1,
-      "error_c": -2.7,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "chmi",
-      "lead_bin": "12–24 h",
-      "lead_h": 16.03,
-      "issued_at_utc": "2026-09-29T00:58:08.046473Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.2,
-      "observed_c": 19.1,
-      "error_c": -1.9,
+      "observed_c": 12.7,
+      "error_c": 3.7,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "ec",
-      "lead_bin": "12–24 h",
-      "lead_h": 16.03,
-      "issued_at_utc": "2026-09-29T00:58:08.046473Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
+      "lead_bin": "0–6 h",
+      "lead_h": 2.94,
+      "issued_at_utc": "2026-09-29T15:03:18.796572Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "dwd",
-      "lead_bin": "12–24 h",
-      "lead_h": 19.78,
-      "issued_at_utc": "2026-09-28T21:13:11.103649Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.11,
+      "issued_at_utc": "2026-09-29T14:53:08.939844Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 14.6,
+      "observed_c": 12.7,
+      "error_c": 1.9,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "chmi",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.11,
+      "issued_at_utc": "2026-09-29T14:53:08.939844Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.4,
+      "observed_c": 12.7,
+      "error_c": 3.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "ec",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.11,
+      "issued_at_utc": "2026-09-29T14:53:08.939844Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "dwd",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.25,
+      "issued_at_utc": "2026-09-29T14:44:44.794674Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 14.6,
+      "observed_c": 12.7,
+      "error_c": 1.9,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "chmi",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.25,
+      "issued_at_utc": "2026-09-29T14:44:44.794674Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.4,
+      "observed_c": 12.7,
+      "error_c": 3.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "ec",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.25,
+      "issued_at_utc": "2026-09-29T14:44:44.794674Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "dwd",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.44,
+      "issued_at_utc": "2026-09-29T14:33:43.248192Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 14.6,
+      "observed_c": 12.7,
+      "error_c": 1.9,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "chmi",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.44,
+      "issued_at_utc": "2026-09-29T14:33:43.248192Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.4,
+      "observed_c": 12.7,
+      "error_c": 3.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "ec",
+      "lead_bin": "0–6 h",
+      "lead_h": 3.44,
+      "issued_at_utc": "2026-09-29T14:33:43.248192Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "dwd",
+      "lead_bin": "0–6 h",
+      "lead_h": 5.1,
+      "issued_at_utc": "2026-09-29T12:53:51.969335Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.0,
+      "observed_c": 12.7,
+      "error_c": 2.3,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "chmi",
+      "lead_bin": "0–6 h",
+      "lead_h": 5.1,
+      "issued_at_utc": "2026-09-29T12:53:51.969335Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.4,
+      "observed_c": 12.7,
+      "error_c": 3.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "ec",
+      "lead_bin": "0–6 h",
+      "lead_h": 5.1,
+      "issued_at_utc": "2026-09-29T12:53:51.969335Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.6,
+      "observed_c": 12.7,
+      "error_c": 2.9,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "dwd",
+      "lead_bin": "6–12 h",
+      "lead_h": 8.24,
+      "issued_at_utc": "2026-09-29T09:45:34.192223Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.4,
+      "observed_c": 12.7,
+      "error_c": 2.7,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "chmi",
+      "lead_bin": "6–12 h",
+      "lead_h": 8.24,
+      "issued_at_utc": "2026-09-29T09:45:34.192223Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
       "forecast_c": 16.8,
-      "observed_c": 19.1,
-      "error_c": -2.3,
+      "observed_c": 12.7,
+      "error_c": 4.1,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "ec",
+      "lead_bin": "6–12 h",
+      "lead_h": 8.24,
+      "issued_at_utc": "2026-09-29T09:45:34.192223Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.6,
+      "observed_c": 12.7,
+      "error_c": 2.9,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "dwd",
+      "lead_bin": "12–24 h",
+      "lead_h": 17.03,
+      "issued_at_utc": "2026-09-29T00:58:08.046473Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.5,
+      "observed_c": 12.7,
+      "error_c": 2.8,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2171,12 +2171,12 @@
     {
       "model": "chmi",
       "lead_bin": "12–24 h",
-      "lead_h": 19.78,
-      "issued_at_utc": "2026-09-28T21:13:11.103649Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
+      "lead_h": 17.03,
+      "issued_at_utc": "2026-09-29T00:58:08.046473Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 16.8,
+      "observed_c": 12.7,
+      "error_c": 4.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2184,51 +2184,51 @@
     {
       "model": "ec",
       "lead_bin": "12–24 h",
-      "lead_h": 19.78,
-      "issued_at_utc": "2026-09-28T21:13:11.103649Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 17.0,
-      "observed_c": 19.1,
-      "error_c": -2.1,
+      "lead_h": 17.03,
+      "issued_at_utc": "2026-09-29T00:58:08.046473Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "dwd",
-      "lead_bin": "24–48 h",
-      "lead_h": 27.21,
-      "issued_at_utc": "2026-09-28T13:47:40.220137Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.6,
-      "observed_c": 19.1,
-      "error_c": -2.5,
+      "lead_bin": "12–24 h",
+      "lead_h": 20.78,
+      "issued_at_utc": "2026-09-28T21:13:11.103649Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.9,
+      "observed_c": 12.7,
+      "error_c": 3.2,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "chmi",
-      "lead_bin": "24–48 h",
-      "lead_h": 27.21,
-      "issued_at_utc": "2026-09-28T13:47:40.220137Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
+      "lead_bin": "12–24 h",
+      "lead_h": 20.78,
+      "issued_at_utc": "2026-09-28T21:13:11.103649Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
       "forecast_c": 16.5,
-      "observed_c": 19.1,
-      "error_c": -2.6,
+      "observed_c": 12.7,
+      "error_c": 3.8,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
     },
     {
       "model": "ec",
-      "lead_bin": "24–48 h",
-      "lead_h": 27.21,
-      "issued_at_utc": "2026-09-28T13:47:40.220137Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.4,
-      "observed_c": 19.1,
-      "error_c": -2.7,
+      "lead_bin": "12–24 h",
+      "lead_h": 20.78,
+      "issued_at_utc": "2026-09-28T21:13:11.103649Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.8,
+      "observed_c": 12.7,
+      "error_c": 3.1,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
@@ -2236,12 +2236,12 @@
     {
       "model": "dwd",
       "lead_bin": "24–48 h",
-      "lead_h": 35.69,
-      "issued_at_utc": "2026-09-28T05:18:43.776305Z",
-      "target_at_utc": "2026-09-29T17:00:00Z",
-      "forecast_c": 16.3,
-      "observed_c": 19.1,
-      "error_c": -2.8,
+      "lead_h": 28.21,
+      "issued_at_utc": "2026-09-28T13:47:40.220137Z",
+      "target_at_utc": "2026-09-29T18:00:00Z",
+      "forecast_c": 15.4,
+      "observed_c": 12.7,
+      "error_c": 2.7,
       "verification_source": "dwd_sohland_10min",
       "station": "Sohland/Spree",
       "station_distance_km": 4.89
