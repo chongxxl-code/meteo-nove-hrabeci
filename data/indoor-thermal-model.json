@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-09-29T15:53:00.181752Z",
+  "generated_at": "2026-09-29T15:59:42.111549Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "prediction_ready": false,
@@ -9,7 +9,7 @@
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
   "coverage_days": 5.62,
-  "indoor_raw_points": 777,
+  "indoor_raw_points": 778,
   "indoor_30m_bins": 187,
   "weather_30m_bins": 1949,
   "paired_candidate_bins": 186,
@@ -96,7 +96,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-09-29T17:45:07+02:00",
+      "start_timestamp_local": "2026-09-29T17:52:10+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -131,7 +131,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-09-29T17:45:07+02:00",
+      "start_timestamp_local": "2026-09-29T17:52:10+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -182,7 +182,7 @@
     "hdo_next_24h": {
       "status": "verified_export_monitored",
       "schedule_source": "cez_dip_export_monitored_daily",
-      "checked_at": "2026-09-29T16:43:39.018120+02:00",
+      "checked_at": "2026-09-29T17:56:19.596884+02:00",
       "primary_command": "A1B6DP01",
       "distribution_area": "Sever",
       "horizon_hours": 24,
@@ -193,9 +193,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-09-29T17:45:07+02:00",
+          "start_local": "2026-09-29T17:52:10+02:00",
           "end_local": "2026-09-29T18:30:00+02:00",
-          "hours": 0.748
+          "hours": 0.631
         },
         {
           "tariff": "VT",
@@ -248,8 +248,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-09-30T15:10:00+02:00",
-          "end_local": "2026-09-30T17:45:07+02:00",
-          "hours": 2.585
+          "end_local": "2026-09-30T17:52:10+02:00",
+          "hours": 2.703
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
