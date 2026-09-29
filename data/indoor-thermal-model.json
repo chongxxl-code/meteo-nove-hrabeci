@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-09-29T14:54:49.842710Z",
+  "generated_at": "2026-09-29T15:05:06.770574Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "prediction_ready": false,
@@ -9,8 +9,8 @@
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
   "coverage_days": 5.58,
-  "indoor_raw_points": 763,
-  "indoor_30m_bins": 185,
+  "indoor_raw_points": 768,
+  "indoor_30m_bins": 186,
   "weather_30m_bins": 1947,
   "paired_candidate_bins": 184,
   "fit_samples": 8,
@@ -54,10 +54,10 @@
     "sample_count": 8
   },
   "current_passive_estimate": {
-    "inside_c": 18.8,
+    "inside_c": 18.9,
     "outside_c": 21.2,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": -2.4,
+    "inside_minus_outside_c": -2.3,
     "passive_fit_rate_c_per_h": 0.01,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
@@ -90,7 +90,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-09-29T16:48:26+02:00",
+      "start_timestamp_local": "2026-09-29T17:02:42+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -137,9 +137,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-09-29T16:48:26+02:00",
+          "start_local": "2026-09-29T17:02:42+02:00",
           "end_local": "2026-09-29T18:30:00+02:00",
-          "hours": 1.693
+          "hours": 1.455
         },
         {
           "tariff": "VT",
@@ -192,8 +192,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-09-30T15:10:00+02:00",
-          "end_local": "2026-09-30T16:48:26+02:00",
-          "hours": 1.641
+          "end_local": "2026-09-30T17:02:42+02:00",
+          "hours": 1.878
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
