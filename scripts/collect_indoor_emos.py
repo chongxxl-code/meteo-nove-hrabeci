@@ -736,4 +736,4 @@ if __name__ == "__main__":
         }, ensure_ascii=False))
         if "USER_SESSION_LIMIT" in message:
             raise SystemExit(75)
-        raise SystemExit(0)
+        raise SystemExit(1)
