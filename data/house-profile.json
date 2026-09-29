@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v3",
+  "schema": "2026-09-29.house-profile-v4",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -84,6 +84,35 @@
       "strategy": "Use the full 6–8 °C band and thermal inertia instead of trying to hold exactly 7.0 °C.",
       "optimization_scope": "whole house",
       "policy": "The model can compare costs of alternative targets, but it must not change the configured 7 °C target automatically."
+    },
+    "optimization_policy": {
+      "mode": "economic_and_ecological",
+      "priority_order": [
+        "protect the house and respect the configured tempering target",
+        "minimize total electrical energy use",
+        "use the full thermostat hysteresis band and building thermal inertia",
+        "respect D45d/HDO boiler availability and prefer low-tariff operation",
+        "when several safe schedules have similar energy/cost, prefer the lower-carbon electricity window if reliable carbon-intensity data are available"
+      ],
+      "tariff_control": {
+        "distribution_rate": "D45d",
+        "low_tariff_hours_per_day_min": 20,
+        "high_tariff_continuous_max_hours": 1,
+        "exact_hdo_schedule_status": "not_yet_ingested",
+        "rule": "Do not assume low tariff means night. The optimization must use the actual HDO schedule once available."
+      },
+      "ecological_control": {
+        "primary_metric": "total_kwh",
+        "carbon_intensity_source_status": "not_yet_ingested",
+        "current_rule": "Do not invent green hours. Until a reliable Czech-grid carbon-intensity source is connected, ecological optimization means minimizing kWh and avoiding unnecessary preheating.",
+        "future_rule": "If exact HDO and trustworthy hourly grid-carbon data are both available, shift only discretionary preheating within the safe hysteresis band toward lower-carbon low-tariff windows."
+      },
+      "constraints": [
+        "whole-house hydronic loop only; no room-by-room optimization",
+        "thermostat near wood stove can be locally biased during wood heating",
+        "never preheat solely for price or carbon if forecast shows no thermal need",
+        "never lower the configured 7 C target automatically"
+      ]
     }
   }
 }
