@@ -1,9 +1,12 @@
 {
-  "schema": "2026-09-28.house-profile-v1",
-  "updated_date_local": "2026-09-28",
+  "schema": "2026-09-29.house-profile-v2",
+  "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
-    "heated_floor_area_m2_range": [90, 105],
+    "heated_floor_area_m2_range": [
+      90,
+      105
+    ],
     "storeys_heated": 2,
     "attic": "unheated",
     "roof_covering": "Capacco"
@@ -16,7 +19,7 @@
       "year": 2013,
       "type": "electric hydronic boiler",
       "supply": "3x230/400 V, 50 Hz",
-      "electrical_input_kw": 12.0,
+      "electrical_input_kw": 12,
       "rated_heat_output_kw": 12.1,
       "label_efficiency_percent": 99.5,
       "boiler_water_volume_l": 7,
@@ -41,5 +44,23 @@
     "treat_as_static_physical_context": true,
     "measured_temperature_data_remains_primary": true,
     "future_energy_model_should_use_boiler_rated_power_as_prior_not_as_measured_consumption": true
+  },
+  "heating_energy_model": {
+    "status": "provisional_physics_prior",
+    "tempering_setpoint_c": 7,
+    "thermostat_hysteresis_c": 1,
+    "thermostat_expected_band_c": [
+      6,
+      8
+    ],
+    "heat_loss_prior_method": "installed_boiler_capacity_and_design_temperature",
+    "design_indoor_c": 20,
+    "design_outdoor_c": -15,
+    "boiler_oversizing_factor": {
+      "low_heat_loss_case": 2,
+      "central_case": 1.5,
+      "high_heat_loss_case": 1
+    },
+    "note": "This prior gives the absolute energy scale until winter observations can narrow it. Measured indoor/outdoor dynamics remain primary for timing and cooling behaviour."
   }
 }
