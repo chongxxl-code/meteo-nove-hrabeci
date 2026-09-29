@@ -125,8 +125,11 @@ def main():
         "hdo_exact_refresh_limitation_recorded",
         monitor.get("exact_customer_schedule_auto_refresh") is False,
         "Customer-specific HDO CAPTCHA limitation must be recorded explicitly.",
-        severity="warn",
     )
+    if monitor.get("exact_customer_schedule_auto_refresh") is False:
+        warnings.append(
+            "Exact customer-specific HDO export is not auto-refreshed because the ČEZ DIP endpoint is CAPTCHA-protected; the current verified export is combined with a daily public-source change monitor."
+        )
 
     latest_dt = parse_dt(latest.get("last_timestamp") or latest.get("generated_at"))
     age_min = None if latest_dt is None else (now - latest_dt).total_seconds() / 60
@@ -148,10 +151,15 @@ def main():
         model.get("dp2_used_as_heating_state") is False,
         "DP2 must not be used as proof of actual boiler/relay heating state.",
     )
+    validated_control = model.get("validated_for_heating_control") is True
     check(
         "heating_control_not_overclaimed",
-        model.get("validated_for_heating_control") is False,
-        "Thermal model is unexpectedly marked validated for heating control.",
+        (not validated_control)
+        or (
+            model.get("prediction_ready") is True
+            and (model.get("heating_energy_model") or {}).get("absolute_energy_scale_calibrated") is True
+        ),
+        "Thermal model is marked validated for heating control before both passive prediction and absolute energy scale are calibrated.",
     )
 
     fit = model.get("fit") or {}
