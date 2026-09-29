@@ -172,6 +172,11 @@ def main():
 
     refs = energy.get("reference_daily_costs") or []
     price = float(energy.get("price_czk_per_kwh") or 0)
+    check(
+        "energy_model_current_price",
+        close(price, pricing.get("tempering_incremental_price_czk_per_kwh"), 1e-5),
+        "Thermal model is using a stale electricity price.",
+    )
     efficiency = float(energy.get("boiler_efficiency_fraction") or 0)
     central_wk = float(((prior.get("w_per_k") or {}).get("central")) or 0)
     target = float(energy.get("tempering_setpoint_c") or 0)
