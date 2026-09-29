@@ -161,7 +161,7 @@ function renderEnergyCard(){
  const bp=Number.isFinite(band[0])&&Number.isFinite(band[1])?`${round(band[0])}–${round(band[1])} °C`:'6–8 °C';
  let principle=`<b>Princip:</b> cíl ${Number.isFinite(target)?round(target):7} °C se neudržuje na desetinu; EMOS využívá hysterezi ${bp} a tepelnou setrvačnost domu. Kotel při sepnutí vytápí celý dům jako jednu zónu.`;
  if(Number.isFinite(marginalDegreeCost))principle+=` Při chladném počasí znamená každý další 1 °C uvnitř v současném středním modelu přibližně +${Math.round(marginalDegreeCost)} Kč/den.`;
- principle+=' Termostat je dole u kamen asi 20 cm od zdi; při topení dřevem může být jeho údaj teplejší než vzdálené místnosti, proto takové úseky nejsou vhodné pro kalibraci celého domu.';
+ principle+=' <b>Ekonomika + ekologie:</b> D45d neznamená levnou noc; kotel má využívat skutečná HDO okna. Priorita je bezpečí domu, minimum kWh a využití akumulace; před HDO blokem se má přitopit jen tehdy, když to předpověď skutečně vyžaduje. Dokud nemáme spolehlivou hodinovou uhlíkovou intenzitu české sítě, ekologická optimalizace znamená hlavně nespotřebovat zbytečnou elektřinu. Až bude uhlíková intenzita dostupná, mezi stejně bezpečnými NT okny se preferuje čistší elektřina. Termostat je dole u kamen asi 20 cm od zdi; při topení dřevem může být jeho údaj teplejší než vzdálené místnosti, proto takové úseky nejsou vhodné pro kalibraci celého domu.';
  $('energyPrinciple').innerHTML=principle;
 }
 async function houseEnergyState(){try{houseState=await j(`./data/house-state.json?_=${Date.now()}`)}catch(e){houseState=null}renderEnergyCard()}
