@@ -330,7 +330,8 @@ def main():
     old = load_json(OUTPUT, {})
     region = str(baseline.get("distribution_area") or "Sever")
     rate = str(baseline.get("distribution_rate") or "D45d")
-    command = str(baseline.get("primary_command") or "A1B6DP1")
+    command = str(baseline.get("primary_command") or "A1B6DP01")
+    reference_command = str(baseline.get("legacy_reference_command") or command)
 
     baseline_windows = baseline.get("nt_windows_by_weekday") or {}
     fallback_days = {
@@ -349,7 +350,7 @@ def main():
         "days": None,
         "metadata": [],
         "error": "offline mode",
-    } if args.offline else try_live_schedule(command, region, rate)
+    } if args.offline else try_live_schedule(reference_command, region, rate)
 
     notices = {
         "sunday_override_dates": [],
