@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-09-29T15:05:06.770574Z",
+  "generated_at": "2026-09-29T15:53:00.181752Z",
   "status": "early_learning",
   "validated_for_heating_control": false,
   "prediction_ready": false,
@@ -8,11 +8,11 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "all passive windows fallback",
-  "coverage_days": 5.58,
-  "indoor_raw_points": 768,
-  "indoor_30m_bins": 186,
-  "weather_30m_bins": 1947,
-  "paired_candidate_bins": 184,
+  "coverage_days": 5.62,
+  "indoor_raw_points": 777,
+  "indoor_30m_bins": 187,
+  "weather_30m_bins": 1949,
+  "paired_candidate_bins": 186,
   "fit_samples": 8,
   "all_accepted_windows": 8,
   "night_windows": 4,
@@ -21,7 +21,7 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 1947,
+      "DWD Sohland": 1949,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -54,10 +54,10 @@
     "sample_count": 8
   },
   "current_passive_estimate": {
-    "inside_c": 18.9,
-    "outside_c": 21.2,
+    "inside_c": 18.8,
+    "outside_c": 20.7,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": -2.3,
+    "inside_minus_outside_c": -1.9,
     "passive_fit_rate_c_per_h": 0.01,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
@@ -72,9 +72,15 @@
       8.0
     ],
     "boiler_efficiency_fraction": 0.995,
-    "price_czk_per_kwh": 4.91,
-    "price_basis": "low_tariff variable price incl. VAT; fixed monthly charges excluded because they are paid regardless of tempering",
+    "price_czk_per_kwh": 4.39393,
+    "high_tariff_price_czk_per_kwh": 5.28625,
+    "price_basis": "current 2026 D45d low-tariff variable price incl. VAT from official ČEZ price list; fixed monthly charges excluded because they are paid regardless of tempering",
     "distribution_rate": "D45d",
+    "hdo_boiler_blocking": {
+      "tariff_requirement": "D45d requires technical blocking of electric heating during high tariff",
+      "installation_status": "not_physically_verified",
+      "pricing_assumption": "Use NT price for the intended HDO-controlled boiler operation; retain VT price as a fallback sensitivity until the actual wiring is verified."
+    },
     "heat_loss_prior": {
       "method": "installed boiler capacity / design temperature difference / oversizing factor",
       "design_indoor_c": 20.0,
@@ -88,9 +94,9 @@
       },
       "absolute_scale_calibrated": false
     },
-    "forecast_next_24h": {
+    "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-09-29T17:02:42+02:00",
+      "start_timestamp_local": "2026-09-29T17:45:07+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -121,7 +127,57 @@
         "central": 0.0,
         "high": 0.0
       },
-      "scope": "energy needed to maintain approximately 7.0 °C over the next 24 h; not direct metering"
+      "scope": "steady-state reference energy to maintain approximately 7.0 °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering"
+    },
+    "forecast_next_24h": {
+      "horizon_hours": 24,
+      "start_timestamp_local": "2026-09-29T17:45:07+02:00",
+      "weather_models": [
+        "chmi",
+        "dwd",
+        "ec"
+      ],
+      "degree_hours_by_model": {
+        "dwd": {
+          "degree_hours_kh": 0.0,
+          "covered_hours": 24.0
+        },
+        "chmi": {
+          "degree_hours_kh": 0.0,
+          "covered_hours": 24.0
+        },
+        "ec": {
+          "degree_hours_kh": 0.0,
+          "covered_hours": 24.0
+        }
+      },
+      "degree_hours_median_kh": 0.0,
+      "electricity_kwh": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "incremental_cost_czk": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "scope": "steady-state reference energy to maintain approximately 7.0 °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering"
+    },
+    "actual_tempering_need_next_24h": {
+      "horizon_hours": 24,
+      "inside_now_c": 18.8,
+      "lower_switch_c": 6.0,
+      "upper_switch_c": 8.0,
+      "forecast_min_outside_c": 12.5,
+      "price_czk_per_kwh": 4.39393,
+      "status": "no_heating_call_possible_from_forecast_bound",
+      "actual_kwh_estimate_available": true,
+      "actual_cost_estimate_available": true,
+      "electricity_kwh": 0.0,
+      "incremental_cost_czk": 0.0,
+      "confidence": "high_for_no-call_condition",
+      "reason": "Outdoor forecast remains at or above the lower thermostat threshold, while the house starts above it."
     },
     "hdo_next_24h": {
       "status": "verified_export_monitored",
@@ -137,9 +193,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-09-29T17:02:42+02:00",
+          "start_local": "2026-09-29T17:45:07+02:00",
           "end_local": "2026-09-29T18:30:00+02:00",
-          "hours": 1.455
+          "hours": 0.748
         },
         {
           "tariff": "VT",
@@ -192,8 +248,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-09-30T15:10:00+02:00",
-          "end_local": "2026-09-30T17:02:42+02:00",
-          "hours": 1.878
+          "end_local": "2026-09-30T17:45:07+02:00",
+          "hours": 2.585
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
@@ -206,8 +262,9 @@
       "passive_drop_during_longest_vt_central_c": 0.0,
       "passive_drop_during_longest_vt_conservative_c": 0.0,
       "impact_level": "negligible",
-      "hdo_only_preheat_indication": "No HDO-only preheating is indicated; the building inertia should comfortably bridge the longest VT block.",
-      "principle": "Preheating solely because VT is approaching is avoided unless the learned passive model predicts a meaningful temperature drop during the block."
+      "basis": "forecast_bound",
+      "hdo_only_preheat_indication": "No HDO-only preheating is indicated.",
+      "principle": "Outdoor temperature stays above the lower thermostat threshold, so an HDO block cannot by itself drive the control temperature below that threshold."
     },
     "reference_daily_costs": [
       {
@@ -218,9 +275,9 @@
           "high": 16.7
         },
         "cost_czk_per_day": {
-          "low": 41.0,
-          "central": 55.0,
-          "high": 82.0
+          "low": 37.0,
+          "central": 49.0,
+          "high": 73.0
         }
       },
       {
@@ -231,9 +288,9 @@
           "high": 58.4
         },
         "cost_czk_per_day": {
-          "low": 143.0,
-          "central": 191.0,
-          "high": 287.0
+          "low": 128.0,
+          "central": 171.0,
+          "high": 256.0
         }
       },
       {
@@ -244,9 +301,9 @@
           "high": 100.1
         },
         "cost_czk_per_day": {
-          "low": 246.0,
-          "central": 328.0,
-          "high": 491.0
+          "low": 220.0,
+          "central": 293.0,
+          "high": 440.0
         }
       },
       {
@@ -257,9 +314,9 @@
           "high": 141.8
         },
         "cost_czk_per_day": {
-          "low": 348.0,
-          "central": 464.0,
-          "high": 696.0
+          "low": 312.0,
+          "central": 415.0,
+          "high": 623.0
         }
       },
       {
@@ -270,9 +327,9 @@
           "high": 183.4
         },
         "cost_czk_per_day": {
-          "low": 450.0,
-          "central": 601.0,
-          "high": 901.0
+          "low": 403.0,
+          "central": 537.0,
+          "high": 806.0
         }
       }
     ],
