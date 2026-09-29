@@ -126,7 +126,14 @@ function renderHdoTimeline(){
  const checked=hdoSchedule?.checked_at?new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(hdoSchedule.checked_at)):'—';
  const source=hdoSchedule?.status==='verified_export_monitored'?'ČEZ export + denní monitor':hdoSchedule?.status==='live'?'ČEZ live':hdoSchedule?.status==='live_stale'?'poslední ČEZ plán':hdoSchedule?.status==='manual_fallback'?'ruční baseline':'HDO';
  const diff=hdoSchedule?.daily_monitor?.reference_differs_from_current_export===true?' · veřejný referenční plán se liší, export zůstává autorita':'';
- meta.textContent=`${source} · ${hdoSchedule?.primary_command||'A1B6DP1'} · kontrola 1× denně · naposledy ${checked} · placené API 0 Kč${diff}`;
+ const resilience=indoorModel?.heating_energy_model?.hdo_resilience||null;
+ let thermal='';
+ if(resilience&&Number.isFinite(Number(resilience.longest_vt_block_h))&&Number.isFinite(Number(resilience.passive_drop_during_longest_vt_conservative_c))){
+  const drop=Number(resilience.passive_drop_during_longest_vt_conservative_c),block=Number(resilience.longest_vt_block_h);
+  thermal=` · nejdelší VT ${round(block,1)} h, modelovaný propad u spodní meze ~${round(drop,2)} °C`;
+  if(resilience.impact_level==='negligible')thermal+=' → předtápění jen kvůli HDO nedává smysl';
+ }
+ meta.textContent=`${source} · ${hdoSchedule?.primary_command||'A1B6DP1'} · kontrola 1× denně · naposledy ${checked} · placené API 0 Kč${thermal}${diff}`;
 }
 function renderEnergyCard(){
  const raw=String(indoorLatest?.dp2_raw??'').toLowerCase(),thermostat=(raw==='on'||raw==='true'||raw==='1')?'on':(raw==='off'||raw==='false'||raw==='0')?'off':'unknown';
