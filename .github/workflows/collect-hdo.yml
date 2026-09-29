@@ -1,0 +1,90 @@
+name: Collect HDO schedule
+
+on:
+  schedule:
+    - cron: '31 4 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_hdo.py'
+      - 'data/hdo-manual-baseline.json'
+      - '.github/workflows/collect-hdo.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: meteo-data-writer
+  cancel-in-progress: false
+
+jobs:
+  collect-hdo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Refresh CEZ HDO schedule
+        run: python scripts/collect_hdo.py
+
+      - name: Validate HDO output
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("data/hdo-schedule.json")
+          d = json.loads(p.read_text(encoding="utf-8"))
+          assert d["distribution_rate"] == "D45d"
+          assert d["primary_command"] == "A1B6DP1"
+          assert len(d["week_ahead"]) == 7
+          assert all(day["timeline"] for day in d["week_ahead"])
+          assert all(day["nt_minutes"] >= 1190 for day in d["week_ahead"])
+          assert d["api_cost_czk"] == 0
+          assert d["paid_provider_calls"] == 0
+          print("HDO_VALIDATION_PASS", d["status"], d["schedule_checksum"][:12])
+          PY
+
+      - name: Commit HDO schedule
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rebuild_hdo() {
+            python scripts/collect_hdo.py
+          }
+
+          make_commit() {
+            git add data/hdo-schedule.json
+            if git diff --cached --quiet; then
+              echo "No HDO changes."
+              return 1
+            fi
+            git commit -m "data: refresh HDO schedule $(date -u +'%Y-%m-%d %H:%M UTC')"
+          }
+
+          make_commit || exit 0
+
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+
+            echo "Concurrent repository update detected; rebuilding HDO on latest main (attempt ${attempt}/3)."
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            git reset --hard origin/main
+            rebuild_hdo
+            make_commit || exit 0
+            sleep $((attempt * 5))
+          done
+
+          echo "Unable to push HDO schedule after 3 retries."
+          exit 1
