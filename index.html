@@ -133,7 +133,7 @@ function renderHdoTimeline(){
   thermal=` · nejdelší VT ${round(block,1)} h, modelovaný propad u spodní meze ~${round(drop,2)} °C`;
   if(resilience.impact_level==='negligible')thermal+=' → předtápění jen kvůli HDO nedává smysl';
  }
- meta.textContent=`${source} · ${hdoSchedule?.primary_command||'A1B6DP1'} · kontrola 1× denně · naposledy ${checked} · placené API 0 Kč${thermal}${diff}`;
+ meta.textContent=`${source} · ${hdoSchedule?.primary_command||'A1B6DP01'} · kontrola 1× denně · naposledy ${checked} · placené API 0 Kč${thermal}${diff}`;
 }
 function renderEnergyCard(){
  const raw=String(indoorLatest?.dp2_raw??'').toLowerCase(),thermostat=(raw==='on'||raw==='true'||raw==='1')?'on':(raw==='off'||raw==='false'||raw==='0')?'off':'unknown';
