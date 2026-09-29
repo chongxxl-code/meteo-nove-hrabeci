@@ -1,27 +1,27 @@
 {
   "schema": 1,
-  "generated_at_utc": "2026-09-29T16:03:07.356763Z",
+  "generated_at_utc": "2026-09-29T16:14:11.899010Z",
   "overall_status": "ok",
   "sources": [
     {
       "name": "forecast",
       "label": "Forecasty",
       "status": "ok",
-      "checked_at_utc": "2026-09-29T15:58:09.769866Z",
-      "check_age_minutes": 5.0,
-      "observed_at_utc": "2026-09-29T15:58:09.769866Z",
-      "observation_age_minutes": 5.0,
+      "checked_at_utc": "2026-09-29T16:09:01.849555Z",
+      "check_age_minutes": 5.2,
+      "observed_at_utc": "2026-09-29T16:09:01.849555Z",
+      "observation_age_minutes": 5.2,
       "expected_max_gap_minutes": 420,
-      "detail": "243 snapshotů"
+      "detail": "244 snapshotů"
     },
     {
       "name": "sohland",
       "label": "Sohland",
       "status": "ok",
-      "checked_at_utc": "2026-09-29T15:59:41.255533Z",
-      "check_age_minutes": 3.4,
+      "checked_at_utc": "2026-09-29T16:11:03.426093Z",
+      "check_age_minutes": 3.1,
       "observed_at_utc": "2026-09-29T15:20:00Z",
-      "observation_age_minutes": 43.1,
+      "observation_age_minutes": 54.2,
       "expected_max_gap_minutes": 240,
       "detail": "DWD 10min · teplota/vlhkost"
     },
@@ -29,10 +29,10 @@
       "name": "chmi",
       "label": "ČHMÚ Šluknov",
       "status": "ok",
-      "checked_at_utc": "2026-09-29T15:59:35.725141Z",
-      "check_age_minutes": 3.5,
-      "observed_at_utc": "2026-09-29T14:50:00Z",
-      "observation_age_minutes": 73.1,
+      "checked_at_utc": "2026-09-29T16:10:57.729614Z",
+      "check_age_minutes": 3.2,
+      "observed_at_utc": "2026-09-29T15:50:00Z",
+      "observation_age_minutes": 24.2,
       "expected_max_gap_minutes": 240,
       "detail": "10min srážkoměr"
     },
@@ -40,10 +40,10 @@
       "name": "radar",
       "label": "Radar nowcast",
       "status": "ok",
-      "checked_at_utc": "2026-09-29T15:59:42.346828Z",
-      "check_age_minutes": 3.4,
-      "observed_at_utc": "2026-09-29T15:50:00Z",
-      "observation_age_minutes": 13.1,
+      "checked_at_utc": "2026-09-29T16:11:05.689563Z",
+      "check_age_minutes": 3.1,
+      "observed_at_utc": "2026-09-29T16:10:00Z",
+      "observation_age_minutes": 4.2,
       "expected_max_gap_minutes": 90,
       "detail": "operational"
     },
@@ -51,12 +51,34 @@
       "name": "verification",
       "label": "Verifikace",
       "status": "ok",
-      "checked_at_utc": "2026-09-29T16:00:08.753275Z",
-      "check_age_minutes": 3.0,
-      "observed_at_utc": "2026-09-29T16:00:08.753275Z",
-      "observation_age_minutes": 3.0,
+      "checked_at_utc": "2026-09-29T16:11:31.964498Z",
+      "check_age_minutes": 2.7,
+      "observed_at_utc": "2026-09-29T16:11:31.964498Z",
+      "observation_age_minutes": 2.7,
       "expected_max_gap_minutes": 480,
       "detail": "32413 T / 32310 déšť"
+    },
+    {
+      "name": "indoor",
+      "label": "EMOS uvnitř",
+      "status": "ok",
+      "checked_at_utc": "2026-09-29T16:06:18Z",
+      "check_age_minutes": 7.9,
+      "observed_at_utc": "2026-09-29T16:06:18Z",
+      "observation_age_minutes": 7.9,
+      "expected_max_gap_minutes": 45,
+      "detail": "18.8 °C · cíl 7.0 °C"
+    },
+    {
+      "name": "hdo",
+      "label": "HDO ČEZ monitor",
+      "status": "ok",
+      "checked_at_utc": "2026-09-29T15:56:19.596884Z",
+      "check_age_minutes": 17.9,
+      "observed_at_utc": "2026-09-29T15:56:19.596884Z",
+      "observation_age_minutes": 17.9,
+      "expected_max_gap_minutes": 2880,
+      "detail": "ověřený export + denní veřejná kontrola"
     }
   ],
   "policy": {
@@ -64,6 +86,8 @@
     "regional_observations_stale_after_min": 240,
     "radar_stale_after_min": 90,
     "verification_stale_after_min": 480,
+    "indoor_stale_after_min": 45,
+    "hdo_monitor_stale_after_min": 2880,
     "note": "Health stav sleduje čerstvost posledního úspěšného sběru; delayed je varování, stale znamená příliš stará data."
   }
 }

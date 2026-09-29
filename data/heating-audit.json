@@ -1,9 +1,10 @@
 {
   "schema": "2026-09-29.heating-audit-v1",
-  "generated_at": "2026-09-29T15:59:42.168329Z",
+  "generated_at": "2026-09-29T16:11:05.545879Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
+    "Exact customer-specific HDO export is not auto-refreshed because the ČEZ DIP endpoint is CAPTCHA-protected; the current verified export is combined with a daily public-source change monitor.",
     "Passive forecast is still learning: need at least 6 accepted nighttime windows; have 4.",
     "D45d requires HDO blocking of electric heating, but the actual boiler wiring has not been physically verified.",
     "The 1.0 °C EMOS DIFF setting is used as the working setting but is not machine-read from the thermostat."
@@ -33,6 +34,11 @@
       "name": "current_price_pair",
       "ok": true,
       "detail": "Current D45d VT/NT price pair is missing or internally inconsistent."
+    },
+    {
+      "name": "generic_price_alias_is_current",
+      "ok": true,
+      "detail": "Generic variable-price alias must point to the current tariff, not a historical invoice average."
     },
     {
       "name": "hdo_week_length",
@@ -157,12 +163,12 @@
     {
       "name": "indoor_latest_freshness",
       "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 7.5 min)."
+      "detail": "Indoor latest sample is stale or missing (age 4.8 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 778 points."
+      "detail": "Indoor history has only 782 points."
     },
     {
       "name": "dp2_not_used_as_boiler_proof",
@@ -172,7 +178,7 @@
     {
       "name": "heating_control_not_overclaimed",
       "ok": true,
-      "detail": "Thermal model is unexpectedly marked validated for heating control."
+      "detail": "Thermal model is marked validated for heating control before both passive prediction and absolute energy scale are calibrated."
     },
     {
       "name": "passive_fit_positive",
@@ -202,13 +208,13 @@
     {
       "name": "weather_snapshot_freshness",
       "ok": true,
-      "detail": "Weather snapshot is stale or missing (age 1.5 min)."
+      "detail": "Weather snapshot is stale or missing (age 2.1 min)."
     }
   ],
   "summary": {
-    "checks_total": 39,
+    "checks_total": 40,
     "checks_failed": 0,
     "critical_failures": 0,
-    "warnings": 3
+    "warnings": 4
   }
 }
