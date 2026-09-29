@@ -443,7 +443,7 @@ def main():
             "public_notices_checksum": notices_digest,
             "previous_public_notices_checksum": previous_notices_digest,
             "public_notices_changed_since_previous_check": notices_changed,
-            "exact_customer_schedule_auto_refresh": false,
+            "exact_customer_schedule_auto_refresh": False,
             "exact_customer_schedule_auto_refresh_blocker": "ČEZ per-customer DIP endpoint requires CAPTCHA; no third-party OCR provider is used.",
             "note": "The older public command endpoint and CEZ public notices are monitored for changes. The customer-specific CEZ DIP export remains authoritative; exact per-customer refresh is not automated because the current endpoint is CAPTCHA-protected."
         },
