@@ -257,13 +257,14 @@ def parse_timestamp(value):
         return None
 
 
-def live_snapshot_should_persist(previous, now, indoor, setpoint, dp2_raw, heartbeat_minutes):
+def live_snapshot_should_persist(previous, now, indoor, setpoint, dp2_raw, dp106_raw, heartbeat_minutes):
     if not isinstance(previous, dict) or not previous:
         return True
     same_values = (
         previous.get("latest_indoor_c") == indoor
         and previous.get("latest_setpoint_c") == setpoint
         and str(previous.get("dp2_raw")) == str(dp2_raw)
+        and str(previous.get("dp106_raw")) == str(dp106_raw)
     )
     if not same_values:
         return True
@@ -584,11 +585,13 @@ def main():
     now = datetime.now(TZ).replace(microsecond=0)
     timestamp = now.isoformat()
     dp2_raw = get_dp(dps, 2)
+    dp106_raw = get_dp(dps, 106)
     point = {
         "timestamp_local": timestamp,
         "indoor_c": indoor,
         "setpoint_c": setpoint,
         "dp2_raw": dp2_raw,
+        "dp106_raw": dp106_raw,
         "source": "EMOS/Tuya cloud snapshot",
     }
 
@@ -607,6 +610,7 @@ def main():
             indoor,
             setpoint,
             dp2_raw,
+            dp106_raw,
             heartbeat_minutes,
         )
     )
@@ -678,6 +682,7 @@ def main():
         "latest_indoor_c": indoor,
         "latest_setpoint_c": setpoint,
         "dp2_raw": dp2_raw,
+        "dp106_raw": dp106_raw,
         "source": "EMOS/Tuya cloud snapshot",
     }
     (DATA / "indoor-latest.json").write_text(
@@ -689,6 +694,8 @@ def main():
         "ok": True,
         "indoor_c": indoor,
         "setpoint_c": setpoint,
+        "dp2_raw": dp2_raw,
+        "dp106_raw": dp106_raw,
         "points": len(merged),
         "live_mode": live_mode,
         "persist_snapshot": persist_snapshot,
