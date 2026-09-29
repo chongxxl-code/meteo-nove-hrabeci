@@ -575,6 +575,13 @@ def main():
 
     point_info = detail.get("dataPointInfo") if isinstance(detail.get("dataPointInfo"), dict) else {}
     dps = point_info.get("dps") or detail.get("dps") or target.get("dps") or {}
+    diagnostic_dps = {}
+    if isinstance(dps, dict):
+        for key, value in dps.items():
+            if isinstance(value, (str, int, float, bool)) or value is None:
+                text_value = str(value)
+                if len(text_value) <= 120:
+                    diagnostic_dps[str(key)] = value
     indoor = temp_c(get_dp(dps, 24))
     setpoint = temp_c(get_dp(dps, 3))
     if indoor is None:
@@ -687,6 +694,14 @@ def main():
     }
     (DATA / "indoor-latest.json").write_text(
         json.dumps(latest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (DATA / "indoor-dp-diagnostic.json").write_text(
+        json.dumps({
+            "generated_at": now.isoformat(),
+            "note": "Sanitized current scalar Tuya/EMOS datapoints for relay-status verification; no device identifiers or credentials.",
+            "dps": diagnostic_dps,
+        }, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
 
