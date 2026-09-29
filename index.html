@@ -124,8 +124,9 @@ function renderHdoTimeline(){
  }else{nowNode.textContent='Aktuální tarif neurčen';nextNode.textContent='—'}
  weekRoot.innerHTML=week.map(d=>`<div class="hdoday"><div class="hdodaylabel"><b>${d.weekday_cs||''}</b> ${String(d.date||'').slice(5)}</div><div class="hdodaybar">${hdoSegmentsHtml(d.timeline,true)}</div></div>`).join('');
  const checked=hdoSchedule?.checked_at?new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(hdoSchedule.checked_at)):'—';
- const source=hdoSchedule?.status==='live'?'ČEZ live':hdoSchedule?.status==='live_stale'?'poslední ČEZ plán':hdoSchedule?.status==='manual_fallback'?'ruční baseline':'HDO';
- meta.textContent=`${source} · ${hdoSchedule?.primary_command||'A1B6DP1'} · kontrola 1× denně · naposledy ${checked} · placené API 0 Kč`;
+ const source=hdoSchedule?.status==='verified_export_monitored'?'ČEZ export + denní monitor':hdoSchedule?.status==='live'?'ČEZ live':hdoSchedule?.status==='live_stale'?'poslední ČEZ plán':hdoSchedule?.status==='manual_fallback'?'ruční baseline':'HDO';
+ const diff=hdoSchedule?.daily_monitor?.reference_differs_from_current_export===true?' · veřejný referenční plán se liší, export zůstává autorita':'';
+ meta.textContent=`${source} · ${hdoSchedule?.primary_command||'A1B6DP1'} · kontrola 1× denně · naposledy ${checked} · placené API 0 Kč${diff}`;
 }
 function renderEnergyCard(){
  const raw=String(indoorLatest?.dp2_raw??'').toLowerCase(),thermostat=(raw==='on'||raw==='true'||raw==='1')?'on':(raw==='off'||raw==='false'||raw==='0')?'off':'unknown';
