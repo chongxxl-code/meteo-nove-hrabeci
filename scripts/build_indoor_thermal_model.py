@@ -360,6 +360,210 @@ def build_passive_forecast(latest, fit):
         ],
     }
 
+
+def load_house_energy_context():
+    return (
+        load_json(DATA / "house-profile.json", {}),
+        load_json(DATA / "house-state.json", {}),
+    )
+
+
+def boiler_sized_heat_loss_prior(profile):
+    heating = profile.get("heating_system") if isinstance(profile, dict) else {}
+    boiler = heating.get("primary_electric_boiler") if isinstance(heating, dict) else {}
+    cfg = profile.get("heating_energy_model") if isinstance(profile, dict) else {}
+    if not isinstance(boiler, dict) or not isinstance(cfg, dict):
+        return None
+
+    boiler_kw = as_float(boiler.get("rated_heat_output_kw")) or as_float(boiler.get("electrical_input_kw"))
+    indoor_design = as_float(cfg.get("design_indoor_c"))
+    outdoor_design = as_float(cfg.get("design_outdoor_c"))
+    factors = cfg.get("boiler_oversizing_factor") or {}
+    if boiler_kw is None or indoor_design is None or outdoor_design is None or not isinstance(factors, dict):
+        return None
+    design_delta = indoor_design - outdoor_design
+    if design_delta <= 0:
+        return None
+
+    mapping = {
+        "low": as_float(factors.get("low_heat_loss_case")),
+        "central": as_float(factors.get("central_case")),
+        "high": as_float(factors.get("high_heat_loss_case")),
+    }
+    out = {}
+    for name, factor in mapping.items():
+        if factor is None or factor <= 0:
+            continue
+        out[name] = boiler_kw * 1000.0 / (design_delta * factor)
+    if set(out) != {"low", "central", "high"}:
+        return None
+    return {
+        "method": "installed boiler capacity / design temperature difference / oversizing factor",
+        "design_indoor_c": indoor_design,
+        "design_outdoor_c": outdoor_design,
+        "design_delta_k": rounded(design_delta, 1),
+        "boiler_thermal_output_kw": rounded(boiler_kw, 2),
+        "w_per_k": {key: rounded(value, 1) for key, value in out.items()},
+        "absolute_scale_calibrated": False,
+    }
+
+
+def forecast_degree_hours(snapshot, start_local, target_c, horizon_h=24):
+    if not snapshot or not isinstance(snapshot.get("models"), dict):
+        return {}
+    end_local = start_local + timedelta(hours=horizon_h)
+    by_model = {}
+    for model_name, payload in snapshot["models"].items():
+        if not isinstance(payload, dict):
+            continue
+        pairs = []
+        for raw_time, raw_temp in zip(payload.get("time") or [], payload.get("temperature_2m") or []):
+            dt = parse_forecast_local(raw_time)
+            temp = as_float(raw_temp)
+            if dt is None or temp is None:
+                continue
+            if dt < start_local - timedelta(hours=2) or dt > end_local + timedelta(hours=2):
+                continue
+            pairs.append((dt, temp))
+        pairs.sort(key=lambda item: item[0])
+        if not pairs:
+            continue
+
+        future = [(dt, temp) for dt, temp in pairs if dt >= start_local]
+        if not future:
+            continue
+        prev_dt = start_local
+        prev_temp = future[0][1]
+        degree_hours = 0.0
+        covered_h = 0.0
+        for dt, temp in future:
+            if dt <= prev_dt:
+                prev_temp = temp
+                continue
+            seg_end = min(dt, end_local)
+            dt_h = (seg_end - prev_dt).total_seconds() / 3600.0
+            if dt_h > 0:
+                avg_out = (prev_temp + temp) / 2.0
+                degree_hours += max(0.0, target_c - avg_out) * dt_h
+                covered_h += dt_h
+            prev_dt = dt
+            prev_temp = temp
+            if dt >= end_local:
+                break
+
+        if prev_dt < end_local:
+            dt_h = (end_local - prev_dt).total_seconds() / 3600.0
+            if 0 < dt_h <= 3.1:
+                degree_hours += max(0.0, target_c - prev_temp) * dt_h
+                covered_h += dt_h
+
+        if covered_h >= min(20.0, horizon_h * 0.8):
+            by_model[model_name] = {
+                "degree_hours_kh": rounded(degree_hours, 2),
+                "covered_hours": rounded(covered_h, 2),
+            }
+    return by_model
+
+
+def energy_from_degree_hours(degree_hours, heat_loss_w_per_k, efficiency):
+    if degree_hours is None or heat_loss_w_per_k is None or efficiency is None or efficiency <= 0:
+        return None
+    return (heat_loss_w_per_k / 1000.0) * degree_hours / efficiency
+
+
+def build_heating_energy_model(latest):
+    profile, state = load_house_energy_context()
+    cfg = profile.get("heating_energy_model") if isinstance(profile, dict) else {}
+    pricing = state.get("energy_pricing") if isinstance(state, dict) else {}
+    boiler = ((profile.get("heating_system") or {}).get("primary_electric_boiler") or {}) if isinstance(profile, dict) else {}
+    if not isinstance(cfg, dict) or not isinstance(pricing, dict) or not isinstance(boiler, dict):
+        return None
+
+    target_c = as_float(cfg.get("tempering_setpoint_c"))
+    hysteresis_c = as_float(cfg.get("thermostat_hysteresis_c"))
+    price = as_float(pricing.get("tempering_incremental_price_czk_per_kwh"))
+    efficiency_pct = as_float(boiler.get("label_efficiency_percent"))
+    prior = boiler_sized_heat_loss_prior(profile)
+    if target_c is None or price is None or prior is None:
+        return None
+    efficiency = (efficiency_pct / 100.0) if efficiency_pct and efficiency_pct > 0 else 1.0
+
+    start_dt = parse_dt(latest.get("last_timestamp") or latest.get("generated_at")) if isinstance(latest, dict) else None
+    start_local = (start_dt.astimezone(TZ) if start_dt else datetime.now(TZ))
+    snapshot = load_latest_forecast_snapshot()
+    degree_by_model = forecast_degree_hours(snapshot, start_local, target_c, 24)
+    dh_values = [as_float(item.get("degree_hours_kh")) for item in degree_by_model.values()]
+    dh_values = [value for value in dh_values if value is not None]
+
+    forecast = None
+    if dh_values:
+        heat_loss = prior["w_per_k"]
+        dh_low = min(dh_values)
+        dh_mid = median(dh_values)
+        dh_high = max(dh_values)
+        e_low = energy_from_degree_hours(dh_low, as_float(heat_loss["low"]), efficiency)
+        e_mid = energy_from_degree_hours(dh_mid, as_float(heat_loss["central"]), efficiency)
+        e_high = energy_from_degree_hours(dh_high, as_float(heat_loss["high"]), efficiency)
+        forecast = {
+            "horizon_hours": 24,
+            "start_timestamp_local": start_local.isoformat(),
+            "weather_models": sorted(degree_by_model),
+            "degree_hours_by_model": degree_by_model,
+            "degree_hours_median_kh": rounded(dh_mid, 2),
+            "electricity_kwh": {
+                "low": rounded(e_low, 1),
+                "central": rounded(e_mid, 1),
+                "high": rounded(e_high, 1),
+            },
+            "incremental_cost_czk": {
+                "low": rounded(e_low * price, 0),
+                "central": rounded(e_mid * price, 0),
+                "high": rounded(e_high * price, 0),
+            },
+            "scope": f"energy needed to maintain approximately {target_c:.1f} °C over the next 24 h; not direct metering",
+        }
+
+    references = []
+    heat_loss = prior["w_per_k"]
+    for outside_c in (5.0, 0.0, -5.0, -10.0, -15.0):
+        dh = max(0.0, target_c - outside_c) * 24.0
+        e_low = energy_from_degree_hours(dh, as_float(heat_loss["low"]), efficiency)
+        e_mid = energy_from_degree_hours(dh, as_float(heat_loss["central"]), efficiency)
+        e_high = energy_from_degree_hours(dh, as_float(heat_loss["high"]), efficiency)
+        references.append({
+            "outside_c": outside_c,
+            "electricity_kwh_per_day": {
+                "low": rounded(e_low, 1),
+                "central": rounded(e_mid, 1),
+                "high": rounded(e_high, 1),
+            },
+            "cost_czk_per_day": {
+                "low": rounded(e_low * price, 0),
+                "central": rounded(e_mid * price, 0),
+                "high": rounded(e_high * price, 0),
+            },
+        })
+
+    band = None
+    if hysteresis_c is not None:
+        band = [rounded(target_c - hysteresis_c, 1), rounded(target_c + hysteresis_c, 1)]
+
+    return {
+        "status": "provisional_physics_prior",
+        "absolute_energy_scale_calibrated": False,
+        "tempering_setpoint_c": target_c,
+        "thermostat_hysteresis_c": hysteresis_c,
+        "expected_thermostat_band_c": band,
+        "boiler_efficiency_fraction": rounded(efficiency, 4),
+        "price_czk_per_kwh": price,
+        "price_basis": pricing.get("tempering_price_basis"),
+        "distribution_rate": pricing.get("distribution_rate"),
+        "heat_loss_prior": prior,
+        "forecast_next_24h": forecast,
+        "reference_daily_costs": references,
+        "learning_note": "Weather and passive cooling are measured. The absolute kWh scale is still a boiler-sizing prior and will be narrowed when cold-season heating response provides calibration evidence.",
+    }
+
 def main():
     indoor, indoor_payload = load_indoor_bins()
     weather, chmi_status, chmi_paths, dwd_paths, source_counts = weather_bins()
@@ -416,9 +620,10 @@ def main():
             prediction_blocker = "passive fit is not based on nighttime windows"
 
     passive_forecast = build_passive_forecast(latest, fit) if prediction_ready else None
+    heating_energy_model = build_heating_energy_model(latest)
 
     output = {
-        "schema": 3,
+        "schema": 4,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
@@ -455,6 +660,7 @@ def main():
         "fit": fit,
         "current_passive_estimate": current,
         "passive_forecast": passive_forecast,
+        "heating_energy_model": heating_energy_model,
         "filters": {
             "bucket_minutes": 30,
             "window_hours": WINDOW_HOURS,
@@ -482,7 +688,7 @@ def main():
     )
     print(json.dumps({
         "ok": True,
-        "schema": 3,
+        "schema": 4,
         "status": status,
         "fit_basis": output["fit_basis"],
         "fit_samples": len(fit_basis),
@@ -490,6 +696,7 @@ def main():
         "fit": fit,
         "current": current,
         "passive_forecast_horizons": None if passive_forecast is None else passive_forecast.get("horizons"),
+        "heating_energy_forecast": None if heating_energy_model is None else heating_energy_model.get("forecast_next_24h"),
     }, ensure_ascii=False))
 
 
