@@ -365,21 +365,22 @@ def main():
         except Exception as exc:
             notices["error"] = f"{type(exc).__name__}: {exc}"
 
-    if live["ok"]:
-        days = {key: build_day(live["days"][key]) for key in WEEKDAY_KEYS}
-        schedule_source = "cez_live_api"
-        status = "live"
-    else:
-        # Preserve a previously confirmed live schedule if CEZ is temporarily unreachable.
-        previous_days = old.get("days") if old.get("status") in {"live", "live_stale"} else None
-        if isinstance(previous_days, dict) and all(previous_days.get(k) for k in WEEKDAY_KEYS):
-            days = previous_days
-            schedule_source = old.get("schedule_source") or "cez_live_api"
-            status = "live_stale"
-        else:
-            days = fallback_days
-            schedule_source = "manual_xlsx_baseline"
-            status = "manual_fallback"
+    # The current CEZ DIP export supplied by the user is authoritative for the
+    # actual command timing. The older public command endpoint is useful as a
+    # zero-cost change monitor, but its metadata can lag behind the current DIP
+    # schedule (for example, it can still expose an older long-lived program).
+    # Therefore it must never silently overwrite the newer export.
+    days = fallback_days
+    schedule_source = "cez_dip_export_monitored_daily"
+    status = "verified_export_monitored"
+
+    reference_days = (
+        {key: build_day(live["days"][key]) for key in WEEKDAY_KEYS}
+        if live["ok"] else None
+    )
+    reference_digest = checksum_days(reference_days) if reference_days else None
+    baseline_digest = checksum_days(fallback_days)
+    reference_differs = bool(reference_digest and reference_digest != baseline_digest)
 
     override_dates = notices.get("sunday_override_dates") or []
     week = build_week(days, override_dates, now.date())
@@ -403,27 +404,31 @@ def main():
         "days": days,
         "week_ahead": week,
         "special_schedule": notices,
-        "live_api": {
-            "status": "ok" if live["ok"] else "failed",
-            "endpoint": live.get("endpoint"),
-            "url": live.get("url"),
-            "rows_received": live.get("rows_received"),
-            "metadata": live.get("metadata"),
-            "last_error": live.get("error"),
+        "daily_monitor": {
+            "status": "ok" if live["ok"] else "partial",
+            "reference_endpoint": live.get("endpoint"),
+            "reference_rows_received": live.get("rows_received"),
+            "reference_metadata": live.get("metadata"),
+            "reference_last_error": live.get("error"),
+            "reference_schedule_checksum": reference_digest,
+            "baseline_schedule_checksum": baseline_digest,
+            "reference_differs_from_current_export": reference_differs,
+            "note": "The older public command endpoint is monitored only for structural changes. The newer CEZ DIP export remains authoritative because the current per-customer DIP endpoint is CAPTCHA-protected."
         },
         "schedule_checksum": digest,
         "schedule_changed_since_previous_check": bool(previous_digest and previous_digest != digest),
         "fallback": {
             "available": True,
             "source": "data/hdo-manual-baseline.json",
-            "note": "If the undocumented public CEZ website endpoint changes or is unavailable, the last live schedule is retained; before the first successful live check the supplied XLSX baseline is used.",
+            "note": "The current CEZ DIP export is kept locally and combined with daily public CEZ change notices. No paid provider is required.",
         },
     }
 
     OUTPUT.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
         f"HDO status={status} source={schedule_source} "
-        f"checksum={digest[:12]} week={week[0]['date']}..{week[-1]['date']}"
+        f"checksum={digest[:12]} monitor_diff={reference_differs} "
+        f"week={week[0]['date']}..{week[-1]['date']}"
     )
     if live.get("error"):
         print(f"Live API note: {live['error']}")
