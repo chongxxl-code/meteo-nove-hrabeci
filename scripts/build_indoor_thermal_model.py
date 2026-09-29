@@ -556,8 +556,161 @@ def forecast_outside_min(snapshot, start_local, horizon_h=24):
     return min(values) if values else None
 
 
-def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band):
-    if not hdo_context or not fit or not isinstance(band, list) or len(band) < 2:
+def passive_threshold_crossings(snapshot, start_local, start_temp, threshold_c, fit, horizon_h=24):
+    if not snapshot or not fit or start_temp is None or threshold_c is None:
+        return []
+    couplings = sorted({
+        value for value in (
+            as_float(fit.get("coupling_p25_per_h")),
+            as_float(fit.get("coupling_per_h")),
+            as_float(fit.get("coupling_p75_per_h")),
+        )
+        if value is not None and value > 0
+    })
+    if not couplings:
+        return []
+
+    end_local = start_local + timedelta(hours=horizon_h)
+    crossings = []
+    for model_name, payload in (snapshot.get("models") or {}).items():
+        if not isinstance(payload, dict):
+            continue
+        series = []
+        for raw_time, raw_temp in zip(payload.get("time") or [], payload.get("temperature_2m") or []):
+            dt = parse_forecast_local(raw_time)
+            temp = as_float(raw_temp)
+            if dt is None or temp is None or dt <= start_local or dt > end_local + timedelta(hours=2):
+                continue
+            series.append((dt, temp))
+        series.sort(key=lambda item: item[0])
+        if not series:
+            continue
+
+        for coupling in couplings:
+            tin = start_temp
+            prev_dt = start_local
+            for dt, tout in series:
+                dt_h = (dt - prev_dt).total_seconds() / 3600.0
+                if dt_h <= 0:
+                    continue
+                if dt_h > 3.1:
+                    prev_dt = dt
+                    continue
+                decay = math.exp(-coupling * dt_h)
+                next_tin = tout + (tin - tout) * decay
+                if tin > threshold_c and next_tin <= threshold_c:
+                    denom = tin - next_tin
+                    frac = 1.0 if denom <= 0 else max(0.0, min(1.0, (tin - threshold_c) / denom))
+                    crossing = prev_dt + timedelta(seconds=(dt - prev_dt).total_seconds() * frac)
+                    crossings.append({
+                        "weather_model": model_name,
+                        "coupling_per_h": rounded(coupling, 5),
+                        "timestamp_local": crossing.isoformat(),
+                        "hours_from_start": rounded((crossing - start_local).total_seconds() / 3600.0, 2),
+                    })
+                    break
+                tin = next_tin
+                prev_dt = dt
+    return crossings
+
+
+def build_actual_tempering_need(latest, snapshot, start_local, fit, prediction_ready, band, price):
+    if not isinstance(band, list) or len(band) < 2:
+        return None
+    inside_now = as_float(latest.get("latest_indoor_c")) if isinstance(latest, dict) else None
+    lower_c = as_float(band[0])
+    upper_c = as_float(band[1])
+    outside_min = forecast_outside_min(snapshot, start_local, 24)
+    if inside_now is None or lower_c is None or upper_c is None or outside_min is None:
+        return {
+            "status": "insufficient_inputs",
+            "actual_kwh_estimate_available": False,
+            "actual_cost_estimate_available": False,
+        }
+
+    base = {
+        "horizon_hours": 24,
+        "inside_now_c": rounded(inside_now, 1),
+        "lower_switch_c": rounded(lower_c, 1),
+        "upper_switch_c": rounded(upper_c, 1),
+        "forecast_min_outside_c": rounded(outside_min, 1),
+        "price_czk_per_kwh": rounded(price, 5) if price is not None else None,
+    }
+
+    if inside_now <= lower_c:
+        return {
+            **base,
+            "status": "heating_threshold_already_reached",
+            "actual_kwh_estimate_available": False,
+            "actual_cost_estimate_available": False,
+            "reason": "The control temperature is already at or below the lower hysteresis threshold. Active-cycle energy is not yet calibrated.",
+        }
+
+    # This conclusion does not depend on the fitted thermal time constant:
+    # in a passive first-order system starting above the threshold, if outdoor
+    # temperature never falls below that threshold, the indoor temperature
+    # cannot cross it from above.
+    if outside_min >= lower_c:
+        return {
+            **base,
+            "status": "no_heating_call_possible_from_forecast_bound",
+            "actual_kwh_estimate_available": True,
+            "actual_cost_estimate_available": True,
+            "electricity_kwh": 0.0,
+            "incremental_cost_czk": 0.0,
+            "confidence": "high_for_no-call_condition",
+            "reason": "Outdoor forecast remains at or above the lower thermostat threshold, while the house starts above it.",
+        }
+
+    if not prediction_ready or not fit:
+        return {
+            **base,
+            "status": "learning_threshold_timing",
+            "actual_kwh_estimate_available": False,
+            "actual_cost_estimate_available": False,
+            "confidence": "insufficient_nighttime_passive_windows",
+            "reason": "Outdoor temperature can fall below the lower threshold, but the passive model is not yet prediction-ready.",
+        }
+
+    crossings = passive_threshold_crossings(
+        snapshot,
+        start_local,
+        inside_now,
+        lower_c,
+        fit,
+        24,
+    )
+    if not crossings:
+        return {
+            **base,
+            "status": "no_threshold_crossing_predicted",
+            "actual_kwh_estimate_available": True,
+            "actual_cost_estimate_available": True,
+            "electricity_kwh": 0.0,
+            "incremental_cost_czk": 0.0,
+            "confidence": "preliminary_passive_model",
+            "crossing_scenarios": 0,
+            "reason": "No weather-model / passive-coupling scenario reaches the lower hysteresis threshold within 24 hours.",
+        }
+
+    crossing_hours = [as_float(item.get("hours_from_start")) for item in crossings]
+    crossing_hours = [value for value in crossing_hours if value is not None]
+    return {
+        **base,
+        "status": "threshold_crossing_predicted",
+        "actual_kwh_estimate_available": False,
+        "actual_cost_estimate_available": False,
+        "confidence": "preliminary_passive_model",
+        "crossing_scenarios": len(crossings),
+        "earliest_crossing_h": rounded(min(crossing_hours), 2) if crossing_hours else None,
+        "median_crossing_h": rounded(median(crossing_hours), 2) if crossing_hours else None,
+        "latest_crossing_h": rounded(max(crossing_hours), 2) if crossing_hours else None,
+        "reason": "The passive model predicts reaching the lower threshold, but active heating-cycle energy is not calibrated yet.",
+    }
+
+
+def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, prediction_ready=False):
+    if not hdo_context or not isinstance(band, list) or len(band) < 2:
         return None
     vt_hours = [
         as_float(seg.get("hours"))
@@ -567,12 +720,41 @@ def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band):
     vt_hours = [value for value in vt_hours if value is not None and value > 0]
     lower_c = as_float(band[0])
     outside_min = forecast_outside_min(snapshot, start_local, 24)
-    k_mid = as_float(fit.get("coupling_per_h"))
-    k_fast = as_float(fit.get("coupling_p75_per_h")) or k_mid
-    if not vt_hours or lower_c is None or outside_min is None or k_mid is None or k_mid <= 0:
+    if not vt_hours or lower_c is None or outside_min is None:
         return None
 
     longest_vt_h = max(vt_hours)
+
+    if outside_min >= lower_c:
+        return {
+            "horizon_hours": 24,
+            "longest_vt_block_h": rounded(longest_vt_h, 2),
+            "forecast_min_outside_c": rounded(outside_min, 1),
+            "reference_inside_c": rounded(lower_c, 1),
+            "passive_drop_during_longest_vt_central_c": 0.0,
+            "passive_drop_during_longest_vt_conservative_c": 0.0,
+            "impact_level": "negligible",
+            "basis": "forecast_bound",
+            "hdo_only_preheat_indication": "No HDO-only preheating is indicated.",
+            "principle": "Outdoor temperature stays above the lower thermostat threshold, so an HDO block cannot by itself drive the control temperature below that threshold.",
+        }
+
+    if not prediction_ready or not fit:
+        return {
+            "horizon_hours": 24,
+            "longest_vt_block_h": rounded(longest_vt_h, 2),
+            "forecast_min_outside_c": rounded(outside_min, 1),
+            "reference_inside_c": rounded(lower_c, 1),
+            "impact_level": "learning",
+            "basis": "insufficient_prediction_ready_passive_data",
+            "hdo_only_preheat_indication": "No automatic HDO-only preheating recommendation yet.",
+            "principle": "When outdoor temperature can fall below the lower threshold, HDO preheating is not recommended until the passive model is prediction-ready.",
+        }
+
+    k_mid = as_float(fit.get("coupling_per_h"))
+    k_fast = as_float(fit.get("coupling_p75_per_h")) or k_mid
+    if k_mid is None or k_mid <= 0:
+        return None
 
     def passive_drop(k):
         if k is None or k <= 0 or outside_min >= lower_c:
@@ -607,7 +789,7 @@ def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band):
     }
 
 
-def build_heating_energy_model(latest, fit=None):
+def build_heating_energy_model(latest, fit=None, prediction_ready=False):
     profile, state = load_house_energy_context()
     cfg = profile.get("heating_energy_model") if isinstance(profile, dict) else {}
     pricing = state.get("energy_pricing") if isinstance(state, dict) else {}
@@ -618,6 +800,8 @@ def build_heating_energy_model(latest, fit=None):
     target_c = as_float(cfg.get("tempering_setpoint_c"))
     hysteresis_c = as_float(cfg.get("thermostat_hysteresis_c"))
     price = as_float(pricing.get("tempering_incremental_price_czk_per_kwh"))
+    current_prices = pricing.get("current_variable_price_czk_per_kwh_vat") if isinstance(pricing.get("current_variable_price_czk_per_kwh_vat"), dict) else {}
+    high_tariff_price = as_float(current_prices.get("high_tariff"))
     efficiency_pct = as_float(boiler.get("label_efficiency_percent"))
     prior = boiler_sized_heat_loss_prior(profile)
     if target_c is None or price is None or prior is None:
@@ -657,7 +841,7 @@ def build_heating_energy_model(latest, fit=None):
                 "central": rounded(e_mid * price, 0),
                 "high": rounded(e_high * price, 0),
             },
-            "scope": f"energy needed to maintain approximately {target_c:.1f} °C over the next 24 h; not direct metering",
+            "scope": f"steady-state reference energy to maintain approximately {target_c:.1f} °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering",
         }
 
     references = []
@@ -685,12 +869,23 @@ def build_heating_energy_model(latest, fit=None):
     if hysteresis_c is not None:
         band = [rounded(target_c - hysteresis_c, 1), rounded(target_c + hysteresis_c, 1)]
 
+    actual_need = build_actual_tempering_need(
+        latest,
+        snapshot,
+        start_local,
+        fit,
+        prediction_ready,
+        band,
+        price,
+    )
+
     hdo_resilience = build_hdo_resilience(
         hdo_context,
         snapshot,
         start_local,
         fit,
         band,
+        prediction_ready,
     )
 
     return {
@@ -701,10 +896,14 @@ def build_heating_energy_model(latest, fit=None):
         "expected_thermostat_band_c": band,
         "boiler_efficiency_fraction": rounded(efficiency, 4),
         "price_czk_per_kwh": price,
+        "high_tariff_price_czk_per_kwh": high_tariff_price,
         "price_basis": pricing.get("tempering_price_basis"),
         "distribution_rate": pricing.get("distribution_rate"),
+        "hdo_boiler_blocking": pricing.get("hdo_boiler_blocking"),
         "heat_loss_prior": prior,
+        "steady_state_maintenance_24h": forecast,
         "forecast_next_24h": forecast,
+        "actual_tempering_need_next_24h": actual_need,
         "hdo_next_24h": hdo_context,
         "hdo_resilience": hdo_resilience,
         "reference_daily_costs": references,
@@ -767,7 +966,7 @@ def main():
             prediction_blocker = "passive fit is not based on nighttime windows"
 
     passive_forecast = build_passive_forecast(latest, fit) if prediction_ready else None
-    heating_energy_model = build_heating_energy_model(latest, fit)
+    heating_energy_model = build_heating_energy_model(latest, fit, prediction_ready)
 
     output = {
         "schema": 5,
@@ -835,7 +1034,7 @@ def main():
     )
     print(json.dumps({
         "ok": True,
-        "schema": 4,
+        "schema": 5,
         "status": status,
         "fit_basis": output["fit_basis"],
         "fit_samples": len(fit_basis),
