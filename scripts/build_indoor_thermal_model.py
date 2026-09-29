@@ -538,7 +538,76 @@ def build_hdo_context(start_local, horizon_h=24):
     }
 
 
-def build_heating_energy_model(latest):
+def forecast_outside_min(snapshot, start_local, horizon_h=24):
+    if not snapshot or not isinstance(snapshot.get("models"), dict):
+        return None
+    end_local = start_local + timedelta(hours=horizon_h)
+    values = []
+    for payload in snapshot["models"].values():
+        if not isinstance(payload, dict):
+            continue
+        for raw_time, raw_temp in zip(payload.get("time") or [], payload.get("temperature_2m") or []):
+            dt = parse_forecast_local(raw_time)
+            temp = as_float(raw_temp)
+            if dt is None or temp is None:
+                continue
+            if start_local <= dt <= end_local:
+                values.append(temp)
+    return min(values) if values else None
+
+
+def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band):
+    if not hdo_context or not fit or not isinstance(band, list) or len(band) < 2:
+        return None
+    vt_hours = [
+        as_float(seg.get("hours"))
+        for seg in hdo_context.get("segments") or []
+        if isinstance(seg, dict) and seg.get("tariff") == "VT"
+    ]
+    vt_hours = [value for value in vt_hours if value is not None and value > 0]
+    lower_c = as_float(band[0])
+    outside_min = forecast_outside_min(snapshot, start_local, 24)
+    k_mid = as_float(fit.get("coupling_per_h"))
+    k_fast = as_float(fit.get("coupling_p75_per_h")) or k_mid
+    if not vt_hours or lower_c is None or outside_min is None or k_mid is None or k_mid <= 0:
+        return None
+
+    longest_vt_h = max(vt_hours)
+
+    def passive_drop(k):
+        if k is None or k <= 0 or outside_min >= lower_c:
+            return 0.0
+        end_c = outside_min + (lower_c - outside_min) * math.exp(-k * longest_vt_h)
+        return max(0.0, lower_c - end_c)
+
+    central_drop = passive_drop(k_mid)
+    faster_drop = passive_drop(k_fast)
+    conservative_drop = max(central_drop, faster_drop)
+
+    if conservative_drop < 0.2:
+        level = "negligible"
+        advice = "No HDO-only preheating is indicated; the building inertia should comfortably bridge the longest VT block."
+    elif conservative_drop < 0.5:
+        level = "small"
+        advice = "HDO-only preheating is usually unnecessary; re-evaluate only near the lower thermostat threshold."
+    else:
+        level = "material"
+        advice = "The HDO block can cause a material drop near the lower threshold; evaluate limited preheating within the 6–8 °C band."
+
+    return {
+        "horizon_hours": 24,
+        "longest_vt_block_h": rounded(longest_vt_h, 2),
+        "forecast_min_outside_c": rounded(outside_min, 1),
+        "reference_inside_c": rounded(lower_c, 1),
+        "passive_drop_during_longest_vt_central_c": rounded(central_drop, 2),
+        "passive_drop_during_longest_vt_conservative_c": rounded(conservative_drop, 2),
+        "impact_level": level,
+        "hdo_only_preheat_indication": advice,
+        "principle": "Preheating solely because VT is approaching is avoided unless the learned passive model predicts a meaningful temperature drop during the block.",
+    }
+
+
+def build_heating_energy_model(latest, fit=None):
     profile, state = load_house_energy_context()
     cfg = profile.get("heating_energy_model") if isinstance(profile, dict) else {}
     pricing = state.get("energy_pricing") if isinstance(state, dict) else {}
@@ -616,6 +685,14 @@ def build_heating_energy_model(latest):
     if hysteresis_c is not None:
         band = [rounded(target_c - hysteresis_c, 1), rounded(target_c + hysteresis_c, 1)]
 
+    hdo_resilience = build_hdo_resilience(
+        hdo_context,
+        snapshot,
+        start_local,
+        fit,
+        band,
+    )
+
     return {
         "status": "provisional_physics_prior",
         "absolute_energy_scale_calibrated": False,
@@ -629,6 +706,7 @@ def build_heating_energy_model(latest):
         "heat_loss_prior": prior,
         "forecast_next_24h": forecast,
         "hdo_next_24h": hdo_context,
+        "hdo_resilience": hdo_resilience,
         "reference_daily_costs": references,
         "learning_note": "Weather and passive cooling are measured. The absolute kWh scale is still a boiler-sizing prior and will be narrowed when cold-season heating response provides calibration evidence.",
     }
@@ -689,7 +767,7 @@ def main():
             prediction_blocker = "passive fit is not based on nighttime windows"
 
     passive_forecast = build_passive_forecast(latest, fit) if prediction_ready else None
-    heating_energy_model = build_heating_energy_model(latest)
+    heating_energy_model = build_heating_energy_model(latest, fit)
 
     output = {
         "schema": 5,
