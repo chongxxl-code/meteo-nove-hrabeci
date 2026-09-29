@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v6",
+  "schema": "2026-09-29.house-profile-v7",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -135,8 +135,13 @@
         "distribution_rate": "D45d",
         "low_tariff_hours_per_day_min": 20,
         "high_tariff_continuous_max_hours": 1,
-        "exact_hdo_schedule_status": "not_yet_ingested",
-        "rule": "Do not assume low tariff means night. The optimization must use the actual HDO schedule once available."
+        "exact_hdo_schedule_status": "daily_live_ingested",
+        "rule": "Use the actual daily-refreshed HDO schedule. Do not assume low tariff means night.",
+        "source": "ČEZ Distribuce public HDO calculator backend",
+        "primary_command": "A1B6DP1",
+        "distribution_area": "Sever",
+        "check_frequency": "daily",
+        "cost_czk": 0
       },
       "ecological_control": {
         "primary_metric": "total_kwh",
