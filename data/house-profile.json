@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v11",
+  "schema": "2026-09-29.house-profile-v12",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -145,7 +145,15 @@
         "note": "The current per-customer DIP endpoint is CAPTCHA-protected. The public-repo automation therefore keeps the current CEZ export authoritative and monitors public CEZ sources daily without paid providers.",
         "heating_blocking_requirement": "D45d requires technical blocking of electric heating during VT",
         "house_installation_blocking_status": "not_physically_verified",
-        "control_rule": "Treat HDO windows as intended boiler availability, but do not claim the physical HDO blocking wiring has been independently verified."
+        "control_rule": "Treat HDO windows as intended boiler availability, but do not claim the physical HDO blocking wiring has been independently verified.",
+        "additional_nt_heating_blocking": {
+          "allowed_by_D45d": true,
+          "max_total_hours_per_day": 2,
+          "max_single_block_hours": 0.5,
+          "min_gap_between_extra_blocks_hours": 1,
+          "schedule_known_in_advance": false,
+          "model_policy": "Treat published NT/VT timing as the normal tariff schedule, but do not assume electric heating is guaranteed available every NT minute. Avoid optimization that depends on a last-minute heating burst."
+        }
       },
       "ecological_control": {
         "primary_metric": "total_kwh",
