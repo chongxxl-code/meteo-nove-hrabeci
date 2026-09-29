@@ -471,6 +471,73 @@ def energy_from_degree_hours(degree_hours, heat_loss_w_per_k, efficiency):
     return (heat_loss_w_per_k / 1000.0) * degree_hours / efficiency
 
 
+def build_hdo_context(start_local, horizon_h=24):
+    payload = load_json(DATA / "hdo-schedule.json", {})
+    week = payload.get("week_ahead") if isinstance(payload, dict) else None
+    if not isinstance(week, list) or not week:
+        return None
+
+    end_local = start_local + timedelta(hours=horizon_h)
+    segments = []
+    for day in week:
+        if not isinstance(day, dict):
+            continue
+        raw_date = day.get("date")
+        try:
+            day_date = datetime.fromisoformat(str(raw_date)).date()
+        except ValueError:
+            continue
+        for seg in day.get("timeline") or []:
+            if not isinstance(seg, dict):
+                continue
+            start_text = str(seg.get("start") or "")
+            end_text = str(seg.get("end") or "")
+            try:
+                sh, sm = [int(x) for x in start_text.split(":")]
+                eh, em = [int(x) for x in end_text.split(":")]
+            except Exception:
+                continue
+            seg_start = datetime(day_date.year, day_date.month, day_date.day, 0, 0, tzinfo=TZ) + timedelta(hours=sh, minutes=sm)
+            seg_end = datetime(day_date.year, day_date.month, day_date.day, 0, 0, tzinfo=TZ) + timedelta(hours=eh, minutes=em)
+            if end_text == "24:00":
+                seg_end = datetime(day_date.year, day_date.month, day_date.day, 0, 0, tzinfo=TZ) + timedelta(days=1)
+            overlap_start = max(start_local, seg_start)
+            overlap_end = min(end_local, seg_end)
+            if overlap_end <= overlap_start:
+                continue
+            segments.append({
+                "tariff": str(seg.get("tariff") or ""),
+                "start_local": overlap_start.isoformat(),
+                "end_local": overlap_end.isoformat(),
+                "hours": rounded((overlap_end - overlap_start).total_seconds() / 3600.0, 3),
+            })
+
+    if not segments:
+        return None
+
+    current = next(
+        (seg for seg in segments if parse_dt(seg["start_local"]) <= start_local.astimezone(timezone.utc) < parse_dt(seg["end_local"])),
+        segments[0],
+    )
+    nt_h = sum(as_float(seg.get("hours")) or 0.0 for seg in segments if seg.get("tariff") == "NT")
+    vt_h = sum(as_float(seg.get("hours")) or 0.0 for seg in segments if seg.get("tariff") == "VT")
+
+    return {
+        "status": payload.get("status"),
+        "schedule_source": payload.get("schedule_source"),
+        "checked_at": payload.get("checked_at"),
+        "primary_command": payload.get("primary_command"),
+        "distribution_area": payload.get("distribution_area"),
+        "horizon_hours": horizon_h,
+        "low_tariff_hours": rounded(nt_h, 2),
+        "high_tariff_hours": rounded(vt_h, 2),
+        "current_tariff": current.get("tariff"),
+        "next_transition_local": current.get("end_local"),
+        "segments": segments,
+        "note": "Exact HDO availability is ingested daily and is now an input to tempering scheduling; it does not change the total heat-loss estimate by itself.",
+    }
+
+
 def build_heating_energy_model(latest):
     profile, state = load_house_energy_context()
     cfg = profile.get("heating_energy_model") if isinstance(profile, dict) else {}
@@ -491,6 +558,7 @@ def build_heating_energy_model(latest):
     start_dt = parse_dt(latest.get("last_timestamp") or latest.get("generated_at")) if isinstance(latest, dict) else None
     start_local = (start_dt.astimezone(TZ) if start_dt else datetime.now(TZ))
     snapshot = load_latest_forecast_snapshot()
+    hdo_context = build_hdo_context(start_local, 24)
     degree_by_model = forecast_degree_hours(snapshot, start_local, target_c, 24)
     dh_values = [as_float(item.get("degree_hours_kh")) for item in degree_by_model.values()]
     dh_values = [value for value in dh_values if value is not None]
@@ -560,6 +628,7 @@ def build_heating_energy_model(latest):
         "distribution_rate": pricing.get("distribution_rate"),
         "heat_loss_prior": prior,
         "forecast_next_24h": forecast,
+        "hdo_next_24h": hdo_context,
         "reference_daily_costs": references,
         "learning_note": "Weather and passive cooling are measured. The absolute kWh scale is still a boiler-sizing prior and will be narrowed when cold-season heating response provides calibration evidence.",
     }
@@ -623,7 +692,7 @@ def main():
     heating_energy_model = build_heating_energy_model(latest)
 
     output = {
-        "schema": 4,
+        "schema": 5,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
