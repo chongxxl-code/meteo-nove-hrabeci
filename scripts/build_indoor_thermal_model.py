@@ -534,7 +534,7 @@ def build_hdo_context(start_local, horizon_h=24):
         "current_tariff": current.get("tariff"),
         "next_transition_local": current.get("end_local"),
         "segments": segments,
-        "note": "Exact HDO availability is ingested daily and is now an input to tempering scheduling; it does not change the total heat-loss estimate by itself.",
+        "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself.",
     }
 
 
