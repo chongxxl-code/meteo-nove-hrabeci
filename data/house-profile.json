@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v12",
+  "schema": "2026-09-29.house-profile-v13",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -88,7 +88,31 @@
       "kitchen_radiators": 0,
       "upstairs_radiators_total": 3,
       "interpretation": "The thermostat is a control point for the whole system, not a whole-house average temperature. Upstairs can remain cooler or warmer than the thermostat reading.",
-      "tempering_relevance": "During unattended electric tempering, wood-stove influence is absent; the main uncertainty is vertical temperature distribution between downstairs and upstairs."
+      "tempering_relevance": "During unattended electric tempering, wood-stove influence is absent; the main uncertainty is vertical temperature distribution between downstairs and upstairs.",
+      "cloud_datapoints": {
+        "dp2": {
+          "meaning": "temperature control mode",
+          "verified": true,
+          "observed_values": [
+            "off",
+            "manual"
+          ],
+          "note": "OFF is frost-protection mode; MANUAL is manual temperature-control mode. DP2 is not relay/heat-demand state."
+        },
+        "dp3": {
+          "meaning": "target temperature x10",
+          "verified": true
+        },
+        "dp24": {
+          "meaning": "room temperature x10",
+          "verified": true
+        },
+        "dp106": {
+          "meaning": "relay status candidate",
+          "verified": false,
+          "note": "Collected separately for an ON/OFF demand test before assigning control semantics."
+        }
+      }
     }
   },
   "model_usage": {
