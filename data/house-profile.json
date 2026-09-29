@@ -1,5 +1,5 @@
 {
-  "schema": "2026-09-29.house-profile-v9",
+  "schema": "2026-09-29.house-profile-v10",
   "updated_date_local": "2026-09-29",
   "building": {
     "heated_floor_area_m2_working_estimate": 100,
@@ -142,7 +142,10 @@
         "distribution_area": "Sever",
         "check_frequency": "daily",
         "cost_czk": 0,
-        "note": "The current per-customer DIP endpoint is CAPTCHA-protected. The public-repo automation therefore keeps the current CEZ export authoritative and monitors public CEZ sources daily without paid providers."
+        "note": "The current per-customer DIP endpoint is CAPTCHA-protected. The public-repo automation therefore keeps the current CEZ export authoritative and monitors public CEZ sources daily without paid providers.",
+        "heating_blocking_requirement": "D45d requires technical blocking of electric heating during VT",
+        "house_installation_blocking_status": "not_physically_verified",
+        "control_rule": "Treat HDO windows as intended boiler availability, but do not claim the physical HDO blocking wiring has been independently verified."
       },
       "ecological_control": {
         "primary_metric": "total_kwh",
@@ -166,6 +169,13 @@
       "current_policy": "Use the downstairs EMOS temperature as the sole control and modelling reference. Upstairs temperature is not separately measured or controlled.",
       "radiator_layout_role": "Radiator distribution and room layout are contextual inputs for understanding heat distribution and losses, not separate control zones.",
       "wood_stove_policy": "Wood-stove-active periods may alter the downstairs temperature locally; electric-tempering analysis should distinguish those periods, but no second sensor is required."
+    },
+    "thermostat_hysteresis_status": {
+      "value_c": 1,
+      "source": "user-confirmed working setting / project assumption",
+      "device_capability_verified": true,
+      "current_device_setting_machine_read": false,
+      "note": "EMOS P56S11 officially supports DIFF 0.1–1.0 °C. The model uses DIFF 1.0 °C, but the setting is not currently read back from the cloud API."
     }
   }
 }
