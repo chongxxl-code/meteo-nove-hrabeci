@@ -90,6 +90,13 @@ def main():
         float(vt_price or 0) > float(nt_price or 0) > 0,
         "Current D45d VT/NT price pair is missing or internally inconsistent.",
     )
+    generic_prices = pricing.get("variable_price_czk_per_kwh_vat") or {}
+    check(
+        "generic_price_alias_is_current",
+        close(generic_prices.get("low_tariff"), nt_price, 1e-5)
+        and close(generic_prices.get("high_tariff"), vt_price, 1e-5),
+        "Generic variable-price alias must point to the current tariff, not a historical invoice average.",
+    )
 
     week = hdo.get("week_ahead") or []
     check("hdo_week_length", len(week) == 7, "HDO schedule must contain seven forward days.")
