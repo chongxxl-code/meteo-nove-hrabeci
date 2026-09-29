@@ -318,6 +318,11 @@ def checksum_days(days):
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
+def checksum_payload(value):
+    canonical = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--offline", action="store_true", help="Use the manual baseline without network calls.")
@@ -383,6 +388,25 @@ def main():
     baseline_digest = checksum_days(fallback_days)
     reference_differs = bool(reference_digest and reference_digest != baseline_digest)
 
+    previous_monitor = old.get("daily_monitor") if isinstance(old.get("daily_monitor"), dict) else {}
+    previous_reference_digest = previous_monitor.get("reference_schedule_checksum")
+    reference_changed = bool(
+        reference_digest
+        and previous_reference_digest
+        and reference_digest != previous_reference_digest
+    )
+
+    notice_basis = {
+        "sunday_override_dates": notices.get("sunday_override_dates") or [],
+        "operational_change_notices": notices.get("operational_change_notices") or [],
+    }
+    notices_digest = checksum_payload(notice_basis)
+    previous_notices_digest = previous_monitor.get("public_notices_checksum")
+    notices_changed = bool(
+        previous_notices_digest
+        and notices_digest != previous_notices_digest
+    )
+
     override_dates = notices.get("sunday_override_dates") or []
     week = build_week(days, override_dates, now.date())
     digest = checksum_days(days)
@@ -412,9 +436,16 @@ def main():
             "reference_metadata": live.get("metadata"),
             "reference_last_error": live.get("error"),
             "reference_schedule_checksum": reference_digest,
+            "previous_reference_schedule_checksum": previous_reference_digest,
+            "reference_changed_since_previous_check": reference_changed,
             "baseline_schedule_checksum": baseline_digest,
             "reference_differs_from_current_export": reference_differs,
-            "note": "The older public command endpoint is monitored only for structural changes. The newer CEZ DIP export remains authoritative because the current per-customer DIP endpoint is CAPTCHA-protected."
+            "public_notices_checksum": notices_digest,
+            "previous_public_notices_checksum": previous_notices_digest,
+            "public_notices_changed_since_previous_check": notices_changed,
+            "exact_customer_schedule_auto_refresh": false,
+            "exact_customer_schedule_auto_refresh_blocker": "ČEZ per-customer DIP endpoint requires CAPTCHA; no third-party OCR provider is used.",
+            "note": "The older public command endpoint and CEZ public notices are monitored for changes. The customer-specific CEZ DIP export remains authoritative; exact per-customer refresh is not automated because the current endpoint is CAPTCHA-protected."
         },
         "schedule_checksum": digest,
         "schedule_changed_since_previous_check": bool(previous_digest and previous_digest != digest),
