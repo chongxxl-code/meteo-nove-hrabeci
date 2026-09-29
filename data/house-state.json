@@ -1,6 +1,6 @@
 {
-  "schema": "2026-09-26.house-state-v2",
-  "updated_date_local": "2026-09-26",
+  "schema": "2026-09-29.house-state-v3",
+  "updated_date_local": "2026-09-29",
   "electric_boiler": {
     "mains_power": "disconnected",
     "mains_power_evidence": "user_confirmed",
@@ -10,7 +10,22 @@
     "wood_stove_possible": true
   },
   "energy_pricing": {
-    "status": "pending_invoice"
+    "status": "invoice_verified",
+    "supplier": "ČEZ Prodej",
+    "billing_period": "2025-05-03/2026-04-27",
+    "distribution_rate": "D45d",
+    "breaker": "3x25A",
+    "variable_price_czk_per_kwh_vat": {
+      "high_tariff": 5.72,
+      "low_tariff": 4.91
+    },
+    "tempering_incremental_price_czk_per_kwh": 4.91,
+    "tempering_price_basis": "low_tariff variable price incl. VAT; fixed monthly charges excluded because they are paid regardless of tempering",
+    "invoice_total_consumption_kwh": 1433,
+    "invoice_consumption_kwh": {
+      "high_tariff": 259,
+      "low_tariff": 1174
+    }
   },
   "metering": {
     "status": "pending_distributor_data_check"
