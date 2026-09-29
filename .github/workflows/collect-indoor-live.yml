@@ -69,7 +69,7 @@ jobs:
               # Keep the compact collector status current; history-status is verbose
               # and is not needed on every seven-minute live commit.
               git restore data/indoor-history-status.json 2>/dev/null || true
-              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json
+              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json
 
               if git diff --cached --quiet; then
                 echo "No material indoor change."
