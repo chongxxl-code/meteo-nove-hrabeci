@@ -1,11 +1,11 @@
 {
   "schema": "2026-09-29.heating-audit-v1",
-  "generated_at": "2026-09-30T12:30:35.812212Z",
+  "generated_at": "2026-09-30T20:06:25.967717Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
     "Exact customer-specific HDO export is not auto-refreshed because the ČEZ DIP endpoint is CAPTCHA-protected; the current verified export is combined with a daily public-source change monitor.",
-    "Indoor latest sample is stale or missing (age 89.6 min).",
+    "Indoor latest sample is stale or missing (age 123.7 min).",
     "Passive forecast is still learning: need at least 6 accepted nighttime windows; have 1.",
     "D45d requires HDO blocking of electric heating, but the actual boiler wiring has not been physically verified.",
     "The 1.0 °C EMOS DIFF setting is used as the working setting but is not machine-read from the thermostat."
@@ -164,12 +164,12 @@
     {
       "name": "indoor_latest_freshness",
       "ok": false,
-      "detail": "Indoor latest sample is stale or missing (age 89.6 min)."
+      "detail": "Indoor latest sample is stale or missing (age 123.7 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 322 points."
+      "detail": "Indoor history has only 419 points."
     },
     {
       "name": "dp2_not_used_as_boiler_proof",
@@ -209,7 +209,7 @@
     {
       "name": "weather_snapshot_freshness",
       "ok": true,
-      "detail": "Weather snapshot is stale or missing (age 1.0 min)."
+      "detail": "Weather snapshot is stale or missing (age 1.3 min)."
     }
   ],
   "summary": {
