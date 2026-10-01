@@ -76,10 +76,16 @@ function renderIndoorCard(){
  const collectorFailed=indoorCollectorStatus&&indoorCollectorStatus.ok===false&&Number.isFinite(collectorStatusMs)&&(!Number.isFinite(latestDataMs)||collectorStatusMs>=latestDataMs);
  const dataStale=Number.isFinite(ageMin)&&ageMin>30;
  const predictionReady=indoorModel?.prediction_ready===true;
- const horizons=predictionReady?(indoorModel?.passive_forecast?.horizons||[]):[],h12=horizons.find(x=>Number(x.hours)===12);
+ const modelMs=new Date(indoorModel?.generated_at||0).getTime();
+ const modelLagMin=Number.isFinite(modelMs)&&Number.isFinite(latestDataMs)?Math.max(0,Math.round((latestDataMs-modelMs)/60000)):null;
+ const modelStale=Number.isFinite(modelLagMin)&&modelLagMin>90;
+ const horizons=predictionReady&&!modelStale?(indoorModel?.passive_forecast?.horizons||[]):[],h12=horizons.find(x=>Number(x.hours)===12);
  if(collectorFailed||dataStale){
   $('ihForecast').textContent='Sběr EMOS má zpoždění';
   $('ihForecastMeta').textContent=Number.isFinite(ageMin)?`poslední platná data ${indoorAge(indoorLatest.last_timestamp)} · další běh doplní historii zpětně`:'další běh doplní historii zpětně';
+ }else if(modelStale){
+  $('ihForecast').textContent='Model se přepočítává';
+  $('ihForecastMeta').textContent=`nová měření jsou o ${modelLagMin} min před posledním modelem`;
  }else if(h12&&Number.isFinite(Number(h12.inside_median_c))){
   $('ihForecast').textContent=`Bez topení za 12 h ~ ${round(h12.inside_median_c)} °C`;
   const days=Number(indoorModel.coverage_days);
@@ -87,8 +93,13 @@ function renderIndoorCard(){
  }else{
   const nights=Number(indoorModel?.night_windows),days=Number(indoorModel?.coverage_days);
   $('ihForecast').textContent='Model se stále učí';
-  $('ihForecastMeta').textContent=Number.isFinite(nights)&&Number.isFinite(days)?`${nights}/6 čistých nočních oken · ${round(days,1)}/5 dní minimálně`:'Čekám na dost čistých nočních dat';
+  if(Number.isFinite(nights)&&Number.isFinite(days)){
+   const nightText=nights>=6?`${nights} čistých nočních oken · minimum 6 splněno`:`${nights}/6 čistých nočních oken`;
+   const dayText=days>=5?`${round(days,1)} dní dat · minimum 5 splněno`:`${round(days,1)}/5 dní minimálně`;
+   $('ihForecastMeta').textContent=`${nightText} · ${dayText}`;
+  }else $('ihForecastMeta').textContent='Čekám na dost čistých nočních dat';
  }
+
 }
 async function indoorSummary(){try{const [latest,model,collector]=await Promise.all([j(`./data/indoor-latest.json?_=${Date.now()}`),j(`./data/indoor-thermal-model.json?_=${Date.now()}`),j(`./data/indoor-collector-status.json?_=${Date.now()}`).catch(()=>null)]);indoorLatest=latest;indoorModel=model;indoorCollectorStatus=collector;const latestMs=new Date(latest.last_timestamp||0).getTime();if(!Number.isFinite(latestMs)||Date.now()-latestMs>10*60000){try{const hist=await j(`./data/indoor-history.json?_=${Date.now()}`),pts=Array.isArray(hist.points)?hist.points:[],p=pts.at(-1),pMs=new Date(p?.timestamp_local||0).getTime();if(p&&Number.isFinite(pMs)&&(!Number.isFinite(latestMs)||pMs>latestMs))indoorLatest={...latest,last_timestamp:p.timestamp_local,latest_indoor_c:p.indoor_c,latest_setpoint_c:p.setpoint_c,dp2_raw:p.dp2_raw,source:p.source||latest.source,points:pts.length}}catch(e){}}renderIndoorCard();renderWeatherImpact();renderEnergyCard()}catch(e){$('ihForecast').textContent='Vnitřní data nedostupná';$('ihForecastMeta').textContent='Detailní stránka zůstává dostupná';renderEnergyCard()}}
 function ageText(ts){if(!ts)return'neznámé stáří';const m=Math.max(0,Math.round((Date.now()-new Date(ts).getTime())/60000));if(m<2)return'právě teď';if(m<60)return`${m} min`;const h=Math.floor(m/60),r=m%60;return r?`${h} h ${r} min`:`${h} h`}
