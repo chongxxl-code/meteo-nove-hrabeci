@@ -488,6 +488,45 @@ def history_temperature_points(rows, current_setpoint, current_dp2):
     return points
 
 
+def load_snapshot_archive_points(archive_dir: Path):
+    """Recover durable indoor snapshots from append-only monthly archives.
+
+    indoor-history.json is a derived view and may be replaced accidentally.
+    The monthly snapshot JSONL files are append-only, so merge them back on
+    every collector run as a coarse but durable recovery layer.
+    """
+    points = []
+    for path in sorted(archive_dir.glob("20??-??.jsonl")):
+        try:
+            lines = path.read_text(encoding="utf-8").splitlines()
+        except Exception:
+            continue
+        for line in lines:
+            if not line.strip():
+                continue
+            try:
+                item = json.loads(line)
+            except Exception:
+                continue
+            if not isinstance(item, dict):
+                continue
+            timestamp = item.get("timestamp_local")
+            indoor = item.get("indoor_c")
+            if not timestamp or indoor is None:
+                continue
+            point = {
+                "timestamp_local": timestamp,
+                "indoor_c": indoor,
+                "setpoint_c": item.get("setpoint_c"),
+                "dp2_raw": item.get("dp2_raw"),
+                "source": item.get("source") or "EMOS/Tuya cloud snapshot archive",
+            }
+            if "dp106_raw" in item:
+                point["dp106_raw"] = item.get("dp106_raw")
+            points.append(point)
+    return points
+
+
 def main():
     required = {
         "EMOS_USERNAME": env("EMOS_USERNAME"),
@@ -656,7 +695,17 @@ def main():
         for item in points
         if isinstance(item, dict) and item.get("timestamp_local")
     }
+
+    # Derived history must never be allowed to forget durable snapshots.
+    # This repairs accidental/truncated history files without another cloud login.
+    archive_snapshot_points = load_snapshot_archive_points(archive_dir)
     history_changed = False
+    for archive_point in archive_snapshot_points:
+        key = str(archive_point["timestamp_local"])
+        if by_ts.get(key) != archive_point:
+            history_changed = True
+        by_ts[key] = archive_point
+
     for cloud_point in cloud_points:
         key = str(cloud_point["timestamp_local"])
         if by_ts.get(key) != cloud_point:
@@ -719,6 +768,7 @@ def main():
         "history_ok": bool(history_status.get("ok")),
         "history_rows": len(history_rows),
         "history_temperature_points": len(cloud_points),
+        "archive_snapshot_points": len(archive_snapshot_points),
     }, ensure_ascii=False))
     return 0
 
