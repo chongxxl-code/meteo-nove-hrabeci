@@ -527,6 +527,27 @@ def load_snapshot_archive_points(archive_dir: Path):
     return points
 
 
+def load_raw_event_archive_points(archive_dir: Path, current_setpoint, current_dp2):
+    """Rebuild fine-grained temperature points from durable raw Tuya events.
+
+    Limit recovery work to the newest two monthly archives, which comfortably
+    covers the 30-day UI horizon while keeping each seven-minute live poll cheap.
+    """
+    rows = []
+    paths = sorted(archive_dir.glob("events-20??-??.jsonl"))[-2:]
+    for path in paths:
+        try:
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                item = json.loads(line)
+                if isinstance(item, dict) and item.get("timestamp_local"):
+                    rows.append(item)
+        except Exception:
+            continue
+    return history_temperature_points(rows, current_setpoint, current_dp2)
+
+
 def main():
     required = {
         "EMOS_USERNAME": env("EMOS_USERNAME"),
@@ -699,12 +720,22 @@ def main():
     # Derived history must never be allowed to forget durable snapshots.
     # This repairs accidental/truncated history files without another cloud login.
     archive_snapshot_points = load_snapshot_archive_points(archive_dir)
+    raw_event_points = load_raw_event_archive_points(
+        archive_dir,
+        setpoint,
+        get_dp(dps, 2),
+    )
     history_changed = False
     for archive_point in archive_snapshot_points:
         key = str(archive_point["timestamp_local"])
         if by_ts.get(key) != archive_point:
             history_changed = True
         by_ts[key] = archive_point
+    for raw_point in raw_event_points:
+        key = str(raw_point["timestamp_local"])
+        if by_ts.get(key) != raw_point:
+            history_changed = True
+        by_ts[key] = raw_point
 
     for cloud_point in cloud_points:
         key = str(cloud_point["timestamp_local"])
@@ -769,6 +800,7 @@ def main():
         "history_rows": len(history_rows),
         "history_temperature_points": len(cloud_points),
         "archive_snapshot_points": len(archive_snapshot_points),
+        "raw_event_recovery_points": len(raw_event_points),
     }, ensure_ascii=False))
     return 0
 
