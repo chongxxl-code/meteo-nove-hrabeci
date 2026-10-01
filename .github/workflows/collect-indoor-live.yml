@@ -2,9 +2,12 @@ name: Collect EMOS indoor live
 
 on:
   schedule:
-    # Keep one long-lived session for ~5.5 h and start a fresh one every 6 h.
-    # History backfill covers the short gap if GitHub starts a session late.
-    - cron: '11 */6 * * *'
+    # Keep one long-lived session for ~5.5 h. Trigger a replacement every hour
+    # so one fresh run is normally already pending when the active session ends.
+    # The concurrency group below still allows only one active EMOS session.
+    # New hourly triggers replace the older pending run instead of creating
+    # parallel logins; cloud-history overlap backfills any remaining short gap.
+    - cron: '11 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
