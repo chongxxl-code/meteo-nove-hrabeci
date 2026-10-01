@@ -975,6 +975,7 @@ def main():
 
     passive_forecast = build_passive_forecast(latest, fit) if prediction_ready else None
     heating_energy_model = build_heating_energy_model(latest, fit, prediction_ready)
+    indoor_points = indoor_payload.get("points") or []
 
     output = {
         "schema": 5,
@@ -987,7 +988,9 @@ def main():
         "analysis_window_hours": WINDOW_HOURS,
         "fit_basis": "nighttime windows" if fit_basis is night else "all passive windows fallback",
         "coverage_days": rounded(coverage_days, 2),
-        "indoor_raw_points": len(indoor_payload.get("points") or []),
+        "indoor_raw_points": len(indoor_points),
+        "indoor_history_first_timestamp": indoor_points[0].get("timestamp_local") if indoor_points else None,
+        "indoor_history_last_timestamp": indoor_points[-1].get("timestamp_local") if indoor_points else None,
         "indoor_30m_bins": len(indoor),
         "weather_30m_bins": len(weather),
         "paired_candidate_bins": paired_bins,
