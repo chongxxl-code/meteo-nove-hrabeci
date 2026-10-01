@@ -52,6 +52,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           collect_once() {
+            local cycle_num="${1:-1}"
             for attempt in 1 2 3; do
               # Always recollect from newest main. Other collectors may commit while
               # this live session is sleeping.
@@ -69,10 +70,17 @@ jobs:
                 return "${rc}"
               fi
 
+              # Refresh the passive thermal model roughly every 42 minutes and
+              # immediately on the first cycle of every replacement session.
+              # This is local computation only; it does not open another EMOS session.
+              if [ $(( (cycle_num - 1) % 6 )) -eq 0 ]; then
+                python scripts/build_indoor_thermal_model.py
+              fi
+
               # Keep the compact collector status current; history-status is verbose
               # and is not needed on every seven-minute live commit.
               git restore data/indoor-history-status.json 2>/dev/null || true
-              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json
+              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json data/indoor-thermal-model.json
 
               if git diff --cached --quiet; then
                 echo "No material indoor change."
@@ -97,7 +105,7 @@ jobs:
           for cycle in $(seq 1 48); do
             echo "Indoor live cycle ${cycle}/48"
             set +e
-            collect_once
+            collect_once "${cycle}"
             rc=$?
             set -e
             if [ "${rc}" -eq 75 ]; then
