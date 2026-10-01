@@ -99,7 +99,7 @@ def fetch_with_fallback(urls):
     raise RuntimeError(last)
 
 
-def trim_hourly(payload, hours=48):
+def trim_hourly(payload, hours=60):
     h = payload.get('hourly') or {}
     times = h.get('time') or []
     key = datetime.now(ZoneInfo(TZ)).replace(minute=0, second=0, microsecond=0).strftime('%Y-%m-%dT%H:00')
