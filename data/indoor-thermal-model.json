@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-10-03T17:25:19.586678Z",
+  "generated_at": "2026-10-03T18:07:43.492337Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 14.88,
-  "indoor_raw_points": 5238,
+  "indoor_raw_points": 5248,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-03T19:21:02+02:00",
-  "indoor_30m_bins": 704,
+  "indoor_history_last_timestamp": "2026-10-03T20:07:32+02:00",
+  "indoor_30m_bins": 706,
   "weather_30m_bins": 2144,
   "paired_candidate_bins": 703,
   "fit_samples": 23,
@@ -58,17 +58,17 @@
     "sample_count": 23
   },
   "current_passive_estimate": {
-    "inside_c": 18.4,
+    "inside_c": 18.3,
     "outside_c": 12.0,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": 6.4,
+    "inside_minus_outside_c": 6.3,
     "passive_fit_rate_c_per_h": -0.02,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-03T19:25:19+02:00",
-    "start_inside_c": 18.4,
+    "start_timestamp_local": "2026-10-03T20:07:43+02:00",
+    "start_inside_c": 18.3,
     "weather_models": [
       "chmi",
       "dwd",
@@ -82,46 +82,46 @@
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-10-04T07:00:00+02:00",
-        "inside_median_c": 18.2,
-        "inside_q25_c": 18.1,
-        "inside_q75_c": 18.2,
-        "inside_min_scenario_c": 18.0,
-        "inside_max_scenario_c": 18.2,
-        "outside_model_median_c": 11.3,
-        "scenario_count": 9
-      },
-      {
-        "hours": 24,
-        "timestamp_local": "2026-10-04T19:00:00+02:00",
+        "timestamp_local": "2026-10-04T08:00:00+02:00",
         "inside_median_c": 18.0,
         "inside_q25_c": 18.0,
         "inside_q75_c": 18.1,
         "inside_min_scenario_c": 17.9,
         "inside_max_scenario_c": 18.1,
-        "outside_model_median_c": 15.1,
+        "outside_model_median_c": 11.7,
+        "scenario_count": 9
+      },
+      {
+        "hours": 24,
+        "timestamp_local": "2026-10-04T20:00:00+02:00",
+        "inside_median_c": 17.9,
+        "inside_q25_c": 17.9,
+        "inside_q75_c": 18.0,
+        "inside_min_scenario_c": 17.8,
+        "inside_max_scenario_c": 18.0,
+        "outside_model_median_c": 13.7,
         "scenario_count": 9
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-10-05T07:00:00+02:00",
-        "inside_median_c": 17.8,
-        "inside_q25_c": 17.7,
-        "inside_q75_c": 17.8,
-        "inside_min_scenario_c": 17.5,
-        "inside_max_scenario_c": 17.9,
-        "outside_model_median_c": 9.9,
+        "timestamp_local": "2026-10-05T08:00:00+02:00",
+        "inside_median_c": 17.7,
+        "inside_q25_c": 17.6,
+        "inside_q75_c": 17.7,
+        "inside_min_scenario_c": 17.4,
+        "inside_max_scenario_c": 17.8,
+        "outside_model_median_c": 10.0,
         "scenario_count": 9
       },
       {
         "hours": 48,
-        "timestamp_local": "2026-10-05T19:00:00+02:00",
-        "inside_median_c": 17.7,
+        "timestamp_local": "2026-10-05T20:00:00+02:00",
+        "inside_median_c": 17.6,
         "inside_q25_c": 17.5,
-        "inside_q75_c": 17.7,
+        "inside_q75_c": 17.6,
         "inside_min_scenario_c": 17.4,
-        "inside_max_scenario_c": 17.8,
-        "outside_model_median_c": 14.3,
+        "inside_max_scenario_c": 17.7,
+        "outside_model_median_c": 12.9,
         "scenario_count": 6
       }
     ],
@@ -166,7 +166,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-03T19:25:19+02:00",
+      "start_timestamp_local": "2026-10-03T20:07:43+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -201,7 +201,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-03T19:25:19+02:00",
+      "start_timestamp_local": "2026-10-03T20:07:43+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -236,7 +236,7 @@
     },
     "actual_tempering_need_next_24h": {
       "horizon_hours": 24,
-      "inside_now_c": 18.4,
+      "inside_now_c": 18.3,
       "lower_switch_c": 6.0,
       "upper_switch_c": 8.0,
       "forecast_min_outside_c": 9.8,
@@ -258,20 +258,14 @@
       "horizon_hours": 24,
       "low_tariff_hours": 20.07,
       "high_tariff_hours": 3.93,
-      "current_tariff": "VT",
-      "next_transition_local": "2026-10-03T19:40:00+02:00",
+      "current_tariff": "NT",
+      "next_transition_local": "2026-10-04T00:00:00+02:00",
       "segments": [
         {
-          "tariff": "VT",
-          "start_local": "2026-10-03T19:25:19+02:00",
-          "end_local": "2026-10-03T19:40:00+02:00",
-          "hours": 0.245
-        },
-        {
           "tariff": "NT",
-          "start_local": "2026-10-03T19:40:00+02:00",
+          "start_local": "2026-10-03T20:07:43+02:00",
           "end_local": "2026-10-04T00:00:00+02:00",
-          "hours": 4.333
+          "hours": 3.871
         },
         {
           "tariff": "NT",
@@ -318,8 +312,14 @@
         {
           "tariff": "VT",
           "start_local": "2026-10-04T18:41:00+02:00",
-          "end_local": "2026-10-04T19:25:19+02:00",
-          "hours": 0.739
+          "end_local": "2026-10-04T19:40:00+02:00",
+          "hours": 0.983
+        },
+        {
+          "tariff": "NT",
+          "start_local": "2026-10-04T19:40:00+02:00",
+          "end_local": "2026-10-04T20:07:43+02:00",
+          "hours": 0.462
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
@@ -416,7 +416,7 @@
     "maximum_cumulative_positive_rise_per_window_c": 0.4,
     "night_midpoint_hours_local": "21:00-05:59",
     "rejected": {
-      "gap": 14,
+      "gap": 15,
       "setpoint": 0,
       "warming": 0,
       "heat_gain": 4,
