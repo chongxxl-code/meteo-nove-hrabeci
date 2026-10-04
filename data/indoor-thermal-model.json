@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-10-04T03:05:12.808294Z",
+  "generated_at": "2026-10-04T03:47:35.163290Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 15.17,
-  "indoor_raw_points": 5361,
+  "indoor_raw_points": 5370,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-04T05:01:01+02:00",
-  "indoor_30m_bins": 724,
+  "indoor_history_last_timestamp": "2026-10-04T05:47:32+02:00",
+  "indoor_30m_bins": 725,
   "weather_30m_bins": 2158,
   "paired_candidate_bins": 717,
   "fit_samples": 24,
@@ -67,7 +67,7 @@
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-04T05:05:12+02:00",
+    "start_timestamp_local": "2026-10-04T05:47:34+02:00",
     "start_inside_c": 17.8,
     "weather_models": [
       "chmi",
@@ -82,21 +82,21 @@
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-10-04T17:00:00+02:00",
+        "timestamp_local": "2026-10-04T18:00:00+02:00",
         "inside_median_c": 17.7,
         "inside_q25_c": 17.7,
         "inside_q75_c": 17.7,
         "inside_min_scenario_c": 17.6,
         "inside_max_scenario_c": 17.7,
-        "outside_model_median_c": 16.6,
+        "outside_model_median_c": 15.9,
         "scenario_count": 9
       },
       {
         "hours": 24,
-        "timestamp_local": "2026-10-05T05:00:00+02:00",
+        "timestamp_local": "2026-10-05T06:00:00+02:00",
         "inside_median_c": 17.4,
         "inside_q25_c": 17.3,
-        "inside_q75_c": 17.5,
+        "inside_q75_c": 17.4,
         "inside_min_scenario_c": 17.3,
         "inside_max_scenario_c": 17.5,
         "outside_model_median_c": 9.4,
@@ -104,24 +104,24 @@
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-10-05T17:00:00+02:00",
+        "timestamp_local": "2026-10-05T18:00:00+02:00",
         "inside_median_c": 17.3,
         "inside_q25_c": 17.2,
         "inside_q75_c": 17.4,
         "inside_min_scenario_c": 17.2,
         "inside_max_scenario_c": 17.4,
-        "outside_model_median_c": 18.7,
+        "outside_model_median_c": 17.0,
         "scenario_count": 9
       },
       {
         "hours": 48,
-        "timestamp_local": "2026-10-06T05:00:00+02:00",
+        "timestamp_local": "2026-10-06T06:00:00+02:00",
         "inside_median_c": 17.1,
         "inside_q25_c": 17.0,
         "inside_q75_c": 17.2,
         "inside_min_scenario_c": 16.9,
         "inside_max_scenario_c": 17.2,
-        "outside_model_median_c": 11.2,
+        "outside_model_median_c": 11.1,
         "scenario_count": 6
       }
     ],
@@ -166,7 +166,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-04T05:05:12+02:00",
+      "start_timestamp_local": "2026-10-04T05:47:34+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -201,7 +201,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-04T05:05:12+02:00",
+      "start_timestamp_local": "2026-10-04T05:47:34+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -263,9 +263,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-10-04T05:05:12+02:00",
+          "start_local": "2026-10-04T05:47:34+02:00",
           "end_local": "2026-10-04T07:31:00+02:00",
-          "hours": 2.43
+          "hours": 1.724
         },
         {
           "tariff": "VT",
@@ -318,8 +318,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-10-05T00:00:00+02:00",
-          "end_local": "2026-10-05T05:05:12+02:00",
-          "hours": 5.087
+          "end_local": "2026-10-05T05:47:34+02:00",
+          "hours": 5.793
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
