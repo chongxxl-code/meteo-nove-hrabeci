@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-10-04T09:19:35.382722Z",
+  "generated_at": "2026-10-04T10:01:54.933326Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 15.42,
-  "indoor_raw_points": 5436,
+  "indoor_raw_points": 5446,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-04T11:14:03+02:00",
-  "indoor_30m_bins": 736,
+  "indoor_history_last_timestamp": "2026-10-04T12:01:00+02:00",
+  "indoor_30m_bins": 738,
   "weather_30m_bins": 2170,
   "paired_candidate_bins": 729,
   "fit_samples": 25,
@@ -67,7 +67,7 @@
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-04T11:19:35+02:00",
+    "start_timestamp_local": "2026-10-04T12:01:54+02:00",
     "start_inside_c": 17.9,
     "weather_models": [
       "chmi",
@@ -82,29 +82,29 @@
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-10-04T23:00:00+02:00",
+        "timestamp_local": "2026-10-05T00:00:00+02:00",
         "inside_median_c": 17.8,
-        "inside_q25_c": 17.8,
+        "inside_q25_c": 17.7,
         "inside_q75_c": 17.8,
         "inside_min_scenario_c": 17.7,
         "inside_max_scenario_c": 17.8,
-        "outside_model_median_c": 11.1,
+        "outside_model_median_c": 10.2,
         "scenario_count": 9
       },
       {
         "hours": 24,
-        "timestamp_local": "2026-10-05T11:00:00+02:00",
+        "timestamp_local": "2026-10-05T12:00:00+02:00",
         "inside_median_c": 17.5,
         "inside_q25_c": 17.4,
         "inside_q75_c": 17.6,
         "inside_min_scenario_c": 17.4,
         "inside_max_scenario_c": 17.6,
-        "outside_model_median_c": 15.9,
+        "outside_model_median_c": 17.2,
         "scenario_count": 9
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-10-05T23:00:00+02:00",
+        "timestamp_local": "2026-10-06T00:00:00+02:00",
         "inside_median_c": 17.4,
         "inside_q25_c": 17.3,
         "inside_q75_c": 17.5,
@@ -115,13 +115,13 @@
       },
       {
         "hours": 48,
-        "timestamp_local": "2026-10-06T11:00:00+02:00",
+        "timestamp_local": "2026-10-06T12:00:00+02:00",
         "inside_median_c": 17.2,
         "inside_q25_c": 17.1,
         "inside_q75_c": 17.3,
         "inside_min_scenario_c": 17.0,
         "inside_max_scenario_c": 17.3,
-        "outside_model_median_c": 16.6,
+        "outside_model_median_c": 17.9,
         "scenario_count": 6
       }
     ],
@@ -166,7 +166,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-04T11:19:35+02:00",
+      "start_timestamp_local": "2026-10-04T12:01:54+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -201,7 +201,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-04T11:19:35+02:00",
+      "start_timestamp_local": "2026-10-04T12:01:54+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -256,16 +256,16 @@
       "primary_command": "A1B6DP01",
       "distribution_area": "Sever",
       "horizon_hours": 24,
-      "low_tariff_hours": 20.62,
-      "high_tariff_hours": 3.38,
+      "low_tariff_hours": 20.07,
+      "high_tariff_hours": 3.93,
       "current_tariff": "NT",
       "next_transition_local": "2026-10-04T14:11:00+02:00",
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-10-04T11:19:35+02:00",
+          "start_local": "2026-10-04T12:01:54+02:00",
           "end_local": "2026-10-04T14:11:00+02:00",
-          "hours": 2.857
+          "hours": 2.152
         },
         {
           "tariff": "VT",
@@ -312,8 +312,14 @@
         {
           "tariff": "VT",
           "start_local": "2026-10-05T10:55:00+02:00",
-          "end_local": "2026-10-05T11:19:35+02:00",
-          "hours": 0.41
+          "end_local": "2026-10-05T11:53:00+02:00",
+          "hours": 0.967
+        },
+        {
+          "tariff": "NT",
+          "start_local": "2026-10-05T11:53:00+02:00",
+          "end_local": "2026-10-05T12:01:54+02:00",
+          "hours": 0.148
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
