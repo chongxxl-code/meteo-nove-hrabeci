@@ -3,10 +3,10 @@
   "quality_status": "valid",
   "provider": "ČHMÚ OpenData, station Šluknov",
   "station_wsi": "0-203-0-11501049001",
-  "computed_at_local": "2026-09-27T19:17:08.656857+02:00",
+  "computed_at_local": "2026-10-04T19:02:01.719501+02:00",
   "sentinel_history_file": "data/sentinel/history-v3-2026.jsonl",
-  "scene_count": 12,
-  "rain_intervals_loaded": 30342,
+  "scene_count": 13,
+  "rain_intervals_loaded": 31344,
   "minimum_window_coverage": 0.85,
   "month_fetch": [
     {
@@ -48,12 +48,20 @@
     {
       "year": 2026,
       "month": 9,
-      "points": 3846,
+      "points": 4320,
+      "errors": 1
+    },
+    {
+      "year": 2026,
+      "month": 10,
+      "points": 528,
       "errors": 0
     }
   ],
-  "fetch_error_count": 0,
-  "fetch_errors_sample": [],
+  "fetch_error_count": 1,
+  "fetch_errors_sample": [
+    "https://opendata.chmi.cz/meteorology/climate/recent/data/10min/09/10m-0-203-0-11501049001-202609.json: GET failed: HTTP Error 404: Not Found"
+  ],
   "scenes": [
     {
       "scene_id": "S2B_T33UVS_20260409T100023_L2A",
@@ -397,6 +405,35 @@
       "rain_30d": {
         "days": 30,
         "precipitation_mm": 68.4,
+        "intervals_found": 4320,
+        "intervals_expected": 4320,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      }
+    },
+    {
+      "scene_id": "S2A_T33UVS_20261003T100349_L2A",
+      "scene_datetime": "2026-10-03T10:06:52.891000Z",
+      "tile_cloud_cover_percent": 1.040734,
+      "rain_7d": {
+        "days": 7,
+        "precipitation_mm": 0.0,
+        "intervals_found": 1008,
+        "intervals_expected": 1008,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_14d": {
+        "days": 14,
+        "precipitation_mm": 30.0,
+        "intervals_found": 2016,
+        "intervals_expected": 2016,
+        "coverage_fraction": 1.0,
+        "quality": "valid"
+      },
+      "rain_30d": {
+        "days": 30,
+        "precipitation_mm": 56.3,
         "intervals_found": 4320,
         "intervals_expected": 4320,
         "coverage_fraction": 1.0,
