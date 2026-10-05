@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-10-05T11:49:21.859207Z",
+  "generated_at": "2026-10-05T12:31:44.398830Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 16.44,
-  "indoor_raw_points": 5972,
+  "indoor_raw_points": 5981,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-05T13:47:32+02:00",
-  "indoor_30m_bins": 789,
+  "indoor_history_last_timestamp": "2026-10-05T14:27:33+02:00",
+  "indoor_30m_bins": 790,
   "weather_30m_bins": 2219,
   "paired_candidate_bins": 778,
   "fit_samples": 27,
@@ -58,17 +58,17 @@
     "sample_count": 27
   },
   "current_passive_estimate": {
-    "inside_c": 17.9,
+    "inside_c": 18.0,
     "outside_c": 7.0,
     "outside_source": "Varnsdorf",
-    "inside_minus_outside_c": 10.9,
+    "inside_minus_outside_c": 11.0,
     "passive_fit_rate_c_per_h": -0.04,
     "note": "passive nighttime loss estimate; not a heating-control command"
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-05T13:49:21+02:00",
-    "start_inside_c": 17.9,
+    "start_timestamp_local": "2026-10-05T14:31:44+02:00",
+    "start_inside_c": 18.0,
     "weather_models": [
       "chmi",
       "dwd",
@@ -82,46 +82,46 @@
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-10-06T02:00:00+02:00",
-        "inside_median_c": 17.7,
-        "inside_q25_c": 17.7,
+        "timestamp_local": "2026-10-06T03:00:00+02:00",
+        "inside_median_c": 17.8,
+        "inside_q25_c": 17.8,
         "inside_q75_c": 17.8,
-        "inside_min_scenario_c": 17.6,
-        "inside_max_scenario_c": 17.8,
-        "outside_model_median_c": 12.1,
+        "inside_min_scenario_c": 17.7,
+        "inside_max_scenario_c": 17.9,
+        "outside_model_median_c": 11.8,
         "scenario_count": 9
       },
       {
         "hours": 24,
-        "timestamp_local": "2026-10-06T14:00:00+02:00",
-        "inside_median_c": 17.6,
-        "inside_q25_c": 17.5,
-        "inside_q75_c": 17.6,
-        "inside_min_scenario_c": 17.4,
-        "inside_max_scenario_c": 17.6,
-        "outside_model_median_c": 19.4,
+        "timestamp_local": "2026-10-06T15:00:00+02:00",
+        "inside_median_c": 17.7,
+        "inside_q25_c": 17.6,
+        "inside_q75_c": 17.7,
+        "inside_min_scenario_c": 17.5,
+        "inside_max_scenario_c": 17.7,
+        "outside_model_median_c": 19.5,
         "scenario_count": 9
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-10-07T02:00:00+02:00",
-        "inside_median_c": 17.4,
+        "timestamp_local": "2026-10-07T03:00:00+02:00",
+        "inside_median_c": 17.5,
         "inside_q25_c": 17.3,
         "inside_q75_c": 17.5,
         "inside_min_scenario_c": 17.1,
-        "inside_max_scenario_c": 17.5,
+        "inside_max_scenario_c": 17.6,
         "outside_model_median_c": 8.8,
         "scenario_count": 9
       },
       {
         "hours": 48,
-        "timestamp_local": "2026-10-07T14:00:00+02:00",
-        "inside_median_c": 17.2,
+        "timestamp_local": "2026-10-07T15:00:00+02:00",
+        "inside_median_c": 17.3,
         "inside_q25_c": 17.1,
-        "inside_q75_c": 17.3,
-        "inside_min_scenario_c": 16.9,
+        "inside_q75_c": 17.4,
+        "inside_min_scenario_c": 17.0,
         "inside_max_scenario_c": 17.4,
-        "outside_model_median_c": 16.7,
+        "outside_model_median_c": 17.2,
         "scenario_count": 6
       }
     ],
@@ -166,7 +166,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-05T13:49:21+02:00",
+      "start_timestamp_local": "2026-10-05T14:31:44+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -201,7 +201,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-05T13:49:21+02:00",
+      "start_timestamp_local": "2026-10-05T14:31:44+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -236,7 +236,7 @@
     },
     "actual_tempering_need_next_24h": {
       "horizon_hours": 24,
-      "inside_now_c": 17.9,
+      "inside_now_c": 18.0,
       "lower_switch_c": 6.0,
       "upper_switch_c": 8.0,
       "forecast_min_outside_c": 9.7,
@@ -258,20 +258,14 @@
       "horizon_hours": 24,
       "low_tariff_hours": 20.03,
       "high_tariff_hours": 3.97,
-      "current_tariff": "NT",
-      "next_transition_local": "2026-10-05T14:10:00+02:00",
+      "current_tariff": "VT",
+      "next_transition_local": "2026-10-05T15:10:00+02:00",
       "segments": [
         {
-          "tariff": "NT",
-          "start_local": "2026-10-05T13:49:21+02:00",
-          "end_local": "2026-10-05T14:10:00+02:00",
-          "hours": 0.344
-        },
-        {
           "tariff": "VT",
-          "start_local": "2026-10-05T14:10:00+02:00",
+          "start_local": "2026-10-05T14:31:44+02:00",
           "end_local": "2026-10-05T15:10:00+02:00",
-          "hours": 1.0
+          "hours": 0.638
         },
         {
           "tariff": "NT",
@@ -318,8 +312,14 @@
         {
           "tariff": "NT",
           "start_local": "2026-10-06T11:53:00+02:00",
-          "end_local": "2026-10-06T13:49:21+02:00",
-          "hours": 1.939
+          "end_local": "2026-10-06T14:10:00+02:00",
+          "hours": 2.283
+        },
+        {
+          "tariff": "VT",
+          "start_local": "2026-10-06T14:10:00+02:00",
+          "end_local": "2026-10-06T14:31:44+02:00",
+          "hours": 0.362
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
@@ -420,7 +420,7 @@
       "setpoint": 0,
       "warming": 0,
       "heat_gain": 4,
-      "coverage": 0
+      "coverage": 1
     }
   },
   "limitations": [
