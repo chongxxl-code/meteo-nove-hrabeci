@@ -737,9 +737,19 @@ def main():
 
     for cloud_point in cloud_points:
         key = str(cloud_point["timestamp_local"])
-        if by_ts.get(key) != cloud_point:
+        existing = by_ts.get(key)
+        # The short cloud-history response may begin before its first DP2/DP3
+        # state event. Durable raw-event replay can still know that state from
+        # an earlier event, so never downgrade a known historical state to None.
+        merged_cloud_point = dict(cloud_point)
+        if isinstance(existing, dict):
+            if merged_cloud_point.get("setpoint_c") is None and existing.get("setpoint_c") is not None:
+                merged_cloud_point["setpoint_c"] = existing.get("setpoint_c")
+            if merged_cloud_point.get("dp2_raw") is None and existing.get("dp2_raw") is not None:
+                merged_cloud_point["dp2_raw"] = existing.get("dp2_raw")
+        if existing != merged_cloud_point:
             history_changed = True
-        by_ts[key] = cloud_point
+        by_ts[key] = merged_cloud_point
     if persist_snapshot:
         if by_ts.get(timestamp) != point:
             history_changed = True
