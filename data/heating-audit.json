@@ -1,6 +1,6 @@
 {
-  "schema": "2026-09-29.heating-audit-v1",
-  "generated_at": "2026-10-05T20:32:54.035911Z",
+  "schema": "2026-10-05.heating-audit-v2",
+  "generated_at": "2026-10-05T21:07:49.362729Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
@@ -162,12 +162,27 @@
     {
       "name": "indoor_latest_freshness",
       "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 7.3 min)."
+      "detail": "Indoor latest sample is stale or missing (age 6.9 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 6084 points."
+      "detail": "Indoor history has only 6092 points."
+    },
+    {
+      "name": "passive_window_indoor_coverage_guard",
+      "ok": true,
+      "detail": "Passive fitting must reject sparse indoor windows, gaps over 60 minutes, and windows whose endpoint thermostat setpoint is unknown."
+    },
+    {
+      "name": "forecast_gap_fail_closed",
+      "ok": true,
+      "detail": "Passive forecast must fail closed across weather gaps larger than the documented maximum step."
+    },
+    {
+      "name": "current_outdoor_freshness_and_provenance",
+      "ok": true,
+      "detail": "Current passive-rate estimate must use a freshness-gated DWD Sohland observation or an explicit ČHMÚ Varnsdorf fallback."
     },
     {
       "name": "dp2_not_used_as_boiler_proof",
@@ -183,6 +198,11 @@
       "name": "passive_fit_positive",
       "ok": true,
       "detail": "Passive thermal fit is missing or non-physical."
+    },
+    {
+      "name": "shadow_estimator_isolation",
+      "ok": true,
+      "detail": "Alternative passive estimators must remain shadow-only and must not silently alter the production forecast."
     },
     {
       "name": "energy_scale_not_overclaimed",
@@ -202,7 +222,7 @@
     {
       "name": "actual_zero_need_proof",
       "ok": true,
-      "detail": "Zero next-24h tempering estimate is not supported by the temperature-bound proof."
+      "detail": "Zero next-24h tempering estimate requires the temperature-bound proof and a live thermostat setpoint matching the configured tempering target."
     },
     {
       "name": "weather_snapshot_freshness",
@@ -211,7 +231,7 @@
     }
   ],
   "summary": {
-    "checks_total": 40,
+    "checks_total": 44,
     "checks_failed": 0,
     "critical_failures": 0,
     "warnings": 3
