@@ -257,6 +257,7 @@ def main():
             "actual_zero_need_proof",
             inside > lower
             and outside_min >= lower
+            and ((actual.get("forecast_continuity") or {}).get("ok") is True)
             and actual.get("setpoint_matches_configured_target") is True
             and close(current_setpoint, configured_setpoint, 0.15)
             and close(actual.get("electricity_kwh"), 0.0)
