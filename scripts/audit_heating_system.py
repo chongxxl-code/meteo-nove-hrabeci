@@ -209,6 +209,17 @@ def main():
         "Passive thermal fit is missing or non-physical.",
     )
 
+    shadow = model.get("shadow_validation") or {}
+    weighted_shadow = shadow.get("weighted_fit") or {}
+    rolling_shadow = shadow.get("rolling_origin_vs_persistence") or {}
+    check(
+        "shadow_estimator_isolation",
+        shadow.get("production_fit_unchanged") is True
+        and (not weighted_shadow or weighted_shadow.get("shadow_only") is True)
+        and rolling_shadow.get("allowed_to_change_production_fit") is False,
+        "Alternative passive estimators must remain shadow-only and must not silently alter the production forecast.",
+    )
+
     energy = model.get("heating_energy_model") or {}
     prior = energy.get("heat_loss_prior") or {}
     check(
