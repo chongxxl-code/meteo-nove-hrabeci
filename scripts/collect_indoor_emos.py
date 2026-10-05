@@ -452,9 +452,15 @@ def append_raw_history_events(archive_dir: Path, now: datetime, rows):
     return path, len(new_items)
 
 
-def history_temperature_points(rows, current_setpoint, current_dp2):
-    state_setpoint = current_setpoint
-    state_dp2 = current_dp2
+def history_temperature_points(rows, initial_setpoint=None, initial_dp2=None):
+    """Replay historical Tuya events strictly forward in time.
+
+    Historical points must never be seeded from the *current* device state:
+    doing that leaks future DP2/DP3 values backwards into older DP24
+    temperatures until the first historical state event appears.
+    """
+    state_setpoint = initial_setpoint
+    state_dp2 = initial_dp2
     points = []
     def sort_key(row):
         try:
@@ -527,7 +533,7 @@ def load_snapshot_archive_points(archive_dir: Path):
     return points
 
 
-def load_raw_event_archive_points(archive_dir: Path, current_setpoint, current_dp2):
+def load_raw_event_archive_points(archive_dir: Path):
     """Rebuild fine-grained temperature points from durable raw Tuya events.
 
     Limit recovery work to the newest two monthly archives, which comfortably
@@ -545,7 +551,7 @@ def load_raw_event_archive_points(archive_dir: Path, current_setpoint, current_d
                     rows.append(item)
         except Exception:
             continue
-    return history_temperature_points(rows, current_setpoint, current_dp2)
+    return history_temperature_points(rows)
 
 
 def main():
@@ -690,11 +696,7 @@ def main():
             handle.write(json.dumps(point, ensure_ascii=False, separators=(",", ":")) + "\n")
 
     events_file, new_event_count = append_raw_history_events(archive_dir, now, history_rows)
-    cloud_points = history_temperature_points(
-        history_rows,
-        setpoint,
-        get_dp(dps, 2),
-    )
+    cloud_points = history_temperature_points(history_rows)
     history_status.update({
         "new_events_saved": new_event_count,
         "temperature_points": len(cloud_points),
@@ -720,11 +722,7 @@ def main():
     # Derived history must never be allowed to forget durable snapshots.
     # This repairs accidental/truncated history files without another cloud login.
     archive_snapshot_points = load_snapshot_archive_points(archive_dir)
-    raw_event_points = load_raw_event_archive_points(
-        archive_dir,
-        setpoint,
-        get_dp(dps, 2),
-    )
+    raw_event_points = load_raw_event_archive_points(archive_dir)
     history_changed = False
     for archive_point in archive_snapshot_points:
         key = str(archive_point["timestamp_local"])
