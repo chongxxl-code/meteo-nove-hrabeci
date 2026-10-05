@@ -888,6 +888,7 @@ def build_actual_tempering_need(latest, snapshot, start_local, fit, prediction_r
 def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, prediction_ready=False, extra_nt_block_h=0.0):
     if not hdo_context or not isinstance(band, list) or len(band) < 2:
         return None
+    continuity = forecast_continuity(snapshot, start_local, 24)
     vt_hours = [
         as_float(seg.get("hours"))
         for seg in hdo_context.get("segments") or []
@@ -901,6 +902,20 @@ def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, predicti
 
     longest_vt_h = max(vt_hours)
     conservative_unavailability_h = longest_vt_h + max(0.0, as_float(extra_nt_block_h) or 0.0)
+
+    if not continuity.get("ok"):
+        return {
+            "horizon_hours": 24,
+            "longest_vt_block_h": rounded(longest_vt_h, 2),
+            "conservative_unavailability_h": rounded(conservative_unavailability_h, 2),
+            "forecast_min_outside_c": rounded(outside_min, 1),
+            "reference_inside_c": rounded(lower_c, 1),
+            "impact_level": "unknown",
+            "basis": "insufficient_forecast_continuity",
+            "forecast_continuity": continuity,
+            "hdo_only_preheat_indication": "No automatic HDO-only preheating recommendation; the weather forecast is not continuous enough for this check.",
+            "principle": "A missing weather interval must not be interpreted as evidence that the house can safely bridge an HDO block.",
+        }
 
     if outside_min >= lower_c:
         return {
