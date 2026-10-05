@@ -153,6 +153,39 @@ def main():
         f"Indoor history has only {len(points)} points.",
     )
 
+    filters = model.get("filters") or {}
+    check(
+        "passive_window_indoor_coverage_guard",
+        int(filters.get("minimum_indoor_points_per_window") or 0) >= 10
+        and int(filters.get("maximum_indoor_gap_minutes") or 9999) <= 60
+        and filters.get("reject_unknown_endpoint_setpoint") is True,
+        "Passive fitting must reject sparse indoor windows, gaps over 60 minutes, and windows whose endpoint thermostat setpoint is unknown.",
+    )
+    check(
+        "forecast_gap_fail_closed",
+        0 < float(filters.get("maximum_forecast_step_hours") or 0) <= 3.1,
+        "Passive forecast must fail closed across weather gaps larger than the documented maximum step.",
+    )
+
+    current_outdoor = ((model.get("weather_sources") or {}).get("current_temperature_selection") or {})
+    current_estimate = model.get("current_passive_estimate")
+    if current_estimate is not None:
+        check(
+            "current_outdoor_freshness_and_provenance",
+            current_outdoor.get("ok") is True
+            and current_estimate.get("outside_source") in {"DWD Sohland", "ČHMÚ Varnsdorf"}
+            and float(current_estimate.get("outside_age_minutes") or 9999)
+                <= float(current_outdoor.get("max_age_minutes") or 0),
+            "Current passive-rate estimate must use a freshness-gated DWD Sohland observation or an explicit ČHMÚ Varnsdorf fallback.",
+        )
+    else:
+        check(
+            "current_outdoor_freshness_and_provenance",
+            current_outdoor.get("ok") is False,
+            "Current passive-rate estimate is missing even though a fresh outdoor observation was selected.",
+            severity="warn",
+        )
+
     check(
         "dp2_not_used_as_boiler_proof",
         model.get("dp2_used_as_heating_state") is False,
@@ -218,12 +251,17 @@ def main():
         lower = float(actual.get("lower_switch_c"))
         inside = float(actual.get("inside_now_c"))
         outside_min = float(actual.get("forecast_min_outside_c"))
+        current_setpoint = actual.get("current_setpoint_c")
+        configured_setpoint = actual.get("configured_tempering_setpoint_c")
         check(
             "actual_zero_need_proof",
-            inside > lower and outside_min >= lower
+            inside > lower
+            and outside_min >= lower
+            and actual.get("setpoint_matches_configured_target") is True
+            and close(current_setpoint, configured_setpoint, 0.15)
             and close(actual.get("electricity_kwh"), 0.0)
             and close(actual.get("incremental_cost_czk"), 0.0),
-            "Zero next-24h tempering estimate is not supported by the temperature-bound proof.",
+            "Zero next-24h tempering estimate requires the temperature-bound proof and a live thermostat setpoint matching the configured tempering target.",
         )
     elif actual.get("actual_cost_estimate_available") is not True:
         warnings.append(
@@ -257,7 +295,7 @@ def main():
 
     overall = "fail" if failures else ("pass_with_warnings" if warnings else "pass")
     out = {
-        "schema": "2026-09-29.heating-audit-v1",
+        "schema": "2026-10-05.heating-audit-v2",
         "generated_at": now.isoformat().replace("+00:00", "Z"),
         "overall_status": overall,
         "critical_failures": failures,
