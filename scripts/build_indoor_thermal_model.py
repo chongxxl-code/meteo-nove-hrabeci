@@ -626,6 +626,58 @@ def build_hdo_context(start_local, horizon_h=24):
     }
 
 
+def forecast_continuity(snapshot, start_local, horizon_h=24):
+    """Require each available temperature forecast branch to cover the horizon without large gaps."""
+    if not snapshot or not isinstance(snapshot.get("models"), dict):
+        return {"ok": False, "valid_models": [], "invalid_models": [], "reason": "missing_models"}
+    end_local = start_local + timedelta(hours=horizon_h)
+    valid_models = []
+    invalid_models = []
+    for model_name, payload in snapshot["models"].items():
+        if not isinstance(payload, dict):
+            continue
+        times = []
+        for raw_time, raw_temp in zip(payload.get("time") or [], payload.get("temperature_2m") or []):
+            dt = parse_forecast_local(raw_time)
+            temp = as_float(raw_temp)
+            if dt is None or temp is None or dt < start_local or dt > end_local + timedelta(hours=2):
+                continue
+            times.append(dt)
+        times = sorted(set(times))
+        if not times:
+            invalid_models.append({"model": model_name, "reason": "no_future_temperature_points"})
+            continue
+
+        prev = start_local
+        bad_gap = None
+        for dt in times:
+            if dt <= prev:
+                continue
+            gap_h = (dt - prev).total_seconds() / 3600.0
+            if gap_h > MAX_FORECAST_STEP_HOURS:
+                bad_gap = gap_h
+                break
+            prev = dt
+            if prev >= end_local:
+                break
+
+        tail_h = max(0.0, (end_local - prev).total_seconds() / 3600.0)
+        if bad_gap is not None:
+            invalid_models.append({"model": model_name, "reason": "internal_gap", "gap_hours": rounded(bad_gap, 2)})
+        elif tail_h > MAX_FORECAST_STEP_HOURS:
+            invalid_models.append({"model": model_name, "reason": "horizon_not_covered", "missing_tail_hours": rounded(tail_h, 2)})
+        else:
+            valid_models.append(model_name)
+
+    return {
+        "ok": bool(valid_models) and not invalid_models,
+        "valid_models": sorted(valid_models),
+        "invalid_models": invalid_models,
+        "max_step_hours": MAX_FORECAST_STEP_HOURS,
+        "horizon_hours": horizon_h,
+    }
+
+
 def forecast_outside_min(snapshot, start_local, horizon_h=24):
     if not snapshot or not isinstance(snapshot.get("models"), dict):
         return None
@@ -711,6 +763,7 @@ def build_actual_tempering_need(latest, snapshot, start_local, fit, prediction_r
     configured_target_c = as_float(configured_target_c)
     lower_c = as_float(band[0])
     upper_c = as_float(band[1])
+    continuity = forecast_continuity(snapshot, start_local, 24)
     outside_min = forecast_outside_min(snapshot, start_local, 24)
     if inside_now is None or lower_c is None or upper_c is None or outside_min is None:
         return {
@@ -728,7 +781,17 @@ def build_actual_tempering_need(latest, snapshot, start_local, fit, prediction_r
         "price_czk_per_kwh": rounded(price, 5) if price is not None else None,
         "current_setpoint_c": rounded(current_setpoint_c, 1),
         "configured_tempering_setpoint_c": rounded(configured_target_c, 1),
+        "forecast_continuity": continuity,
     }
+
+    if not continuity.get("ok"):
+        return {
+            **base,
+            "status": "forecast_continuity_insufficient",
+            "actual_kwh_estimate_available": False,
+            "actual_cost_estimate_available": False,
+            "reason": "The 24-hour outdoor-temperature forecast has a missing branch or a gap larger than the allowed step; zero heating need cannot be proven safely.",
+        }
 
     if current_setpoint_c is None or configured_target_c is None:
         return {
