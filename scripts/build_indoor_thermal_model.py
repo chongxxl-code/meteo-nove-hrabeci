@@ -15,6 +15,11 @@ TZ = ZoneInfo("Europe/Prague")
 BUCKET_SECONDS = 30 * 60
 WINDOW_HOURS = 6
 WINDOW_BINS = int(WINDOW_HOURS * 3600 / BUCKET_SECONDS)
+WINDOW_POINT_COUNT = WINDOW_BINS + 1
+MIN_INDOOR_POINTS_PER_WINDOW = 10
+MAX_INDOOR_GAP_BINS = 2  # at most 60 minutes between populated 30-minute buckets
+MAX_FORECAST_STEP_HOURS = 3.1
+CURRENT_OUTDOOR_MAX_AGE_MINUTES = 120.0
 
 
 def as_float(value):
@@ -113,6 +118,7 @@ def load_weather_archive(paths):
 
 def weather_bins():
     chmi_status = load_json(DATA / "chmi-status.json", {})
+    dwd_status = load_json(DATA / "dwd-sohland-status.json", {})
     chmi_wsi = str(chmi_status.get("weather_station_wsi") or "").replace("-", "_")
     chmi_paths = sorted(OBS.glob(f"chmi-weather-{chmi_wsi}-*.jsonl")) if chmi_wsi else []
     if not chmi_paths:
@@ -131,12 +137,75 @@ def weather_bins():
         elif key in chmi:
             merged[key] = {"temperature_c": chmi[key], "source": "ČHMÚ Varnsdorf"}
             source_counts["ČHMÚ Varnsdorf"] += 1
-    return merged, chmi_status, chmi_paths, dwd_paths, source_counts
+    return merged, dwd_status, chmi_status, chmi_paths, dwd_paths, source_counts
+
+def resolve_current_outdoor_temperature(dwd_status, chmi_status, now_utc=None):
+    """Use the same source priority as thermal training, with a freshness gate."""
+    now_utc = now_utc or datetime.now(timezone.utc)
+    candidates = [
+        (
+            "DWD Sohland",
+            dwd_status,
+            dwd_status.get("station_name") or "Sohland/Spree",
+        ),
+        (
+            "ČHMÚ Varnsdorf",
+            chmi_status,
+            chmi_status.get("weather_station_name") or "Varnsdorf",
+        ),
+    ]
+    diagnostics = []
+    for source, payload, station in candidates:
+        temp = as_float(payload.get("temperature_c")) if isinstance(payload, dict) else None
+        observed = parse_dt(payload.get("observed_at_utc")) if isinstance(payload, dict) else None
+        age_min = None if observed is None else (now_utc - observed).total_seconds() / 60.0
+        diagnostics.append({
+            "source": source,
+            "station": station,
+            "temperature_c": rounded(temp, 1),
+            "observed_at_utc": None if observed is None else observed.isoformat().replace("+00:00", "Z"),
+            "age_minutes": rounded(age_min, 1),
+            "fresh": bool(temp is not None and age_min is not None and 0 <= age_min <= CURRENT_OUTDOOR_MAX_AGE_MINUTES),
+        })
+        if temp is not None and age_min is not None and 0 <= age_min <= CURRENT_OUTDOOR_MAX_AGE_MINUTES:
+            return {
+                "ok": True,
+                "temperature_c": temp,
+                "source": source,
+                "station": station,
+                "observed_at_utc": observed.isoformat().replace("+00:00", "Z"),
+                "age_minutes": rounded(age_min, 1),
+                "max_age_minutes": CURRENT_OUTDOOR_MAX_AGE_MINUTES,
+                "fallback_used": source != "DWD Sohland",
+                "candidates": diagnostics,
+            }
+
+    return {
+        "ok": False,
+        "temperature_c": None,
+        "source": None,
+        "station": None,
+        "observed_at_utc": None,
+        "age_minutes": None,
+        "max_age_minutes": CURRENT_OUTDOOR_MAX_AGE_MINUTES,
+        "fallback_used": None,
+        "candidates": diagnostics,
+        "reason": "No preferred/fallback outdoor observation is fresh enough for a current thermal-rate estimate.",
+    }
 
 
 def build_windows(indoor, weather):
     windows = []
-    rejected = {"gap": 0, "setpoint": 0, "warming": 0, "heat_gain": 0, "coverage": 0}
+    rejected = {
+        "gap": 0,
+        "setpoint": 0,
+        "setpoint_unknown": 0,
+        "warming": 0,
+        "heat_gain": 0,
+        "coverage": 0,
+        "indoor_coverage": 0,
+        "indoor_gap": 0,
+    }
     common = sorted(set(indoor) & set(weather))
     common_set = set(common)
     for start in common:
@@ -145,10 +214,20 @@ def build_windows(indoor, weather):
         end = start + WINDOW_BINS
         if end not in indoor:
             continue
+
         weather_keys = [key for key in range(start, end + 1) if key in weather]
         if len(weather_keys) < WINDOW_BINS - 2:
             rejected["coverage"] += 1
             continue
+
+        indoor_keys = [key for key in range(start, end + 1) if key in indoor]
+        if len(indoor_keys) < MIN_INDOOR_POINTS_PER_WINDOW:
+            rejected["indoor_coverage"] += 1
+            continue
+        if any((b - a) > MAX_INDOOR_GAP_BINS for a, b in zip(indoor_keys, indoor_keys[1:])):
+            rejected["indoor_gap"] += 1
+            continue
+
         a, b = indoor[start], indoor[end]
         tin_start = a["temperature_c"]
         tin_end = b["temperature_c"]
@@ -157,20 +236,19 @@ def build_windows(indoor, weather):
         tout_mean = sum(tout_values) / len(tout_values)
         gap = tin_mean - tout_mean
 
-        setpoints = [v for v in (a.get("setpoint_c"), b.get("setpoint_c")) if v is not None]
-        setpoint = max(setpoints) if setpoints else None
-        if setpoint is not None and setpoint > min(tin_start, tin_end) - 1.5:
+        endpoint_setpoints = (a.get("setpoint_c"), b.get("setpoint_c"))
+        if any(value is None for value in endpoint_setpoints):
+            rejected["setpoint_unknown"] += 1
+            continue
+        setpoint = max(endpoint_setpoints)
+        if setpoint > min(tin_start, tin_end) - 1.5:
             rejected["setpoint"] += 1
             continue
         if gap < 2.0:
             rejected["gap"] += 1
             continue
 
-        indoor_path = [
-            indoor[key]["temperature_c"]
-            for key in range(start, end + 1)
-            if key in indoor
-        ]
+        indoor_path = [indoor[key]["temperature_c"] for key in indoor_keys]
         if len(indoor_path) >= 2:
             rises = [b - a for a, b in zip(indoor_path, indoor_path[1:])]
             max_rise_30m = max(rises)
@@ -198,10 +276,11 @@ def build_windows(indoor, weather):
             "outside_c": tout_mean,
             "inside_minus_outside_c": gap,
             "slope_c_per_h": rate,
+            "indoor_points": len(indoor_keys),
+            "weather_points": len(weather_keys),
             "dominant_weather_source": max(set(source_names), key=source_names.count),
         })
     return windows, rejected, len(common_set)
-
 
 def passive_fit(samples):
     if len(samples) < 3:
@@ -312,9 +391,12 @@ def build_passive_forecast(latest, fit):
             prev_dt = start_local
             for dt, tout in series:
                 dt_h = (dt - prev_dt).total_seconds() / 3600.0
-                if dt_h <= 0 or dt_h > 3.0:
-                    prev_dt = dt
+                if dt_h <= 0:
                     continue
+                if dt_h > MAX_FORECAST_STEP_HOURS:
+                    # Do not silently freeze indoor state across a forecast gap.
+                    # This scenario is truncated at the last continuous point.
+                    break
                 decay = math.exp(-coupling * dt_h)
                 tin = tout + (tin - tout) * decay
                 scenarios_by_time.setdefault(dt.isoformat(), []).append(tin)
@@ -436,12 +518,16 @@ def forecast_degree_hours(snapshot, start_local, target_c, horizon_h=24):
         prev_temp = future[0][1]
         degree_hours = 0.0
         covered_h = 0.0
+        continuous = True
         for dt, temp in future:
             if dt <= prev_dt:
                 prev_temp = temp
                 continue
             seg_end = min(dt, end_local)
             dt_h = (seg_end - prev_dt).total_seconds() / 3600.0
+            if dt_h > MAX_FORECAST_STEP_HOURS:
+                continuous = False
+                break
             if dt_h > 0:
                 avg_out = (prev_temp + temp) / 2.0
                 degree_hours += max(0.0, target_c - avg_out) * dt_h
@@ -451,13 +537,15 @@ def forecast_degree_hours(snapshot, start_local, target_c, horizon_h=24):
             if dt >= end_local:
                 break
 
-        if prev_dt < end_local:
+        if continuous and prev_dt < end_local:
             dt_h = (end_local - prev_dt).total_seconds() / 3600.0
-            if 0 < dt_h <= 3.1:
+            if 0 < dt_h <= MAX_FORECAST_STEP_HOURS:
                 degree_hours += max(0.0, target_c - prev_temp) * dt_h
                 covered_h += dt_h
+            elif dt_h > MAX_FORECAST_STEP_HOURS:
+                continuous = False
 
-        if covered_h >= min(20.0, horizon_h * 0.8):
+        if continuous and covered_h >= min(20.0, horizon_h * 0.8):
             by_model[model_name] = {
                 "degree_hours_kh": rounded(degree_hours, 2),
                 "covered_hours": rounded(covered_h, 2),
@@ -593,9 +681,10 @@ def passive_threshold_crossings(snapshot, start_local, start_temp, threshold_c, 
                 dt_h = (dt - prev_dt).total_seconds() / 3600.0
                 if dt_h <= 0:
                     continue
-                if dt_h > 3.1:
-                    prev_dt = dt
-                    continue
+                if dt_h > MAX_FORECAST_STEP_HOURS:
+                    # A threshold crossing after an unresolved weather gap is unknown,
+                    # not evidence that the threshold was not crossed.
+                    break
                 decay = math.exp(-coupling * dt_h)
                 next_tin = tout + (tin - tout) * decay
                 if tin > threshold_c and next_tin <= threshold_c:
@@ -614,10 +703,12 @@ def passive_threshold_crossings(snapshot, start_local, start_temp, threshold_c, 
     return crossings
 
 
-def build_actual_tempering_need(latest, snapshot, start_local, fit, prediction_ready, band, price):
+def build_actual_tempering_need(latest, snapshot, start_local, fit, prediction_ready, band, price, configured_target_c):
     if not isinstance(band, list) or len(band) < 2:
         return None
     inside_now = as_float(latest.get("latest_indoor_c")) if isinstance(latest, dict) else None
+    current_setpoint_c = as_float(latest.get("latest_setpoint_c")) if isinstance(latest, dict) else None
+    configured_target_c = as_float(configured_target_c)
     lower_c = as_float(band[0])
     upper_c = as_float(band[1])
     outside_min = forecast_outside_min(snapshot, start_local, 24)
@@ -635,7 +726,29 @@ def build_actual_tempering_need(latest, snapshot, start_local, fit, prediction_r
         "upper_switch_c": rounded(upper_c, 1),
         "forecast_min_outside_c": rounded(outside_min, 1),
         "price_czk_per_kwh": rounded(price, 5) if price is not None else None,
+        "current_setpoint_c": rounded(current_setpoint_c, 1),
+        "configured_tempering_setpoint_c": rounded(configured_target_c, 1),
     }
+
+    if current_setpoint_c is None or configured_target_c is None:
+        return {
+            **base,
+            "status": "current_setpoint_unverified",
+            "actual_kwh_estimate_available": False,
+            "actual_cost_estimate_available": False,
+            "reason": "The live thermostat setpoint is missing, so the configured 7 °C tempering policy cannot be assumed.",
+        }
+
+    setpoint_matches = abs(current_setpoint_c - configured_target_c) <= 0.15
+    base["setpoint_matches_configured_target"] = setpoint_matches
+    if not setpoint_matches:
+        return {
+            **base,
+            "status": "nonstandard_current_setpoint",
+            "actual_kwh_estimate_available": False,
+            "actual_cost_estimate_available": False,
+            "reason": "The live thermostat setpoint differs from the configured tempering target; a 0 kWh claim based on the 6–8 °C tempering band would be invalid.",
+        }
 
     if inside_now <= lower_c:
         return {
@@ -881,6 +994,7 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False):
         prediction_ready,
         band,
         price,
+        target_c,
     )
 
     tariff_policy = (((cfg.get("optimization_policy") or {}).get("tariff_control") or {}) if isinstance(cfg, dict) else {})
@@ -920,7 +1034,7 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False):
 
 def main():
     indoor, indoor_payload = load_indoor_bins()
-    weather, chmi_status, chmi_paths, dwd_paths, source_counts = weather_bins()
+    weather, dwd_status, chmi_status, chmi_paths, dwd_paths, source_counts = weather_bins()
     windows, rejected, paired_bins = build_windows(indoor, weather)
 
     night = [w for w in windows if w["night"]]
@@ -945,16 +1059,21 @@ def main():
     current = None
     latest = load_json(DATA / "indoor-latest.json", {})
     tin_now = as_float(latest.get("latest_indoor_c"))
-    tout_now = as_float(chmi_status.get("temperature_c"))
+    current_outdoor = resolve_current_outdoor_temperature(dwd_status, chmi_status)
+    tout_now = as_float(current_outdoor.get("temperature_c"))
     if fit and tin_now is not None and tout_now is not None:
         gap_now = tin_now - tout_now
         current = {
             "inside_c": tin_now,
             "outside_c": tout_now,
-            "outside_source": chmi_status.get("weather_station_name") or "ČHMÚ",
+            "outside_source": current_outdoor.get("source"),
+            "outside_station": current_outdoor.get("station"),
+            "outside_observed_at_utc": current_outdoor.get("observed_at_utc"),
+            "outside_age_minutes": current_outdoor.get("age_minutes"),
+            "outside_fallback_used": current_outdoor.get("fallback_used"),
             "inside_minus_outside_c": rounded(gap_now, 1),
             "passive_fit_rate_c_per_h": rounded(-fit["coupling_per_h"] * gap_now, 2),
-            "note": "passive nighttime loss estimate; not a heating-control command",
+            "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command",
         }
 
     prediction_ready = bool(
@@ -999,6 +1118,8 @@ def main():
         "night_windows": len(night),
         "weather_sources": {
             "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
+            "current_temperature_selection": current_outdoor,
+            "current_temperature_max_age_minutes": CURRENT_OUTDOOR_MAX_AGE_MINUTES,
             "DWD_Sohland_distance_km": 4.89,
             "CHMI_Varnsdorf_distance_km": chmi_status.get("weather_station_distance_km"),
             "bin_counts": source_counts,
@@ -1021,6 +1142,11 @@ def main():
         "filters": {
             "bucket_minutes": 30,
             "window_hours": WINDOW_HOURS,
+            "window_point_count": WINDOW_POINT_COUNT,
+            "minimum_indoor_points_per_window": MIN_INDOOR_POINTS_PER_WINDOW,
+            "maximum_indoor_gap_minutes": int(MAX_INDOOR_GAP_BINS * BUCKET_SECONDS / 60),
+            "reject_unknown_endpoint_setpoint": True,
+            "maximum_forecast_step_hours": MAX_FORECAST_STEP_HOURS,
             "minimum_inside_minus_outside_c": 2.0,
             "setpoint_margin_c": 1.5,
             "maximum_allowed_warming_c_per_h": 0.08,
@@ -1030,9 +1156,9 @@ def main():
             "rejected": rejected,
         },
         "limitations": [
-            "DP2 semantics are not independently verified, so it is not treated as boiler or relay state.",
+            "DP2 is a verified thermostat control-mode field and is not treated as boiler/relay heat demand; the true cloud heat-demand datapoint remains unresolved.",
             "The passive fit preferentially uses nighttime 6-hour windows to reduce solar-gain and 0.1 °C sensor-quantization noise.",
-            "Windows with strong short-term indoor warming are excluded to reduce contamination from wood-stove heat, solar gain and occupants.",
+            "Windows require at least 10/13 populated indoor half-hour buckets, no indoor gap over 60 minutes, known endpoint setpoints, and no strong short-term warming.",
             "Wood-stove heat is not independently measured yet; the filter detects heat-gain signatures rather than proving their source.",
             "DWD Sohland is preferred for historical outdoor temperature because it is closer; ČHMÚ Varnsdorf fills missing periods.",
             "A numeric passive forecast is withheld until there are at least 6 accepted nighttime windows and 5 days of paired coverage.",
