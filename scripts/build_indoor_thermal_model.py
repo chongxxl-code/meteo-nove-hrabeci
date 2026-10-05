@@ -273,6 +273,8 @@ def build_windows(indoor, weather):
             "midpoint_local": midpoint.isoformat(),
             "night": night,
             "inside_c": tin_mean,
+            "inside_start_c": tin_start,
+            "inside_end_c": tin_end,
             "outside_c": tout_mean,
             "inside_minus_outside_c": gap,
             "slope_c_per_h": rate,
@@ -310,6 +312,120 @@ def passive_fit(samples):
         "sample_count": len(samples),
     }
 
+
+
+def weighted_passive_fit(samples):
+    """Shadow-only through-origin regression; production still uses median ratios."""
+    usable = [
+        sample for sample in samples
+        if as_float(sample.get("inside_minus_outside_c")) is not None
+        and as_float(sample.get("slope_c_per_h")) is not None
+        and as_float(sample.get("inside_minus_outside_c")) > 0
+    ]
+    if len(usable) < 3:
+        return None
+    denom = sum(float(s["inside_minus_outside_c"]) ** 2 for s in usable)
+    if denom <= 0:
+        return None
+    coupling = -sum(
+        float(s["inside_minus_outside_c"]) * float(s["slope_c_per_h"])
+        for s in usable
+    ) / denom
+    if coupling <= 0:
+        return None
+    predictions = [-coupling * float(s["inside_minus_outside_c"]) for s in usable]
+    errors = [abs(float(s["slope_c_per_h"]) - pred) for s, pred in zip(usable, predictions)]
+    return {
+        "equation": "dTin/dt = coupling * (Tout - Tin)",
+        "method": "shadow weighted through-origin regression; ratio weights are proportional to gap^2",
+        "coupling_per_h": rounded(coupling, 5),
+        "time_constant_h": rounded(1.0 / coupling, 1),
+        "mae_c_per_h": rounded(sum(errors) / len(errors), 3),
+        "sample_count": len(usable),
+        "shadow_only": True,
+    }
+
+
+def rolling_passive_shadow_validation(samples, min_train=6):
+    """Compare estimators against persistence without allowing future windows into the fit.
+
+    This validates the thermal response conditional on the *observed mean outdoor
+    temperature* of each 6-hour test window. It is not a full weather-forecast
+    backtest and therefore cannot authorize production control.
+    """
+    ordered = sorted(
+        [
+            s for s in samples
+            if all(as_float(s.get(k)) is not None for k in (
+                "inside_start_c", "inside_end_c", "outside_c"
+            ))
+        ],
+        key=lambda item: item.get("start_bucket", 0),
+    )
+    if len(ordered) <= min_train:
+        return {
+            "status": "insufficient_samples",
+            "test_windows": 0,
+            "minimum_prior_windows": min_train,
+            "shadow_only": True,
+            "allowed_to_change_production_fit": False,
+        }
+
+    errors = {"median_ratio": [], "weighted_regression": [], "persistence": []}
+    evaluated = 0
+    for idx in range(min_train, len(ordered)):
+        train = ordered[:idx]
+        test = ordered[idx]
+        prod_fit = passive_fit(train)
+        weighted_fit = weighted_passive_fit(train)
+        if not prod_fit:
+            continue
+
+        start_c = float(test["inside_start_c"])
+        end_c = float(test["inside_end_c"])
+        outside_c = float(test["outside_c"])
+        dt_h = float(WINDOW_HOURS)
+
+        def predict(coupling):
+            return outside_c + (start_c - outside_c) * math.exp(-coupling * dt_h)
+
+        pred_prod = predict(float(prod_fit["coupling_per_h"]))
+        errors["median_ratio"].append(abs(pred_prod - end_c))
+        errors["persistence"].append(abs(start_c - end_c))
+
+        if weighted_fit:
+            pred_weighted = predict(float(weighted_fit["coupling_per_h"]))
+            errors["weighted_regression"].append(abs(pred_weighted - end_c))
+        evaluated += 1
+
+    def summarize(vals):
+        return None if not vals else {
+            "n": len(vals),
+            "mae_c": rounded(sum(vals) / len(vals), 3),
+            "median_abs_error_c": rounded(median(vals), 3),
+        }
+
+    prod = summarize(errors["median_ratio"])
+    weighted = summarize(errors["weighted_regression"])
+    persistence = summarize(errors["persistence"])
+    improvement = None
+    if prod and persistence and persistence["mae_c"] not in (None, 0):
+        improvement = 100.0 * (float(persistence["mae_c"]) - float(prod["mae_c"])) / float(persistence["mae_c"])
+
+    return {
+        "status": "diagnostic_only",
+        "shadow_only": True,
+        "allowed_to_change_production_fit": False,
+        "weather_input": "observed 6h mean outdoor temperature, not NWP forecast",
+        "protocol": "rolling-origin: each test window is predicted using only earlier accepted windows",
+        "minimum_prior_windows": min_train,
+        "test_windows": evaluated,
+        "production_estimator": prod,
+        "weighted_regression_shadow": weighted,
+        "persistence_reference": persistence,
+        "production_improvement_vs_persistence_pct": rounded(improvement, 1),
+        "interpretation": "Use this only as evidence about passive thermal dynamics. Do not change the production estimator until the shadow method wins consistently on future untouched windows.",
+    }
 
 
 def load_latest_forecast_snapshot():
@@ -1172,6 +1288,8 @@ def main():
 
     passive_forecast = build_passive_forecast(latest, fit) if prediction_ready else None
     heating_energy_model = build_heating_energy_model(latest, fit, prediction_ready)
+    weighted_fit_shadow = weighted_passive_fit(fit_basis)
+    rolling_shadow = rolling_passive_shadow_validation(fit_basis)
     indoor_points = indoor_payload.get("points") or []
 
     output = {
@@ -1214,6 +1332,12 @@ def main():
             "inside_minus_outside_max_c": rounded(max(gaps), 1) if gaps else None,
         },
         "fit": fit,
+        "shadow_validation": {
+            "weighted_fit": weighted_fit_shadow,
+            "rolling_origin_vs_persistence": rolling_shadow,
+            "production_fit_unchanged": True,
+            "note": "Shadow diagnostics never feed the public passive forecast or heating decisions.",
+        },
         "current_passive_estimate": current,
         "passive_forecast": passive_forecast,
         "heating_energy_model": heating_energy_model,
