@@ -34,4 +34,4 @@ Centrální archiv zatím ukládá předpovědi jednotlivých modelů. Dokud nep
 - Při prvním běhu nebo delším výpadku se automaticky vrací až 7 dní zpět, pak pokračuje inkrementálně s překryvem.
 - Ukládá aktuální snapshot do `data/indoor-cloud/YYYY-MM.jsonl`, deduplikované surové DP události do `data/indoor-cloud/events-YYYY-MM.jsonl`, poslední stav do `data/indoor-latest.json` a teplotní řadu do `data/indoor-history.json`.
 - Přihlašovací údaje a aplikační kryptografické hodnoty musí být pouze v GitHub Actions Secrets: `EMOS_USERNAME`, `EMOS_PASSWORD`, `EMOS_APP_ID`, `EMOS_APP_SECRET`, `EMOS_BMP_KEY`, `EMOS_CERT_SHA256`. Bez nich se indoor collector bezpečně přeskočí a meteorologický sběr pokračuje.
-- `indoor.html` zobrazuje skutečnou časovou osu. Tříhodinový je pouze interval synchronizace; vlastní historie termostatu je výrazně jemnější. Původní 15min řada z grafu zůstává jako starší referenční backfill.
+- `indoor.html` zobrazuje skutečnou časovou osu. Indoor sběr je samostatný a výrazně jemnější než tříhodinový forecastový archiv; původní 15min řada zůstává jako starší referenční backfill.
