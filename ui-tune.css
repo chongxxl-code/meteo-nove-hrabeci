@@ -259,3 +259,29 @@ h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
   .hero .sourcefine{padding-top:0}
   .ai .kpi div,.indoorforecast,.hours .weatherimpact,.energy .energydetails{min-height:0}
 }
+
+
+/* 2026-10-07 hybrid hierarchy pass — combine meaning-first color with existing layout. */
+h1{font-size:clamp(31px,4.6vw,45px)}
+.ai .aitxt{font-size:17px;line-height:1.42}
+.status{opacity:.52}
+.status.degraded{opacity:1;color:#ffd36a}
+.status.degraded .dot{box-shadow:0 0 12px rgba(255,211,106,.7)}
+.hour>small{font-size:12px;color:#b7c8ce}
+.kpi span,.energyfacts .stat span{font-size:11px;color:#aebfc6}
+.riskitem.green{border-left-color:#294650;opacity:.70}
+.riskitem.green .riskheadline{color:#c6d5da;font-weight:760}
+.riskitem.yellow{border-left-color:#ffd36a;background:rgba(48,42,21,.44)}
+.riskitem.orange{border-left-color:#ff9d55;background:rgba(52,31,20,.48)}
+.riskitem.red{border-left-color:#ff6f66;background:rgba(55,24,24,.5)}
+.riskitem.yellow,.riskitem.orange,.riskitem.red{opacity:1}
+.riskmeta{font-size:11px;color:#b3c5cb}
+.risks .note{font-size:11px;color:#9fb3ba}
+.energyhero b{font-size:18px}
+.energyhero span{font-size:11px}
+.sourcefine{color:#95abb3}
+.indoorfacts,.facts{color:#b8c8ce}
+@media(max-width:520px){
+ h1{font-size:31px}
+ .hour>small{font-size:11px}
+}
