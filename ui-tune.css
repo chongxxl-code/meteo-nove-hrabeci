@@ -236,3 +236,26 @@ h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
   .riskgrid{gap:6px}
   .riskitem{padding:9px}
 }
+
+
+/* 2026-10-07 baseline alignment pass — align internal shelves, no layout redesign. */
+.hero,.ai,.indoor{display:flex;flex-direction:column}
+.hero .sourcefine{margin-top:auto;padding-top:9px}
+.ai .kpi{margin-top:auto}
+.indoor .indoorforecast{margin-top:auto}
+.ai .kpi div,.indoorforecast{min-height:62px}
+.ai .kpi div{display:flex;flex-direction:column;justify-content:center}
+.indoorforecast{display:flex;flex-direction:column;justify-content:center}
+
+.hours,.energy{display:flex;flex-direction:column;align-self:stretch}
+.hours .weatherimpact{margin-top:auto}
+.energy .energydetails{margin-top:auto}
+.hours .hourstrip{margin-bottom:9px}
+.hours .weatherimpact,.energy .energydetails{min-height:42px}
+
+@media(max-width:850px){
+  .hero,.ai,.indoor,.hours,.energy{display:block}
+  .hero .sourcefine,.ai .kpi,.indoor .indoorforecast,.hours .weatherimpact,.energy .energydetails{margin-top:initial}
+  .hero .sourcefine{padding-top:0}
+  .ai .kpi div,.indoorforecast,.hours .weatherimpact,.energy .energydetails{min-height:0}
+}
