@@ -168,3 +168,44 @@ h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
  .hourstrip{grid-template-columns:repeat(4,minmax(112px,1fr))}
  .hour .t{font-size:26px}
 }
+
+
+/* 2026-10-07 cohesion pass — presentation only. */
+.grid{gap:12px;align-items:start}
+.card{border-radius:16px;padding:16px;box-shadow:0 7px 22px rgba(0,0,0,.08)}
+.hero,.ai,.indoor{align-self:stretch;min-height:0}
+.hours,.energy{align-self:start}
+.label{letter-spacing:.11em}
+.primarychips{margin-top:12px}
+.envchips{margin-top:7px}
+.envchips .chip{background:rgba(7,22,29,.58);border-color:#18353f}
+.aqichip{min-width:132px}
+.hero .sourcefine{margin-top:9px;opacity:.88}
+.ai .kpi{margin-top:12px}
+.indoorforecast{margin-top:10px}
+.hours{padding-bottom:14px}
+.hours .sect{margin-bottom:1px}
+.weatherimpact{margin-top:9px}
+.energyhero{margin-top:10px}
+.energyfacts{margin-top:8px}
+.energydetails{margin-top:10px;padding-top:9px}
+.energydetails summary{font-size:11px;letter-spacing:.01em}
+.energynote{margin-top:10px;padding:9px 10px;background:rgba(7,22,29,.5);border-radius:9px;line-height:1.5}
+.energyprinciple{margin-top:10px;padding-top:10px;border-top:1px solid #17343d}
+.energy .sect>span,.hours .sect>span{font-size:11px}
+.energy .energyhero b{line-height:1.3}
+.energy .energyhero span{line-height:1.35}
+.energyfacts .stat{min-width:0}
+.energyfacts .stat b{overflow:hidden;text-overflow:ellipsis}
+@media(max-width:850px){
+  .hero,.ai,.indoor{align-self:start}
+  .hours,.energy{width:100%}
+}
+@media(max-width:520px){
+  .grid{gap:9px}
+  .card{padding:12px}
+  .primarychips,.envchips{gap:6px}
+  .envchips{margin-top:6px}
+  .aqichip{min-width:124px}
+  .energy .sect>span,.hours .sect>span{font-size:10px}
+}
