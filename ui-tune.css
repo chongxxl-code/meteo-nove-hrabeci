@@ -209,3 +209,30 @@ h1{font-size:clamp(32px,5vw,48px);margin:6px 0}
   .aqichip{min-width:124px}
   .energy .sect>span,.hours .sect>span{font-size:10px}
 }
+
+
+/* 2026-10-07 micro polish — flatten nested UI without changing structure. */
+.card{border-color:#193640;box-shadow:0 6px 18px rgba(0,0,0,.07)}
+.primarychips .chip,.envchips .chip{padding:6px 9px;border-color:#18353e;background:rgba(6,20,27,.48)}
+.envchips .chip{background:rgba(6,20,27,.40)}
+.hourstrip{gap:8px}
+.hour{display:flex;flex-direction:column;min-height:142px;padding:10px 12px;border-color:#183640;background:rgba(6,20,27,.52);box-shadow:none}
+.hour .t{margin:10px 0 7px}
+.hour>small{margin-top:auto;line-height:1.45}
+.weatherimpact{background:rgba(6,20,27,.46);border:1px solid #16323b}
+.energyhero{background:rgba(6,20,27,.48)}
+.energyfacts{gap:0;background:transparent;border-radius:0;border-top:1px solid #17343d;border-bottom:1px solid #17343d}
+.energyfacts .stat{background:transparent;padding:10px 8px;border-left:1px solid #17343d}
+.energyfacts .stat:first-child{border-left:0}
+.energydetails{border-top:0;padding-top:7px}
+.riskgrid{gap:8px}
+.riskitem{background:rgba(6,20,27,.48);border-left-width:3px;border-radius:8px;padding:10px 11px}
+.riskheadline{font-size:15px;line-height:1.22}
+.riskmeta{line-height:1.4}
+.risks .note{margin-top:9px}
+@media(max-width:520px){
+  .hour{min-height:136px}
+  .energyfacts .stat{padding:9px 6px}
+  .riskgrid{gap:6px}
+  .riskitem{padding:9px}
+}
