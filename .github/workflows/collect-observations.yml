@@ -42,6 +42,8 @@ jobs:
           python scripts/build_indoor_thermal_model.py
 
       - name: Commit observation refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -e
           git config user.name "github-actions[bot]"
