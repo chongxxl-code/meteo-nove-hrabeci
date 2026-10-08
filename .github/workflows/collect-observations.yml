@@ -1,0 +1,84 @@
+name: Collect surface observations
+
+on:
+  schedule:
+    # Lightweight hourly refresh between the 3-hour forecast archive slots.
+    - cron: '47 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_chmi.py'
+      - 'scripts/collect_dwd_sohland.py'
+      - 'scripts/build_indoor_thermal_model.py'
+      - '.github/workflows/collect-observations.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  # Share the writer lock with the full weather workflow because both touch
+  # DWD/CHMI observation archives and the indoor thermal model.
+  group: meteo-weather-writer
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Collect current surface observations
+        run: |
+          python scripts/collect_chmi.py
+          python scripts/collect_dwd_sohland.py
+          python scripts/build_indoor_thermal_model.py
+
+      - name: Commit observation refresh
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rebuild_data() {
+            python scripts/collect_chmi.py
+            python scripts/collect_dwd_sohland.py
+            python scripts/build_indoor_thermal_model.py
+          }
+
+          make_commit() {
+            git add data/observations/ \
+                    data/chmi-status.json \
+                    data/dwd-sohland-status.json \
+                    data/indoor-thermal-model.json
+            if git diff --cached --quiet; then
+              echo "No observation changes."
+              return 1
+            fi
+            git commit -m "data: surface observations $(date -u +'%Y-%m-%d %H:%M UTC')"
+          }
+
+          make_commit || exit 0
+
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+
+            echo "Concurrent repository update detected; rebuilding on latest main (attempt ${attempt}/3)."
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            git reset --hard origin/main
+            rebuild_data
+            make_commit || exit 0
+            sleep $((attempt * 5))
+          done
+
+          echo "Unable to push surface observations after 3 retries."
+          exit 1
