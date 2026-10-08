@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   # Share the writer lock with the full weather workflow because both touch
@@ -68,6 +69,8 @@ jobs:
 
           for attempt in 1 2 3; do
             if git pull --rebase origin main && git push; then
+              echo "Dispatching Pages so the public observation archive matches main."
+              gh workflow run deploy-pages.yml --ref main || true
               exit 0
             fi
 
