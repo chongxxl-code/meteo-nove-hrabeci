@@ -1,6 +1,6 @@
 {
   "schema": "2026-10-05.heating-audit-v2",
-  "generated_at": "2026-10-08T00:58:59.208097Z",
+  "generated_at": "2026-10-08T10:29:41.486348Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
@@ -162,12 +162,12 @@
     {
       "name": "indoor_latest_freshness",
       "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 5.0 min)."
+      "detail": "Indoor latest sample is stale or missing (age 2.6 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 6774 points."
+      "detail": "Indoor history has only 6900 points."
     },
     {
       "name": "passive_window_indoor_coverage_guard",
@@ -220,18 +220,13 @@
       "detail": "Reference kWh/cost table does not match H × degree-hours / efficiency × current price."
     },
     {
-      "name": "actual_zero_need_proof",
-      "ok": true,
-      "detail": "Zero next-24h tempering estimate requires the temperature-bound proof and a live thermostat setpoint matching the configured tempering target."
-    },
-    {
       "name": "weather_snapshot_freshness",
       "ok": true,
-      "detail": "Weather snapshot is stale or missing (age 1.2 min)."
+      "detail": "Weather snapshot is stale or missing (age 0.3 min)."
     }
   ],
   "summary": {
-    "checks_total": 44,
+    "checks_total": 43,
     "checks_failed": 0,
     "critical_failures": 0,
     "warnings": 3
