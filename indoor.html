@@ -29,7 +29,7 @@ function num(v,d=1){return Number.isFinite(Number(v))?Number(v).toFixed(d):'—'
 function fmt(ts){if(!ts)return'—';return new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,dateStyle:'short',timeStyle:'short'}).format(new Date(ts))}
 function ageShort(ts){if(!ts)return'—';const m=Math.max(0,Math.round((Date.now()-new Date(ts).getTime())/60000));if(m<60)return`${m} min`;const h=Math.floor(m/60),r=m%60;return r?`${h} h ${r} min`:`${h} h`}
 function dayKey(ts){return String(ts||'').slice(0,10)}
-async function getTextOptional(u){const s=String(u),sources=s.startsWith('./data/observations/')?[s,LIVE_DATA_ROOT+s.slice(2)]:liveSources(s);for(const src of sources){try{const r=await fetch(src,{cache:'no-store'});if(r.ok)return await r.text()}catch(e){}}return null}
+async function getTextOptional(u){const s=String(u),sources=s.startsWith('./data/observations/')?[LIVE_DATA_ROOT+s.slice(2),s]:liveSources(s);for(const src of sources){try{const r=await fetch(src,{cache:'no-store'});if(r.ok)return await r.text()}catch(e){}}return null}
 let allIndoorPoints=[],allOutdoorPoints=[],chartWindowHours=24;
 const seriesVisible={indoor:true,outside:true,setpoint:true};
 let chartState=null;
