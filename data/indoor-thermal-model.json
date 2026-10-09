@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-10-09T08:30:13.441019Z",
+  "generated_at": "2026-10-09T09:06:00.095245Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -8,13 +8,13 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
-  "coverage_days": 20.48,
-  "indoor_raw_points": 7572,
+  "coverage_days": 20.52,
+  "indoor_raw_points": 7579,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-09T10:30:13+02:00",
-  "indoor_30m_bins": 975,
-  "weather_30m_bins": 2413,
-  "paired_candidate_bins": 972,
+  "indoor_history_last_timestamp": "2026-10-09T11:01:02+02:00",
+  "indoor_30m_bins": 976,
+  "weather_30m_bins": 2415,
+  "paired_candidate_bins": 974,
   "fit_samples": 35,
   "all_accepted_windows": 51,
   "night_windows": 35,
@@ -22,20 +22,20 @@
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "current_temperature_selection": {
       "ok": true,
-      "temperature_c": 8.5,
+      "temperature_c": 9.5,
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
-      "observed_at_utc": "2026-10-09T07:20:00Z",
-      "age_minutes": 70.2,
+      "observed_at_utc": "2026-10-09T08:20:00Z",
+      "age_minutes": 46.0,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
         {
           "source": "DWD Sohland",
           "station": "Sohland/Spree",
-          "temperature_c": 8.5,
-          "observed_at_utc": "2026-10-09T07:20:00Z",
-          "age_minutes": 70.2,
+          "temperature_c": 9.5,
+          "observed_at_utc": "2026-10-09T08:20:00Z",
+          "age_minutes": 46.0,
           "fresh": true
         }
       ]
@@ -44,7 +44,7 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 2413,
+      "DWD Sohland": 2415,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -119,19 +119,19 @@
   },
   "current_passive_estimate": {
     "inside_c": 15.9,
-    "outside_c": 8.5,
+    "outside_c": 9.5,
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
-    "outside_observed_at_utc": "2026-10-09T07:20:00Z",
-    "outside_age_minutes": 70.2,
+    "outside_observed_at_utc": "2026-10-09T08:20:00Z",
+    "outside_age_minutes": 46.0,
     "outside_fallback_used": false,
-    "inside_minus_outside_c": 7.4,
-    "passive_fit_rate_c_per_h": -0.03,
+    "inside_minus_outside_c": 6.4,
+    "passive_fit_rate_c_per_h": -0.02,
     "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command"
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-09T10:30:13+02:00",
+    "start_timestamp_local": "2026-10-09T11:05:59+02:00",
     "start_inside_c": 15.9,
     "weather_models": [
       "chmi",
@@ -147,10 +147,10 @@
       {
         "hours": 12,
         "timestamp_local": "2026-10-09T23:00:00+02:00",
-        "inside_median_c": 15.6,
-        "inside_q25_c": 15.5,
+        "inside_median_c": 15.7,
+        "inside_q25_c": 15.6,
         "inside_q75_c": 15.7,
-        "inside_min_scenario_c": 15.4,
+        "inside_min_scenario_c": 15.5,
         "inside_max_scenario_c": 15.7,
         "outside_model_median_c": 8.8,
         "scenario_count": 9
@@ -160,7 +160,7 @@
         "timestamp_local": "2026-10-10T11:00:00+02:00",
         "inside_median_c": 15.4,
         "inside_q25_c": 15.1,
-        "inside_q75_c": 15.4,
+        "inside_q75_c": 15.5,
         "inside_min_scenario_c": 15.0,
         "inside_max_scenario_c": 15.5,
         "outside_model_median_c": 11.1,
@@ -172,7 +172,7 @@
         "inside_median_c": 15.2,
         "inside_q25_c": 14.8,
         "inside_q75_c": 15.2,
-        "inside_min_scenario_c": 14.6,
+        "inside_min_scenario_c": 14.7,
         "inside_max_scenario_c": 15.3,
         "outside_model_median_c": 7.7,
         "scenario_count": 9
@@ -230,7 +230,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-09T10:30:13+02:00",
+      "start_timestamp_local": "2026-10-09T11:05:59+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -265,7 +265,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-09T10:30:13+02:00",
+      "start_timestamp_local": "2026-10-09T11:05:59+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -334,22 +334,16 @@
       "primary_command": "A1B6DP01",
       "distribution_area": "Sever",
       "horizon_hours": 24,
-      "low_tariff_hours": 19.81,
-      "high_tariff_hours": 4.19,
-      "current_tariff": "NT",
-      "next_transition_local": "2026-10-09T10:55:00+02:00",
+      "low_tariff_hours": 19.4,
+      "high_tariff_hours": 4.6,
+      "current_tariff": "VT",
+      "next_transition_local": "2026-10-09T11:53:00+02:00",
       "segments": [
         {
-          "tariff": "NT",
-          "start_local": "2026-10-09T10:30:13+02:00",
-          "end_local": "2026-10-09T10:55:00+02:00",
-          "hours": 0.413
-        },
-        {
           "tariff": "VT",
-          "start_local": "2026-10-09T10:55:00+02:00",
+          "start_local": "2026-10-09T11:05:59+02:00",
           "end_local": "2026-10-09T11:53:00+02:00",
-          "hours": 0.967
+          "hours": 0.784
         },
         {
           "tariff": "NT",
@@ -402,8 +396,8 @@
         {
           "tariff": "VT",
           "start_local": "2026-10-10T10:16:00+02:00",
-          "end_local": "2026-10-10T10:30:13+02:00",
-          "hours": 0.237
+          "end_local": "2026-10-10T11:05:59+02:00",
+          "hours": 0.833
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
