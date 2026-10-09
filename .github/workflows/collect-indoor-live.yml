@@ -51,6 +51,46 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          push_with_backoff() {
+            local push_attempt push_output push_rc delay
+            for push_attempt in 1 2 3 4 5 6; do
+              set +e
+              push_output="$(git push origin HEAD:main 2>&1)"
+              push_rc=$?
+              set -e
+              printf '%s\n' "${push_output}"
+
+              if [ "${push_rc}" -eq 0 ]; then
+                return 0
+              fi
+
+              # GitHub occasionally rejects an otherwise valid push with a transient
+              # server/transport failure. Retry the SAME prepared commit so we do not
+              # reopen EMOS or rebuild data merely because GitHub returned a 5xx.
+              if printf '%s\n' "${push_output}" | grep -Eqi 'Internal Server Error|HTTP (500|502|503|504)|remote end hung up|RPC failed|connection reset|temporarily unavailable|TLS.*terminated'; then
+                if [ "${push_attempt}" -ge 6 ]; then
+                  echo "GitHub push still failing after 6 transient-error retries."
+                  return 88
+                fi
+                case "${push_attempt}" in
+                  1) delay=10 ;;
+                  2) delay=20 ;;
+                  3) delay=40 ;;
+                  4) delay=60 ;;
+                  *) delay=90 ;;
+                esac
+                echo "Transient GitHub push failure; retrying the same commit in ${delay}s (attempt ${push_attempt}/6)."
+                sleep "${delay}"
+                continue
+              fi
+
+              # A non-transient rejection is most commonly a moved main/non-fast-forward.
+              # Let collect_once refresh from origin/main and regenerate against it.
+              return 2
+            done
+            return 88
+          }
+
           collect_once() {
             local cycle_num="${1:-1}"
             for attempt in 1 2 3; do
@@ -88,15 +128,24 @@ jobs:
               fi
 
               git commit -m "data: indoor live $(date -u +'%Y-%m-%d %H:%M UTC')"
-              if git push origin HEAD:main; then
+
+              set +e
+              push_with_backoff
+              push_rc=$?
+              set -e
+              if [ "${push_rc}" -eq 0 ]; then
                 return 0
               fi
+              if [ "${push_rc}" -eq 88 ]; then
+                echo "Unable to push indoor live data because GitHub server/transport errors persisted."
+                return 1
+              fi
 
-              echo "Concurrent main update; recollecting from latest main (attempt ${attempt}/3)."
+              echo "Main moved while publishing indoor data; recollecting from latest main (attempt ${attempt}/3)."
               sleep $((attempt * 3))
             done
 
-            echo "Unable to push indoor live data after 3 retries."
+            echo "Unable to push indoor live data after 3 main-refresh attempts."
             return 1
           }
 
