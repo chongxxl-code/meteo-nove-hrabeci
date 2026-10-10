@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-10-10T17:57:10.178214Z",
+  "generated_at": "2026-10-10T18:00:57.267564Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -8,13 +8,13 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
-  "coverage_days": 21.88,
+  "coverage_days": 21.9,
   "indoor_raw_points": 8097,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
   "indoor_history_last_timestamp": "2026-10-10T19:54:03+02:00",
   "indoor_30m_bins": 1041,
-  "weather_30m_bins": 2480,
-  "paired_candidate_bins": 1039,
+  "weather_30m_bins": 2481,
+  "paired_candidate_bins": 1040,
   "fit_samples": 35,
   "all_accepted_windows": 52,
   "night_windows": 35,
@@ -22,20 +22,20 @@
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "current_temperature_selection": {
       "ok": true,
-      "temperature_c": 8.4,
+      "temperature_c": 7.5,
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
-      "observed_at_utc": "2026-10-10T16:50:00Z",
-      "age_minutes": 67.2,
+      "observed_at_utc": "2026-10-10T17:20:00Z",
+      "age_minutes": 41.0,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
         {
           "source": "DWD Sohland",
           "station": "Sohland/Spree",
-          "temperature_c": 8.4,
-          "observed_at_utc": "2026-10-10T16:50:00Z",
-          "age_minutes": 67.2,
+          "temperature_c": 7.5,
+          "observed_at_utc": "2026-10-10T17:20:00Z",
+          "age_minutes": 41.0,
           "fresh": true
         }
       ]
@@ -44,7 +44,7 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 2480,
+      "DWD Sohland": 2481,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -119,13 +119,13 @@
   },
   "current_passive_estimate": {
     "inside_c": 23.9,
-    "outside_c": 8.4,
+    "outside_c": 7.5,
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
-    "outside_observed_at_utc": "2026-10-10T16:50:00Z",
-    "outside_age_minutes": 67.2,
+    "outside_observed_at_utc": "2026-10-10T17:20:00Z",
+    "outside_age_minutes": 41.0,
     "outside_fallback_used": false,
-    "inside_minus_outside_c": 15.5,
+    "inside_minus_outside_c": 16.4,
     "passive_fit_rate_c_per_h": -0.06,
     "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command"
   },
