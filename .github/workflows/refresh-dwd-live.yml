@@ -1,0 +1,61 @@
+name: Refresh DWD live now
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_dwd_sohland_live.py'
+      - '.github/workflows/refresh-dwd-live.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: meteo-dwd-live-bootstrap
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Refresh DWD live buffer
+        run: python scripts/collect_dwd_sohland_live.py
+      - name: Publish DWD live buffer
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          make_commit() {
+            git add data/dwd-sohland-live.json
+            if git diff --cached --quiet; then
+              echo "No DWD live change."
+              return 1
+            fi
+            git commit -m "data: DWD live $(date -u +'%Y-%m-%d %H:%M UTC')"
+          }
+
+          make_commit || exit 0
+
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Main moved; rebuilding isolated DWD live buffer (attempt ${attempt}/5)."
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/collect_dwd_sohland_live.py
+            make_commit || exit 0
+            sleep $((attempt * 3))
+          done
+
+          echo "Unable to publish DWD live buffer after 5 retries."
+          exit 1
