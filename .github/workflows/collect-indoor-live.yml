@@ -13,6 +13,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/collect_indoor_emos.py'
+      - 'scripts/collect_dwd_sohland_live.py'
       - '.github/workflows/collect-indoor-live.yml'
 
 permissions:
@@ -114,6 +115,13 @@ jobs:
                 return "${rc}"
               fi
 
+              # Best-effort DWD live buffer for the indoor graph. This writes only
+              # data/dwd-sohland-live.json, so it cannot conflict with the canonical
+              # regional DWD archive/status writer.
+              if ! python scripts/collect_dwd_sohland_live.py; then
+                echo "DWD live buffer refresh failed; keeping the last good buffer."
+              fi
+
               # Refresh the passive thermal model roughly every 42 minutes and
               # immediately on the first cycle of every replacement session.
               # This is local computation only; it does not open another EMOS session.
@@ -124,7 +132,7 @@ jobs:
               # Keep the compact collector status current; history-status is verbose
               # and is not needed on every seven-minute live commit.
               git restore data/indoor-history-status.json 2>/dev/null || true
-              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json data/indoor-thermal-model.json
+              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json data/indoor-thermal-model.json data/dwd-sohland-live.json 2>/dev/null || true
 
               if git diff --cached --quiet; then
                 echo "No material indoor change."
