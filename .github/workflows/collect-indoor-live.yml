@@ -54,10 +54,14 @@ jobs:
           push_with_backoff() {
             local push_attempt push_output push_rc delay
             for push_attempt in 1 2 3 4 5 6; do
-              set +e
-              push_output="$(git push origin HEAD:main 2>&1)"
-              push_rc=$?
-              set -e
+              # Do not toggle errexit inside this function: returning a non-zero
+              # classification code must reach collect_once instead of terminating
+              # the whole shell before the caller can handle it.
+              if push_output="$(git push origin HEAD:main 2>&1)"; then
+                push_rc=0
+              else
+                push_rc=$?
+              fi
               printf '%s\n' "${push_output}"
 
               if [ "${push_rc}" -eq 0 ]; then
