@@ -15,7 +15,7 @@ from collect_dwd_sohland import (
 )
 
 OUTPUT = DATA / "dwd-sohland-live.json"
-MAX_POINTS = 144  # roughly one day of 10-minute observations
+MAX_POINTS = 144  # roughly one day of 10-minute observations; UI-only live buffer
 
 
 def main():
