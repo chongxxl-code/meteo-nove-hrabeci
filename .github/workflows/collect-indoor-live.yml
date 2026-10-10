@@ -110,11 +110,6 @@ jobs:
                 return "${rc}"
               fi
 
-              # Keep the outside-temperature graph close to the newest DWD publication.
-              # This public fetch does not open another EMOS session. The hourly regional
-              # collector remains as an independent fallback.
-              python scripts/collect_dwd_sohland.py
-
               # Refresh the passive thermal model roughly every 42 minutes and
               # immediately on the first cycle of every replacement session.
               # This is local computation only; it does not open another EMOS session.
@@ -125,7 +120,7 @@ jobs:
               # Keep the compact collector status current; history-status is verbose
               # and is not needed on every seven-minute live commit.
               git restore data/indoor-history-status.json 2>/dev/null || true
-              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json data/indoor-thermal-model.json data/dwd-sohland-status.json data/observations/dwd-sohland-06129-*.jsonl
+              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json data/indoor-thermal-model.json
 
               if git diff --cached --quiet; then
                 echo "No material indoor change."
