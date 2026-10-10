@@ -42,6 +42,14 @@ async function loadOutdoorHistory(anchor){
   if(!txt)continue;
   txt.split(/\r?\n/).forEach(line=>{if(!line.trim())return;try{const r=JSON.parse(line),v=Number(r.temperature_c);if(r.observed_at_utc&&Number.isFinite(v))rows.push({timestamp_local:r.observed_at_utc,outside_c:v})}catch(e){}});
  }
+ // GitHub's scheduled regional collector can be delayed for hours. Merge the
+ // isolated DWD live buffer written by the active indoor session; timestamps
+ // are deduplicated so the canonical archive remains authoritative history.
+ const live=await getJsonOptional('./data/dwd-sohland-live.json?_='+Date.now());
+ for(const r of Array.isArray(live?.points)?live.points:[]){
+  const v=Number(r.temperature_c);
+  if(r.observed_at_utc&&Number.isFinite(v))rows.push({timestamp_local:r.observed_at_utc,outside_c:v});
+ }
  const byTs=new Map();rows.forEach(r=>byTs.set(r.timestamp_local,r));
  return [...byTs.values()].sort((a,b)=>new Date(a.timestamp_local)-new Date(b.timestamp_local));
 }
