@@ -1,6 +1,6 @@
 {
-  "schema": "2026-10-05.heating-audit-v2",
-  "generated_at": "2026-10-11T12:45:48.959980Z",
+  "schema": "2026-10-11.heating-audit-v3",
+  "generated_at": "2026-10-11T19:24:51.880652Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
@@ -162,12 +162,12 @@
     {
       "name": "indoor_latest_freshness",
       "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 8.8 min)."
+      "detail": "Indoor latest sample is stale or missing (age 6.9 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 8378 points."
+      "detail": "Indoor history has only 8473 points."
     },
     {
       "name": "passive_window_indoor_coverage_guard",
@@ -178,6 +178,11 @@
       "name": "forecast_gap_fail_closed",
       "ok": true,
       "detail": "Passive forecast must fail closed across weather gaps larger than the documented maximum step."
+    },
+    {
+      "name": "post_heating_quarantine_guard",
+      "ok": true,
+      "detail": "Passive fitting must quarantine at least 12 h after strong measured heat-gain signatures and keep source attribution explicitly unproven."
     },
     {
       "name": "current_outdoor_freshness_and_provenance",
@@ -222,11 +227,11 @@
     {
       "name": "weather_snapshot_freshness",
       "ok": true,
-      "detail": "Weather snapshot is stale or missing (age 2.0 min)."
+      "detail": "Weather snapshot is stale or missing (age 1.6 min)."
     }
   ],
   "summary": {
-    "checks_total": 43,
+    "checks_total": 44,
     "checks_failed": 0,
     "critical_failures": 0,
     "warnings": 3
