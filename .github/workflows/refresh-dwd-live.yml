@@ -1,4 +1,4 @@
-name: Refresh DWD live now
+name: Refresh live observations now
 
 on:
   workflow_dispatch:
@@ -6,13 +6,15 @@ on:
     branches: [main]
     paths:
       - 'scripts/collect_dwd_sohland_live.py'
+      - 'scripts/collect_chmi_live.py'
+      - 'scripts/build_radar_live.py'
       - '.github/workflows/refresh-dwd-live.yml'
 
 permissions:
   contents: write
 
 concurrency:
-  group: meteo-dwd-live-bootstrap
+  group: meteo-live-observations-bootstrap
   cancel-in-progress: true
 
 jobs:
@@ -26,21 +28,26 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Refresh DWD live buffer
-        run: python scripts/collect_dwd_sohland_live.py
-      - name: Publish DWD live buffer
+      - name: Install live radar dependencies
+        run: pip install --disable-pip-version-check numpy pillow
+      - name: Refresh isolated live buffers
+        run: |
+          python scripts/collect_dwd_sohland_live.py
+          python scripts/collect_chmi_live.py
+          python scripts/build_radar_live.py
+      - name: Publish isolated live buffers
         run: |
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           make_commit() {
-            git add data/dwd-sohland-live.json
+            git add data/dwd-sohland-live.json data/chmi-live.json data/radar-live.json
             if git diff --cached --quiet; then
-              echo "No DWD live change."
+              echo "No live observation change."
               return 1
             fi
-            git commit -m "data: DWD live $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git commit -m "data: live observations $(date -u +'%Y-%m-%d %H:%M UTC')"
           }
 
           make_commit || exit 0
@@ -49,13 +56,15 @@ jobs:
             if git push origin HEAD:main; then
               exit 0
             fi
-            echo "Main moved; rebuilding isolated DWD live buffer (attempt ${attempt}/5)."
+            echo "Main moved; rebuilding isolated live buffers (attempt ${attempt}/5)."
             git fetch origin main
             git reset --hard origin/main
             python scripts/collect_dwd_sohland_live.py
+            python scripts/collect_chmi_live.py
+            python scripts/build_radar_live.py
             make_commit || exit 0
             sleep $((attempt * 3))
           done
 
-          echo "Unable to publish DWD live buffer after 5 retries."
+          echo "Unable to publish live observation buffers after 5 retries."
           exit 1
