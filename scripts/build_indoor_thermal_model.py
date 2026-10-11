@@ -23,6 +23,13 @@ CURRENT_OUTDOOR_MAX_AGE_MINUTES = 120.0
 HEAT_GAIN_TRIGGER_RISE_C = 0.2
 POST_HEATING_QUARANTINE_HOURS = 12
 POST_HEATING_QUARANTINE_BINS = int(POST_HEATING_QUARANTINE_HOURS * 3600 / BUCKET_SECONDS)
+HEATING_END_SEARCH_HOURS = 6
+HEATING_END_SEARCH_BINS = int(HEATING_END_SEARCH_HOURS * 3600 / BUCKET_SECONDS)
+HEATING_END_CONFIRM_HOURS = 2
+HEATING_END_CONFIRM_BINS = int(HEATING_END_CONFIRM_HOURS * 3600 / BUCKET_SECONDS)
+HEATING_END_MIN_DROP_C = 0.3
+HEATING_END_MAX_REBOUND_C = 0.1
+HEATING_END_PLATEAU_TOLERANCE_C = 0.1
 
 
 def as_float(value):
@@ -203,54 +210,141 @@ def bucket_local_iso(key):
     ).astimezone(TZ).isoformat()
 
 
-def detect_heat_gain_quarantine(indoor):
-    """Detect strong measured heat-gain signatures and quarantine later passive windows.
+def infer_heating_end(indoor, last_trigger_bucket):
+    """Infer the end of residual active heat from plateau -> sustained-cooling evidence."""
+    keys = sorted(
+        key for key in indoor
+        if last_trigger_bucket <= key <= last_trigger_bucket + HEATING_END_SEARCH_BINS
+    )
+    if not keys:
+        return {
+            "bucket": last_trigger_bucket,
+            "status": "fallback_last_trigger",
+            "confirmed_cooling_drop_c": None,
+            "plateau_peak_c": indoor[last_trigger_bucket]["temperature_c"],
+        }
 
-    This is source-agnostic: it does not claim wood-stove use. A trigger is only a
-    measured indoor rise larger than the existing 0.2 C / adjacent-bucket passive
-    guard. Each trigger extends a 12 h post-gain quarantine; overlapping intervals
-    are merged.
+    peak_c = max(indoor[key]["temperature_c"] for key in keys)
+    threshold_c = peak_c - HEATING_END_PLATEAU_TOLERANCE_C
+    confirmed = []
+
+    for candidate in keys:
+        start_c = indoor[candidate]["temperature_c"]
+        if start_c < threshold_c:
+            continue
+
+        future = sorted(
+            key for key in indoor
+            if candidate <= key <= candidate + HEATING_END_CONFIRM_BINS
+        )
+        if len(future) < 4 or future[-1] - candidate < HEATING_END_CONFIRM_BINS:
+            continue
+        if any((b - a) > MAX_INDOOR_GAP_BINS for a, b in zip(future, future[1:])):
+            continue
+
+        temps = [indoor[key]["temperature_c"] for key in future]
+        changes = [b - a for a, b in zip(temps, temps[1:])]
+        net_drop = temps[0] - temps[-1]
+        cumulative_rebound = sum(max(0.0, change) for change in changes)
+
+        if (
+            net_drop >= HEATING_END_MIN_DROP_C
+            and max(changes, default=0.0) <= HEATING_END_MAX_REBOUND_C
+            and cumulative_rebound <= HEATING_END_MAX_REBOUND_C
+        ):
+            confirmed.append((candidate, net_drop))
+
+    if confirmed:
+        candidate, drop = confirmed[-1]
+        return {
+            "bucket": candidate,
+            "status": "confirmed_plateau_to_cooling",
+            "confirmed_cooling_drop_c": rounded(drop, 2),
+            "plateau_peak_c": rounded(peak_c, 2),
+        }
+
+    latest_indoor_bucket = max(indoor)
+    confirmation_horizon = last_trigger_bucket + HEATING_END_SEARCH_BINS + HEATING_END_CONFIRM_BINS
+    if latest_indoor_bucket < confirmation_horizon:
+        return {
+            "bucket": latest_indoor_bucket,
+            "status": "awaiting_confirmation",
+            "confirmed_cooling_drop_c": None,
+            "plateau_peak_c": rounded(peak_c, 2),
+        }
+
+    return {
+        "bucket": last_trigger_bucket,
+        "status": "fallback_last_trigger",
+        "confirmed_cooling_drop_c": None,
+        "plateau_peak_c": rounded(peak_c, 2),
+    }
+
+
+def detect_heat_gain_quarantine(indoor):
+    """Detect strong heat-gain episodes and quarantine post-heating cooldown.
+
+    Source attribution remains unknown. Strong measured rises identify heat-gain
+    triggers. The episode end is inferred separately from the end of the plateau
+    followed by sustained cooling; the 12 h quarantine starts from that inferred end.
     """
     keys = sorted(indoor)
-    intervals = []
-    trigger_count = 0
-
+    triggers = []
     for previous, current in zip(keys, keys[1:]):
         gap_bins = current - previous
         if gap_bins < 1 or gap_bins > MAX_INDOOR_GAP_BINS:
             continue
         rise = indoor[current]["temperature_c"] - indoor[previous]["temperature_c"]
-        if rise <= HEAT_GAIN_TRIGGER_RISE_C:
-            continue
+        if rise > HEAT_GAIN_TRIGGER_RISE_C:
+            triggers.append({"bucket": current, "rise_c": rise})
 
-        trigger_count += 1
-        quarantine_end = current + POST_HEATING_QUARANTINE_BINS
-        if intervals and current <= intervals[-1]["end_bucket"]:
-            item = intervals[-1]
-            item["end_bucket"] = max(item["end_bucket"], quarantine_end)
+    grouped = []
+    for trigger in triggers:
+        current = trigger["bucket"]
+        if (
+            grouped
+            and current <= grouped[-1]["last_trigger_bucket"] + POST_HEATING_QUARANTINE_BINS
+        ):
+            item = grouped[-1]
             item["last_trigger_bucket"] = current
             item["trigger_count"] += 1
-            item["max_trigger_rise_c"] = max(item["max_trigger_rise_c"], rise)
+            item["max_trigger_rise_c"] = max(item["max_trigger_rise_c"], trigger["rise_c"])
         else:
-            intervals.append({
+            grouped.append({
                 "start_bucket": current,
                 "last_trigger_bucket": current,
-                "end_bucket": quarantine_end,
                 "trigger_count": 1,
-                "max_trigger_rise_c": rise,
+                "max_trigger_rise_c": trigger["rise_c"],
             })
 
-    now_bucket = bucket(datetime.now(timezone.utc))
+    intervals = []
     episodes = []
+    now_bucket = bucket(datetime.now(timezone.utc))
     active_until = None
-    for item in intervals:
-        active = item["start_bucket"] <= now_bucket < item["end_bucket"]
+
+    for item in grouped:
+        end_info = infer_heating_end(indoor, item["last_trigger_bucket"])
+        heating_end_bucket = end_info["bucket"]
+        quarantine_end = heating_end_bucket + POST_HEATING_QUARANTINE_BINS
+        interval = {
+            **item,
+            "inferred_heating_end_bucket": heating_end_bucket,
+            "end_bucket": quarantine_end,
+        }
+        intervals.append(interval)
+
+        active = item["start_bucket"] <= now_bucket < quarantine_end
         if active:
-            active_until = item["end_bucket"]
+            active_until = quarantine_end
+
         episodes.append({
             "first_trigger_local": bucket_local_iso(item["start_bucket"]),
             "last_trigger_local": bucket_local_iso(item["last_trigger_bucket"]),
-            "quarantine_until_local": bucket_local_iso(item["end_bucket"]),
+            "inferred_heating_end_local": bucket_local_iso(heating_end_bucket),
+            "end_detection_status": end_info["status"],
+            "confirmed_cooling_drop_c": end_info["confirmed_cooling_drop_c"],
+            "plateau_peak_c": end_info["plateau_peak_c"],
+            "quarantine_until_local": bucket_local_iso(quarantine_end),
             "trigger_count": item["trigger_count"],
             "max_trigger_rise_c": rounded(item["max_trigger_rise_c"], 2),
             "active_now": active,
@@ -259,20 +353,27 @@ def detect_heat_gain_quarantine(indoor):
     diagnostics = {
         "status": "diagnostic_only",
         "source_attribution": "not independently measured",
-        "interpretation": "Strong indoor heat-gain signatures are detected from temperature rises only; they do not prove wood-stove or any other heat source.",
+        "interpretation": "Strong indoor heat-gain signatures are detected from temperature rises only; the end of active/residual heating is inferred from a near-peak plateau followed by sustained cooling. Neither step proves wood-stove or any other heat source.",
         "trigger_rule": {
             "adjacent_bucket_rise_gt_c": HEAT_GAIN_TRIGGER_RISE_C,
             "maximum_gap_minutes": int(MAX_INDOOR_GAP_BINS * BUCKET_SECONDS / 60),
         },
+        "end_detection_rule": {
+            "search_hours_after_last_trigger": HEATING_END_SEARCH_HOURS,
+            "confirmation_hours": HEATING_END_CONFIRM_HOURS,
+            "minimum_confirmed_drop_c": HEATING_END_MIN_DROP_C,
+            "maximum_rebound_c": HEATING_END_MAX_REBOUND_C,
+            "plateau_tolerance_below_peak_c": HEATING_END_PLATEAU_TOLERANCE_C,
+            "fallback": "latest observed bucket while confirmation is pending; otherwise last strong heat-gain trigger",
+        },
         "post_heating_quarantine_hours": POST_HEATING_QUARANTINE_HOURS,
-        "trigger_count": trigger_count,
+        "trigger_count": len(triggers),
         "episode_count": len(episodes),
         "active_quarantine": active_until is not None,
         "active_quarantine_until_local": None if active_until is None else bucket_local_iso(active_until),
         "episodes": episodes,
     }
     return intervals, diagnostics
-
 
 def build_windows(indoor, weather, quarantine_intervals):
     windows = []
@@ -1385,7 +1486,7 @@ def main():
     indoor_points = indoor_payload.get("points") or []
 
     output = {
-        "schema": 6,
+        "schema": 7,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
@@ -1449,6 +1550,11 @@ def main():
             "maximum_cumulative_positive_rise_per_window_c": 0.4,
             "post_heating_quarantine_hours": POST_HEATING_QUARANTINE_HOURS,
             "post_heating_quarantine_trigger_rise_c": HEAT_GAIN_TRIGGER_RISE_C,
+            "heating_end_search_hours": HEATING_END_SEARCH_HOURS,
+            "heating_end_confirmation_hours": HEATING_END_CONFIRM_HOURS,
+            "heating_end_minimum_confirmed_drop_c": HEATING_END_MIN_DROP_C,
+            "heating_end_maximum_rebound_c": HEATING_END_MAX_REBOUND_C,
+            "heating_end_plateau_tolerance_c": HEATING_END_PLATEAU_TOLERANCE_C,
             "night_midpoint_hours_local": "21:00-05:59",
             "rejected": rejected,
         },
@@ -1457,7 +1563,7 @@ def main():
             "The passive fit preferentially uses nighttime 6-hour windows to reduce solar-gain and 0.1 °C sensor-quantization noise.",
             "Windows require at least 10/13 populated indoor half-hour buckets, no indoor gap over 60 minutes, known endpoint setpoints, and no strong short-term warming.",
             "Wood-stove heat is not independently measured yet; the filter detects heat-gain signatures rather than proving their source.",
-            "After a strong heat-gain signature, passive fitting quarantines windows starting during the next 12 hours so post-heating cooldown is not learned as normal envelope loss.",
+            "After a strong heat-gain episode, passive fitting infers the end of the near-peak plateau from sustained cooling and quarantines windows for 12 hours from that inferred end; if end evidence is incomplete it fails conservatively.",
             "DWD Sohland is preferred for historical outdoor temperature because it is closer; ČHMÚ Varnsdorf fills missing periods.",
             "A numeric passive forecast is withheld until there are at least 6 accepted nighttime windows and 5 days of paired coverage.",
             "The fit is observational and preliminary; it must not control heating until heating-state evidence and more seasonal data exist."
@@ -1469,7 +1575,7 @@ def main():
     )
     print(json.dumps({
         "ok": True,
-        "schema": 6,
+        "schema": 7,
         "status": status,
         "fit_basis": output["fit_basis"],
         "fit_samples": len(fit_basis),
