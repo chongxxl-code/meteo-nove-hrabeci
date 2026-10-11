@@ -169,15 +169,30 @@ def main():
 
     heat_diag = model.get("heat_gain_diagnostics") or {}
     rejected_windows = filters.get("rejected") or {}
+    end_rule = heat_diag.get("end_detection_rule") or {}
     check(
         "post_heating_quarantine_guard",
         float(filters.get("post_heating_quarantine_hours") or 0) >= 12.0
         and float(filters.get("post_heating_quarantine_trigger_rise_c") or 999) <= 0.2
+        and float(filters.get("heating_end_search_hours") or 0) >= 4.0
+        and float(filters.get("heating_end_confirmation_hours") or 0) >= 2.0
+        and float(filters.get("heating_end_minimum_confirmed_drop_c") or 0) >= 0.3
+        and float(filters.get("heating_end_maximum_rebound_c") or 999) <= 0.1
         and heat_diag.get("status") == "diagnostic_only"
         and heat_diag.get("source_attribution") == "not independently measured"
+        and float(end_rule.get("confirmation_hours") or 0) >= 2.0
         and isinstance(heat_diag.get("episodes"), list)
+        and all(
+            episode.get("inferred_heating_end_local")
+            and episode.get("end_detection_status") in {
+                "confirmed_plateau_to_cooling",
+                "awaiting_confirmation",
+                "fallback_last_trigger",
+            }
+            for episode in heat_diag.get("episodes") or []
+        )
         and "post_heating_quarantine" in rejected_windows,
-        "Passive fitting must quarantine at least 12 h after strong measured heat-gain signatures and keep source attribution explicitly unproven.",
+        "Passive fitting must infer heating end from plateau-to-cooling evidence before the 12 h quarantine, fail conservatively while confirmation is incomplete, and keep source attribution explicitly unproven.",
     )
 
     current_outdoor = ((model.get("weather_sources") or {}).get("current_temperature_selection") or {})
@@ -320,7 +335,7 @@ def main():
 
     overall = "fail" if failures else ("pass_with_warnings" if warnings else "pass")
     out = {
-        "schema": "2026-10-11.heating-audit-v3",
+        "schema": "2026-10-11.heating-audit-v4",
         "generated_at": now.isoformat().replace("+00:00", "Z"),
         "overall_status": overall,
         "critical_failures": failures,
