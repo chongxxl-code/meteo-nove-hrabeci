@@ -1,6 +1,6 @@
 {
   "schema": 5,
-  "generated_at": "2026-10-11T01:14:55.576754Z",
+  "generated_at": "2026-10-11T01:30:27.142264Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 22.21,
-  "indoor_raw_points": 8208,
+  "indoor_raw_points": 8213,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-11T03:09:11+02:00",
-  "indoor_30m_bins": 1056,
+  "indoor_history_last_timestamp": "2026-10-11T03:30:26+02:00",
+  "indoor_30m_bins": 1057,
   "weather_30m_bins": 2496,
   "paired_candidate_bins": 1055,
   "fit_samples": 35,
@@ -26,7 +26,7 @@
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
       "observed_at_utc": "2026-10-11T00:20:00Z",
-      "age_minutes": 54.9,
+      "age_minutes": 70.5,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
@@ -35,7 +35,7 @@
           "station": "Sohland/Spree",
           "temperature_c": 1.6,
           "observed_at_utc": "2026-10-11T00:20:00Z",
-          "age_minutes": 54.9,
+          "age_minutes": 70.5,
           "fresh": true
         }
       ]
@@ -118,21 +118,21 @@
     "note": "Shadow diagnostics never feed the public passive forecast or heating decisions."
   },
   "current_passive_estimate": {
-    "inside_c": 23.1,
+    "inside_c": 23.0,
     "outside_c": 1.6,
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
     "outside_observed_at_utc": "2026-10-11T00:20:00Z",
-    "outside_age_minutes": 54.9,
+    "outside_age_minutes": 70.5,
     "outside_fallback_used": false,
-    "inside_minus_outside_c": 21.5,
+    "inside_minus_outside_c": 21.4,
     "passive_fit_rate_c_per_h": -0.08,
     "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command"
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-11T03:09:11+02:00",
-    "start_inside_c": 23.1,
+    "start_timestamp_local": "2026-10-11T03:30:26+02:00",
+    "start_inside_c": 23.0,
     "weather_models": [
       "chmi",
       "dwd",
@@ -146,35 +146,35 @@
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-10-11T15:00:00+02:00",
-        "inside_median_c": 22.4,
-        "inside_q25_c": 22.0,
-        "inside_q75_c": 22.5,
-        "inside_min_scenario_c": 22.0,
-        "inside_max_scenario_c": 22.5,
+        "timestamp_local": "2026-10-11T16:00:00+02:00",
+        "inside_median_c": 22.3,
+        "inside_q25_c": 21.9,
+        "inside_q75_c": 22.4,
+        "inside_min_scenario_c": 21.8,
+        "inside_max_scenario_c": 22.4,
         "outside_model_median_c": 9.2,
         "scenario_count": 9
       },
       {
         "hours": 24,
-        "timestamp_local": "2026-10-12T03:00:00+02:00",
-        "inside_median_c": 21.8,
-        "inside_q25_c": 21.0,
-        "inside_q75_c": 22.0,
-        "inside_min_scenario_c": 20.9,
-        "inside_max_scenario_c": 22.0,
-        "outside_model_median_c": 7.1,
+        "timestamp_local": "2026-10-12T04:00:00+02:00",
+        "inside_median_c": 21.6,
+        "inside_q25_c": 20.8,
+        "inside_q75_c": 21.8,
+        "inside_min_scenario_c": 20.7,
+        "inside_max_scenario_c": 21.9,
+        "outside_model_median_c": 6.9,
         "scenario_count": 9
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-10-12T15:00:00+02:00",
-        "inside_median_c": 21.1,
-        "inside_q25_c": 20.0,
-        "inside_q75_c": 21.4,
-        "inside_min_scenario_c": 19.9,
-        "inside_max_scenario_c": 21.5,
-        "outside_model_median_c": 11.2,
+        "timestamp_local": "2026-10-12T16:00:00+02:00",
+        "inside_median_c": 21.0,
+        "inside_q25_c": 19.9,
+        "inside_q75_c": 21.3,
+        "inside_min_scenario_c": 19.8,
+        "inside_max_scenario_c": 21.4,
+        "outside_model_median_c": 11.1,
         "scenario_count": 9
       }
     ],
@@ -219,7 +219,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-11T03:09:11+02:00",
+      "start_timestamp_local": "2026-10-11T03:30:26+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -227,23 +227,23 @@
       ],
       "degree_hours_by_model": {
         "dwd": {
-          "degree_hours_kh": 0.8,
+          "degree_hours_kh": 0.7,
           "covered_hours": 24.0
         },
         "chmi": {
-          "degree_hours_kh": 3.57,
+          "degree_hours_kh": 3.63,
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 9.3,
+          "degree_hours_kh": 8.94,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 3.57,
+      "degree_hours_median_kh": 3.63,
       "electricity_kwh": {
         "low": 0.1,
         "central": 0.8,
-        "high": 3.2
+        "high": 3.1
       },
       "incremental_cost_czk": {
         "low": 1.0,
@@ -254,7 +254,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-11T03:09:11+02:00",
+      "start_timestamp_local": "2026-10-11T03:30:26+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -262,23 +262,23 @@
       ],
       "degree_hours_by_model": {
         "dwd": {
-          "degree_hours_kh": 0.8,
+          "degree_hours_kh": 0.7,
           "covered_hours": 24.0
         },
         "chmi": {
-          "degree_hours_kh": 3.57,
+          "degree_hours_kh": 3.63,
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 9.3,
+          "degree_hours_kh": 8.94,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 3.57,
+      "degree_hours_median_kh": 3.63,
       "electricity_kwh": {
         "low": 0.1,
         "central": 0.8,
-        "high": 3.2
+        "high": 3.1
       },
       "incremental_cost_czk": {
         "low": 1.0,
@@ -289,7 +289,7 @@
     },
     "actual_tempering_need_next_24h": {
       "horizon_hours": 24,
-      "inside_now_c": 23.1,
+      "inside_now_c": 23.0,
       "lower_switch_c": 6.0,
       "upper_switch_c": 8.0,
       "forecast_min_outside_c": 5.5,
@@ -331,9 +331,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-10-11T03:09:11+02:00",
+          "start_local": "2026-10-11T03:30:26+02:00",
           "end_local": "2026-10-11T07:31:00+02:00",
-          "hours": 4.364
+          "hours": 4.009
         },
         {
           "tariff": "VT",
@@ -386,8 +386,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-10-12T00:00:00+02:00",
-          "end_local": "2026-10-12T03:09:11+02:00",
-          "hours": 3.153
+          "end_local": "2026-10-12T03:30:26+02:00",
+          "hours": 3.507
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
