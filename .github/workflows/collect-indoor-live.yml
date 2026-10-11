@@ -14,6 +14,8 @@ on:
     paths:
       - 'scripts/collect_indoor_emos.py'
       - 'scripts/collect_dwd_sohland_live.py'
+      - 'scripts/collect_chmi_live.py'
+      - 'scripts/build_radar_live.py'
       - '.github/workflows/collect-indoor-live.yml'
 
 permissions:
@@ -36,6 +38,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+      - name: Install live radar dependencies
+        run: pip install --disable-pip-version-check numpy pillow
       - name: Collect EMOS indoor every 7 minutes
         env:
           EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}
@@ -115,11 +119,20 @@ jobs:
                 return "${rc}"
               fi
 
-              # Best-effort DWD live buffer for the indoor graph. This writes only
-              # data/dwd-sohland-live.json, so it cannot conflict with the canonical
-              # regional DWD archive/status writer.
+              # Best-effort isolated public live buffers. They do not touch the
+              # canonical regional archives/status files, so they cannot race those writers.
               if ! python scripts/collect_dwd_sohland_live.py; then
                 echo "DWD live buffer refresh failed; keeping the last good buffer."
+              fi
+              if ! python scripts/collect_chmi_live.py; then
+                echo "CHMI live buffer refresh failed; keeping the last good buffer."
+              fi
+              # Radar analysis is heavier than station reads; every second indoor
+              # cycle keeps it close to the intended 10-minute nowcast cadence.
+              if [ $(( (cycle_num - 1) % 2 )) -eq 0 ]; then
+                if ! python scripts/build_radar_live.py; then
+                  echo "Radar live buffer refresh failed; keeping the last good buffer."
+                fi
               fi
 
               # Refresh the passive thermal model roughly every 42 minutes and
@@ -132,7 +145,7 @@ jobs:
               # Keep the compact collector status current; history-status is verbose
               # and is not needed on every seven-minute live commit.
               git restore data/indoor-history-status.json 2>/dev/null || true
-              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json data/indoor-thermal-model.json data/dwd-sohland-live.json 2>/dev/null || true
+              git add data/indoor-cloud/ data/indoor-history.json data/indoor-latest.json data/indoor-collector-status.json data/indoor-dp-diagnostic.json data/indoor-thermal-model.json data/dwd-sohland-live.json data/chmi-live.json data/radar-live.json 2>/dev/null || true
 
               if git diff --cached --quiet; then
                 echo "No material indoor change."
