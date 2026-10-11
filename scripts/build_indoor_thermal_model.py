@@ -20,6 +20,9 @@ MIN_INDOOR_POINTS_PER_WINDOW = 10
 MAX_INDOOR_GAP_BINS = 2  # at most 60 minutes between populated 30-minute buckets
 MAX_FORECAST_STEP_HOURS = 3.1
 CURRENT_OUTDOOR_MAX_AGE_MINUTES = 120.0
+HEAT_GAIN_TRIGGER_RISE_C = 0.2
+POST_HEATING_QUARANTINE_HOURS = 12
+POST_HEATING_QUARANTINE_BINS = int(POST_HEATING_QUARANTINE_HOURS * 3600 / BUCKET_SECONDS)
 
 
 def as_float(value):
@@ -194,7 +197,84 @@ def resolve_current_outdoor_temperature(dwd_status, chmi_status, now_utc=None):
     }
 
 
-def build_windows(indoor, weather):
+def bucket_local_iso(key):
+    return datetime.fromtimestamp(
+        key * BUCKET_SECONDS, timezone.utc
+    ).astimezone(TZ).isoformat()
+
+
+def detect_heat_gain_quarantine(indoor):
+    """Detect strong measured heat-gain signatures and quarantine later passive windows.
+
+    This is source-agnostic: it does not claim wood-stove use. A trigger is only a
+    measured indoor rise larger than the existing 0.2 C / adjacent-bucket passive
+    guard. Each trigger extends a 12 h post-gain quarantine; overlapping intervals
+    are merged.
+    """
+    keys = sorted(indoor)
+    intervals = []
+    trigger_count = 0
+
+    for previous, current in zip(keys, keys[1:]):
+        gap_bins = current - previous
+        if gap_bins < 1 or gap_bins > MAX_INDOOR_GAP_BINS:
+            continue
+        rise = indoor[current]["temperature_c"] - indoor[previous]["temperature_c"]
+        if rise <= HEAT_GAIN_TRIGGER_RISE_C:
+            continue
+
+        trigger_count += 1
+        quarantine_end = current + POST_HEATING_QUARANTINE_BINS
+        if intervals and current <= intervals[-1]["end_bucket"]:
+            item = intervals[-1]
+            item["end_bucket"] = max(item["end_bucket"], quarantine_end)
+            item["last_trigger_bucket"] = current
+            item["trigger_count"] += 1
+            item["max_trigger_rise_c"] = max(item["max_trigger_rise_c"], rise)
+        else:
+            intervals.append({
+                "start_bucket": current,
+                "last_trigger_bucket": current,
+                "end_bucket": quarantine_end,
+                "trigger_count": 1,
+                "max_trigger_rise_c": rise,
+            })
+
+    now_bucket = bucket(datetime.now(timezone.utc))
+    episodes = []
+    active_until = None
+    for item in intervals:
+        active = item["start_bucket"] <= now_bucket < item["end_bucket"]
+        if active:
+            active_until = item["end_bucket"]
+        episodes.append({
+            "first_trigger_local": bucket_local_iso(item["start_bucket"]),
+            "last_trigger_local": bucket_local_iso(item["last_trigger_bucket"]),
+            "quarantine_until_local": bucket_local_iso(item["end_bucket"]),
+            "trigger_count": item["trigger_count"],
+            "max_trigger_rise_c": rounded(item["max_trigger_rise_c"], 2),
+            "active_now": active,
+        })
+
+    diagnostics = {
+        "status": "diagnostic_only",
+        "source_attribution": "not independently measured",
+        "interpretation": "Strong indoor heat-gain signatures are detected from temperature rises only; they do not prove wood-stove or any other heat source.",
+        "trigger_rule": {
+            "adjacent_bucket_rise_gt_c": HEAT_GAIN_TRIGGER_RISE_C,
+            "maximum_gap_minutes": int(MAX_INDOOR_GAP_BINS * BUCKET_SECONDS / 60),
+        },
+        "post_heating_quarantine_hours": POST_HEATING_QUARANTINE_HOURS,
+        "trigger_count": trigger_count,
+        "episode_count": len(episodes),
+        "active_quarantine": active_until is not None,
+        "active_quarantine_until_local": None if active_until is None else bucket_local_iso(active_until),
+        "episodes": episodes,
+    }
+    return intervals, diagnostics
+
+
+def build_windows(indoor, weather, quarantine_intervals):
     windows = []
     rejected = {
         "gap": 0,
@@ -202,6 +282,7 @@ def build_windows(indoor, weather):
         "setpoint_unknown": 0,
         "warming": 0,
         "heat_gain": 0,
+        "post_heating_quarantine": 0,
         "coverage": 0,
         "indoor_coverage": 0,
         "indoor_gap": 0,
@@ -253,9 +334,19 @@ def build_windows(indoor, weather):
             rises = [b - a for a, b in zip(indoor_path, indoor_path[1:])]
             max_rise_30m = max(rises)
             cumulative_rise = sum(max(0.0, rise) for rise in rises)
-            if max_rise_30m > 0.2 or cumulative_rise > 0.4:
+            if max_rise_30m > HEAT_GAIN_TRIGGER_RISE_C or cumulative_rise > 0.4:
                 rejected["heat_gain"] += 1
                 continue
+
+        # A window that starts after a strong heat-gain signature is not treated as
+        # clean passive cooling until the fixed quarantine has expired. This prevents
+        # post-stove / post-gain sensor and room cooldown from teaching the envelope fit.
+        if any(
+            item["start_bucket"] <= start < item["end_bucket"]
+            for item in quarantine_intervals
+        ):
+            rejected["post_heating_quarantine"] += 1
+            continue
 
         rate = (tin_end - tin_start) / WINDOW_HOURS
         if rate > 0.08:
@@ -1229,7 +1320,8 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False):
 def main():
     indoor, indoor_payload = load_indoor_bins()
     weather, dwd_status, chmi_status, chmi_paths, dwd_paths, source_counts = weather_bins()
-    windows, rejected, paired_bins = build_windows(indoor, weather)
+    quarantine_intervals, heat_gain_diagnostics = detect_heat_gain_quarantine(indoor)
+    windows, rejected, paired_bins = build_windows(indoor, weather, quarantine_intervals)
 
     night = [w for w in windows if w["night"]]
     fit_basis = night if len(night) >= 6 else windows
@@ -1293,7 +1385,7 @@ def main():
     indoor_points = indoor_payload.get("points") or []
 
     output = {
-        "schema": 5,
+        "schema": 6,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
@@ -1341,6 +1433,7 @@ def main():
         "current_passive_estimate": current,
         "passive_forecast": passive_forecast,
         "heating_energy_model": heating_energy_model,
+        "heat_gain_diagnostics": heat_gain_diagnostics,
         "filters": {
             "bucket_minutes": 30,
             "window_hours": WINDOW_HOURS,
@@ -1352,8 +1445,10 @@ def main():
             "minimum_inside_minus_outside_c": 2.0,
             "setpoint_margin_c": 1.5,
             "maximum_allowed_warming_c_per_h": 0.08,
-            "maximum_single_30m_rise_c": 0.2,
+            "maximum_single_30m_rise_c": HEAT_GAIN_TRIGGER_RISE_C,
             "maximum_cumulative_positive_rise_per_window_c": 0.4,
+            "post_heating_quarantine_hours": POST_HEATING_QUARANTINE_HOURS,
+            "post_heating_quarantine_trigger_rise_c": HEAT_GAIN_TRIGGER_RISE_C,
             "night_midpoint_hours_local": "21:00-05:59",
             "rejected": rejected,
         },
@@ -1362,6 +1457,7 @@ def main():
             "The passive fit preferentially uses nighttime 6-hour windows to reduce solar-gain and 0.1 °C sensor-quantization noise.",
             "Windows require at least 10/13 populated indoor half-hour buckets, no indoor gap over 60 minutes, known endpoint setpoints, and no strong short-term warming.",
             "Wood-stove heat is not independently measured yet; the filter detects heat-gain signatures rather than proving their source.",
+            "After a strong heat-gain signature, passive fitting quarantines windows starting during the next 12 hours so post-heating cooldown is not learned as normal envelope loss.",
             "DWD Sohland is preferred for historical outdoor temperature because it is closer; ČHMÚ Varnsdorf fills missing periods.",
             "A numeric passive forecast is withheld until there are at least 6 accepted nighttime windows and 5 days of paired coverage.",
             "The fit is observational and preliminary; it must not control heating until heating-state evidence and more seasonal data exist."
@@ -1373,7 +1469,7 @@ def main():
     )
     print(json.dumps({
         "ok": True,
-        "schema": 5,
+        "schema": 6,
         "status": status,
         "fit_basis": output["fit_basis"],
         "fit_samples": len(fit_basis),
