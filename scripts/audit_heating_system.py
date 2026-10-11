@@ -167,6 +167,19 @@ def main():
         "Passive forecast must fail closed across weather gaps larger than the documented maximum step.",
     )
 
+    heat_diag = model.get("heat_gain_diagnostics") or {}
+    rejected_windows = filters.get("rejected") or {}
+    check(
+        "post_heating_quarantine_guard",
+        float(filters.get("post_heating_quarantine_hours") or 0) >= 12.0
+        and float(filters.get("post_heating_quarantine_trigger_rise_c") or 999) <= 0.2
+        and heat_diag.get("status") == "diagnostic_only"
+        and heat_diag.get("source_attribution") == "not independently measured"
+        and isinstance(heat_diag.get("episodes"), list)
+        and "post_heating_quarantine" in rejected_windows,
+        "Passive fitting must quarantine at least 12 h after strong measured heat-gain signatures and keep source attribution explicitly unproven.",
+    )
+
     current_outdoor = ((model.get("weather_sources") or {}).get("current_temperature_selection") or {})
     current_estimate = model.get("current_passive_estimate")
     if current_estimate is not None:
@@ -307,7 +320,7 @@ def main():
 
     overall = "fail" if failures else ("pass_with_warnings" if warnings else "pass")
     out = {
-        "schema": "2026-10-05.heating-audit-v2",
+        "schema": "2026-10-11.heating-audit-v3",
         "generated_at": now.isoformat().replace("+00:00", "Z"),
         "overall_status": overall,
         "critical_failures": failures,
