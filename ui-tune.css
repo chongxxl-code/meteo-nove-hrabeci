@@ -385,3 +385,56 @@ h1{font-size:clamp(31px,4.6vw,45px)}
   box-shadow:inset 0 0 28px rgba(255,111,102,.15),0 0 18px rgba(255,111,102,.12);
 }
 .riskitem.red .riskheadline{color:#ff918a}
+
+
+/* Mobile UX repair — keep desktop unchanged. */
+@media(max-width:520px){
+  /* AI summary: three compact KPIs in one row instead of three tall stacked cards. */
+  .ai .kpi{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+    margin-top:12px;
+  }
+  .ai .kpi div{
+    min-width:0;
+    padding:9px 7px;
+    min-height:68px;
+  }
+  .ai .kpi b{
+    font-size:17px;
+    line-height:1.15;
+    white-space:nowrap;
+  }
+  .ai .kpi span{
+    font-size:9.5px;
+    line-height:1.25;
+  }
+
+  /* 12 h forecast: use the phone width instead of clipping the fourth card. */
+  .hours .hourstrip{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    overflow:visible;
+    padding:10px 0 2px;
+  }
+  .hours .hour{
+    min-width:0;
+    min-height:128px;
+    padding:10px;
+  }
+  .hours .hour .t{
+    font-size:24px;
+    line-height:1.1;
+    margin:8px 0;
+    white-space:nowrap;
+  }
+  .hours .hour>small{
+    font-size:10.5px;
+    line-height:1.4;
+  }
+
+  /* Avoid accidental page-wide horizontal overflow from long child content. */
+  main,.grid,.card,.hours,.hourstrip{min-width:0;max-width:100%}
+  body{overflow-x:hidden}
+}
