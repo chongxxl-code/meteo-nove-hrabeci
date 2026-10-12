@@ -1,6 +1,6 @@
 {
   "schema": 7,
-  "generated_at": "2026-10-12T19:16:16.150475Z",
+  "generated_at": "2026-10-12T19:21:05.455864Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -8,52 +8,43 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
-  "coverage_days": 23.88,
+  "coverage_days": 23.96,
   "indoor_raw_points": 9172,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
   "indoor_history_last_timestamp": "2026-10-12T21:14:03+02:00",
   "indoor_30m_bins": 1140,
-  "weather_30m_bins": 2576,
-  "paired_candidate_bins": 1135,
+  "weather_30m_bins": 2580,
+  "paired_candidate_bins": 1139,
   "fit_samples": 32,
   "all_accepted_windows": 50,
   "night_windows": 32,
   "weather_sources": {
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "current_temperature_selection": {
-      "ok": false,
-      "temperature_c": null,
-      "source": null,
-      "station": null,
-      "observed_at_utc": null,
-      "age_minutes": null,
+      "ok": true,
+      "temperature_c": 4.0,
+      "source": "DWD Sohland",
+      "station": "Sohland/Spree",
+      "observed_at_utc": "2026-10-12T18:50:00Z",
+      "age_minutes": 31.1,
       "max_age_minutes": 120.0,
-      "fallback_used": null,
+      "fallback_used": false,
       "candidates": [
         {
           "source": "DWD Sohland",
           "station": "Sohland/Spree",
-          "temperature_c": 5.5,
-          "observed_at_utc": "2026-10-12T16:50:00Z",
-          "age_minutes": 146.3,
-          "fresh": false
-        },
-        {
-          "source": "ČHMÚ Varnsdorf",
-          "station": "Varnsdorf",
-          "temperature_c": 6.1,
-          "observed_at_utc": "2026-10-12T16:50:00Z",
-          "age_minutes": 146.3,
-          "fresh": false
+          "temperature_c": 4.0,
+          "observed_at_utc": "2026-10-12T18:50:00Z",
+          "age_minutes": 31.1,
+          "fresh": true
         }
-      ],
-      "reason": "No preferred/fallback outdoor observation is fresh enough for a current thermal-rate estimate."
+      ]
     },
     "current_temperature_max_age_minutes": 120.0,
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 2576,
+      "DWD Sohland": 2580,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -126,7 +117,18 @@
     "production_fit_unchanged": true,
     "note": "Shadow diagnostics never feed the public passive forecast or heating decisions."
   },
-  "current_passive_estimate": null,
+  "current_passive_estimate": {
+    "inside_c": 17.8,
+    "outside_c": 4.0,
+    "outside_source": "DWD Sohland",
+    "outside_station": "Sohland/Spree",
+    "outside_observed_at_utc": "2026-10-12T18:50:00Z",
+    "outside_age_minutes": 31.1,
+    "outside_fallback_used": false,
+    "inside_minus_outside_c": 13.8,
+    "passive_fit_rate_c_per_h": -0.05,
+    "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command"
+  },
   "passive_forecast": {
     "mode": "no_active_heating",
     "start_timestamp_local": "2026-10-12T21:15:49+02:00",
