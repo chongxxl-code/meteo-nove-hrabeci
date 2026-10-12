@@ -1,6 +1,6 @@
 {
   "schema": "2026-10-11.heating-audit-v4",
-  "generated_at": "2026-10-12T10:42:13.181795Z",
+  "generated_at": "2026-10-12T21:16:49.772217Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
@@ -43,21 +43,6 @@
       "name": "hdo_week_length",
       "ok": true,
       "detail": "HDO schedule must contain seven forward days."
-    },
-    {
-      "name": "hdo_24h_2026-10-11",
-      "ok": true,
-      "detail": "HDO day 2026-10-11 does not cover exactly 24 hours."
-    },
-    {
-      "name": "hdo_nt_min_2026-10-11",
-      "ok": true,
-      "detail": "HDO day 2026-10-11 has less than 20 hours of NT."
-    },
-    {
-      "name": "hdo_vt_block_2026-10-11",
-      "ok": true,
-      "detail": "HDO day 2026-10-11 contains a VT block longer than 60 minutes."
     },
     {
       "name": "hdo_24h_2026-10-12",
@@ -150,6 +135,21 @@
       "detail": "HDO day 2026-10-17 contains a VT block longer than 60 minutes."
     },
     {
+      "name": "hdo_24h_2026-10-18",
+      "ok": true,
+      "detail": "HDO day 2026-10-18 does not cover exactly 24 hours."
+    },
+    {
+      "name": "hdo_nt_min_2026-10-18",
+      "ok": true,
+      "detail": "HDO day 2026-10-18 has less than 20 hours of NT."
+    },
+    {
+      "name": "hdo_vt_block_2026-10-18",
+      "ok": true,
+      "detail": "HDO day 2026-10-18 contains a VT block longer than 60 minutes."
+    },
+    {
       "name": "hdo_zero_paid_provider",
       "ok": true,
       "detail": "HDO monitoring unexpectedly uses a paid provider."
@@ -162,12 +162,12 @@
     {
       "name": "indoor_latest_freshness",
       "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 1.5 min)."
+      "detail": "Indoor latest sample is stale or missing (age 4.0 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 8675 points."
+      "detail": "Indoor history has only 9197 points."
     },
     {
       "name": "passive_window_indoor_coverage_guard",
@@ -227,7 +227,7 @@
     {
       "name": "weather_snapshot_freshness",
       "ok": true,
-      "detail": "Weather snapshot is stale or missing (age 0.2 min)."
+      "detail": "Weather snapshot is stale or missing (age 1.9 min)."
     }
   ],
   "summary": {
