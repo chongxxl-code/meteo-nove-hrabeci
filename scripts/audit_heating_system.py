@@ -195,22 +195,35 @@ def main():
         "Passive fitting must infer heating end from plateau-to-cooling evidence before the 12 h quarantine, fail conservatively while confirmation is incomplete, and keep source attribution explicitly unproven.",
     )
 
+    current_indoor = model.get("current_indoor_state") or {}
     current_outdoor = ((model.get("weather_sources") or {}).get("current_temperature_selection") or {})
     current_estimate = model.get("current_passive_estimate")
+
+    check(
+        "current_indoor_freshness_and_connectivity",
+        float(current_indoor.get("max_age_minutes") or 9999) <= 30.0
+        and not (
+            current_indoor.get("device_offline") is True
+            and current_indoor.get("ok") is True
+        ),
+        "Current indoor state must be freshness-gated to at most 30 minutes, and an explicitly offline EMOS device must never be considered live.",
+    )
+
     if current_estimate is not None:
         check(
-            "current_outdoor_freshness_and_provenance",
-            current_outdoor.get("ok") is True
+            "current_state_freshness_and_provenance",
+            current_indoor.get("ok") is True
+            and current_outdoor.get("ok") is True
             and current_estimate.get("outside_source") in {"DWD Sohland", "ČHMÚ Varnsdorf"}
             and float(current_estimate.get("outside_age_minutes") or 9999)
                 <= float(current_outdoor.get("max_age_minutes") or 0),
-            "Current passive-rate estimate must use a freshness-gated DWD Sohland observation or an explicit ČHMÚ Varnsdorf fallback.",
+            "Current passive-rate estimate requires both a fresh connected indoor observation and a freshness-gated DWD/ČHMÚ outdoor observation.",
         )
     else:
         check(
-            "current_outdoor_freshness_and_provenance",
-            current_outdoor.get("ok") is False,
-            "Current passive-rate estimate is missing even though a fresh outdoor observation was selected.",
+            "current_state_freshness_and_provenance",
+            not (current_indoor.get("ok") is True and current_outdoor.get("ok") is True),
+            "Current passive-rate estimate is missing even though both indoor and outdoor current-state inputs are fresh.",
             severity="warn",
         )
 
@@ -294,7 +307,8 @@ def main():
         configured_setpoint = actual.get("configured_tempering_setpoint_c")
         check(
             "actual_zero_need_proof",
-            inside > lower
+            current_indoor.get("ok") is True
+            and inside > lower
             and outside_min >= lower
             and ((actual.get("forecast_continuity") or {}).get("ok") is True)
             and actual.get("setpoint_matches_configured_target") is True
@@ -335,7 +349,7 @@ def main():
 
     overall = "fail" if failures else ("pass_with_warnings" if warnings else "pass")
     out = {
-        "schema": "2026-10-11.heating-audit-v4",
+        "schema": "2026-10-13.heating-audit-v5",
         "generated_at": now.isoformat().replace("+00:00", "Z"),
         "overall_status": overall,
         "critical_failures": failures,
