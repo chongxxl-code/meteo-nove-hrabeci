@@ -225,6 +225,53 @@ def get_dp(dps, key):
     return dps.get(str(key), dps.get(key))
 
 
+def normalize_online_flag(value):
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)) and value in (0, 1):
+        return bool(value)
+    if isinstance(value, str):
+        token = value.strip().lower()
+        if token in {"true", "1", "online", "connected"}:
+            return True
+        if token in {"false", "0", "offline", "disconnected"}:
+            return False
+    return None
+
+
+def device_connectivity_state(*records):
+    """Return explicit Tuya/EMOS online state when the API actually exposes one.
+
+    False is deliberately authoritative across list/detail records: when any current
+    device record says offline, stale datapoints must not be timestamped as fresh.
+    Unknown stays None so we never invent connectivity from unrelated fields.
+    """
+    observed = []
+    for source, record in records:
+        if not isinstance(record, dict):
+            continue
+        for key in ("online", "isOnline", "is_online"):
+            if key not in record:
+                continue
+            normalized = normalize_online_flag(record.get(key))
+            if normalized is not None:
+                observed.append((normalized, f"{source}.{key}"))
+
+    offline_sources = [source for value, source in observed if value is False]
+    if offline_sources:
+        return False, offline_sources
+    online_sources = [source for value, source in observed if value is True]
+    if online_sources:
+        return True, online_sources
+    return None, []
+
+
+class DeviceOffline(RuntimeError):
+    def __init__(self, sources):
+        self.sources = list(sources or [])
+        super().__init__("EMOS/Tuya explicitly reports the target device offline")
+
+
 def temp_c(raw):
     if raw is None or isinstance(raw, bool):
         return None
@@ -639,6 +686,13 @@ def main():
     if not isinstance(detail, dict):
         detail = {}
 
+    device_online, connectivity_sources = device_connectivity_state(
+        ("device_detail", detail),
+        ("device_list", target),
+    )
+    if device_online is False:
+        raise DeviceOffline(connectivity_sources)
+
     point_info = detail.get("dataPointInfo") if isinstance(detail.get("dataPointInfo"), dict) else {}
     dps = point_info.get("dps") or detail.get("dps") or target.get("dps") or {}
     diagnostic_dps = {}
@@ -665,6 +719,7 @@ def main():
         "setpoint_c": setpoint,
         "dp2_raw": dp2_raw,
         "dp106_raw": dp106_raw,
+        "device_online": device_online,
         "source": "EMOS/Tuya cloud snapshot",
     }
 
@@ -799,6 +854,8 @@ def main():
         "setpoint_c": setpoint,
         "dp2_raw": dp2_raw,
         "dp106_raw": dp106_raw,
+        "device_online": device_online,
+        "connectivity_sources": connectivity_sources,
         "points": len(merged),
         "live_mode": live_mode,
         "persist_snapshot": persist_snapshot,
@@ -830,6 +887,17 @@ if __name__ == "__main__":
         code = main()
         write_status({"ok": code == 0, "stage": "completed"})
         raise SystemExit(code)
+    except DeviceOffline as exc:
+        payload = {
+            "ok": False,
+            "stage": "device_offline",
+            "device_online": False,
+            "connectivity_sources": exc.sources,
+            "note": "EMOS/Tuya explicitly reports the device offline. No fresh snapshot was written; the last valid measurement is preserved.",
+        }
+        write_status(payload)
+        print(json.dumps(payload, ensure_ascii=False))
+        raise SystemExit(0)
     except SystemExit:
         raise
     except Exception as exc:
