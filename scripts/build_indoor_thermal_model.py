@@ -20,6 +20,7 @@ MIN_INDOOR_POINTS_PER_WINDOW = 10
 MAX_INDOOR_GAP_BINS = 2  # at most 60 minutes between populated 30-minute buckets
 MAX_FORECAST_STEP_HOURS = 3.1
 CURRENT_OUTDOOR_MAX_AGE_MINUTES = 120.0
+CURRENT_INDOOR_MAX_AGE_MINUTES = 30.0
 HEAT_GAIN_TRIGGER_RISE_C = 0.2
 POST_HEATING_QUARANTINE_HOURS = 12
 POST_HEATING_QUARANTINE_BINS = int(POST_HEATING_QUARANTINE_HOURS * 3600 / BUCKET_SECONDS)
@@ -55,6 +56,46 @@ def parse_dt(value):
 
 def bucket(dt):
     return int(dt.timestamp() // BUCKET_SECONDS)
+
+
+def resolve_current_indoor_state(latest, collector_status=None, now_utc=None):
+    """Gate current-state claims on a fresh indoor observation and connectivity."""
+    now_utc = now_utc or datetime.now(timezone.utc)
+    collector_status = collector_status if isinstance(collector_status, dict) else {}
+    offline = (
+        collector_status.get("stage") == "device_offline"
+        or collector_status.get("device_online") is False
+    )
+    observed = parse_dt(
+        (latest or {}).get("last_timestamp")
+        or (latest or {}).get("generated_at")
+    ) if isinstance(latest, dict) else None
+    inside_c = as_float((latest or {}).get("latest_indoor_c")) if isinstance(latest, dict) else None
+    age_min = None if observed is None else (now_utc - observed).total_seconds() / 60.0
+    fresh = bool(
+        observed is not None
+        and age_min is not None
+        and 0 <= age_min <= CURRENT_INDOOR_MAX_AGE_MINUTES
+    )
+    ok = bool(inside_c is not None and fresh and not offline)
+    if offline:
+        reason = "EMOS/Tuya explicitly reports the device offline; last stored indoor values are historical, not live state."
+    elif not fresh:
+        reason = "The last indoor observation is too old for a current-state thermal or tempering claim."
+    elif inside_c is None:
+        reason = "The latest indoor temperature is missing."
+    else:
+        reason = None
+    return {
+        "ok": ok,
+        "temperature_c": rounded(inside_c, 1),
+        "observed_at_utc": None if observed is None else observed.isoformat().replace("+00:00", "Z"),
+        "age_minutes": rounded(age_min, 1),
+        "max_age_minutes": CURRENT_INDOOR_MAX_AGE_MINUTES,
+        "device_offline": offline,
+        "collector_stage": collector_status.get("stage"),
+        "reason": reason,
+    }
 
 
 def q(values, p):
@@ -1445,7 +1486,9 @@ def main():
 
     current = None
     latest = load_json(DATA / "indoor-latest.json", {})
-    tin_now = as_float(latest.get("latest_indoor_c"))
+    collector_status = load_json(DATA / "indoor-collector-status.json", {})
+    current_indoor = resolve_current_indoor_state(latest, collector_status)
+    tin_now = as_float(current_indoor.get("temperature_c")) if current_indoor.get("ok") else None
     current_outdoor = resolve_current_outdoor_temperature(dwd_status, chmi_status)
     tout_now = as_float(current_outdoor.get("temperature_c"))
     if fit and tin_now is not None and tout_now is not None:
@@ -1479,14 +1522,15 @@ def main():
         else:
             prediction_blocker = "passive fit is not based on nighttime windows"
 
-    passive_forecast = build_passive_forecast(latest, fit) if prediction_ready else None
-    heating_energy_model = build_heating_energy_model(latest, fit, prediction_ready)
+    current_prediction_ready = bool(prediction_ready and current_indoor.get("ok"))
+    passive_forecast = build_passive_forecast(latest, fit) if current_prediction_ready else None
+    heating_energy_model = build_heating_energy_model(latest, fit, current_prediction_ready)
     weighted_fit_shadow = weighted_passive_fit(fit_basis)
     rolling_shadow = rolling_passive_shadow_validation(fit_basis)
     indoor_points = indoor_payload.get("points") or []
 
     output = {
-        "schema": 7,
+        "schema": 8,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
@@ -1505,6 +1549,7 @@ def main():
         "fit_samples": len(fit_basis),
         "all_accepted_windows": len(windows),
         "night_windows": len(night),
+        "current_indoor_state": current_indoor,
         "weather_sources": {
             "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
             "current_temperature_selection": current_outdoor,
@@ -1543,6 +1588,7 @@ def main():
             "maximum_indoor_gap_minutes": int(MAX_INDOOR_GAP_BINS * BUCKET_SECONDS / 60),
             "reject_unknown_endpoint_setpoint": True,
             "maximum_forecast_step_hours": MAX_FORECAST_STEP_HOURS,
+            "current_indoor_max_age_minutes": CURRENT_INDOOR_MAX_AGE_MINUTES,
             "minimum_inside_minus_outside_c": 2.0,
             "setpoint_margin_c": 1.5,
             "maximum_allowed_warming_c_per_h": 0.08,
@@ -1566,6 +1612,7 @@ def main():
             "After a strong heat-gain episode, passive fitting infers the end of the near-peak plateau from sustained cooling and quarantines windows for 12 hours from that inferred end; if end evidence is incomplete it fails conservatively.",
             "DWD Sohland is preferred for historical outdoor temperature because it is closer; ČHMÚ Varnsdorf fills missing periods.",
             "A numeric passive forecast is withheld until there are at least 6 accepted nighttime windows and 5 days of paired coverage.",
+            "Current passive/tempering claims are additionally withheld when the indoor observation is older than 30 minutes or EMOS/Tuya explicitly reports the device offline.",
             "The fit is observational and preliminary; it must not control heating until heating-state evidence and more seasonal data exist."
         ],
     }
