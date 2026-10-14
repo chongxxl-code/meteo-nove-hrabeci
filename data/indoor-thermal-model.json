@@ -1,6 +1,6 @@
 {
   "schema": 8,
-  "generated_at": "2026-10-14T20:44:04.617901Z",
+  "generated_at": "2026-10-14T21:28:26.337126Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 25.96,
-  "indoor_raw_points": 9803,
+  "indoor_raw_points": 9812,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-14T22:41:02+02:00",
-  "indoor_30m_bins": 1238,
+  "indoor_history_last_timestamp": "2026-10-14T23:27:32+02:00",
+  "indoor_30m_bins": 1239,
   "weather_30m_bins": 2676,
   "paired_candidate_bins": 1234,
   "fit_samples": 34,
@@ -21,8 +21,8 @@
   "current_indoor_state": {
     "ok": true,
     "temperature_c": 15.6,
-    "observed_at_utc": "2026-10-14T20:43:32Z",
-    "age_minutes": 0.5,
+    "observed_at_utc": "2026-10-14T21:27:52Z",
+    "age_minutes": 0.6,
     "max_age_minutes": 30.0,
     "device_offline": false,
     "collector_stage": "completed",
@@ -31,24 +31,33 @@
   "weather_sources": {
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "current_temperature_selection": {
-      "ok": true,
-      "temperature_c": 4.7,
-      "source": "DWD Sohland",
-      "station": "Sohland/Spree",
-      "observed_at_utc": "2026-10-14T18:50:00Z",
-      "age_minutes": 114.1,
+      "ok": false,
+      "temperature_c": null,
+      "source": null,
+      "station": null,
+      "observed_at_utc": null,
+      "age_minutes": null,
       "max_age_minutes": 120.0,
-      "fallback_used": false,
+      "fallback_used": null,
       "candidates": [
         {
           "source": "DWD Sohland",
           "station": "Sohland/Spree",
           "temperature_c": 4.7,
           "observed_at_utc": "2026-10-14T18:50:00Z",
-          "age_minutes": 114.1,
-          "fresh": true
+          "age_minutes": 158.4,
+          "fresh": false
+        },
+        {
+          "source": "ČHMÚ Varnsdorf",
+          "station": "Varnsdorf",
+          "temperature_c": 6.8,
+          "observed_at_utc": "2026-10-14T18:50:00Z",
+          "age_minutes": 158.4,
+          "fresh": false
         }
-      ]
+      ],
+      "reason": "No preferred/fallback outdoor observation is fresh enough for a current thermal-rate estimate."
     },
     "current_temperature_max_age_minutes": 120.0,
     "DWD_Sohland_distance_km": 4.89,
@@ -127,21 +136,10 @@
     "production_fit_unchanged": true,
     "note": "Shadow diagnostics never feed the public passive forecast or heating decisions."
   },
-  "current_passive_estimate": {
-    "inside_c": 15.6,
-    "outside_c": 4.7,
-    "outside_source": "DWD Sohland",
-    "outside_station": "Sohland/Spree",
-    "outside_observed_at_utc": "2026-10-14T18:50:00Z",
-    "outside_age_minutes": 114.1,
-    "outside_fallback_used": false,
-    "inside_minus_outside_c": 10.9,
-    "passive_fit_rate_c_per_h": -0.04,
-    "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command"
-  },
+  "current_passive_estimate": null,
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-14T22:43:32+02:00",
+    "start_timestamp_local": "2026-10-14T23:27:52+02:00",
     "start_inside_c": 15.6,
     "weather_models": [
       "chmi",
@@ -158,7 +156,7 @@
         "hours": 12,
         "timestamp_local": "2026-10-15T11:00:00+02:00",
         "inside_median_c": 15.2,
-        "inside_q25_c": 14.9,
+        "inside_q25_c": 15.0,
         "inside_q75_c": 15.3,
         "inside_min_scenario_c": 14.9,
         "inside_max_scenario_c": 15.3,
@@ -171,7 +169,7 @@
         "inside_median_c": 15.1,
         "inside_q25_c": 14.8,
         "inside_q75_c": 15.2,
-        "inside_min_scenario_c": 14.7,
+        "inside_min_scenario_c": 14.8,
         "inside_max_scenario_c": 15.2,
         "outside_model_median_c": 10.1,
         "scenario_count": 9
@@ -180,8 +178,8 @@
         "hours": 36,
         "timestamp_local": "2026-10-16T11:00:00+02:00",
         "inside_median_c": 14.8,
-        "inside_q25_c": 14.3,
-        "inside_q75_c": 14.9,
+        "inside_q25_c": 14.4,
+        "inside_q75_c": 15.0,
         "inside_min_scenario_c": 14.3,
         "inside_max_scenario_c": 15.0,
         "outside_model_median_c": 13.0,
@@ -192,7 +190,7 @@
         "timestamp_local": "2026-10-16T23:00:00+02:00",
         "inside_median_c": 14.8,
         "inside_q25_c": 14.4,
-        "inside_q75_c": 14.8,
+        "inside_q75_c": 14.9,
         "inside_min_scenario_c": 14.2,
         "inside_max_scenario_c": 14.9,
         "outside_model_median_c": 11.6,
@@ -240,7 +238,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-14T22:43:32+02:00",
+      "start_timestamp_local": "2026-10-14T23:27:52+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -256,11 +254,11 @@
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 7.0,
+          "degree_hours_kh": 7.05,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 7.0,
+      "degree_hours_median_kh": 7.05,
       "electricity_kwh": {
         "low": 0.9,
         "central": 1.6,
@@ -275,7 +273,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-14T22:43:32+02:00",
+      "start_timestamp_local": "2026-10-14T23:27:52+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -291,11 +289,11 @@
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 7.0,
+          "degree_hours_kh": 7.05,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 7.0,
+      "degree_hours_median_kh": 7.05,
       "electricity_kwh": {
         "low": 0.9,
         "central": 1.6,
@@ -352,9 +350,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-10-14T22:43:32+02:00",
+          "start_local": "2026-10-14T23:27:52+02:00",
           "end_local": "2026-10-15T00:00:00+02:00",
-          "hours": 1.274
+          "hours": 0.536
         },
         {
           "tariff": "NT",
@@ -407,8 +405,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-10-15T19:30:00+02:00",
-          "end_local": "2026-10-15T22:43:32+02:00",
-          "hours": 3.226
+          "end_local": "2026-10-15T23:27:52+02:00",
+          "hours": 3.964
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
