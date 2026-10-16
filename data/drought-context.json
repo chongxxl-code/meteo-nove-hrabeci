@@ -5,64 +5,31 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_utc": "2026-10-15T10:16:39.013752+00:00",
-  "quality_status": "operational_local_drought_v1",
+  "computed_at_utc": "2026-10-16T10:05:29.908718+00:00",
+  "quality_status": "degraded",
   "state": {
     "rank": 0,
     "level": "green",
-    "headline": "bez potvrzeného výrazného vysychání",
+    "headline": "stav zatím nelze spolehlivě určit",
     "score": 0,
     "reasons": [
-      "vodní bilance, půdní vlhkost a Sentinel nyní nedávají výrazný společný signál",
+      "Expecting value: line 1 column 1 (char 0)",
       "Copernicus 1 km dává smíšený půdně-vlhkostní signál"
     ],
-    "confidence": "medium"
+    "confidence": "low"
   },
   "background": {
-    "provider": "Open-Meteo historical Best Match / ERA5-family background",
-    "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
-    "period_start": "2025-10-09",
-    "period_end": "2026-10-13",
-    "data_age_days": 2,
-    "windows": {
-      "7": {
-        "days": 7,
-        "precip_mm": 14.5,
-        "et0_mm": 10.7,
-        "p_minus_et0_mm": 3.8,
-        "record_days": 7
-      },
-      "14": {
-        "days": 14,
-        "precip_mm": 14.9,
-        "et0_mm": 27.8,
-        "p_minus_et0_mm": -12.9,
-        "record_days": 14
-      },
-      "30": {
-        "days": 30,
-        "precip_mm": 54.5,
-        "et0_mm": 65.0,
-        "p_minus_et0_mm": -10.5,
-        "record_days": 30
-      }
-    },
-    "latest_soil": {
-      "surface_m3m3": 0.3335,
-      "rootzone_0_100cm_m3m3": 0.2435,
-      "surface_percentile_1y": 57.6,
-      "rootzone_percentile_1y": 38.1
-    }
+    "ok": false
   },
   "chmi_local_rain": {
-    "latest_observation_utc": "2026-10-15T06:50:00+00:00",
+    "latest_observation_utc": "2026-10-16T05:50:00+00:00",
     "coverage_fraction": {
-      "7": 0.95,
-      "14": 0.969,
-      "30": 1.0
+      "7": 0.956,
+      "14": 0.963,
+      "30": 0.997
     },
     "rain_mm": {
-      "7": 13.4,
+      "7": 9.8,
       "14": 13.4,
       "30": 55.0
     }
@@ -80,6 +47,7 @@
     "The first-year percentile is an operational baseline, not yet a long-term local climatology.",
     "Copernicus SSM/SWI has 1 km resolution; it strengthens independent validation but cannot by itself resolve field-scale differences inside Nové Hraběcí."
   ],
+  "error": "Expecting value: line 1 column 1 (char 0)",
   "copernicus_1km": {
     "ok": true,
     "quality_status": "operational_copernicus_soil_1km",
