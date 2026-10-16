@@ -1,6 +1,6 @@
 {
   "schema": 8,
-  "generated_at": "2026-10-15T23:31:27.813064Z",
+  "generated_at": "2026-10-16T00:15:47.510546Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,19 +9,19 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 27.12,
-  "indoor_raw_points": 10146,
+  "indoor_raw_points": 10156,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-16T01:27:31+02:00",
-  "indoor_30m_bins": 1291,
+  "indoor_history_last_timestamp": "2026-10-16T02:14:03+02:00",
+  "indoor_30m_bins": 1293,
   "weather_30m_bins": 2732,
   "paired_candidate_bins": 1290,
-  "fit_samples": 36,
-  "all_accepted_windows": 57,
-  "night_windows": 36,
+  "fit_samples": 37,
+  "all_accepted_windows": 58,
+  "night_windows": 37,
   "current_indoor_state": {
     "ok": true,
     "temperature_c": 14.8,
-    "observed_at_utc": "2026-10-15T23:30:59Z",
+    "observed_at_utc": "2026-10-16T00:15:16Z",
     "age_minutes": 0.5,
     "max_age_minutes": 30.0,
     "device_offline": false,
@@ -36,7 +36,7 @@
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
       "observed_at_utc": "2026-10-15T22:20:00Z",
-      "age_minutes": 71.5,
+      "age_minutes": 115.8,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
@@ -45,7 +45,7 @@
           "station": "Sohland/Spree",
           "temperature_c": 3.9,
           "observed_at_utc": "2026-10-15T22:20:00Z",
-          "age_minutes": 71.5,
+          "age_minutes": 115.8,
           "fresh": true
         }
       ]
@@ -73,29 +73,29 @@
     "cooling_p25_c_per_h": -0.067,
     "cooling_p75_c_per_h": -0.033,
     "median_passive_window_rate_c_per_h": -0.033,
-    "inside_minus_outside_median_c": 10.3,
+    "inside_minus_outside_median_c": 10.2,
     "inside_minus_outside_min_c": 4.8,
     "inside_minus_outside_max_c": 16.3
   },
   "fit": {
     "equation": "dTin/dt = coupling * (Tout - Tin)",
     "method": "median through-origin slope on 6h windows",
-    "coupling_per_h": 0.00379,
-    "time_constant_h": 264.2,
+    "coupling_per_h": 0.00385,
+    "time_constant_h": 259.8,
     "mae_c_per_h": 0.02,
-    "median_abs_error_c_per_h": 0.012,
+    "median_abs_error_c_per_h": 0.011,
     "coupling_p25_per_h": 0.0032,
-    "coupling_p75_per_h": 0.00645,
-    "sample_count": 36
+    "coupling_p75_per_h": 0.00635,
+    "sample_count": 37
   },
   "shadow_validation": {
     "weighted_fit": {
       "equation": "dTin/dt = coupling * (Tout - Tin)",
       "method": "shadow weighted through-origin regression; ratio weights are proportional to gap^2",
-      "coupling_per_h": 0.00483,
-      "time_constant_h": 207.1,
-      "mae_c_per_h": 0.022,
-      "sample_count": 36,
+      "coupling_per_h": 0.00481,
+      "time_constant_h": 207.8,
+      "mae_c_per_h": 0.021,
+      "sample_count": 37,
       "shadow_only": true
     },
     "rolling_origin_vs_persistence": {
@@ -105,23 +105,23 @@
       "weather_input": "observed 6h mean outdoor temperature, not NWP forecast",
       "protocol": "rolling-origin: each test window is predicted using only earlier accepted windows",
       "minimum_prior_windows": 6,
-      "test_windows": 30,
+      "test_windows": 31,
       "production_estimator": {
-        "n": 30,
-        "mae_c": 0.137,
-        "median_abs_error_c": 0.074
+        "n": 31,
+        "mae_c": 0.133,
+        "median_abs_error_c": 0.07
       },
       "weighted_regression_shadow": {
-        "n": 30,
-        "mae_c": 0.131,
-        "median_abs_error_c": 0.085
+        "n": 31,
+        "mae_c": 0.128,
+        "median_abs_error_c": 0.08
       },
       "persistence_reference": {
-        "n": 30,
-        "mae_c": 0.313,
-        "median_abs_error_c": 0.25
+        "n": 31,
+        "mae_c": 0.31,
+        "median_abs_error_c": 0.2
       },
-      "production_improvement_vs_persistence_pct": 56.2,
+      "production_improvement_vs_persistence_pct": 57.1,
       "interpretation": "Use this only as evidence about passive thermal dynamics. Do not change the production estimator until the shadow method wins consistently on future untouched windows."
     },
     "production_fit_unchanged": true,
@@ -133,7 +133,7 @@
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
     "outside_observed_at_utc": "2026-10-15T22:20:00Z",
-    "outside_age_minutes": 71.5,
+    "outside_age_minutes": 115.8,
     "outside_fallback_used": false,
     "inside_minus_outside_c": 10.9,
     "passive_fit_rate_c_per_h": -0.04,
@@ -141,7 +141,7 @@
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-16T01:30:59+02:00",
+    "start_timestamp_local": "2026-10-16T02:15:16+02:00",
     "start_inside_c": 14.8,
     "weather_models": [
       "chmi",
@@ -150,8 +150,8 @@
     ],
     "coupling_candidates_per_h": [
       0.0032,
-      0.00379,
-      0.00645
+      0.00385,
+      0.00635
     ],
     "horizons": [
       {
@@ -160,7 +160,7 @@
         "inside_median_c": 14.6,
         "inside_q25_c": 14.5,
         "inside_q75_c": 14.6,
-        "inside_min_scenario_c": 14.4,
+        "inside_min_scenario_c": 14.5,
         "inside_max_scenario_c": 14.6,
         "outside_model_median_c": 15.3,
         "scenario_count": 9
@@ -169,7 +169,7 @@
         "hours": 24,
         "timestamp_local": "2026-10-17T02:00:00+02:00",
         "inside_median_c": 14.5,
-        "inside_q25_c": 14.3,
+        "inside_q25_c": 14.4,
         "inside_q75_c": 14.5,
         "inside_min_scenario_c": 14.3,
         "inside_max_scenario_c": 14.6,
@@ -180,7 +180,7 @@
         "hours": 36,
         "timestamp_local": "2026-10-17T14:00:00+02:00",
         "inside_median_c": 14.4,
-        "inside_q25_c": 14.1,
+        "inside_q25_c": 14.2,
         "inside_q75_c": 14.4,
         "inside_min_scenario_c": 14.0,
         "inside_max_scenario_c": 14.5,
@@ -229,7 +229,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-16T01:30:59+02:00",
+      "start_timestamp_local": "2026-10-16T02:15:16+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -264,7 +264,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-16T01:30:59+02:00",
+      "start_timestamp_local": "2026-10-16T02:15:16+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -340,9 +340,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-10-16T01:30:59+02:00",
+          "start_local": "2026-10-16T02:15:16+02:00",
           "end_local": "2026-10-16T07:00:00+02:00",
-          "hours": 5.484
+          "hours": 4.746
         },
         {
           "tariff": "VT",
@@ -395,8 +395,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-10-17T00:00:00+02:00",
-          "end_local": "2026-10-17T01:30:59+02:00",
-          "hours": 1.516
+          "end_local": "2026-10-17T02:15:16+02:00",
+          "hours": 2.254
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
