@@ -1,6 +1,6 @@
 {
   "schema": 8,
-  "generated_at": "2026-10-17T14:20:59.959865Z",
+  "generated_at": "2026-10-17T14:25:30.653971Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -8,13 +8,13 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
-  "coverage_days": 28.71,
+  "coverage_days": 28.75,
   "indoor_raw_points": 10651,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
   "indoor_history_last_timestamp": "2026-10-17T16:20:34+02:00",
   "indoor_30m_bins": 1369,
-  "weather_30m_bins": 2808,
-  "paired_candidate_bins": 1366,
+  "weather_30m_bins": 2810,
+  "paired_candidate_bins": 1368,
   "fit_samples": 38,
   "all_accepted_windows": 60,
   "night_windows": 38,
@@ -22,7 +22,7 @@
     "ok": true,
     "temperature_c": 14.7,
     "observed_at_utc": "2026-10-17T14:20:38Z",
-    "age_minutes": 0.4,
+    "age_minutes": 4.9,
     "max_age_minutes": 30.0,
     "device_offline": false,
     "collector_stage": "completed",
@@ -32,20 +32,20 @@
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "current_temperature_selection": {
       "ok": true,
-      "temperature_c": 14.0,
+      "temperature_c": 12.9,
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
-      "observed_at_utc": "2026-10-17T12:50:00Z",
-      "age_minutes": 91.0,
+      "observed_at_utc": "2026-10-17T13:50:00Z",
+      "age_minutes": 35.5,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
         {
           "source": "DWD Sohland",
           "station": "Sohland/Spree",
-          "temperature_c": 14.0,
-          "observed_at_utc": "2026-10-17T12:50:00Z",
-          "age_minutes": 91.0,
+          "temperature_c": 12.9,
+          "observed_at_utc": "2026-10-17T13:50:00Z",
+          "age_minutes": 35.5,
           "fresh": true
         }
       ]
@@ -54,7 +54,7 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 2808,
+      "DWD Sohland": 2810,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -129,14 +129,14 @@
   },
   "current_passive_estimate": {
     "inside_c": 14.7,
-    "outside_c": 14.0,
+    "outside_c": 12.9,
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
-    "outside_observed_at_utc": "2026-10-17T12:50:00Z",
-    "outside_age_minutes": 91.0,
+    "outside_observed_at_utc": "2026-10-17T13:50:00Z",
+    "outside_age_minutes": 35.5,
     "outside_fallback_used": false,
-    "inside_minus_outside_c": 0.7,
-    "passive_fit_rate_c_per_h": -0.0,
+    "inside_minus_outside_c": 1.8,
+    "passive_fit_rate_c_per_h": -0.01,
     "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command"
   },
   "passive_forecast": {
