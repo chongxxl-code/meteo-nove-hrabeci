@@ -1,6 +1,6 @@
 {
   "schema": 8,
-  "generated_at": "2026-10-16T23:34:28.997894Z",
+  "generated_at": "2026-10-17T00:08:09.114312Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 28.12,
-  "indoor_raw_points": 10462,
+  "indoor_raw_points": 10471,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-17T01:27:32+02:00",
-  "indoor_30m_bins": 1339,
+  "indoor_history_last_timestamp": "2026-10-17T02:07:33+02:00",
+  "indoor_30m_bins": 1341,
   "weather_30m_bins": 2780,
   "paired_candidate_bins": 1338,
   "fit_samples": 38,
@@ -21,8 +21,8 @@
   "current_indoor_state": {
     "ok": true,
     "temperature_c": 14.9,
-    "observed_at_utc": "2026-10-16T23:30:52Z",
-    "age_minutes": 3.6,
+    "observed_at_utc": "2026-10-17T00:07:36Z",
+    "age_minutes": 0.6,
     "max_age_minutes": 30.0,
     "device_offline": false,
     "collector_stage": "completed",
@@ -36,7 +36,7 @@
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
       "observed_at_utc": "2026-10-16T22:50:00Z",
-      "age_minutes": 44.5,
+      "age_minutes": 78.2,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
@@ -45,7 +45,7 @@
           "station": "Sohland/Spree",
           "temperature_c": 5.8,
           "observed_at_utc": "2026-10-16T22:50:00Z",
-          "age_minutes": 44.5,
+          "age_minutes": 78.2,
           "fresh": true
         }
       ]
@@ -133,7 +133,7 @@
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
     "outside_observed_at_utc": "2026-10-16T22:50:00Z",
-    "outside_age_minutes": 44.5,
+    "outside_age_minutes": 78.2,
     "outside_fallback_used": false,
     "inside_minus_outside_c": 9.1,
     "passive_fit_rate_c_per_h": -0.03,
@@ -141,7 +141,7 @@
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-17T01:30:52+02:00",
+    "start_timestamp_local": "2026-10-17T02:07:36+02:00",
     "start_inside_c": 14.9,
     "weather_models": [
       "chmi",
@@ -240,7 +240,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-17T01:30:52+02:00",
+      "start_timestamp_local": "2026-10-17T02:07:36+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -275,7 +275,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-17T01:30:52+02:00",
+      "start_timestamp_local": "2026-10-17T02:07:36+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -313,7 +313,7 @@
       "inside_now_c": 14.9,
       "lower_switch_c": 6.0,
       "upper_switch_c": 8.0,
-      "forecast_min_outside_c": 8.2,
+      "forecast_min_outside_c": 7.9,
       "price_czk_per_kwh": 4.39393,
       "current_setpoint_c": 7.0,
       "configured_tempering_setpoint_c": 7.0,
@@ -351,9 +351,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-10-17T01:30:52+02:00",
+          "start_local": "2026-10-17T02:07:36+02:00",
           "end_local": "2026-10-17T07:31:00+02:00",
-          "hours": 6.002
+          "hours": 5.39
         },
         {
           "tariff": "VT",
@@ -406,8 +406,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-10-18T00:00:00+02:00",
-          "end_local": "2026-10-18T01:30:52+02:00",
-          "hours": 1.514
+          "end_local": "2026-10-18T02:07:36+02:00",
+          "hours": 2.127
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
@@ -416,7 +416,7 @@
       "horizon_hours": 24,
       "longest_vt_block_h": 0.98,
       "conservative_unavailability_h": 1.48,
-      "forecast_min_outside_c": 8.2,
+      "forecast_min_outside_c": 7.9,
       "reference_inside_c": 6.0,
       "passive_drop_during_longest_vt_central_c": 0.0,
       "passive_drop_during_longest_vt_conservative_c": 0.0,
@@ -642,7 +642,7 @@
       "setpoint_unknown": 0,
       "warming": 0,
       "heat_gain": 17,
-      "post_heating_quarantine": 11,
+      "post_heating_quarantine": 12,
       "coverage": 0,
       "indoor_coverage": 0,
       "indoor_gap": 0
