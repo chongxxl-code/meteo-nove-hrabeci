@@ -1,6 +1,6 @@
 {
-  "schema": "2026-10-13.heating-audit-v5",
-  "generated_at": "2026-10-18T15:52:02.494803Z",
+  "schema": "2026-10-18.heating-audit-v6",
+  "generated_at": "2026-10-18T17:26:47.211923Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
@@ -162,12 +162,12 @@
     {
       "name": "indoor_latest_freshness",
       "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 10.2 min)."
+      "detail": "Indoor latest sample is stale or missing (age 8.4 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 10969 points."
+      "detail": "Indoor history has only 10988 points."
     },
     {
       "name": "passive_window_indoor_coverage_guard",
@@ -178,6 +178,16 @@
       "name": "forecast_gap_fail_closed",
       "ok": true,
       "detail": "Passive forecast must fail closed across weather gaps larger than the documented maximum step."
+    },
+    {
+      "name": "thermal_data_coverage_contract",
+      "ok": true,
+      "detail": "Thermal model inputs must expose machine-readable observed/expected counts, coverage and largest gap."
+    },
+    {
+      "name": "forecast_model_coverage_guard",
+      "ok": true,
+      "detail": "Every published passive forecast horizon must have sufficient model-branch coverage; a single model branch is not enough."
     },
     {
       "name": "post_heating_quarantine_guard",
@@ -210,6 +220,16 @@
       "detail": "Passive thermal fit is missing or non-physical."
     },
     {
+      "name": "passive_fit_internal_consistency",
+      "ok": true,
+      "detail": "Production coupling must remain inside its empirical p25-p75 support and tau must be consistent with 1/coupling."
+    },
+    {
+      "name": "oracle_negative_controls",
+      "ok": true,
+      "detail": "One or more known-bad data-quality controls passed as normal data; fix the checker/gate before trusting PASS results."
+    },
+    {
       "name": "shadow_estimator_isolation",
       "ok": true,
       "detail": "Alternative passive estimators must remain shadow-only and must not silently alter the production forecast."
@@ -230,18 +250,55 @@
       "detail": "Reference kWh/cost table does not match H × degree-hours / efficiency × current price."
     },
     {
-      "name": "actual_zero_need_proof",
-      "ok": true,
-      "detail": "Zero next-24h tempering estimate requires the temperature-bound proof and a live thermostat setpoint matching the configured tempering target."
-    },
-    {
       "name": "weather_snapshot_freshness",
       "ok": true,
-      "detail": "Weather snapshot is stale or missing (age 3.1 min)."
+      "detail": "Weather snapshot is stale or missing (age 1.6 min)."
+    }
+  ],
+  "oracle_negative_controls": [
+    {
+      "name": "known_good_passive_window",
+      "expected": "accepted",
+      "passed": true
+    },
+    {
+      "name": "stale_indoor_sensor",
+      "expected": "UNKNOWN/not current",
+      "passed": true
+    },
+    {
+      "name": "large_indoor_gap",
+      "expected": "rejected",
+      "passed": true
+    },
+    {
+      "name": "swapped_indoor_outdoor_series",
+      "expected": "rejected",
+      "passed": true
+    },
+    {
+      "name": "shifted_weather_timestamps",
+      "expected": "rejected/no aligned window",
+      "passed": true
+    },
+    {
+      "name": "unrealistic_temperature_jump",
+      "expected": "rejected as heat gain/anomaly",
+      "passed": true
+    },
+    {
+      "name": "forecast_insufficient_model_coverage",
+      "expected": "withheld",
+      "passed": true
+    },
+    {
+      "name": "intentionally_wrong_thermal_constant",
+      "expected": "rejected",
+      "passed": true
     }
   ],
   "summary": {
-    "checks_total": 46,
+    "checks_total": 49,
     "checks_failed": 0,
     "critical_failures": 0,
     "warnings": 3
