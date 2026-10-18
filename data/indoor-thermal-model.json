@@ -1,6 +1,6 @@
 {
   "schema": 8,
-  "generated_at": "2026-10-18T14:50:30.917281Z",
+  "generated_at": "2026-10-18T15:27:40.624013Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 29.77,
-  "indoor_raw_points": 10956,
+  "indoor_raw_points": 10965,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-18T16:41:01+02:00",
-  "indoor_30m_bins": 1418,
+  "indoor_history_last_timestamp": "2026-10-18T17:21:02+02:00",
+  "indoor_30m_bins": 1419,
   "weather_30m_bins": 2859,
   "paired_candidate_bins": 1417,
   "fit_samples": 40,
@@ -21,8 +21,8 @@
   "current_indoor_state": {
     "ok": true,
     "temperature_c": 14.4,
-    "observed_at_utc": "2026-10-18T14:43:19Z",
-    "age_minutes": 7.2,
+    "observed_at_utc": "2026-10-18T15:27:14Z",
+    "age_minutes": 0.4,
     "max_age_minutes": 30.0,
     "device_offline": false,
     "collector_stage": "completed",
@@ -36,7 +36,7 @@
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
       "observed_at_utc": "2026-10-18T14:20:00Z",
-      "age_minutes": 30.5,
+      "age_minutes": 67.7,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
@@ -45,7 +45,7 @@
           "station": "Sohland/Spree",
           "temperature_c": 12.0,
           "observed_at_utc": "2026-10-18T14:20:00Z",
-          "age_minutes": 30.5,
+          "age_minutes": 67.7,
           "fresh": true
         }
       ]
@@ -133,7 +133,7 @@
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
     "outside_observed_at_utc": "2026-10-18T14:20:00Z",
-    "outside_age_minutes": 30.5,
+    "outside_age_minutes": 67.7,
     "outside_fallback_used": false,
     "inside_minus_outside_c": 2.4,
     "passive_fit_rate_c_per_h": -0.01,
@@ -141,7 +141,7 @@
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-18T16:43:19+02:00",
+    "start_timestamp_local": "2026-10-18T17:27:14+02:00",
     "start_inside_c": 14.4,
     "weather_models": [
       "chmi",
@@ -170,7 +170,7 @@
         "timestamp_local": "2026-10-19T17:00:00+02:00",
         "inside_median_c": 13.9,
         "inside_q25_c": 13.6,
-        "inside_q75_c": 13.9,
+        "inside_q75_c": 14.0,
         "inside_min_scenario_c": 13.6,
         "inside_max_scenario_c": 14.0,
         "outside_model_median_c": 8.8,
@@ -181,7 +181,7 @@
         "timestamp_local": "2026-10-20T05:00:00+02:00",
         "inside_median_c": 13.5,
         "inside_q25_c": 13.0,
-        "inside_q75_c": 13.5,
+        "inside_q75_c": 13.6,
         "inside_min_scenario_c": 12.9,
         "inside_max_scenario_c": 13.6,
         "outside_model_median_c": 1.8,
@@ -240,7 +240,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-18T16:43:19+02:00",
+      "start_timestamp_local": "2026-10-18T17:27:14+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -275,7 +275,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-18T16:43:19+02:00",
+      "start_timestamp_local": "2026-10-18T17:27:14+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -351,9 +351,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-10-18T16:43:19+02:00",
+          "start_local": "2026-10-18T17:27:14+02:00",
           "end_local": "2026-10-18T18:41:00+02:00",
-          "hours": 1.961
+          "hours": 1.229
         },
         {
           "tariff": "VT",
@@ -406,8 +406,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-10-19T15:10:00+02:00",
-          "end_local": "2026-10-19T16:43:19+02:00",
-          "hours": 1.555
+          "end_local": "2026-10-19T17:27:14+02:00",
+          "hours": 2.287
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
