@@ -438,3 +438,14 @@ h1{font-size:clamp(31px,4.6vw,45px)}
   main,.grid,.card,.hours,.hourstrip{min-width:0;max-width:100%}
   body{overflow-x:hidden}
 }
+
+
+/* Compact data-quality summary. */
+#healthgrid{grid-template-columns:repeat(5,minmax(0,1fr))}
+#healthgrid .stat{min-width:0}
+#healthgrid .stat span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+#healthgrid .stat b{margin-top:4px;font-size:15px;line-height:1.25}
+@media(max-width:850px){
+  #healthgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #healthgrid .stat:last-child{grid-column:1/-1}
+}
