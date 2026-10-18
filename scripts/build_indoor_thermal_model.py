@@ -100,6 +100,17 @@ def resolve_current_indoor_state(latest, collector_status=None, now_utc=None):
     }
 
 
+def forecast_branch_coverage(observed_branches):
+    observed = max(0, int(observed_branches or 0))
+    coverage = observed / EXPECTED_FORECAST_MODEL_BRANCHES
+    return {
+        "observed_model_branches": observed,
+        "expected_model_branches": EXPECTED_FORECAST_MODEL_BRANCHES,
+        "model_branch_coverage": rounded(coverage, 3),
+        "coverage_sufficient": observed >= MIN_FORECAST_MODEL_BRANCHES,
+    }
+
+
 def coverage_summary(keys, first_key, last_key):
     keys = sorted(k for k in keys if first_key is not None and last_key is not None and first_key <= k <= last_key)
     if first_key is None or last_key is None or last_key < first_key:
@@ -793,16 +804,13 @@ def build_passive_forecast(latest, fit):
         vals = scenarios_by_time[key]
         outside_vals = outside_by_time.get(key) or []
         observed_branches = int(round(len(vals) / max(1, len(k_values))))
-        forecast_coverage = observed_branches / EXPECTED_FORECAST_MODEL_BRANCHES
-        if observed_branches < MIN_FORECAST_MODEL_BRANCHES:
+        branch_coverage = forecast_branch_coverage(observed_branches)
+        if not branch_coverage["coverage_sufficient"]:
             continue
         horizons.append({
             "hours": hours,
             "timestamp_local": key,
-            "observed_model_branches": observed_branches,
-            "expected_model_branches": EXPECTED_FORECAST_MODEL_BRANCHES,
-            "model_branch_coverage": rounded(forecast_coverage, 3),
-            "coverage_sufficient": observed_branches >= MIN_FORECAST_MODEL_BRANCHES,
+            **branch_coverage,
             "inside_median_c": rounded(median(vals), 1),
             "inside_q25_c": rounded(q(vals, 0.25), 1),
             "inside_q75_c": rounded(q(vals, 0.75), 1),
