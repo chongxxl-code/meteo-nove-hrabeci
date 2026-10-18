@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import copy
 import json
 import math
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
+
+import build_indoor_thermal_model as thermal
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -33,6 +36,126 @@ def close(a, b, tol=1e-6):
         return abs(float(a) - float(b)) <= tol
     except Exception:
         return False
+
+
+def passive_fit_contract_ok(fit):
+    try:
+        coupling = float(fit.get("coupling_per_h"))
+        p25 = float(fit.get("coupling_p25_per_h"))
+        p75 = float(fit.get("coupling_p75_per_h"))
+        tau = float(fit.get("time_constant_h"))
+    except Exception:
+        return False
+    if not (0 < p25 <= coupling <= p75):
+        return False
+    expected_tau = 1.0 / coupling
+    return abs(tau - expected_tau) <= max(1.0, expected_tau * 0.02)
+
+
+def run_oracle_negative_controls(now):
+    """Exercise production gates with known-good and deliberately bad synthetic cases."""
+    start = 1200
+    indoor = {
+        start + i: {
+            "temperature_c": 15.0 - 0.05 * i,
+            "setpoint_c": 7.0,
+        }
+        for i in range(thermal.WINDOW_BINS + 1)
+    }
+    weather = {
+        start + i: {"temperature_c": 5.0}
+        for i in range(thermal.WINDOW_BINS + 1)
+    }
+
+    results = []
+
+    baseline, _, _ = thermal.build_windows(indoor, weather, [])
+    results.append({
+        "name": "known_good_passive_window",
+        "expected": "accepted",
+        "passed": len(baseline) == 1,
+    })
+
+    stale_latest = {
+        "latest_indoor_c": 12.0,
+        "last_timestamp": (now - timedelta(minutes=31)).isoformat().replace("+00:00", "Z"),
+    }
+    stale_state = thermal.resolve_current_indoor_state(
+        stale_latest,
+        {"stage": "completed", "ok": True},
+        now,
+    )
+    results.append({
+        "name": "stale_indoor_sensor",
+        "expected": "UNKNOWN/not current",
+        "passed": stale_state.get("ok") is False,
+    })
+
+    gapped = copy.deepcopy(indoor)
+    gapped.pop(start + 5)
+    gapped.pop(start + 6)
+    accepted, rejected, _ = thermal.build_windows(gapped, weather, [])
+    results.append({
+        "name": "large_indoor_gap",
+        "expected": "rejected",
+        "passed": not accepted and rejected.get("indoor_gap", 0) > 0,
+    })
+
+    swapped_indoor = {
+        key: {"temperature_c": weather[key]["temperature_c"], "setpoint_c": 0.0}
+        for key in weather
+    }
+    swapped_weather = {
+        key: {"temperature_c": indoor[key]["temperature_c"]}
+        for key in indoor
+    }
+    accepted, rejected, _ = thermal.build_windows(swapped_indoor, swapped_weather, [])
+    results.append({
+        "name": "swapped_indoor_outdoor_series",
+        "expected": "rejected",
+        "passed": not accepted and rejected.get("gap", 0) > 0,
+    })
+
+    shifted_weather = {
+        key + thermal.WINDOW_BINS * 2: value
+        for key, value in weather.items()
+    }
+    accepted, _, _ = thermal.build_windows(indoor, shifted_weather, [])
+    results.append({
+        "name": "shifted_weather_timestamps",
+        "expected": "rejected/no aligned window",
+        "passed": not accepted,
+    })
+
+    jumped = copy.deepcopy(indoor)
+    jumped[start + 6]["temperature_c"] += 8.0
+    accepted, rejected, _ = thermal.build_windows(jumped, weather, [])
+    results.append({
+        "name": "unrealistic_temperature_jump",
+        "expected": "rejected as heat gain/anomaly",
+        "passed": not accepted and rejected.get("heat_gain", 0) > 0,
+    })
+
+    one_branch = thermal.forecast_branch_coverage(1)
+    results.append({
+        "name": "forecast_insufficient_model_coverage",
+        "expected": "withheld",
+        "passed": one_branch.get("coverage_sufficient") is False,
+    })
+
+    bad_fit = {
+        "coupling_per_h": 0.025,
+        "coupling_p25_per_h": 0.003,
+        "coupling_p75_per_h": 0.006,
+        "time_constant_h": 40.0,
+    }
+    results.append({
+        "name": "intentionally_wrong_thermal_constant",
+        "expected": "rejected",
+        "passed": passive_fit_contract_ok(bad_fit) is False,
+    })
+
+    return results
 
 
 def main():
@@ -167,6 +290,35 @@ def main():
         "Passive forecast must fail closed across weather gaps larger than the documented maximum step.",
     )
 
+    data_coverage = model.get("data_coverage") or {}
+    coverage_streams = [
+        data_coverage.get("indoor_30m") or {},
+        data_coverage.get("outdoor_30m") or {},
+        data_coverage.get("paired_training_30m") or {},
+    ]
+    check(
+        "thermal_data_coverage_contract",
+        len(coverage_streams) == 3
+        and all(item.get("observed_count") is not None for item in coverage_streams)
+        and all(item.get("expected_count") is not None for item in coverage_streams)
+        and all(item.get("coverage") is not None for item in coverage_streams)
+        and all(item.get("largest_gap_minutes") is not None for item in coverage_streams),
+        "Thermal model inputs must expose machine-readable observed/expected counts, coverage and largest gap.",
+    )
+
+    passive_forecast = model.get("passive_forecast") or {}
+    forecast_contract = passive_forecast.get("forecast_coverage_contract") or {}
+    forecast_horizons = passive_forecast.get("horizons") or []
+    if model.get("prediction_ready") is True:
+        check(
+            "forecast_model_coverage_guard",
+            int(forecast_contract.get("minimum_model_branches") or 0) >= 2
+            and bool(forecast_horizons)
+            and all(h.get("coverage_sufficient") is True for h in forecast_horizons)
+            and all(int(h.get("observed_model_branches") or 0) >= 2 for h in forecast_horizons),
+            "Every published passive forecast horizon must have sufficient model-branch coverage; a single model branch is not enough.",
+        )
+
     heat_diag = model.get("heat_gain_diagnostics") or {}
     rejected_windows = filters.get("rejected") or {}
     end_rule = heat_diag.get("end_detection_rule") or {}
@@ -248,6 +400,18 @@ def main():
         "passive_fit_positive",
         float(fit.get("coupling_per_h") or 0) > 0 and float(fit.get("time_constant_h") or 0) > 0,
         "Passive thermal fit is missing or non-physical.",
+    )
+    check(
+        "passive_fit_internal_consistency",
+        passive_fit_contract_ok(fit),
+        "Production coupling must remain inside its empirical p25-p75 support and tau must be consistent with 1/coupling.",
+    )
+
+    oracle_controls = run_oracle_negative_controls(now)
+    check(
+        "oracle_negative_controls",
+        all(item.get("passed") is True for item in oracle_controls),
+        "One or more known-bad data-quality controls passed as normal data; fix the checker/gate before trusting PASS results.",
     )
 
     shadow = model.get("shadow_validation") or {}
@@ -349,12 +513,13 @@ def main():
 
     overall = "fail" if failures else ("pass_with_warnings" if warnings else "pass")
     out = {
-        "schema": "2026-10-13.heating-audit-v5",
+        "schema": "2026-10-18.heating-audit-v6",
         "generated_at": now.isoformat().replace("+00:00", "Z"),
         "overall_status": overall,
         "critical_failures": failures,
         "warnings": list(dict.fromkeys(warnings)),
         "checks": checks,
+        "oracle_negative_controls": oracle_controls,
         "summary": {
             "checks_total": len(checks),
             "checks_failed": sum(1 for item in checks if not item["ok"]),
