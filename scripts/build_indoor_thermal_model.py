@@ -21,6 +21,8 @@ MAX_INDOOR_GAP_BINS = 2  # at most 60 minutes between populated 30-minute bucket
 MAX_FORECAST_STEP_HOURS = 3.1
 CURRENT_OUTDOOR_MAX_AGE_MINUTES = 120.0
 CURRENT_INDOOR_MAX_AGE_MINUTES = 30.0
+EXPECTED_FORECAST_MODEL_BRANCHES = 3
+MIN_FORECAST_MODEL_BRANCHES = 2
 HEAT_GAIN_TRIGGER_RISE_C = 0.2
 POST_HEATING_QUARANTINE_HOURS = 12
 POST_HEATING_QUARANTINE_BINS = int(POST_HEATING_QUARANTINE_HOURS * 3600 / BUCKET_SECONDS)
@@ -95,6 +97,32 @@ def resolve_current_indoor_state(latest, collector_status=None, now_utc=None):
         "device_offline": offline,
         "collector_stage": collector_status.get("stage"),
         "reason": reason,
+    }
+
+
+def coverage_summary(keys, first_key, last_key):
+    keys = sorted(k for k in keys if first_key is not None and last_key is not None and first_key <= k <= last_key)
+    if first_key is None or last_key is None or last_key < first_key:
+        return {
+            "observed_count": 0,
+            "expected_count": 0,
+            "coverage": None,
+            "largest_gap_minutes": None,
+            "sufficient": False,
+        }
+    expected = last_key - first_key + 1
+    gaps = [(b - a) * BUCKET_SECONDS / 60 for a, b in zip(keys, keys[1:])]
+    coverage = min(1.0, len(keys) / expected) if expected else None
+    return {
+        "observed_count": len(keys),
+        "expected_count": expected,
+        "coverage": rounded(coverage, 3),
+        "largest_gap_minutes": rounded(max(gaps), 1) if gaps else None,
+        "sufficient": bool(
+            coverage is not None
+            and coverage >= 0.75
+            and (not gaps or max(gaps) <= MAX_INDOOR_GAP_BINS * BUCKET_SECONDS / 60)
+        ),
     }
 
 
@@ -764,9 +792,17 @@ def build_passive_forecast(latest, fit):
             continue
         vals = scenarios_by_time[key]
         outside_vals = outside_by_time.get(key) or []
+        observed_branches = int(round(len(vals) / max(1, len(k_values))))
+        forecast_coverage = observed_branches / EXPECTED_FORECAST_MODEL_BRANCHES
+        if observed_branches < MIN_FORECAST_MODEL_BRANCHES:
+            continue
         horizons.append({
             "hours": hours,
             "timestamp_local": key,
+            "observed_model_branches": observed_branches,
+            "expected_model_branches": EXPECTED_FORECAST_MODEL_BRANCHES,
+            "model_branch_coverage": rounded(forecast_coverage, 3),
+            "coverage_sufficient": observed_branches >= MIN_FORECAST_MODEL_BRANCHES,
             "inside_median_c": rounded(median(vals), 1),
             "inside_q25_c": rounded(q(vals, 0.25), 1),
             "inside_q75_c": rounded(q(vals, 0.75), 1),
@@ -781,6 +817,14 @@ def build_passive_forecast(latest, fit):
         "start_timestamp_local": start_local.isoformat(),
         "start_inside_c": start_temp,
         "weather_models": sorted(set(used_models)),
+        "forecast_coverage_contract": {
+            "expected_model_branches": EXPECTED_FORECAST_MODEL_BRANCHES,
+            "minimum_model_branches": MIN_FORECAST_MODEL_BRANCHES,
+            "maximum_forecast_step_hours": MAX_FORECAST_STEP_HOURS,
+            "horizon_count_expected": 4,
+            "horizon_count_available": len(horizons),
+            "coverage_sufficient": len(horizons) == 4 and all(h.get("coverage_sufficient") for h in horizons),
+        },
         "coupling_candidates_per_h": [rounded(k, 5) for k in k_values],
         "horizons": horizons,
         "range_note": "q25-q75 reflects weather-model and fitted-coupling spread only; it is not a full prediction interval",
@@ -1473,9 +1517,13 @@ def main():
     cooling_rates = [r for r in rates if r < -0.01]
     gaps = [w["inside_minus_outside_c"] for w in fit_basis]
 
-    first_key = min(set(indoor) & set(weather)) if set(indoor) & set(weather) else None
-    last_key = max(set(indoor) & set(weather)) if set(indoor) & set(weather) else None
+    common_keys = set(indoor) & set(weather)
+    first_key = min(common_keys) if common_keys else None
+    last_key = max(common_keys) if common_keys else None
     coverage_days = None if first_key is None else (last_key - first_key) * BUCKET_SECONDS / 86400.0
+    indoor_overlap_coverage = coverage_summary(indoor.keys(), first_key, last_key)
+    weather_overlap_coverage = coverage_summary(weather.keys(), first_key, last_key)
+    paired_overlap_coverage = coverage_summary(common_keys, first_key, last_key)
 
     if fit and len(fit_basis) >= 10 and coverage_days and coverage_days >= 5:
         status = "preliminary_learning"
@@ -1530,7 +1578,7 @@ def main():
     indoor_points = indoor_payload.get("points") or []
 
     output = {
-        "schema": 8,
+        "schema": 9,
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "status": status,
         "validated_for_heating_control": False,
@@ -1549,6 +1597,37 @@ def main():
         "fit_samples": len(fit_basis),
         "all_accepted_windows": len(windows),
         "night_windows": len(night),
+        "data_coverage": {
+            "contract": "source + last_sample_at + expected_interval + observed_count + expected_count + gap + stale + coverage",
+            "indoor_30m": {
+                "source": "EMOS/Tuya indoor history",
+                "last_sample_at": indoor_points[-1].get("timestamp_local") if indoor_points else None,
+                "expected_interval_minutes": 30,
+                "stale": not current_indoor.get("ok"),
+                **indoor_overlap_coverage,
+            },
+            "outdoor_30m": {
+                "source": "DWD Sohland preferred / CHMI Varnsdorf fallback",
+                "last_sample_at": bucket_local_iso(max(weather)) if weather else None,
+                "expected_interval_minutes": 30,
+                "stale": not current_outdoor.get("ok"),
+                **weather_overlap_coverage,
+            },
+            "paired_training_30m": {
+                "source": "intersection of indoor/outdoor modelling buckets",
+                "last_sample_at": bucket_local_iso(last_key) if last_key is not None else None,
+                "expected_interval_minutes": 30,
+                "stale": False if last_key is not None else True,
+                **paired_overlap_coverage,
+            },
+            "passive_windows": {
+                "source": "accepted 6h passive windows after all guards",
+                "observed_count": len(windows),
+                "expected_count": len(windows) + sum(rejected.values()),
+                "coverage": rounded(len(windows) / max(1, len(windows) + sum(rejected.values())), 3),
+                "rejected_count": sum(rejected.values()),
+            },
+        },
         "current_indoor_state": current_indoor,
         "weather_sources": {
             "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
@@ -1588,6 +1667,8 @@ def main():
             "maximum_indoor_gap_minutes": int(MAX_INDOOR_GAP_BINS * BUCKET_SECONDS / 60),
             "reject_unknown_endpoint_setpoint": True,
             "maximum_forecast_step_hours": MAX_FORECAST_STEP_HOURS,
+            "minimum_forecast_model_branches": MIN_FORECAST_MODEL_BRANCHES,
+            "expected_forecast_model_branches": EXPECTED_FORECAST_MODEL_BRANCHES,
             "current_indoor_max_age_minutes": CURRENT_INDOOR_MAX_AGE_MINUTES,
             "minimum_inside_minus_outside_c": 2.0,
             "setpoint_margin_c": 1.5,
