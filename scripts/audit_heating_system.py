@@ -63,7 +63,7 @@ def run_oracle_negative_controls(now):
         for i in range(thermal.WINDOW_BINS + 1)
     }
     weather = {
-        start + i: {"temperature_c": 5.0}
+        start + i: {"temperature_c": 5.0, "source": "known_good_synthetic_outdoor"}
         for i in range(thermal.WINDOW_BINS + 1)
     }
 
