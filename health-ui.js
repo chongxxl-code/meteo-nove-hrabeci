@@ -22,6 +22,10 @@
     }
   }
 
+  const pct = v => Number.isFinite(Number(v)) ? `${Math.round(Number(v) * 100)} %` : '—';
+  const sourceByName = (h, name) => (h?.sources || []).find(s => s.name === name) || null;
+  const qualityTone = state => state === 'good' ? 'var(--g)' : state === 'warn' ? 'var(--w)' : '#ff6f66';
+
   async function loadHealth(){
     const central = document.querySelector('.central');
     if (!central) return;
@@ -34,24 +38,84 @@
       const note = document.getElementById('centralnote');
       (note || central.lastElementChild)?.after(host);
     }
+
     try {
-      const h = await liveJson('data/health-status.json');
-      host.innerHTML = '';
-      (h.sources || []).forEach(s => {
-        const d = document.createElement('div');
-        d.className = 'stat';
-        const c = colors[s.status] || 'var(--mu)';
-        d.innerHTML = `<b style="color:${c}">${labels[s.status] || esc(s.status)}</b><span>${esc(s.label)} · sběr ${fmtAge(s.check_age_minutes)}${s.observation_age_minutes != null ? ` · data ${fmtAge(s.observation_age_minutes)}` : ''}</span>`;
-        host.appendChild(d);
-      });
+      const [h, status, thermal] = await Promise.all([
+        liveJson('data/health-status.json'),
+        liveJson('data/status.json').catch(() => null),
+        liveJson('data/indoor-thermal-model.json').catch(() => null),
+      ]);
+
+      const indoor = sourceByName(h, 'indoor');
+      const sohland = sourceByName(h, 'sohland');
+      const chmi = sourceByName(h, 'chmi');
+      const radar = sourceByName(h, 'radar');
+      const thermalHealth = sourceByName(h, 'thermal_model');
+
+      const indoorCoverage = indoor?.quality?.coverage;
+      const indoorFresh = indoor?.observation_age_minutes;
+      const indoorState = indoor?.data_fresh && indoor?.coverage_sufficient ? 'good'
+        : indoor?.data_fresh ? 'warn' : 'bad';
+      const indoorText = `${pct(indoorCoverage)} / fresh ${fmtAge(indoorFresh)}`;
+
+      const weatherCandidates = [sohland, chmi]
+        .filter(Boolean)
+        .filter(s => s.data_fresh && s.observation_age_minutes != null)
+        .sort((a,b) => Number(a.observation_age_minutes) - Number(b.observation_age_minutes));
+      const weather = weatherCandidates[0] || sohland || chmi;
+      const weatherAge = weather?.observation_age_minutes;
+      const weatherState = weather?.data_fresh ? (weather?.coverage_sufficient === false ? 'warn' : 'good') : 'bad';
+      const weatherText = weatherAge == null ? 'unknown' : `fresh ${fmtAge(weatherAge)}`;
+
+      const models = status?.models || {};
+      const forecastAvailable = ['dwd','chmi','ec'].filter(k => models?.[k]?.ok === true).length;
+      const forecastState = forecastAvailable === 3 ? 'good' : forecastAvailable >= 2 ? 'warn' : 'bad';
+      const forecastText = `${forecastAvailable}/3 models available`;
+
+      const rq = radar?.quality || {};
+      const radarRatio = Number(rq.coverage);
+      let radarText = 'unknown', radarState = 'bad';
+      if (radar?.data_fresh) {
+        if (radar?.coverage_sufficient && Number.isFinite(radarRatio) && radarRatio >= .999) {
+          radarText = 'full';
+          radarState = 'good';
+        } else if (radar?.coverage_sufficient || (Number.isFinite(radarRatio) && radarRatio > 0)) {
+          radarText = 'partial';
+          radarState = 'warn';
+        } else {
+          radarText = 'insufficient';
+          radarState = 'bad';
+        }
+      } else if (radar) {
+        radarText = 'stale';
+      }
+
+      const fc = thermal?.passive_forecast?.forecast_coverage_contract || {};
+      const modelReady = thermal?.prediction_ready === true;
+      const inputRecentOk = thermalHealth?.data_fresh === true && thermalHealth?.coverage_sufficient !== false;
+      const forecastCoverageOk = fc.coverage_sufficient !== false;
+      const thermalOk = modelReady && inputRecentOk && forecastCoverageOk;
+      const thermalState = thermalOk ? 'good' : (modelReady || inputRecentOk ? 'warn' : 'bad');
+      const thermalText = thermalOk ? 'sufficient coverage' : modelReady ? 'partial coverage' : 'insufficient coverage';
+
+      const rows = [
+        ['Indoor', indoorText, indoorState],
+        ['Weather', weatherText, weatherState],
+        ['Forecast', forecastText, forecastState],
+        ['Radar', radarText, radarState],
+        ['Thermal model', thermalText, thermalState],
+      ];
+
+      host.innerHTML = rows.map(([label, value, state]) =>
+        `<div class="stat"><span>${esc(label)}</span><b style="color:${qualityTone(state)}">${esc(value)}</b></div>`
+      ).join('');
+
       const note = document.getElementById('centralnote');
       if (note) {
-        note.textContent = h.overall_status === 'ok'
-          ? 'Health monitor: všechny sledované zdroje jsou v povoleném intervalu čerstvosti.'
-          : 'Health monitor zachytil zpožděný nebo zastaralý zdroj. Detail je vidět ve stavech výše.';
+        note.textContent = 'DATA QUALITY · collector running, freshness a coverage jsou vyhodnocovány odděleně.';
       }
     } catch (e) {
-      host.innerHTML = '<div class="stat"><b style="color:#ff6f66">CHYBA</b><span>Health monitor není dostupný</span></div>';
+      host.innerHTML = '<div class="stat"><span>DATA QUALITY</span><b style="color:#ff6f66">unavailable</b></div>';
     }
   }
 
