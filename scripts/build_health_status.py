@@ -63,6 +63,17 @@ def jsonl_timestamps(path_value, timestamp_keys):
     return sorted(set(out))
 
 
+def bucket_timestamps(timestamps, interval_minutes):
+    seconds = int(interval_minutes * 60)
+    if seconds <= 0:
+        return sorted(set(timestamps))
+    out = set()
+    for d in timestamps:
+        epoch = int(d.timestamp())
+        out.add(datetime.fromtimestamp((epoch // seconds) * seconds, timezone.utc))
+    return sorted(out)
+
+
 def indoor_history_timestamps():
     payload = read_json('indoor-history.json') or {}
     out = []
@@ -245,7 +256,7 @@ def main():
         chmi_times, now, 6 * 60, 10, min_ratio=0.75, max_internal_gap_minutes=30
     )
 
-    indoor_times = indoor_history_timestamps()
+    indoor_times = bucket_timestamps(indoor_history_timestamps(), 30)
     indoor_cov = recent_coverage(
         indoor_times, now, 6 * 60, 30, min_ratio=0.75, max_internal_gap_minutes=60
     )
