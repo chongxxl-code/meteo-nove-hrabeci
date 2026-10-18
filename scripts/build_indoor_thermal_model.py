@@ -1711,7 +1711,7 @@ def main():
     )
     print(json.dumps({
         "ok": True,
-        "schema": 7,
+        "schema": output["schema"],
         "status": status,
         "fit_basis": output["fit_basis"],
         "fit_samples": len(fit_basis),
