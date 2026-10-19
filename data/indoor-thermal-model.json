@@ -1,6 +1,6 @@
 {
   "schema": 9,
-  "generated_at": "2026-10-19T05:48:24.021392Z",
+  "generated_at": "2026-10-19T06:32:36.120707Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -8,63 +8,63 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
-  "coverage_days": 30.33,
-  "indoor_raw_points": 11712,
+  "coverage_days": 30.42,
+  "indoor_raw_points": 11721,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-19T07:47:31+02:00",
-  "indoor_30m_bins": 1448,
-  "weather_30m_bins": 2886,
-  "paired_candidate_bins": 1444,
-  "fit_samples": 41,
-  "all_accepted_windows": 66,
-  "night_windows": 41,
+  "indoor_history_last_timestamp": "2026-10-19T08:27:32+02:00",
+  "indoor_30m_bins": 1449,
+  "weather_30m_bins": 2890,
+  "paired_candidate_bins": 1448,
+  "fit_samples": 42,
+  "all_accepted_windows": 67,
+  "night_windows": 42,
   "data_coverage": {
     "contract": "source + last_sample_at + expected_interval + observed_count + expected_count + gap + stale + coverage",
     "indoor_30m": {
       "source": "EMOS/Tuya indoor history",
-      "last_sample_at": "2026-10-19T07:47:31+02:00",
+      "last_sample_at": "2026-10-19T08:27:32+02:00",
       "expected_interval_minutes": 30,
       "stale": false,
-      "observed_count": 1444,
-      "expected_count": 1457,
+      "observed_count": 1448,
+      "expected_count": 1461,
       "coverage": 0.991,
       "largest_gap_minutes": 330.0,
       "sufficient": false
     },
     "outdoor_30m": {
       "source": "DWD Sohland preferred / CHMI Varnsdorf fallback",
-      "last_sample_at": "2026-10-19T05:30:00+02:00",
+      "last_sample_at": "2026-10-19T07:30:00+02:00",
       "expected_interval_minutes": 30,
       "stale": false,
-      "observed_count": 1457,
-      "expected_count": 1457,
+      "observed_count": 1461,
+      "expected_count": 1461,
       "coverage": 1.0,
       "largest_gap_minutes": 30.0,
       "sufficient": true
     },
     "paired_training_30m": {
       "source": "intersection of indoor/outdoor modelling buckets",
-      "last_sample_at": "2026-10-19T05:30:00+02:00",
+      "last_sample_at": "2026-10-19T07:30:00+02:00",
       "expected_interval_minutes": 30,
       "stale": false,
-      "observed_count": 1444,
-      "expected_count": 1457,
+      "observed_count": 1448,
+      "expected_count": 1461,
       "coverage": 0.991,
       "largest_gap_minutes": 330.0,
       "sufficient": false
     },
     "passive_windows": {
       "source": "accepted 6h passive windows after all guards",
-      "observed_count": 66,
-      "expected_count": 116,
-      "coverage": 0.569,
+      "observed_count": 67,
+      "expected_count": 117,
+      "coverage": 0.573,
       "rejected_count": 50
     }
   },
   "current_indoor_state": {
     "ok": true,
     "temperature_c": 14.0,
-    "observed_at_utc": "2026-10-19T05:47:53Z",
+    "observed_at_utc": "2026-10-19T06:32:04Z",
     "age_minutes": 0.5,
     "max_age_minutes": 30.0,
     "device_offline": false,
@@ -75,20 +75,20 @@
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "current_temperature_selection": {
       "ok": true,
-      "temperature_c": 8.1,
+      "temperature_c": 7.9,
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
-      "observed_at_utc": "2026-10-19T03:50:00Z",
-      "age_minutes": 118.4,
+      "observed_at_utc": "2026-10-19T05:20:00Z",
+      "age_minutes": 72.6,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
         {
           "source": "DWD Sohland",
           "station": "Sohland/Spree",
-          "temperature_c": 8.1,
-          "observed_at_utc": "2026-10-19T03:50:00Z",
-          "age_minutes": 118.4,
+          "temperature_c": 7.9,
+          "observed_at_utc": "2026-10-19T05:20:00Z",
+          "age_minutes": 72.6,
           "fresh": true
         }
       ]
@@ -97,8 +97,8 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 2886,
-      "ČHMÚ Varnsdorf": 0
+      "DWD Sohland": 2889,
+      "ČHMÚ Varnsdorf": 1
     },
     "dwd_archives": [
       "data/observations/dwd-sohland-06129-2026-08.jsonl",
@@ -114,31 +114,31 @@
   "empirical": {
     "median_cooling_c_per_h": -0.033,
     "cooling_p25_c_per_h": -0.05,
-    "cooling_p75_c_per_h": -0.033,
+    "cooling_p75_c_per_h": -0.021,
     "median_passive_window_rate_c_per_h": -0.033,
-    "inside_minus_outside_median_c": 10.2,
+    "inside_minus_outside_median_c": 10.1,
     "inside_minus_outside_min_c": 4.8,
     "inside_minus_outside_max_c": 16.3
   },
   "fit": {
     "equation": "dTin/dt = coupling * (Tout - Tin)",
     "method": "median through-origin slope on 6h windows",
-    "coupling_per_h": 0.00356,
-    "time_constant_h": 281.1,
-    "mae_c_per_h": 0.019,
-    "median_abs_error_c_per_h": 0.011,
-    "coupling_p25_per_h": 0.00319,
-    "coupling_p75_per_h": 0.00564,
-    "sample_count": 41
+    "coupling_per_h": 0.00355,
+    "time_constant_h": 282.0,
+    "mae_c_per_h": 0.018,
+    "median_abs_error_c_per_h": 0.01,
+    "coupling_p25_per_h": 0.00302,
+    "coupling_p75_per_h": 0.00551,
+    "sample_count": 42
   },
   "shadow_validation": {
     "weighted_fit": {
       "equation": "dTin/dt = coupling * (Tout - Tin)",
       "method": "shadow weighted through-origin regression; ratio weights are proportional to gap^2",
-      "coupling_per_h": 0.00469,
-      "time_constant_h": 213.2,
+      "coupling_per_h": 0.00467,
+      "time_constant_h": 214.0,
       "mae_c_per_h": 0.02,
-      "sample_count": 41,
+      "sample_count": 42,
       "shadow_only": true
     },
     "rolling_origin_vs_persistence": {
@@ -148,20 +148,20 @@
       "weather_input": "observed 6h mean outdoor temperature, not NWP forecast",
       "protocol": "rolling-origin: each test window is predicted using only earlier accepted windows",
       "minimum_prior_windows": 6,
-      "test_windows": 35,
+      "test_windows": 36,
       "production_estimator": {
-        "n": 35,
-        "mae_c": 0.123,
-        "median_abs_error_c": 0.069
+        "n": 36,
+        "mae_c": 0.121,
+        "median_abs_error_c": 0.066
       },
       "weighted_regression_shadow": {
-        "n": 35,
-        "mae_c": 0.123,
+        "n": 36,
+        "mae_c": 0.122,
         "median_abs_error_c": 0.079
       },
       "persistence_reference": {
-        "n": 35,
-        "mae_c": 0.291,
+        "n": 36,
+        "mae_c": 0.286,
         "median_abs_error_c": 0.2
       },
       "production_improvement_vs_persistence_pct": 57.7,
@@ -172,19 +172,19 @@
   },
   "current_passive_estimate": {
     "inside_c": 14.0,
-    "outside_c": 8.1,
+    "outside_c": 7.9,
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
-    "outside_observed_at_utc": "2026-10-19T03:50:00Z",
-    "outside_age_minutes": 118.4,
+    "outside_observed_at_utc": "2026-10-19T05:20:00Z",
+    "outside_age_minutes": 72.6,
     "outside_fallback_used": false,
-    "inside_minus_outside_c": 5.9,
+    "inside_minus_outside_c": 6.1,
     "passive_fit_rate_c_per_h": -0.02,
     "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command"
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-19T07:47:53+02:00",
+    "start_timestamp_local": "2026-10-19T08:32:04+02:00",
     "start_inside_c": 14.0,
     "weather_models": [
       "chmi",
@@ -200,14 +200,14 @@
       "coverage_sufficient": true
     },
     "coupling_candidates_per_h": [
-      0.00319,
-      0.00356,
-      0.00564
+      0.00302,
+      0.00355,
+      0.00551
     ],
     "horizons": [
       {
         "hours": 12,
-        "timestamp_local": "2026-10-19T20:00:00+02:00",
+        "timestamp_local": "2026-10-19T21:00:00+02:00",
         "observed_model_branches": 3,
         "expected_model_branches": 3,
         "model_branch_coverage": 1.0,
@@ -217,12 +217,12 @@
         "inside_q75_c": 13.8,
         "inside_min_scenario_c": 13.6,
         "inside_max_scenario_c": 13.8,
-        "outside_model_median_c": 5.6,
+        "outside_model_median_c": 4.8,
         "scenario_count": 9
       },
       {
         "hours": 24,
-        "timestamp_local": "2026-10-20T08:00:00+02:00",
+        "timestamp_local": "2026-10-20T09:00:00+02:00",
         "observed_model_branches": 3,
         "expected_model_branches": 3,
         "model_branch_coverage": 1.0,
@@ -232,37 +232,37 @@
         "inside_q75_c": 13.4,
         "inside_min_scenario_c": 12.9,
         "inside_max_scenario_c": 13.4,
-        "outside_model_median_c": 3.4,
+        "outside_model_median_c": 4.6,
         "scenario_count": 9
       },
       {
         "hours": 36,
-        "timestamp_local": "2026-10-20T20:00:00+02:00",
+        "timestamp_local": "2026-10-20T21:00:00+02:00",
         "observed_model_branches": 3,
         "expected_model_branches": 3,
         "model_branch_coverage": 1.0,
         "coverage_sufficient": true,
         "inside_median_c": 13.1,
-        "inside_q25_c": 12.7,
-        "inside_q75_c": 13.2,
+        "inside_q25_c": 12.8,
+        "inside_q75_c": 13.3,
         "inside_min_scenario_c": 12.7,
         "inside_max_scenario_c": 13.3,
-        "outside_model_median_c": 10.0,
+        "outside_model_median_c": 10.3,
         "scenario_count": 9
       },
       {
         "hours": 48,
-        "timestamp_local": "2026-10-21T08:00:00+02:00",
+        "timestamp_local": "2026-10-21T09:00:00+02:00",
         "observed_model_branches": 2,
         "expected_model_branches": 3,
         "model_branch_coverage": 0.667,
         "coverage_sufficient": true,
         "inside_median_c": 13.0,
-        "inside_q25_c": 12.6,
+        "inside_q25_c": 12.7,
         "inside_q75_c": 13.1,
         "inside_min_scenario_c": 12.5,
-        "inside_max_scenario_c": 13.1,
-        "outside_model_median_c": 9.5,
+        "inside_max_scenario_c": 13.2,
+        "outside_model_median_c": 10.2,
         "scenario_count": 6
       }
     ],
@@ -307,7 +307,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-19T07:47:53+02:00",
+      "start_timestamp_local": "2026-10-19T08:32:04+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -315,34 +315,34 @@
       ],
       "degree_hours_by_model": {
         "dwd": {
-          "degree_hours_kh": 31.23,
+          "degree_hours_kh": 32.64,
           "covered_hours": 24.0
         },
         "chmi": {
-          "degree_hours_kh": 51.1,
+          "degree_hours_kh": 54.61,
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 36.95,
+          "degree_hours_kh": 39.3,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 36.95,
+      "degree_hours_median_kh": 39.3,
       "electricity_kwh": {
-        "low": 5.4,
-        "central": 8.6,
-        "high": 17.8
+        "low": 5.7,
+        "central": 9.1,
+        "high": 19.0
       },
       "incremental_cost_czk": {
-        "low": 24.0,
-        "central": 38.0,
-        "high": 78.0
+        "low": 25.0,
+        "central": 40.0,
+        "high": 83.0
       },
       "scope": "steady-state reference energy to maintain approximately 7.0 °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering"
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-19T07:47:53+02:00",
+      "start_timestamp_local": "2026-10-19T08:32:04+02:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -350,28 +350,28 @@
       ],
       "degree_hours_by_model": {
         "dwd": {
-          "degree_hours_kh": 31.23,
+          "degree_hours_kh": 32.64,
           "covered_hours": 24.0
         },
         "chmi": {
-          "degree_hours_kh": 51.1,
+          "degree_hours_kh": 54.61,
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 36.95,
+          "degree_hours_kh": 39.3,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 36.95,
+      "degree_hours_median_kh": 39.3,
       "electricity_kwh": {
-        "low": 5.4,
-        "central": 8.6,
-        "high": 17.8
+        "low": 5.7,
+        "central": 9.1,
+        "high": 19.0
       },
       "incremental_cost_czk": {
-        "low": 24.0,
-        "central": 38.0,
-        "high": 78.0
+        "low": 25.0,
+        "central": 40.0,
+        "high": 83.0
       },
       "scope": "steady-state reference energy to maintain approximately 7.0 °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering"
     },
@@ -414,20 +414,14 @@
       "horizon_hours": 24,
       "low_tariff_hours": 20.03,
       "high_tariff_hours": 3.97,
-      "current_tariff": "VT",
-      "next_transition_local": "2026-10-19T08:00:00+02:00",
+      "current_tariff": "NT",
+      "next_transition_local": "2026-10-19T10:55:00+02:00",
       "segments": [
         {
-          "tariff": "VT",
-          "start_local": "2026-10-19T07:47:53+02:00",
-          "end_local": "2026-10-19T08:00:00+02:00",
-          "hours": 0.202
-        },
-        {
           "tariff": "NT",
-          "start_local": "2026-10-19T08:00:00+02:00",
+          "start_local": "2026-10-19T08:32:04+02:00",
           "end_local": "2026-10-19T10:55:00+02:00",
-          "hours": 2.917
+          "hours": 2.382
         },
         {
           "tariff": "VT",
@@ -474,8 +468,14 @@
         {
           "tariff": "VT",
           "start_local": "2026-10-20T07:00:00+02:00",
-          "end_local": "2026-10-20T07:47:53+02:00",
-          "hours": 0.798
+          "end_local": "2026-10-20T08:00:00+02:00",
+          "hours": 1.0
+        },
+        {
+          "tariff": "NT",
+          "start_local": "2026-10-20T08:00:00+02:00",
+          "end_local": "2026-10-20T08:32:04+02:00",
+          "hours": 0.534
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
