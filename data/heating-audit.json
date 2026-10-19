@@ -1,6 +1,6 @@
 {
   "schema": "2026-10-18.heating-audit-v6",
-  "generated_at": "2026-10-19T04:36:25.857040Z",
+  "generated_at": "2026-10-19T13:10:54.885541Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
@@ -43,21 +43,6 @@
       "name": "hdo_week_length",
       "ok": true,
       "detail": "HDO schedule must contain seven forward days."
-    },
-    {
-      "name": "hdo_24h_2026-10-18",
-      "ok": true,
-      "detail": "HDO day 2026-10-18 does not cover exactly 24 hours."
-    },
-    {
-      "name": "hdo_nt_min_2026-10-18",
-      "ok": true,
-      "detail": "HDO day 2026-10-18 has less than 20 hours of NT."
-    },
-    {
-      "name": "hdo_vt_block_2026-10-18",
-      "ok": true,
-      "detail": "HDO day 2026-10-18 contains a VT block longer than 60 minutes."
     },
     {
       "name": "hdo_24h_2026-10-19",
@@ -150,6 +135,21 @@
       "detail": "HDO day 2026-10-24 contains a VT block longer than 60 minutes."
     },
     {
+      "name": "hdo_24h_2026-10-25",
+      "ok": true,
+      "detail": "HDO day 2026-10-25 does not cover exactly 24 hours."
+    },
+    {
+      "name": "hdo_nt_min_2026-10-25",
+      "ok": true,
+      "detail": "HDO day 2026-10-25 has less than 20 hours of NT."
+    },
+    {
+      "name": "hdo_vt_block_2026-10-25",
+      "ok": true,
+      "detail": "HDO day 2026-10-25 contains a VT block longer than 60 minutes."
+    },
+    {
       "name": "hdo_zero_paid_provider",
       "ok": true,
       "detail": "HDO monitoring unexpectedly uses a paid provider."
@@ -167,7 +167,7 @@
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 11697 points."
+      "detail": "Indoor history has only 11806 points."
     },
     {
       "name": "passive_window_indoor_coverage_guard",
@@ -252,7 +252,7 @@
     {
       "name": "weather_snapshot_freshness",
       "ok": true,
-      "detail": "Weather snapshot is stale or missing (age 1.6 min)."
+      "detail": "Weather snapshot is stale or missing (age 1.3 min)."
     }
   ],
   "oracle_negative_controls": [
