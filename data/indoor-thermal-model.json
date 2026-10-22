@@ -1,6 +1,6 @@
 {
   "schema": 9,
-  "generated_at": "2026-10-22T19:27:35.992343Z",
+  "generated_at": "2026-10-22T19:30:14.312257Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -65,7 +65,7 @@
     "ok": true,
     "temperature_c": 13.4,
     "observed_at_utc": "2026-10-22T19:27:10Z",
-    "age_minutes": 0.4,
+    "age_minutes": 3.1,
     "max_age_minutes": 30.0,
     "device_offline": false,
     "collector_stage": "completed",
@@ -75,20 +75,20 @@
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "current_temperature_selection": {
       "ok": true,
-      "temperature_c": 5.4,
+      "temperature_c": 5.9,
       "source": "DWD Sohland",
       "station": "Sohland/Spree",
-      "observed_at_utc": "2026-10-22T18:20:00Z",
-      "age_minutes": 67.6,
+      "observed_at_utc": "2026-10-22T18:50:00Z",
+      "age_minutes": 40.2,
       "max_age_minutes": 120.0,
       "fallback_used": false,
       "candidates": [
         {
           "source": "DWD Sohland",
           "station": "Sohland/Spree",
-          "temperature_c": 5.4,
-          "observed_at_utc": "2026-10-22T18:20:00Z",
-          "age_minutes": 67.6,
+          "temperature_c": 5.9,
+          "observed_at_utc": "2026-10-22T18:50:00Z",
+          "age_minutes": 40.2,
           "fresh": true
         }
       ]
@@ -97,8 +97,8 @@
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 3059,
-      "ČHMÚ Varnsdorf": 1
+      "DWD Sohland": 3060,
+      "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
       "data/observations/dwd-sohland-06129-2026-08.jsonl",
@@ -172,13 +172,13 @@
   },
   "current_passive_estimate": {
     "inside_c": 13.4,
-    "outside_c": 5.4,
+    "outside_c": 5.9,
     "outside_source": "DWD Sohland",
     "outside_station": "Sohland/Spree",
-    "outside_observed_at_utc": "2026-10-22T18:20:00Z",
-    "outside_age_minutes": 67.6,
+    "outside_observed_at_utc": "2026-10-22T18:50:00Z",
+    "outside_age_minutes": 40.2,
     "outside_fallback_used": false,
-    "inside_minus_outside_c": 8.0,
+    "inside_minus_outside_c": 7.5,
     "passive_fit_rate_c_per_h": -0.03,
     "note": "passive nighttime loss estimate from a freshness-gated outdoor observation; not a heating-control command"
   },
