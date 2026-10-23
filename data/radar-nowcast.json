@@ -1,45 +1,34 @@
 {
   "schema": 1,
-  "computed_at_utc": "2026-10-23T00:28:51.010945Z",
+  "computed_at_utc": "2026-10-23T01:01:08.882699Z",
   "location": {
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "status": "no_reliable_motion",
-  "confidence": "low",
+  "status": "operational",
+  "confidence": "medium",
   "eta_min": null,
   "relation": "pohyb_neurcity",
-  "note": "Radar je načtený, ale zatím není dost stabilních dvojic snímků pro spolehlivý pohyb.",
-  "motion": null,
+  "note": "ETA je zobrazena jen při stabilním směru a rychlosti.",
+  "nearest_precip_km": 69.5,
+  "motion": {
+    "bearing_deg": 180.0,
+    "compass": "J",
+    "speed_kmh": 0.0,
+    "pair_count": 3,
+    "angle_spread_deg": 0.0,
+    "speed_spread_px_min": 0.0,
+    "phase_peak_ratio_median": 2.173
+  },
   "frames": {
     "count": 6,
-    "first_unix": 1792711800,
-    "latest_unix": 1792714800
+    "first_unix": 1792714200,
+    "latest_unix": 1792717200
   },
   "diagnostics": {
     "source_frames": 6,
     "usable_frames": 6,
     "frame_tiles": [
-      {
-        "time": 1792711800,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1792712400,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1792713000,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1792713600,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
       {
         "time": 1792714200,
         "good_tiles": 9,
@@ -49,8 +38,27 @@
         "time": 1792714800,
         "good_tiles": 9,
         "failed_tiles": 0
+      },
+      {
+        "time": 1792715400,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1792716000,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1792716600,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1792717200,
+        "good_tiles": 9,
+        "failed_tiles": 0
       }
-    ],
-    "motion_pairs": 2
+    ]
   }
 }
