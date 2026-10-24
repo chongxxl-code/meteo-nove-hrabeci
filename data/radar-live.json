@@ -1,39 +1,26 @@
 {
   "schema": 1,
-  "computed_at_utc": "2026-10-24T20:31:16.113306Z",
+  "computed_at_utc": "2026-10-24T20:46:23.118652Z",
   "location": {
     "lat": 51.0162,
     "lon": 14.4398
   },
   "status": "operational",
-  "confidence": "high",
+  "confidence": null,
   "eta_min": null,
-  "relation": "miji_lokalitu",
-  "note": "ETA je zobrazena jen při stabilním směru a rychlosti.",
-  "nearest_precip_km": 81.7,
-  "motion": {
-    "bearing_deg": 135.0,
-    "compass": "JV",
-    "speed_kmh": 3.3,
-    "pair_count": 4,
-    "angle_spread_deg": 22.5,
-    "speed_spread_px_min": 0.071,
-    "phase_peak_ratio_median": 2.174
-  },
+  "relation": "bez_srazek_v_dosahu",
+  "note": "V analyzovaném okolí není dostatečný srážkový signál; pohyb ani ETA se neurčují.",
+  "nearest_precip_km": null,
+  "motion": null,
   "frames": {
     "count": 6,
-    "first_unix": 1792870800,
-    "latest_unix": 1792873800
+    "first_unix": 1792871400,
+    "latest_unix": 1792874400
   },
   "diagnostics": {
     "source_frames": 6,
     "usable_frames": 6,
     "frame_tiles": [
-      {
-        "time": 1792870800,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
       {
         "time": 1792871400,
         "good_tiles": 9,
@@ -56,6 +43,11 @@
       },
       {
         "time": 1792873800,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1792874400,
         "good_tiles": 9,
         "failed_tiles": 0
       }
