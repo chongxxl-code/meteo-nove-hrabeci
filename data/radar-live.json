@@ -1,39 +1,34 @@
 {
   "schema": 1,
-  "computed_at_utc": "2026-10-24T06:54:21.198259Z",
+  "computed_at_utc": "2026-10-24T07:08:52.700891Z",
   "location": {
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "status": "motion_uncertain",
-  "confidence": "low",
+  "status": "operational",
+  "confidence": "medium",
   "eta_min": null,
   "relation": "miji_lokalitu",
-  "note": "Pohyb je zatím příliš proměnlivý; ETA se nezobrazuje.",
-  "nearest_precip_km": 69.5,
+  "note": "ETA je zobrazena jen při stabilním směru a rychlosti.",
+  "nearest_precip_km": 109.5,
   "motion": {
-    "bearing_deg": 21.3,
-    "compass": "S",
-    "speed_kmh": 44.6,
+    "bearing_deg": 32.0,
+    "compass": "SV",
+    "speed_kmh": 43.6,
     "pair_count": 4,
-    "angle_spread_deg": 8.8,
-    "speed_spread_px_min": 0.312,
-    "phase_peak_ratio_median": 1.074
+    "angle_spread_deg": 12.2,
+    "speed_spread_px_min": 0.315,
+    "phase_peak_ratio_median": 1.135
   },
   "frames": {
     "count": 6,
-    "first_unix": 1792821600,
-    "latest_unix": 1792824600
+    "first_unix": 1792822200,
+    "latest_unix": 1792825200
   },
   "diagnostics": {
     "source_frames": 6,
     "usable_frames": 6,
     "frame_tiles": [
-      {
-        "time": 1792821600,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
       {
         "time": 1792822200,
         "good_tiles": 9,
@@ -56,6 +51,11 @@
       },
       {
         "time": 1792824600,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1792825200,
         "good_tiles": 9,
         "failed_tiles": 0
       }
