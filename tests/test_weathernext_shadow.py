@@ -2,6 +2,7 @@ import json
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -73,6 +74,28 @@ class WeatherNextShadowTests(unittest.TestCase):
         self.assertFalse(summary["enough_data"])
         self.assertEqual(summary["mae_c"], 0.75)
         self.assertEqual(summary["bias_c"], 0.25)
+
+    def test_api_outage_fails_closed_and_writes_error_status(self):
+        old_data = collector.DATA
+        old_archive = collector.ARCHIVE_DIR
+        old_status = collector.STATUS_PATH
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                collector.DATA = root
+                collector.ARCHIVE_DIR = root / "weathernext2-shadow"
+                collector.STATUS_PATH = root / "weathernext2-status.json"
+                with patch.object(collector, "get_json", side_effect=RuntimeError("simulated API outage")):
+                    with self.assertRaises(SystemExit):
+                        collector.main()
+                status = json.loads(collector.STATUS_PATH.read_text(encoding="utf-8"))
+                self.assertFalse(status["ok"])
+                self.assertEqual(status["stage"], "error")
+                self.assertIn("simulated API outage", status["error"])
+        finally:
+            collector.DATA = old_data
+            collector.ARCHIVE_DIR = old_archive
+            collector.STATUS_PATH = old_status
 
 
 if __name__ == "__main__":
