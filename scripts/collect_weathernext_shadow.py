@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 ARCHIVE_DIR = DATA / "weathernext2-shadow"
 STATUS_PATH = DATA / "weathernext2-status.json"
+LATEST_PATH = DATA / "weathernext2-latest.json"
 META_URL = f"https://ensemble-api.open-meteo.com/data/{MODEL}/static/meta.json"
 API_URL = "https://ensemble-api.open-meteo.com/v1/ensemble"
 UA = "nove-hrabeci-meteo-weathernext-shadow/1.0 (+github-actions)"
@@ -203,6 +204,7 @@ def main():
         run_month = record["run_initialization_utc"][:7]
         archive_path = ARCHIVE_DIR / f"{run_month}.jsonl"
         appended = append_run_once(archive_path, record)
+        LATEST_PATH.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
         status.update({
             "ok": True,
@@ -210,6 +212,7 @@ def main():
             "run_initialization_utc": record["run_initialization_utc"],
             "run_available_utc": record["run_available_utc"],
             "archive_file": str(archive_path.relative_to(ROOT)).replace("\\", "/"),
+            "latest_file": str(LATEST_PATH.relative_to(ROOT)).replace("\\", "/"),
             "new_run_appended": appended,
             "native_temporal_resolution_hours": 6,
             "ensemble_members": EXPECTED_MEMBERS,
