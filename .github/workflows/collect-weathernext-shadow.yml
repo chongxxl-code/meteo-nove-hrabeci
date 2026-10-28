@@ -9,6 +9,7 @@ on:
       - 'scripts/collect_weathernext_shadow.py'
       - 'scripts/verify_weathernext_shadow.py'
       - 'tests/test_weathernext_shadow.py'
+      - 'index.html'
       - '.github/workflows/collect-weathernext-shadow.yml'
   push:
     branches: [main]
@@ -16,6 +17,7 @@ on:
       - 'scripts/collect_weathernext_shadow.py'
       - 'scripts/verify_weathernext_shadow.py'
       - 'tests/test_weathernext_shadow.py'
+      - 'index.html'
       - '.github/workflows/collect-weathernext-shadow.yml'
 
 permissions:
@@ -59,7 +61,7 @@ jobs:
           }
 
           make_commit() {
-            git add data/weathernext2-shadow/ data/weathernext2-status.json data/weathernext2-verification.json
+            git add data/weathernext2-shadow/ data/weathernext2-status.json data/weathernext2-latest.json data/weathernext2-verification.json
             if git diff --cached --quiet; then
               echo "No WeatherNext shadow data changes."
               return 1
