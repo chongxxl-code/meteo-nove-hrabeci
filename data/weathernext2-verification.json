@@ -1,0 +1,213 @@
+{
+  "schema": 1,
+  "generated_at_utc": "2026-10-28T13:07:17.173098Z",
+  "status": "collecting",
+  "mode": "shadow_only",
+  "model": "google_weathernext2_ensemble",
+  "method": {
+    "forecast_value": "mean of 64 native WeatherNext 2 ensemble members computed by the collector",
+    "native_temporal_resolution_hours": 6,
+    "target_model_leads_hours": [
+      6,
+      12,
+      24,
+      48,
+      72
+    ],
+    "temperature_truth_priority": "DWD Sohland/Spree 10-minute temperature, then nearest ČHMÚ temperature station",
+    "operational_gate": "run_available_utc must be <= valid_at_utc",
+    "minimum_cases_before_quality_conclusion": 20,
+    "night_definition_local": "18:00-07:59 Europe/Prague; native 6-hour samples only",
+    "warning": "Native WeatherNext 2 does not resolve the true continuous nightly minimum. Do not treat native-night samples as an interpolated hourly minimum."
+  },
+  "coverage": {
+    "forecast_runs": 1,
+    "matched_cases": 1,
+    "operational_cases": 0,
+    "retrospective_only_cases": 1,
+    "operational_night_native_cases": 0,
+    "sohland_temperature_observations": 9975,
+    "chmi_temperature_observations": 9375
+  },
+  "overall_operational_temperature": {
+    "n": 0,
+    "enough_data": false,
+    "mae_c": null,
+    "bias_c": null
+  },
+  "overall_operational_night_native": {
+    "n": 0,
+    "enough_data": false,
+    "mae_c": null,
+    "bias_c": null
+  },
+  "overall_operational_frost_probability": {
+    "n": 0,
+    "enough_data": false,
+    "observed_frost_events": 0,
+    "brier_score": null,
+    "accuracy_at_50pct": null
+  },
+  "lead_hours": {
+    "6": {
+      "retrospective_model_lead": {
+        "n": 1,
+        "enough_data": false,
+        "mae_c": 3.244,
+        "bias_c": -3.244
+      },
+      "operational": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational_night_native_samples": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "frost_probability_operational": {
+        "n": 0,
+        "enough_data": false,
+        "observed_frost_events": 0,
+        "brier_score": null,
+        "accuracy_at_50pct": null
+      },
+      "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
+    },
+    "12": {
+      "retrospective_model_lead": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational_night_native_samples": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "frost_probability_operational": {
+        "n": 0,
+        "enough_data": false,
+        "observed_frost_events": 0,
+        "brier_score": null,
+        "accuracy_at_50pct": null
+      },
+      "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
+    },
+    "24": {
+      "retrospective_model_lead": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational_night_native_samples": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "frost_probability_operational": {
+        "n": 0,
+        "enough_data": false,
+        "observed_frost_events": 0,
+        "brier_score": null,
+        "accuracy_at_50pct": null
+      },
+      "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
+    },
+    "48": {
+      "retrospective_model_lead": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational_night_native_samples": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "frost_probability_operational": {
+        "n": 0,
+        "enough_data": false,
+        "observed_frost_events": 0,
+        "brier_score": null,
+        "accuracy_at_50pct": null
+      },
+      "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
+    },
+    "72": {
+      "retrospective_model_lead": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "operational_night_native_samples": {
+        "n": 0,
+        "enough_data": false,
+        "mae_c": null,
+        "bias_c": null
+      },
+      "frost_probability_operational": {
+        "n": 0,
+        "enough_data": false,
+        "observed_frost_events": 0,
+        "brier_score": null,
+        "accuracy_at_50pct": null
+      },
+      "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
+    }
+  },
+  "recent_cases": [
+    {
+      "model": "google_weathernext2_ensemble_mean_shadow",
+      "model_run_initialization_utc": "2026-10-28T00:00:00Z",
+      "model_run_available_utc": "2026-10-28T13:00:04Z",
+      "target_at_utc": "2026-10-28T06:00:00Z",
+      "model_lead_h": 6,
+      "operational_lead_h_at_availability": -7.0,
+      "operationally_scoreable": false,
+      "forecast_c": 4.656,
+      "observed_c": 7.9,
+      "error_c": -3.244,
+      "frost_probability": 0.0,
+      "night_native_sample": true,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    }
+  ],
+  "production_effect": "none"
+}
