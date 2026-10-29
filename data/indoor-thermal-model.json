@@ -1,6 +1,6 @@
 {
   "schema": 9,
-  "generated_at": "2026-10-29T08:40:50.255952Z",
+  "generated_at": "2026-10-29T09:18:25.461249Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 40.44,
-  "indoor_raw_points": 15990,
+  "indoor_raw_points": 15998,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-10-29T09:34:03+01:00",
-  "indoor_30m_bins": 1934,
+  "indoor_history_last_timestamp": "2026-10-29T10:14:03+01:00",
+  "indoor_30m_bins": 1935,
   "weather_30m_bins": 3371,
   "paired_candidate_bins": 1929,
   "fit_samples": 52,
@@ -22,7 +22,7 @@
     "contract": "source + last_sample_at + expected_interval + observed_count + expected_count + gap + stale + coverage",
     "indoor_30m": {
       "source": "EMOS/Tuya indoor history",
-      "last_sample_at": "2026-10-29T09:34:03+01:00",
+      "last_sample_at": "2026-10-29T10:14:03+01:00",
       "expected_interval_minutes": 30,
       "stale": false,
       "observed_count": 1929,
@@ -64,8 +64,8 @@
   "current_indoor_state": {
     "ok": true,
     "temperature_c": 14.3,
-    "observed_at_utc": "2026-10-29T08:40:23Z",
-    "age_minutes": 0.5,
+    "observed_at_utc": "2026-10-29T09:18:03Z",
+    "age_minutes": 0.4,
     "max_age_minutes": 30.0,
     "device_offline": false,
     "collector_stage": "completed",
@@ -88,7 +88,7 @@
           "station": "Sohland/Spree",
           "temperature_c": 7.2,
           "observed_at_utc": "2026-10-29T06:20:00Z",
-          "age_minutes": 140.8,
+          "age_minutes": 178.4,
           "fresh": false
         },
         {
@@ -96,7 +96,7 @@
           "station": "Varnsdorf",
           "temperature_c": 7.3,
           "observed_at_utc": "2026-10-29T05:50:00Z",
-          "age_minutes": 170.8,
+          "age_minutes": 208.4,
           "fresh": false
         }
       ],
@@ -182,7 +182,7 @@
   "current_passive_estimate": null,
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-10-29T09:40:23+01:00",
+    "start_timestamp_local": "2026-10-29T10:18:03+01:00",
     "start_inside_c": 14.3,
     "weather_models": [
       "chmi",
@@ -241,8 +241,8 @@
         "model_branch_coverage": 1.0,
         "coverage_sufficient": true,
         "inside_median_c": 13.5,
-        "inside_q25_c": 13.0,
-        "inside_q75_c": 13.5,
+        "inside_q25_c": 13.1,
+        "inside_q75_c": 13.6,
         "inside_min_scenario_c": 12.9,
         "inside_max_scenario_c": 13.6,
         "outside_model_median_c": 6.5,
@@ -305,7 +305,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-29T09:40:23+01:00",
+      "start_timestamp_local": "2026-10-29T10:18:03+01:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -340,7 +340,7 @@
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-10-29T09:40:23+01:00",
+      "start_timestamp_local": "2026-10-29T10:18:03+01:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -417,9 +417,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-10-29T09:40:23+01:00",
+          "start_local": "2026-10-29T10:18:03+01:00",
           "end_local": "2026-10-29T10:55:00+01:00",
-          "hours": 1.244
+          "hours": 0.616
         },
         {
           "tariff": "VT",
@@ -472,8 +472,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-10-30T08:00:00+01:00",
-          "end_local": "2026-10-30T09:40:23+01:00",
-          "hours": 1.673
+          "end_local": "2026-10-30T10:18:03+01:00",
+          "hours": 2.301
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
