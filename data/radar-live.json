@@ -1,35 +1,34 @@
 {
   "schema": 1,
-  "computed_at_utc": "2026-10-30T15:37:35.939905Z",
+  "computed_at_utc": "2026-10-30T15:52:11.559109Z",
   "location": {
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "status": "no_reliable_motion",
-  "confidence": "low",
+  "status": "operational",
+  "confidence": "high",
   "eta_min": null,
-  "relation": "pohyb_neurcity",
-  "note": "Radar je načtený, ale zatím není dost stabilních dvojic snímků pro spolehlivý pohyb.",
-  "motion": null,
+  "relation": "miji_lokalitu",
+  "note": "ETA je zobrazena jen při stabilním směru a rychlosti.",
+  "nearest_precip_km": 267.8,
+  "motion": {
+    "bearing_deg": 160.0,
+    "compass": "J",
+    "speed_kmh": 27.0,
+    "pair_count": 4,
+    "angle_spread_deg": 6.2,
+    "speed_spread_px_min": 0.047,
+    "phase_peak_ratio_median": 1.096
+  },
   "frames": {
     "count": 6,
-    "first_unix": 1793371200,
-    "latest_unix": 1793374200
+    "first_unix": 1793372400,
+    "latest_unix": 1793375400
   },
   "diagnostics": {
     "source_frames": 6,
     "usable_frames": 6,
     "frame_tiles": [
-      {
-        "time": 1793371200,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
-      {
-        "time": 1793371800,
-        "good_tiles": 9,
-        "failed_tiles": 0
-      },
       {
         "time": 1793372400,
         "good_tiles": 9,
@@ -49,8 +48,17 @@
         "time": 1793374200,
         "good_tiles": 9,
         "failed_tiles": 0
+      },
+      {
+        "time": 1793374800,
+        "good_tiles": 9,
+        "failed_tiles": 0
+      },
+      {
+        "time": 1793375400,
+        "good_tiles": 9,
+        "failed_tiles": 0
       }
-    ],
-    "motion_pairs": 2
+    ]
   }
 }
