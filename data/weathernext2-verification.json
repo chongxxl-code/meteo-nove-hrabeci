@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at_utc": "2026-10-30T06:26:01.766342Z",
+  "generated_at_utc": "2026-10-30T13:33:02.210194Z",
   "status": "collecting",
   "mode": "shadow_only",
   "model": "google_weathernext2_ensemble",
@@ -21,13 +21,13 @@
     "warning": "Native WeatherNext 2 does not resolve the true continuous nightly minimum. Do not treat native-night samples as an interpolated hourly minimum."
   },
   "coverage": {
-    "forecast_runs": 4,
-    "matched_cases": 12,
+    "forecast_runs": 5,
+    "matched_cases": 13,
     "operational_cases": 6,
-    "retrospective_only_cases": 6,
+    "retrospective_only_cases": 7,
     "operational_night_native_cases": 5,
-    "sohland_temperature_observations": 10227,
-    "chmi_temperature_observations": 9625
+    "sohland_temperature_observations": 10275,
+    "chmi_temperature_observations": 9667
   },
   "overall_operational_temperature": {
     "n": 6,
@@ -51,10 +51,10 @@
   "lead_hours": {
     "6": {
       "retrospective_model_lead": {
-        "n": 4,
+        "n": 5,
         "enough_data": false,
-        "mae_c": 2.565,
-        "bias_c": -0.668
+        "mae_c": 2.256,
+        "bias_c": -0.739
       },
       "operational": {
         "n": 0,
@@ -191,6 +191,23 @@
     }
   },
   "recent_cases": [
+    {
+      "model": "google_weathernext2_ensemble_mean_shadow",
+      "model_run_initialization_utc": "2026-10-30T00:00:00Z",
+      "model_run_available_utc": "2026-10-30T13:23:08Z",
+      "target_at_utc": "2026-10-30T06:00:00Z",
+      "model_lead_h": 6,
+      "operational_lead_h_at_availability": -7.39,
+      "operationally_scoreable": false,
+      "forecast_c": 6.777,
+      "observed_c": 7.8,
+      "error_c": -1.023,
+      "frost_probability": 0.0,
+      "night_native_sample": true,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
     {
       "model": "google_weathernext2_ensemble_mean_shadow",
       "model_run_initialization_utc": "2026-10-29T12:00:00Z",
