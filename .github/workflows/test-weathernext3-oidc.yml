@@ -1,0 +1,26 @@
+name: Test WeatherNext 3 Google OIDC
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  verify-identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Authenticate to Google Cloud using GitHub OIDC
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/355976439458/locations/global/workloadIdentityPools/meteo-hrabeci-github/providers/github-actions-meteo
+          service_account: meteo-weathernext3@weathernext-hrabeci.iam.gserviceaccount.com
+          token_format: access_token
+          access_token_lifetime: 300s
+          create_credentials_file: false
+          export_environment_variables: false
+
+      - name: Confirm token exchange completed
+        run: echo "Google OIDC token exchange succeeded; no forecast data was accessed."
