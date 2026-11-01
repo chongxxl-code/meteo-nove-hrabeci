@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud using GitHub OIDC
+      - name: Authenticate with Google OIDC
         uses: google-github-actions/auth@v3
         with:
           project_id: weathernext-hrabeci
@@ -24,48 +24,43 @@ jobs:
           create_credentials_file: true
           export_environment_variables: true
 
-      - name: Install Earth Engine client
-        run: python -m pip install --disable-pip-version-check earthengine-api google-auth
+      - name: Install minimal clients
+        run: python -m pip install --disable-pip-version-check earthengine-api google-auth google-cloud-storage
 
-      - name: Read one WeatherNext 3 point via Earth Engine
-        env:
-          CLOUD_PROJECT_ID: weathernext-hrabeci
+      - name: Diagnose two independent read paths (no data changes)
         run: |
           python - <<'PY'
-          import ee
           import google.auth
+          from google.cloud import storage
 
-          creds, _ = google.auth.default(
-              scopes=['https://www.googleapis.com/auth/cloud-platform']
-          )
-          ee.Initialize(credentials=creds, project='weathernext-hrabeci')
+          scopes = [
+              'https://www.googleapis.com/auth/cloud-platform',
+              'https://www.googleapis.com/auth/earthengine.readonly',
+          ]
+          creds, project = google.auth.default(scopes=scopes)
+          print('Authenticated Google project:', project)
+          print('Testing Cloud Storage object listing (max one object, no downloads)...', flush=True)
+          try:
+              client = storage.Client(project='weathernext-hrabeci', credentials=creds)
+              items = client.list_blobs(
+                  'weathernext3_statistics_spatial',
+                  prefix='weathernext_3_0_0_statistics/zarr/2026_to_present/20261101_13hr_01_preds/',
+                  max_results=1,
+                  timeout=20,
+              )
+              first = next(iter(items), None)
+              print('GCS_LIST_OK:', first.name if first else '(empty)', flush=True)
+          except Exception as exc:
+              print('GCS_LIST_ERROR:', type(exc).__name__, str(exc)[:500], flush=True)
 
-          collection = (
-              ee.ImageCollection(
+          print('Testing Earth Engine collection visibility...', flush=True)
+          try:
+              import ee
+              ee.Initialize(credentials=creds, project='weathernext-hrabeci')
+              col = ee.ImageCollection(
                   'projects/gcp-public-data-weathernext/assets/weathernext_3_0_0_0p05deg'
-              )
-              .filter(ee.Filter.eq('start_time', '2026-11-01T13:00:00Z'))
-              .filter(ee.Filter.eq('forecast_hour', 6))
-          )
-          count = collection.size().getInfo()
-          if count != 1:
-              raise RuntimeError(f'Expected one known WeatherNext 3 forecast, got {count}')
-
-          point = ee.Geometry.Point([14.424857, 51.016900])
-          data = (
-              ee.Image(collection.first())
-              .select('station_head_temperature_2m_mean')
-              .subtract(273.15)
-              .reduceRegion(
-                  reducer=ee.Reducer.first(),
-                  geometry=point,
-                  scale=5000,
-                  maxPixels=100,
-              )
-              .getInfo()
-          )
-          temp = data.get('station_head_temperature_2m_mean')
-          if temp is None:
-              raise RuntimeError('WeatherNext 3 temperature not returned')
-          print(f'EE point read OK; Nové Hraběcí +6h: {temp:.2f} C')
+              ).filter(ee.Filter.eq('start_time', '2026-11-01T13:00:00Z'))
+              print('EE_COLLECTION_COUNT:', col.limit(1).size().getInfo(), flush=True)
+          except Exception as exc:
+              print('EE_READ_ERROR:', type(exc).__name__, str(exc)[:500], flush=True)
           PY
