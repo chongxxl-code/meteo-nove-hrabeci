@@ -5,24 +5,57 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_utc": "2026-11-02T13:49:30.531298+00:00",
-  "quality_status": "degraded",
+  "computed_at_utc": "2026-11-03T12:59:05.036041+00:00",
+  "quality_status": "operational_local_drought_v1",
   "state": {
     "rank": 0,
     "level": "green",
-    "headline": "stav zatím nelze spolehlivě určit",
+    "headline": "bez potvrzeného výrazného vysychání",
     "score": 0,
     "reasons": [
-      "The read operation timed out",
+      "vodní bilance, půdní vlhkost a Sentinel nyní nedávají výrazný společný signál",
       "Copernicus 1 km dává smíšený půdně-vlhkostní signál"
     ],
-    "confidence": "low"
+    "confidence": "medium"
   },
   "background": {
-    "ok": false
+    "provider": "Open-Meteo historical Best Match / ERA5-family background",
+    "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
+    "period_start": "2025-10-28",
+    "period_end": "2026-11-01",
+    "data_age_days": 2,
+    "windows": {
+      "7": {
+        "days": 7,
+        "precip_mm": 7.8,
+        "et0_mm": 5.4,
+        "p_minus_et0_mm": 2.4,
+        "record_days": 7
+      },
+      "14": {
+        "days": 14,
+        "precip_mm": 29.0,
+        "et0_mm": 13.1,
+        "p_minus_et0_mm": 15.9,
+        "record_days": 14
+      },
+      "30": {
+        "days": 30,
+        "precip_mm": 48.5,
+        "et0_mm": 37.0,
+        "p_minus_et0_mm": 11.5,
+        "record_days": 30
+      }
+    },
+    "latest_soil": {
+      "surface_m3m3": 0.3705,
+      "rootzone_0_100cm_m3m3": 0.2756,
+      "surface_percentile_1y": 87.0,
+      "rootzone_percentile_1y": 45.7
+    }
   },
   "chmi_local_rain": {
-    "latest_observation_utc": "2026-11-02T09:50:00+00:00",
+    "latest_observation_utc": "2026-11-03T06:50:00+00:00",
     "coverage_fraction": {
       "7": 1.0,
       "14": 1.0,
@@ -47,7 +80,6 @@
     "The first-year percentile is an operational baseline, not yet a long-term local climatology.",
     "Copernicus SSM/SWI has 1 km resolution; it strengthens independent validation but cannot by itself resolve field-scale differences inside Nové Hraběcí."
   ],
-  "error": "The read operation timed out",
   "copernicus_1km": {
     "ok": true,
     "quality_status": "operational_copernicus_soil_1km",
