@@ -675,14 +675,26 @@ def main():
     if target_home_id is not None:
         detail_payload["gid"] = target_home_id
 
-    detail_response = api.request(
-        "thing.m.device.get",
-        "4.1",
-        detail_payload,
-        sid=api.sid,
-        extra={"gid": target_home_id} if target_home_id is not None else None,
-    )
-    detail = api.checked(detail_response, "device detail").get("result") or {}
+    # Retry transient EMOS/Tuya device-detail failures without changing measurements.
+    for detail_attempt in range(3):
+        try:
+            detail_response = api.request(
+                "thing.m.device.get",
+                "4.1",
+                detail_payload,
+                sid=api.sid,
+                extra={"gid": target_home_id} if target_home_id is not None else None,
+            )
+            detail = api.checked(detail_response, "device detail").get("result") or {}
+            break
+        except RuntimeError as exc:
+            if "SYSTEM_ERROR" not in str(exc) or "device detail" not in str(exc):
+                raise
+            if detail_attempt == 2:
+                raise
+            delay_seconds = (5, 15)[detail_attempt]
+            print(f"Transient EMOS device-detail error; retry in {delay_seconds}s (attempt {detail_attempt + 1}/3).", flush=True)
+            time.sleep(delay_seconds)
     if not isinstance(detail, dict):
         detail = {}
 
@@ -916,4 +928,7 @@ if __name__ == "__main__":
         }, ensure_ascii=False))
         if "USER_SESSION_LIMIT" in message:
             raise SystemExit(75)
+        if "device detail failed: SYSTEM_ERROR" in message:
+            # A temporary server failure: skip this poll, not the whole live session.
+            raise SystemExit(76)
         raise SystemExit(1)
