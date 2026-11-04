@@ -186,6 +186,13 @@ jobs:
               echo "EMOS session limit reached; stop this session and wait for the next scheduled window."
               break
             fi
+            if [ "${rc}" -eq 76 ]; then
+              echo "Transient EMOS/Tuya device-detail error; retain last good reading and retry on the next 7-minute cycle."
+              if [ "${cycle}" -lt 48 ]; then
+                sleep 420
+              fi
+              continue
+            fi
             if [ "${rc}" -ne 0 ]; then
               exit "${rc}"
             fi
