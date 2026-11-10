@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at_utc": "2026-11-10T07:43:38.641792Z",
+  "generated_at_utc": "2026-11-10T19:59:52.228699Z",
   "status": "evaluation_ready",
   "mode": "shadow_only",
   "model": "google_weathernext2_ensemble",
@@ -21,19 +21,19 @@
     "warning": "Native WeatherNext 2 does not resolve the true continuous nightly minimum. Do not treat native-night samples as an interpolated hourly minimum."
   },
   "coverage": {
-    "forecast_runs": 26,
-    "matched_cases": 121,
-    "operational_cases": 83,
-    "retrospective_only_cases": 38,
+    "forecast_runs": 27,
+    "matched_cases": 126,
+    "operational_cases": 87,
+    "retrospective_only_cases": 39,
     "operational_night_native_cases": 47,
-    "sohland_temperature_observations": 11838,
-    "chmi_temperature_observations": 11204
+    "sohland_temperature_observations": 11898,
+    "chmi_temperature_observations": 11264
   },
   "overall_operational_temperature": {
-    "n": 83,
+    "n": 87,
     "enough_data": true,
-    "mae_c": 1.573,
-    "bias_c": -0.159
+    "mae_c": 1.543,
+    "bias_c": -0.184
   },
   "overall_operational_night_native": {
     "n": 47,
@@ -42,19 +42,19 @@
     "bias_c": 0.272
   },
   "overall_operational_frost_probability": {
-    "n": 83,
+    "n": 87,
     "enough_data": true,
     "observed_frost_events": 16,
-    "brier_score": 0.0988,
-    "accuracy_at_50pct": 0.855
+    "brier_score": 0.0943,
+    "accuracy_at_50pct": 0.862
   },
   "lead_hours": {
     "6": {
       "retrospective_model_lead": {
-        "n": 26,
+        "n": 27,
         "enough_data": true,
-        "mae_c": 2.398,
-        "bias_c": 0.497
+        "mae_c": 2.357,
+        "bias_c": 0.43
       },
       "operational": {
         "n": 0,
@@ -79,16 +79,16 @@
     },
     "12": {
       "retrospective_model_lead": {
-        "n": 26,
+        "n": 27,
         "enough_data": true,
-        "mae_c": 1.504,
-        "bias_c": -0.301
+        "mae_c": 1.492,
+        "bias_c": -0.334
       },
       "operational": {
-        "n": 14,
+        "n": 15,
         "enough_data": false,
-        "mae_c": 2.145,
-        "bias_c": -0.274
+        "mae_c": 2.08,
+        "bias_c": -0.334
       },
       "operational_night_native_samples": {
         "n": 11,
@@ -97,26 +97,26 @@
         "bias_c": 0.221
       },
       "frost_probability_operational": {
-        "n": 14,
+        "n": 15,
         "enough_data": false,
         "observed_frost_events": 4,
-        "brier_score": 0.1613,
-        "accuracy_at_50pct": 0.786
+        "brier_score": 0.1506,
+        "accuracy_at_50pct": 0.8
       },
       "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
     },
     "24": {
       "retrospective_model_lead": {
-        "n": 25,
+        "n": 26,
         "enough_data": true,
-        "mae_c": 1.493,
-        "bias_c": -0.279
+        "mae_c": 1.48,
+        "bias_c": -0.313
       },
       "operational": {
-        "n": 25,
+        "n": 26,
         "enough_data": true,
-        "mae_c": 1.493,
-        "bias_c": -0.279
+        "mae_c": 1.48,
+        "bias_c": -0.313
       },
       "operational_night_native_samples": {
         "n": 13,
@@ -125,26 +125,26 @@
         "bias_c": 0.098
       },
       "frost_probability_operational": {
-        "n": 25,
+        "n": 26,
         "enough_data": true,
         "observed_frost_events": 4,
-        "brier_score": 0.0863,
-        "accuracy_at_50pct": 0.88
+        "brier_score": 0.083,
+        "accuracy_at_50pct": 0.885
       },
       "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
     },
     "48": {
       "retrospective_model_lead": {
-        "n": 23,
+        "n": 24,
         "enough_data": true,
-        "mae_c": 1.434,
-        "bias_c": -0.066
+        "mae_c": 1.411,
+        "bias_c": -0.1
       },
       "operational": {
-        "n": 23,
+        "n": 24,
         "enough_data": true,
-        "mae_c": 1.434,
-        "bias_c": -0.066
+        "mae_c": 1.411,
+        "bias_c": -0.1
       },
       "operational_night_native_samples": {
         "n": 12,
@@ -153,26 +153,26 @@
         "bias_c": 0.324
       },
       "frost_probability_operational": {
-        "n": 23,
+        "n": 24,
         "enough_data": true,
         "observed_frost_events": 4,
-        "brier_score": 0.0759,
-        "accuracy_at_50pct": 0.87
+        "brier_score": 0.0728,
+        "accuracy_at_50pct": 0.875
       },
       "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
     },
     "72": {
       "retrospective_model_lead": {
-        "n": 21,
+        "n": 22,
         "enough_data": true,
-        "mae_c": 1.442,
-        "bias_c": -0.042
+        "mae_c": 1.397,
+        "bias_c": -0.019
       },
       "operational": {
-        "n": 21,
+        "n": 22,
         "enough_data": true,
-        "mae_c": 1.442,
-        "bias_c": -0.042
+        "mae_c": 1.397,
+        "bias_c": -0.019
       },
       "operational_night_native_samples": {
         "n": 11,
@@ -181,16 +181,101 @@
         "bias_c": 0.472
       },
       "frost_probability_operational": {
-        "n": 21,
+        "n": 22,
         "enough_data": true,
         "observed_frost_events": 4,
-        "brier_score": 0.0971,
-        "accuracy_at_50pct": 0.857
+        "brier_score": 0.0927,
+        "accuracy_at_50pct": 0.864
       },
       "note": "Operational metrics include only forecasts already available before their valid time. Retrospective model-lead metrics are kept separate and must not be presented as operational skill."
     }
   },
   "recent_cases": [
+    {
+      "model": "google_weathernext2_ensemble_mean_shadow",
+      "model_run_initialization_utc": "2026-11-10T00:00:00Z",
+      "model_run_available_utc": "2026-11-10T11:32:47Z",
+      "target_at_utc": "2026-11-10T12:00:00Z",
+      "model_lead_h": 12,
+      "operational_lead_h_at_availability": 0.45,
+      "operationally_scoreable": true,
+      "forecast_c": 3.028,
+      "observed_c": 4.2,
+      "error_c": -1.172,
+      "frost_probability": 0.0,
+      "night_native_sample": false,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "google_weathernext2_ensemble_mean_shadow",
+      "model_run_initialization_utc": "2026-11-09T12:00:00Z",
+      "model_run_available_utc": "2026-11-09T23:03:59Z",
+      "target_at_utc": "2026-11-10T12:00:00Z",
+      "model_lead_h": 24,
+      "operational_lead_h_at_availability": 12.93,
+      "operationally_scoreable": true,
+      "forecast_c": 3.028,
+      "observed_c": 4.2,
+      "error_c": -1.172,
+      "frost_probability": 0.0,
+      "night_native_sample": false,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "google_weathernext2_ensemble_mean_shadow",
+      "model_run_initialization_utc": "2026-11-08T12:00:00Z",
+      "model_run_available_utc": "2026-11-09T01:21:32Z",
+      "target_at_utc": "2026-11-10T12:00:00Z",
+      "model_lead_h": 48,
+      "operational_lead_h_at_availability": 34.64,
+      "operationally_scoreable": true,
+      "forecast_c": 3.323,
+      "observed_c": 4.2,
+      "error_c": -0.877,
+      "frost_probability": 0.0,
+      "night_native_sample": false,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "google_weathernext2_ensemble_mean_shadow",
+      "model_run_initialization_utc": "2026-11-07T12:00:00Z",
+      "model_run_available_utc": "2026-11-07T23:11:56Z",
+      "target_at_utc": "2026-11-10T12:00:00Z",
+      "model_lead_h": 72,
+      "operational_lead_h_at_availability": 60.8,
+      "operationally_scoreable": true,
+      "forecast_c": 4.656,
+      "observed_c": 4.2,
+      "error_c": 0.456,
+      "frost_probability": 0.0,
+      "night_native_sample": false,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
+    {
+      "model": "google_weathernext2_ensemble_mean_shadow",
+      "model_run_initialization_utc": "2026-11-10T00:00:00Z",
+      "model_run_available_utc": "2026-11-10T11:32:47Z",
+      "target_at_utc": "2026-11-10T06:00:00Z",
+      "model_lead_h": 6,
+      "operational_lead_h_at_availability": -5.55,
+      "operationally_scoreable": false,
+      "forecast_c": 1.997,
+      "observed_c": 3.3,
+      "error_c": -1.303,
+      "frost_probability": 0.0156,
+      "night_native_sample": true,
+      "verification_source": "dwd_sohland_10min",
+      "station": "Sohland/Spree",
+      "station_distance_km": 4.89
+    },
     {
       "model": "google_weathernext2_ensemble_mean_shadow",
       "model_run_initialization_utc": "2026-11-09T12:00:00Z",
@@ -1460,91 +1545,6 @@
       "forecast_c": 3.75,
       "observed_c": 4.6,
       "error_c": -0.85,
-      "frost_probability": 0.0,
-      "night_native_sample": true,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "google_weathernext2_ensemble_mean_shadow",
-      "model_run_initialization_utc": "2026-11-02T00:00:00Z",
-      "model_run_available_utc": "2026-11-02T15:57:35Z",
-      "target_at_utc": "2026-11-02T12:00:00Z",
-      "model_lead_h": 12,
-      "operational_lead_h_at_availability": -3.96,
-      "operationally_scoreable": false,
-      "forecast_c": 6.248,
-      "observed_c": 7.1,
-      "error_c": -0.852,
-      "frost_probability": 0.0,
-      "night_native_sample": false,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "google_weathernext2_ensemble_mean_shadow",
-      "model_run_initialization_utc": "2026-11-01T12:00:00Z",
-      "model_run_available_utc": "2026-11-01T22:51:18Z",
-      "target_at_utc": "2026-11-02T12:00:00Z",
-      "model_lead_h": 24,
-      "operational_lead_h_at_availability": 13.14,
-      "operationally_scoreable": true,
-      "forecast_c": 6.092,
-      "observed_c": 7.1,
-      "error_c": -1.008,
-      "frost_probability": 0.0,
-      "night_native_sample": false,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "google_weathernext2_ensemble_mean_shadow",
-      "model_run_initialization_utc": "2026-10-31T12:00:00Z",
-      "model_run_available_utc": "2026-10-31T23:22:20Z",
-      "target_at_utc": "2026-11-02T12:00:00Z",
-      "model_lead_h": 48,
-      "operational_lead_h_at_availability": 36.63,
-      "operationally_scoreable": true,
-      "forecast_c": 6.217,
-      "observed_c": 7.1,
-      "error_c": -0.883,
-      "frost_probability": 0.0,
-      "night_native_sample": false,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "google_weathernext2_ensemble_mean_shadow",
-      "model_run_initialization_utc": "2026-10-30T12:00:00Z",
-      "model_run_available_utc": "2026-10-31T00:32:34Z",
-      "target_at_utc": "2026-11-02T12:00:00Z",
-      "model_lead_h": 72,
-      "operational_lead_h_at_availability": 59.46,
-      "operationally_scoreable": true,
-      "forecast_c": 5.72,
-      "observed_c": 7.1,
-      "error_c": -1.38,
-      "frost_probability": 0.0,
-      "night_native_sample": false,
-      "verification_source": "dwd_sohland_10min",
-      "station": "Sohland/Spree",
-      "station_distance_km": 4.89
-    },
-    {
-      "model": "google_weathernext2_ensemble_mean_shadow",
-      "model_run_initialization_utc": "2026-11-02T00:00:00Z",
-      "model_run_available_utc": "2026-11-02T15:57:35Z",
-      "target_at_utc": "2026-11-02T06:00:00Z",
-      "model_lead_h": 6,
-      "operational_lead_h_at_availability": -9.96,
-      "operationally_scoreable": false,
-      "forecast_c": 2.33,
-      "observed_c": 3.4,
-      "error_c": -1.07,
       "frost_probability": 0.0,
       "night_native_sample": true,
       "verification_source": "dwd_sohland_10min",
