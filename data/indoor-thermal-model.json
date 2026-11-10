@@ -1,6 +1,6 @@
 {
   "schema": 9,
-  "generated_at": "2026-11-09T23:53:45.110402Z",
+  "generated_at": "2026-11-10T01:45:41.512453Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -8,105 +8,96 @@
   "dp2_used_as_heating_state": false,
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
-  "coverage_days": 52.08,
-  "indoor_raw_points": 19724,
+  "coverage_days": 52.19,
+  "indoor_raw_points": 19732,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-11-10T00:47:32+01:00",
-  "indoor_30m_bins": 2477,
-  "weather_30m_bins": 3929,
-  "paired_candidate_bins": 2472,
-  "fit_samples": 66,
-  "all_accepted_windows": 115,
-  "night_windows": 66,
+  "indoor_history_last_timestamp": "2026-11-10T01:27:32+01:00",
+  "indoor_30m_bins": 2478,
+  "weather_30m_bins": 3935,
+  "paired_candidate_bins": 2477,
+  "fit_samples": 67,
+  "all_accepted_windows": 116,
+  "night_windows": 67,
   "data_coverage": {
     "contract": "source + last_sample_at + expected_interval + observed_count + expected_count + gap + stale + coverage",
     "indoor_30m": {
       "source": "EMOS/Tuya indoor history",
-      "last_sample_at": "2026-11-10T00:47:32+01:00",
+      "last_sample_at": "2026-11-10T01:27:32+01:00",
       "expected_interval_minutes": 30,
-      "stale": false,
-      "observed_count": 2473,
-      "expected_count": 2501,
+      "stale": true,
+      "observed_count": 2478,
+      "expected_count": 2506,
       "coverage": 0.989,
       "largest_gap_minutes": 360.0,
       "sufficient": false
     },
     "outdoor_30m": {
       "source": "DWD Sohland preferred / CHMI Varnsdorf fallback",
-      "last_sample_at": "2026-11-09T22:30:00+01:00",
+      "last_sample_at": "2026-11-10T01:30:00+01:00",
       "expected_interval_minutes": 30,
-      "stale": true,
-      "observed_count": 2500,
-      "expected_count": 2501,
+      "stale": false,
+      "observed_count": 2505,
+      "expected_count": 2506,
       "coverage": 1.0,
       "largest_gap_minutes": 60.0,
       "sufficient": true
     },
     "paired_training_30m": {
       "source": "intersection of indoor/outdoor modelling buckets",
-      "last_sample_at": "2026-11-09T22:30:00+01:00",
+      "last_sample_at": "2026-11-10T01:00:00+01:00",
       "expected_interval_minutes": 30,
       "stale": false,
-      "observed_count": 2472,
-      "expected_count": 2501,
+      "observed_count": 2477,
+      "expected_count": 2506,
       "coverage": 0.988,
       "largest_gap_minutes": 360.0,
       "sufficient": false
     },
     "passive_windows": {
       "source": "accepted 6h passive windows after all guards",
-      "observed_count": 115,
-      "expected_count": 201,
-      "coverage": 0.572,
+      "observed_count": 116,
+      "expected_count": 202,
+      "coverage": 0.574,
       "rejected_count": 86
     }
   },
   "current_indoor_state": {
-    "ok": true,
+    "ok": false,
     "temperature_c": 9.5,
-    "observed_at_utc": "2026-11-09T23:53:17Z",
-    "age_minutes": 0.5,
+    "observed_at_utc": "2026-11-10T00:30:35Z",
+    "age_minutes": 75.1,
     "max_age_minutes": 30.0,
     "device_offline": false,
     "collector_stage": "completed",
-    "reason": null
+    "reason": "The last indoor observation is too old for a current-state thermal or tempering claim."
   },
   "weather_sources": {
     "preferred_training_temperature": "DWD Sohland/Spree when available; ČHMÚ Varnsdorf fallback",
     "current_temperature_selection": {
-      "ok": false,
-      "temperature_c": null,
-      "source": null,
-      "station": null,
-      "observed_at_utc": null,
-      "age_minutes": null,
+      "ok": true,
+      "temperature_c": 3.8,
+      "source": "DWD Sohland",
+      "station": "Sohland/Spree",
+      "observed_at_utc": "2026-11-10T00:50:00Z",
+      "age_minutes": 55.7,
       "max_age_minutes": 120.0,
-      "fallback_used": null,
+      "fallback_used": false,
       "candidates": [
         {
           "source": "DWD Sohland",
           "station": "Sohland/Spree",
-          "temperature_c": 3.0,
-          "observed_at_utc": "2026-11-09T21:50:00Z",
-          "age_minutes": 123.8,
-          "fresh": false
-        },
-        {
-          "source": "ČHMÚ Varnsdorf",
-          "station": "Varnsdorf",
-          "temperature_c": 2.4,
-          "observed_at_utc": "2026-11-09T21:50:00Z",
-          "age_minutes": 123.8,
-          "fresh": false
+          "temperature_c": 3.8,
+          "observed_at_utc": "2026-11-10T00:50:00Z",
+          "age_minutes": 55.7,
+          "fresh": true
         }
-      ],
-      "reason": "No preferred/fallback outdoor observation is fresh enough for a current thermal-rate estimate."
+      ]
     },
     "current_temperature_max_age_minutes": 120.0,
     "DWD_Sohland_distance_km": 4.89,
     "CHMI_Varnsdorf_distance_km": 16.76,
     "bin_counts": {
-      "DWD Sohland": 3929,
+      "DWD Sohland": 3935,
       "ČHMÚ Varnsdorf": 0
     },
     "dwd_archives": [
@@ -127,29 +118,29 @@
     "cooling_p25_c_per_h": -0.067,
     "cooling_p75_c_per_h": -0.033,
     "median_passive_window_rate_c_per_h": -0.042,
-    "inside_minus_outside_median_c": 10.5,
+    "inside_minus_outside_median_c": 10.4,
     "inside_minus_outside_min_c": 2.6,
     "inside_minus_outside_max_c": 17.3
   },
   "fit": {
     "equation": "dTin/dt = coupling * (Tout - Tin)",
     "method": "median through-origin slope on 6h windows",
-    "coupling_per_h": 0.00447,
-    "time_constant_h": 223.5,
+    "coupling_per_h": 0.00444,
+    "time_constant_h": 225.0,
     "mae_c_per_h": 0.02,
-    "median_abs_error_c_per_h": 0.013,
-    "coupling_p25_per_h": 0.00328,
-    "coupling_p75_per_h": 0.00649,
-    "sample_count": 66
+    "median_abs_error_c_per_h": 0.012,
+    "coupling_p25_per_h": 0.00327,
+    "coupling_p75_per_h": 0.00644,
+    "sample_count": 67
   },
   "shadow_validation": {
     "weighted_fit": {
       "equation": "dTin/dt = coupling * (Tout - Tin)",
       "method": "shadow weighted through-origin regression; ratio weights are proportional to gap^2",
-      "coupling_per_h": 0.00509,
-      "time_constant_h": 196.5,
+      "coupling_per_h": 0.00508,
+      "time_constant_h": 196.9,
       "mae_c_per_h": 0.02,
-      "sample_count": 66,
+      "sample_count": 67,
       "shadow_only": true
     },
     "rolling_origin_vs_persistence": {
@@ -159,105 +150,30 @@
       "weather_input": "observed 6h mean outdoor temperature, not NWP forecast",
       "protocol": "rolling-origin: each test window is predicted using only earlier accepted windows",
       "minimum_prior_windows": 6,
-      "test_windows": 60,
+      "test_windows": 61,
       "production_estimator": {
-        "n": 60,
-        "mae_c": 0.126,
-        "median_abs_error_c": 0.068
+        "n": 61,
+        "mae_c": 0.125,
+        "median_abs_error_c": 0.066
       },
       "weighted_regression_shadow": {
-        "n": 60,
-        "mae_c": 0.118,
+        "n": 61,
+        "mae_c": 0.117,
         "median_abs_error_c": 0.078
       },
       "persistence_reference": {
-        "n": 60,
-        "mae_c": 0.33,
+        "n": 61,
+        "mae_c": 0.326,
         "median_abs_error_c": 0.3
       },
-      "production_improvement_vs_persistence_pct": 61.8,
+      "production_improvement_vs_persistence_pct": 61.7,
       "interpretation": "Use this only as evidence about passive thermal dynamics. Do not change the production estimator until the shadow method wins consistently on future untouched windows."
     },
     "production_fit_unchanged": true,
     "note": "Shadow diagnostics never feed the public passive forecast or heating decisions."
   },
   "current_passive_estimate": null,
-  "passive_forecast": {
-    "mode": "no_active_heating",
-    "start_timestamp_local": "2026-11-10T00:53:17+01:00",
-    "start_inside_c": 9.5,
-    "weather_models": [
-      "chmi",
-      "dwd",
-      "ec"
-    ],
-    "forecast_coverage_contract": {
-      "expected_model_branches": 3,
-      "minimum_model_branches": 2,
-      "maximum_forecast_step_hours": 3.1,
-      "horizon_count_expected": 4,
-      "horizon_count_available": 3,
-      "coverage_sufficient": false
-    },
-    "coupling_candidates_per_h": [
-      0.00328,
-      0.00447,
-      0.00649
-    ],
-    "horizons": [
-      {
-        "hours": 12,
-        "timestamp_local": "2026-11-10T13:00:00+01:00",
-        "observed_model_branches": 3,
-        "expected_model_branches": 3,
-        "model_branch_coverage": 1.0,
-        "coverage_sufficient": true,
-        "inside_median_c": 9.2,
-        "inside_q25_c": 9.0,
-        "inside_q75_c": 9.2,
-        "inside_min_scenario_c": 9.0,
-        "inside_max_scenario_c": 9.3,
-        "outside_model_median_c": 4.2,
-        "scenario_count": 9
-      },
-      {
-        "hours": 24,
-        "timestamp_local": "2026-11-11T01:00:00+01:00",
-        "observed_model_branches": 3,
-        "expected_model_branches": 3,
-        "model_branch_coverage": 1.0,
-        "coverage_sufficient": true,
-        "inside_median_c": 8.8,
-        "inside_q25_c": 8.5,
-        "inside_q75_c": 9.0,
-        "inside_min_scenario_c": 8.5,
-        "inside_max_scenario_c": 9.0,
-        "outside_model_median_c": 0.8,
-        "scenario_count": 9
-      },
-      {
-        "hours": 36,
-        "timestamp_local": "2026-11-11T13:00:00+01:00",
-        "observed_model_branches": 3,
-        "expected_model_branches": 3,
-        "model_branch_coverage": 1.0,
-        "coverage_sufficient": true,
-        "inside_median_c": 8.4,
-        "inside_q25_c": 8.0,
-        "inside_q75_c": 8.7,
-        "inside_min_scenario_c": 7.9,
-        "inside_max_scenario_c": 8.7,
-        "outside_model_median_c": 3.1,
-        "scenario_count": 9
-      }
-    ],
-    "range_note": "q25-q75 reflects weather-model and fitted-coupling spread only; it is not a full prediction interval",
-    "assumptions": [
-      "No active central heating or wood-stove heat is added.",
-      "No major door/window ventilation or unusual internal heat gain occurs.",
-      "Passive thermal response remains similar to the learned nighttime behaviour."
-    ]
-  },
+  "passive_forecast": null,
   "heating_energy_model": {
     "status": "provisional_physics_prior",
     "absolute_energy_scale_calibrated": false,
@@ -292,7 +208,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-11-10T00:53:17+01:00",
+      "start_timestamp_local": "2026-11-10T01:30:35+01:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -300,34 +216,34 @@
       ],
       "degree_hours_by_model": {
         "dwd": {
-          "degree_hours_kh": 110.1,
+          "degree_hours_kh": 110.41,
           "covered_hours": 24.0
         },
         "chmi": {
-          "degree_hours_kh": 106.23,
+          "degree_hours_kh": 107.5,
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 105.14,
+          "degree_hours_kh": 105.1,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 106.23,
+      "degree_hours_median_kh": 107.5,
       "electricity_kwh": {
         "low": 18.3,
-        "central": 24.6,
-        "high": 38.3
+        "central": 24.9,
+        "high": 38.4
       },
       "incremental_cost_czk": {
         "low": 80.0,
-        "central": 108.0,
-        "high": 168.0
+        "central": 109.0,
+        "high": 169.0
       },
       "scope": "steady-state reference energy to maintain approximately 7.0 °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering"
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-11-10T00:53:17+01:00",
+      "start_timestamp_local": "2026-11-10T01:30:35+01:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -335,28 +251,28 @@
       ],
       "degree_hours_by_model": {
         "dwd": {
-          "degree_hours_kh": 110.1,
+          "degree_hours_kh": 110.41,
           "covered_hours": 24.0
         },
         "chmi": {
-          "degree_hours_kh": 106.23,
+          "degree_hours_kh": 107.5,
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 105.14,
+          "degree_hours_kh": 105.1,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 106.23,
+      "degree_hours_median_kh": 107.5,
       "electricity_kwh": {
         "low": 18.3,
-        "central": 24.6,
-        "high": 38.3
+        "central": 24.9,
+        "high": 38.4
       },
       "incremental_cost_czk": {
         "low": 80.0,
-        "central": 108.0,
-        "high": 168.0
+        "central": 109.0,
+        "high": 169.0
       },
       "scope": "steady-state reference energy to maintain approximately 7.0 °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering"
     },
@@ -381,14 +297,11 @@
         "horizon_hours": 24
       },
       "setpoint_matches_configured_target": true,
-      "status": "no_threshold_crossing_predicted",
-      "actual_kwh_estimate_available": true,
-      "actual_cost_estimate_available": true,
-      "electricity_kwh": 0.0,
-      "incremental_cost_czk": 0.0,
-      "confidence": "preliminary_passive_model",
-      "crossing_scenarios": 0,
-      "reason": "No weather-model / passive-coupling scenario reaches the lower hysteresis threshold within 24 hours."
+      "status": "learning_threshold_timing",
+      "actual_kwh_estimate_available": false,
+      "actual_cost_estimate_available": false,
+      "confidence": "insufficient_nighttime_passive_windows",
+      "reason": "Outdoor temperature can fall below the lower threshold, but the passive model is not yet prediction-ready."
     },
     "hdo_next_24h": {
       "status": "verified_export_monitored",
@@ -404,9 +317,9 @@
       "segments": [
         {
           "tariff": "NT",
-          "start_local": "2026-11-10T00:53:17+01:00",
+          "start_local": "2026-11-10T01:30:35+01:00",
           "end_local": "2026-11-10T07:00:00+01:00",
-          "hours": 6.112
+          "hours": 5.49
         },
         {
           "tariff": "VT",
@@ -459,8 +372,8 @@
         {
           "tariff": "NT",
           "start_local": "2026-11-11T00:00:00+01:00",
-          "end_local": "2026-11-11T00:53:17+01:00",
-          "hours": 0.888
+          "end_local": "2026-11-11T01:30:35+01:00",
+          "hours": 1.51
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
@@ -471,11 +384,10 @@
       "conservative_unavailability_h": 1.5,
       "forecast_min_outside_c": -0.6,
       "reference_inside_c": 6.0,
-      "passive_drop_during_longest_vt_central_c": 0.04,
-      "passive_drop_during_longest_vt_conservative_c": 0.06,
-      "impact_level": "negligible",
-      "hdo_only_preheat_indication": "No HDO-only preheating is indicated; the building inertia should comfortably bridge the longest VT block.",
-      "principle": "Preheating solely because VT is approaching is avoided unless the learned passive model predicts a meaningful temperature drop during the block."
+      "impact_level": "learning",
+      "basis": "insufficient_prediction_ready_passive_data",
+      "hdo_only_preheat_indication": "No automatic HDO-only preheating recommendation yet.",
+      "principle": "When outdoor temperature can fall below the lower threshold, HDO preheating is not recommended until the passive model is prediction-ready."
     },
     "reference_daily_costs": [
       {
