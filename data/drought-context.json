@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_utc": "2026-11-09T14:18:27.401746+00:00",
+  "computed_at_utc": "2026-11-10T13:44:34.889437+00:00",
   "quality_status": "operational_local_drought_v1",
   "state": {
     "rank": 0,
@@ -21,58 +21,58 @@
   "background": {
     "provider": "Open-Meteo historical Best Match / ERA5-family background",
     "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
-    "period_start": "2025-11-03",
-    "period_end": "2026-11-07",
+    "period_start": "2025-11-04",
+    "period_end": "2026-11-08",
     "data_age_days": 2,
     "windows": {
       "7": {
         "days": 7,
-        "precip_mm": 3.3,
-        "et0_mm": 4.3,
-        "p_minus_et0_mm": -1.0,
+        "precip_mm": 2.8,
+        "et0_mm": 4.5,
+        "p_minus_et0_mm": -1.7,
         "record_days": 7
       },
       "14": {
         "days": 14,
-        "precip_mm": 18.6,
-        "et0_mm": 9.8,
-        "p_minus_et0_mm": 8.8,
+        "precip_mm": 10.6,
+        "et0_mm": 9.9,
+        "p_minus_et0_mm": 0.7,
         "record_days": 14
       },
       "30": {
         "days": 30,
-        "precip_mm": 43.1,
-        "et0_mm": 28.7,
-        "p_minus_et0_mm": 14.4,
+        "precip_mm": 42.1,
+        "et0_mm": 27.8,
+        "p_minus_et0_mm": 14.3,
         "record_days": 30
       }
     },
     "latest_soil": {
-      "surface_m3m3": 0.3175,
-      "rootzone_0_100cm_m3m3": 0.2654,
-      "surface_percentile_1y": 48.4,
-      "rootzone_percentile_1y": 44.6
+      "surface_m3m3": 0.3155,
+      "rootzone_0_100cm_m3m3": 0.2656,
+      "surface_percentile_1y": 47.0,
+      "rootzone_percentile_1y": 44.9
     }
   },
   "chmi_local_rain": {
-    "latest_observation_utc": "2026-11-09T10:50:00+00:00",
+    "latest_observation_utc": "2026-11-10T07:50:00+00:00",
     "coverage_fraction": {
-      "7": 0.956,
+      "7": 0.947,
       "14": 1.0,
       "30": 1.0
     },
     "rain_mm": {
-      "7": 0.8,
-      "14": 6.9,
-      "30": 30.8
+      "7": 1.6,
+      "14": 7.7,
+      "30": 30.4
     }
   },
   "sentinel_local_landscape": {
     "ok": true,
-    "latest_scene_date": "2026-10-16",
-    "median_open_land_ndmi": 0.238,
-    "seasonal_percentile": 78.6,
-    "scene_count": 14
+    "latest_scene_date": "2026-11-05",
+    "median_open_land_ndmi": 0.2242,
+    "seasonal_percentile": 53.3,
+    "scene_count": 15
   },
   "method_note": "Operational local drought signal: P-ET0 water balance + reanalysis soil-moisture percentiles + Sentinel-2 NDMI + independent Copernicus CLMS 1 km SSM/SWI control. It is not an official drought classification.",
   "known_limitations": [
