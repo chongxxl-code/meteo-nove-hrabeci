@@ -1,6 +1,6 @@
 {
   "schema": 9,
-  "generated_at": "2026-11-11T09:50:46.111114Z",
+  "generated_at": "2026-11-11T10:22:50.654611Z",
   "status": "preliminary_learning",
   "validated_for_heating_control": false,
   "prediction_ready": true,
@@ -9,10 +9,10 @@
   "analysis_window_hours": 6,
   "fit_basis": "nighttime windows",
   "coverage_days": 53.54,
-  "indoor_raw_points": 20141,
+  "indoor_raw_points": 20149,
   "indoor_history_first_timestamp": "2026-09-18T21:40:33+02:00",
-  "indoor_history_last_timestamp": "2026-11-11T10:41:01+01:00",
-  "indoor_30m_bins": 2545,
+  "indoor_history_last_timestamp": "2026-11-11T11:21:01+01:00",
+  "indoor_30m_bins": 2546,
   "weather_30m_bins": 3999,
   "paired_candidate_bins": 2542,
   "fit_samples": 70,
@@ -22,7 +22,7 @@
     "contract": "source + last_sample_at + expected_interval + observed_count + expected_count + gap + stale + coverage",
     "indoor_30m": {
       "source": "EMOS/Tuya indoor history",
-      "last_sample_at": "2026-11-11T10:41:01+01:00",
+      "last_sample_at": "2026-11-11T11:21:01+01:00",
       "expected_interval_minutes": 30,
       "stale": false,
       "observed_count": 2543,
@@ -64,8 +64,8 @@
   "current_indoor_state": {
     "ok": true,
     "temperature_c": 8.8,
-    "observed_at_utc": "2026-11-11T09:46:17Z",
-    "age_minutes": 4.5,
+    "observed_at_utc": "2026-11-11T10:22:28Z",
+    "age_minutes": 0.4,
     "max_age_minutes": 30.0,
     "device_offline": false,
     "collector_stage": "completed",
@@ -79,7 +79,7 @@
       "source": "ČHMÚ Varnsdorf",
       "station": "Varnsdorf",
       "observed_at_utc": "2026-11-11T08:50:00Z",
-      "age_minutes": 60.8,
+      "age_minutes": 92.8,
       "max_age_minutes": 120.0,
       "fallback_used": true,
       "candidates": [
@@ -96,7 +96,7 @@
           "station": "Varnsdorf",
           "temperature_c": 2.8,
           "observed_at_utc": "2026-11-11T08:50:00Z",
-          "age_minutes": 60.8,
+          "age_minutes": 92.8,
           "fresh": true
         }
       ]
@@ -186,7 +186,7 @@
     "outside_source": "ČHMÚ Varnsdorf",
     "outside_station": "Varnsdorf",
     "outside_observed_at_utc": "2026-11-11T08:50:00Z",
-    "outside_age_minutes": 60.8,
+    "outside_age_minutes": 92.8,
     "outside_fallback_used": true,
     "inside_minus_outside_c": 6.0,
     "passive_fit_rate_c_per_h": -0.03,
@@ -194,7 +194,7 @@
   },
   "passive_forecast": {
     "mode": "no_active_heating",
-    "start_timestamp_local": "2026-11-11T10:46:17+01:00",
+    "start_timestamp_local": "2026-11-11T11:22:28+01:00",
     "start_inside_c": 8.8,
     "weather_models": [
       "chmi",
@@ -255,7 +255,7 @@
         "inside_median_c": 8.2,
         "inside_q25_c": 8.0,
         "inside_q75_c": 8.2,
-        "inside_min_scenario_c": 7.7,
+        "inside_min_scenario_c": 7.8,
         "inside_max_scenario_c": 8.4,
         "outside_model_median_c": 3.1,
         "scenario_count": 9
@@ -268,7 +268,7 @@
         "model_branch_coverage": 0.667,
         "coverage_sufficient": true,
         "inside_median_c": 7.8,
-        "inside_q25_c": 7.5,
+        "inside_q25_c": 7.6,
         "inside_q75_c": 7.9,
         "inside_min_scenario_c": 7.2,
         "inside_max_scenario_c": 8.1,
@@ -317,7 +317,7 @@
     },
     "steady_state_maintenance_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-11-11T10:46:17+01:00",
+      "start_timestamp_local": "2026-11-11T11:22:28+01:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -325,34 +325,34 @@
       ],
       "degree_hours_by_model": {
         "dwd": {
-          "degree_hours_kh": 65.03,
+          "degree_hours_kh": 62.38,
           "covered_hours": 24.0
         },
         "chmi": {
-          "degree_hours_kh": 86.01,
+          "degree_hours_kh": 84.2,
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 63.69,
+          "degree_hours_kh": 60.53,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 65.03,
+      "degree_hours_median_kh": 62.38,
       "electricity_kwh": {
-        "low": 11.1,
-        "central": 15.1,
-        "high": 29.9
+        "low": 10.5,
+        "central": 14.5,
+        "high": 29.3
       },
       "incremental_cost_czk": {
-        "low": 49.0,
-        "central": 66.0,
-        "high": 131.0
+        "low": 46.0,
+        "central": 63.0,
+        "high": 129.0
       },
       "scope": "steady-state reference energy to maintain approximately 7.0 °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering"
     },
     "forecast_next_24h": {
       "horizon_hours": 24,
-      "start_timestamp_local": "2026-11-11T10:46:17+01:00",
+      "start_timestamp_local": "2026-11-11T11:22:28+01:00",
       "weather_models": [
         "chmi",
         "dwd",
@@ -360,28 +360,28 @@
       ],
       "degree_hours_by_model": {
         "dwd": {
-          "degree_hours_kh": 65.03,
+          "degree_hours_kh": 62.38,
           "covered_hours": 24.0
         },
         "chmi": {
-          "degree_hours_kh": 86.01,
+          "degree_hours_kh": 84.2,
           "covered_hours": 24.0
         },
         "ec": {
-          "degree_hours_kh": 63.69,
+          "degree_hours_kh": 60.53,
           "covered_hours": 24.0
         }
       },
-      "degree_hours_median_kh": 65.03,
+      "degree_hours_median_kh": 62.38,
       "electricity_kwh": {
-        "low": 11.1,
-        "central": 15.1,
-        "high": 29.9
+        "low": 10.5,
+        "central": 14.5,
+        "high": 29.3
       },
       "incremental_cost_czk": {
-        "low": 49.0,
-        "central": 66.0,
-        "high": 131.0
+        "low": 46.0,
+        "central": 63.0,
+        "high": 129.0
       },
       "scope": "steady-state reference energy to maintain approximately 7.0 °C over 24 h after the house is already in the tempering band; not actual next-24h consumption and not direct metering"
     },
@@ -390,7 +390,7 @@
       "inside_now_c": 8.8,
       "lower_switch_c": 6.0,
       "upper_switch_c": 8.0,
-      "forecast_min_outside_c": 1.8,
+      "forecast_min_outside_c": 2.0,
       "price_czk_per_kwh": 4.39393,
       "current_setpoint_c": 7.0,
       "configured_tempering_setpoint_c": 7.0,
@@ -424,20 +424,14 @@
       "horizon_hours": 24,
       "low_tariff_hours": 20.03,
       "high_tariff_hours": 3.97,
-      "current_tariff": "NT",
-      "next_transition_local": "2026-11-11T10:55:00+01:00",
+      "current_tariff": "VT",
+      "next_transition_local": "2026-11-11T11:53:00+01:00",
       "segments": [
         {
-          "tariff": "NT",
-          "start_local": "2026-11-11T10:46:17+01:00",
-          "end_local": "2026-11-11T10:55:00+01:00",
-          "hours": 0.145
-        },
-        {
           "tariff": "VT",
-          "start_local": "2026-11-11T10:55:00+01:00",
+          "start_local": "2026-11-11T11:22:28+01:00",
           "end_local": "2026-11-11T11:53:00+01:00",
-          "hours": 0.967
+          "hours": 0.509
         },
         {
           "tariff": "NT",
@@ -484,8 +478,14 @@
         {
           "tariff": "NT",
           "start_local": "2026-11-12T08:00:00+01:00",
-          "end_local": "2026-11-12T10:46:17+01:00",
-          "hours": 2.771
+          "end_local": "2026-11-12T10:55:00+01:00",
+          "hours": 2.917
+        },
+        {
+          "tariff": "VT",
+          "start_local": "2026-11-12T10:55:00+01:00",
+          "end_local": "2026-11-12T11:22:28+01:00",
+          "hours": 0.458
         }
       ],
       "note": "The current CEZ DIP export is used as the HDO availability schedule and public CEZ sources are checked daily for changes. HDO timing is an input to tempering scheduling; it does not change the total heat-loss estimate by itself."
@@ -494,7 +494,7 @@
       "horizon_hours": 24,
       "longest_vt_block_h": 1.0,
       "conservative_unavailability_h": 1.5,
-      "forecast_min_outside_c": 1.8,
+      "forecast_min_outside_c": 2.0,
       "reference_inside_c": 6.0,
       "passive_drop_during_longest_vt_central_c": 0.03,
       "passive_drop_during_longest_vt_conservative_c": 0.04,
