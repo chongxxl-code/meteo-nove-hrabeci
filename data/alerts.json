@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-11-14T12:39:32.986026+01:00",
+  "computed_at_local": "2026-11-14T18:18:25.581622+01:00",
   "alerts": [
     {
       "id": "storm",
@@ -35,11 +35,11 @@
       "id": "wind",
       "name": "Silný vítr",
       "icon": "🌬️",
-      "level": "green",
-      "rank": 0,
-      "headline": "bez zvýšeného rizika",
+      "level": "yellow",
+      "rank": 1,
+      "headline": "zesílený vítr",
       "reasons": [
-        "modely nyní neukazují nebezpečné nárazy"
+        "modelový konsenzus nárazů do 12 h ~53 km/h"
       ],
       "confidence": "medium"
     },
@@ -65,7 +65,7 @@
       "rank": 0,
       "headline": "bez zvýšeného rizika",
       "reasons": [
-        "modely nyní neukazují výrazné horko"
+        "modelový konsenzus maxima do 12 h ~3.2 °C"
       ],
       "confidence": "medium"
     },
@@ -73,11 +73,11 @@
       "id": "frost",
       "name": "Mráz",
       "icon": "❄️",
-      "level": "green",
-      "rank": 0,
-      "headline": "bez rizika",
+      "level": "yellow",
+      "rank": 1,
+      "headline": "pozor na chlad",
       "reasons": [
-        "bez lokálního mrazového signálu"
+        "nejnižší modelový scénář do 12 h ~0.8 °C"
       ],
       "confidence": "medium",
       "note": "Později se práh upraví podle lokální chladové predispozice NH-REF."
@@ -87,33 +87,48 @@
     "models": [
       {
         "name": "ICON-D2",
-        "ok": false,
-        "error": "HTTP Error 429: Too Many Requests"
+        "ok": true,
+        "max_temp_12h": 2.8,
+        "min_temp_12h": 1.6,
+        "max_precip_1h_12h": 0.0,
+        "precip_sum_6h": 0.0,
+        "max_gust_12h": 26.3,
+        "max_cape_12h": 0.0
       },
       {
         "name": "ALADIN",
-        "ok": false,
-        "error": "HTTP Error 429: Too Many Requests"
+        "ok": true,
+        "max_temp_12h": 2.7,
+        "min_temp_12h": 1.4,
+        "max_precip_1h_12h": 0.0,
+        "precip_sum_6h": 0.0,
+        "max_gust_12h": 43.9,
+        "max_cape_12h": 0.0
       },
       {
         "name": "ECMWF",
-        "ok": false,
-        "error": "HTTP Error 429: Too Many Requests"
+        "ok": true,
+        "max_temp_12h": 3.2,
+        "min_temp_12h": 0.8,
+        "max_precip_1h_12h": 0.0,
+        "precip_sum_6h": 0.0,
+        "max_gust_12h": 52.6,
+        "max_cape_12h": 0.0
       }
     ],
     "rain": {
-      "rain_7d_mm": 5.5,
-      "rain_14d_mm": 7.3,
+      "rain_7d_mm": 5.4,
+      "rain_14d_mm": 6.1,
       "rain_30d_mm": 32.2,
-      "latest_observation_utc": "2026-11-14T09:50:00+00:00",
+      "latest_observation_utc": "2026-11-14T15:30:00+00:00",
       "interval_counts": {
         "7": 986,
-        "14": 2026,
+        "14": 1992,
         "30": 4374
       },
       "coverage_fraction": {
         "7": 0.978,
-        "14": 1.0,
+        "14": 0.988,
         "30": 1.0
       }
     },
@@ -128,20 +143,30 @@
       "ok": true,
       "provider": "RainViewer",
       "latest": {
-        "time_unix": 1794655800,
-        "time_local": "2026-11-14T12:30:00+01:00",
+        "time_unix": 1794676200,
+        "time_local": "2026-11-14T18:10:00+01:00",
         "max_dbz": {
           "10km": -32,
           "25km": -32,
-          "50km": -32
+          "50km": -1
         },
         "nearest_35dbz_km": null
       },
       "trend_30m": "unknown",
       "frames": [
         {
-          "time_unix": 1794654000,
-          "time_local": "2026-11-14T12:00:00+01:00",
+          "time_unix": 1794674400,
+          "time_local": "2026-11-14T17:40:00+01:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -4,
+            "50km": -2
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1794675000,
+          "time_local": "2026-11-14T17:50:00+01:00",
           "max_dbz": {
             "10km": -32,
             "25km": -32,
@@ -150,32 +175,22 @@
           "nearest_35dbz_km": null
         },
         {
-          "time_unix": 1794654600,
-          "time_local": "2026-11-14T12:10:00+01:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -32,
-            "50km": -2
-          },
-          "nearest_35dbz_km": null
-        },
-        {
-          "time_unix": 1794655200,
-          "time_local": "2026-11-14T12:20:00+01:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -32,
-            "50km": -2
-          },
-          "nearest_35dbz_km": null
-        },
-        {
-          "time_unix": 1794655800,
-          "time_local": "2026-11-14T12:30:00+01:00",
+          "time_unix": 1794675600,
+          "time_local": "2026-11-14T18:00:00+01:00",
           "max_dbz": {
             "10km": -32,
             "25km": -32,
             "50km": -32
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1794676200,
+          "time_local": "2026-11-14T18:10:00+01:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -32,
+            "50km": -1
           },
           "nearest_35dbz_km": null
         }
@@ -212,7 +227,7 @@
         "lat": 51.0162,
         "lon": 14.4398
       },
-      "computed_at_utc": "2026-11-13T13:24:38.913341+00:00",
+      "computed_at_utc": "2026-11-14T12:28:47.973313+00:00",
       "quality_status": "operational_local_drought_v1",
       "state": {
         "rank": 0,
@@ -228,49 +243,49 @@
       "background": {
         "provider": "Open-Meteo historical Best Match / ERA5-family background",
         "spatial_note": "Background soil-moisture field is kilometre-scale to ~9 km, so Sentinel and terrain layers provide the local refinement.",
-        "period_start": "2025-11-07",
-        "period_end": "2026-11-11",
+        "period_start": "2025-11-08",
+        "period_end": "2026-11-12",
         "data_age_days": 2,
         "windows": {
           "7": {
             "days": 7,
-            "precip_mm": 3.9,
-            "et0_mm": 3.9,
-            "p_minus_et0_mm": -0.0,
+            "precip_mm": 5.7,
+            "et0_mm": 3.2,
+            "p_minus_et0_mm": 2.5,
             "record_days": 7
           },
           "14": {
             "days": 14,
-            "precip_mm": 10.8,
-            "et0_mm": 7.5,
-            "p_minus_et0_mm": 3.4,
+            "precip_mm": 12.6,
+            "et0_mm": 6.8,
+            "p_minus_et0_mm": 5.8,
             "record_days": 14
           },
           "30": {
             "days": 30,
-            "precip_mm": 39.9,
-            "et0_mm": 25.7,
-            "p_minus_et0_mm": 14.2,
+            "precip_mm": 41.7,
+            "et0_mm": 24.2,
+            "p_minus_et0_mm": 17.5,
             "record_days": 30
           }
         },
         "latest_soil": {
-          "surface_m3m3": 0.324,
-          "rootzone_0_100cm_m3m3": 0.2652,
-          "surface_percentile_1y": 51.4,
-          "rootzone_percentile_1y": 44.9
+          "surface_m3m3": 0.3435,
+          "rootzone_0_100cm_m3m3": 0.2672,
+          "surface_percentile_1y": 70.0,
+          "rootzone_percentile_1y": 47.0
         }
       },
       "chmi_local_rain": {
-        "latest_observation_utc": "2026-11-13T10:50:00+00:00",
+        "latest_observation_utc": "2026-11-14T09:50:00+00:00",
         "coverage_fraction": {
-          "7": 0.979,
+          "7": 0.973,
           "14": 1.0,
           "30": 1.0
         },
         "rain_mm": {
           "7": 5.5,
-          "14": 9.1,
+          "14": 7.3,
           "30": 32.2
         }
       },
@@ -301,37 +316,24 @@
       "ok": true
     },
     "radar_nowcast": {
-      "ok": true,
-      "computed_at_utc": "2026-11-14T11:39:08.376198Z",
-      "age_min": 0.5,
-      "relation": "miji_lokalitu",
-      "confidence": "high",
-      "nearest_precip_km": 316.2,
-      "eta_min": null,
-      "motion": {
-        "bearing_deg": 122.0,
-        "compass": "JV",
-        "speed_kmh": 43.6,
-        "pair_count": 4,
-        "angle_spread_deg": 3.6,
-        "speed_spread_px_min": 0.098,
-        "phase_peak_ratio_median": 1.438
-      }
+      "ok": false,
+      "status": "stale_or_unavailable",
+      "age_min": 0.5
     },
     "chmi_radar": {
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD",
       "status": "operational",
-      "computed_at_utc": "2026-11-14T11:39:29.515149Z",
-      "latest_observed_at_utc": "2026-11-14T11:35:00Z",
+      "computed_at_utc": "2026-11-14T17:18:22.104944Z",
+      "latest_observed_at_utc": "2026-11-14T17:15:00Z",
       "max_age_min": 20.0,
       "products": {
         "maxz": {
           "ok": true,
           "product": "maxz",
-          "source_file": "T_PABV23_C_OKPR_20261114113500.hdf",
-          "observed_at_utc": "2026-11-14T11:35:00Z",
-          "age_min": 4.5,
+          "source_file": "T_PABV23_C_OKPR_20261114171500.hdf",
+          "observed_at_utc": "2026-11-14T17:15:00Z",
+          "age_min": 3.3,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -357,9 +359,9 @@
         "pseudocappi2km": {
           "ok": true,
           "product": "pseudocappi2km",
-          "source_file": "T_PANV23_C_OKPR_20261114113500.hdf",
-          "observed_at_utc": "2026-11-14T11:35:00Z",
-          "age_min": 4.5,
+          "source_file": "T_PANV23_C_OKPR_20261114171500.hdf",
+          "observed_at_utc": "2026-11-14T17:15:00Z",
+          "age_min": 3.4,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -387,7 +389,7 @@
     "chmi_radar_forecast": {
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD COTREC",
-      "age_min": 4.7,
+      "age_min": 3.6,
       "chmi_arrival_lead_min": null,
       "chmi_strong_arrival_lead_min": null,
       "peak_dbz_25km_next60": null,
@@ -399,5 +401,5 @@
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "6d5d362900d1b739ccc9540496f23737ae4142b15bfd6ff3646015152beaae2d"
+  "_fingerprint": "f8a8b2235cb86e85cf77457ca63379fdc2bf6e4000f58fc589352fbf0d7c0012"
 }
