@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071117">
+<title>WeatherNext 3 · Meteo Hraběcí</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark;--bg:#071117;--panel:#102630;--line:#25444c;--ink:#edf8fb;--muted:#98b1b9;--accent:#65d8cf}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 10% 0,#14333c,var(--bg) 48%,#050b0f);color:var(--ink);font:15px system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:950px;margin:auto;padding:24px 16px 48px}
+a{color:var(--accent)}.back{display:inline-block;margin-bottom:20px;text-decoration:none;font-size:13px}
+h1{font-size:clamp(31px,6vw,48px);margin:4px 0 8px}.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:800}
+.desc{max-width:770px;line-height:1.6;color:var(--muted)}
+.card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(16,38,48,.95),rgba(8,23,30,.98));padding:18px;margin-top:16px}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.pill{border:1px solid #3e6767;border-radius:20px;padding:6px 10px;color:var(--accent);font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.kpi{border-radius:12px;background:#091b23;padding:14px}.kpi strong{font-size:24px;display:block;margin:4px 0}.kpi span{font-size:11px;color:var(--muted)}
+h2{font-size:18px;margin:0 0 8px}.muted{color:var(--muted)}small{font-size:12px;line-height:1.5}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;min-width:510px}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);font-size:13px}th{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase}td b{font-size:15px}
+.scroll{overflow-x:auto}footer{font-size:11px;color:var(--muted);line-height:1.6;margin-top:22px}
+@media(max-width:600px){main{padding:17px 11px 35px}.card{padding:14px}.kpis{grid-template-columns:1fr}.kpi strong{font-size:23px}}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="./index.html">← Zpět na Meteo Hraběcí</a>
+<div class="eyebrow">Google DeepMind · Earth Engine · experiment</div>
+<h1>WeatherNext 3</h1>
+<p class="desc">Samostatný ověřovací sběr pro Nové Hraběcí. Zatím zobrazujeme <strong>výhradně historické předpovědi</strong>, jejichž cílový čas již uplynul. Nejde o aktuální předpověď počasí a model zatím neovlivňuje hlavní dashboard ani výpočty vytápění.</p>
+<section class="card">
+  <div class="row"><h2>Stav automatického sběru</h2><span class="pill" id="state">Načítám…</span></div>
+  <div class="kpis">
+    <div class="kpi"><span>Poslední kontrola</span><strong id="checked">—</strong></div>
+    <div class="kpi"><span>Inicializace archivovaného běhu</span><strong id="init">—</strong></div>
+    <div class="kpi"><span>Historické hodinové body</span><strong id="count">—</strong></div>
+  </div>
+</section>
+<section class="card">
+  <h2>Historická předpověď u domu</h2>
+  <p class="muted"><small>Teplota vzduchu 2 m nad zemí · rozlišení 0,05° (~5 km) · rozsah nejistoty p10–p90. Všechny časy jsou místní (Europe/Prague).</small></p>
+  <div class="scroll"><table>
+    <thead><tr><th>Platnost</th><th>Teplota</th><th>Rozmezí p10–p90</th><th>Předstih</th><th>Rosný bod</th></tr></thead>
+    <tbody id="points"><tr><td colspan="5">Načítám data…</td></tr></tbody>
+  </table></div>
+  <p class="muted"><small>Hodnoty jsou starší než jednu hodinu; představují archiv, nikoli novou předpověď. Později je porovnáme se skutečnými měřeními.</small></p>
+</section>
+<footer>
+  <p id="attribution">WeatherNext 3 · historická data CC BY 4.0.</p>
+  <p><a href="https://developers.google.com/weathernext/guides/earth-engine" target="_blank" rel="noopener noreferrer">Dokumentace WeatherNext 3</a> · Experimentální model není oficiální meteorologická výstraha ani podklad pro bezpečnostně kritické řízení vytápění.</p>
+</footer>
+</main>
+<script>
+const $ = id=>document.getElementById(id);
+const fmtTime=v=>{const d=new Date(v);return isNaN(d.getTime())?'—':new Intl.DateTimeFormat('cs-CZ',{timeZone:'Europe/Prague',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(d)};
+const fmtNum=n=>Number.isFinite(Number(n))?Number(n).toFixed(1).replace('.',','):'—';
+const cell=(v,bold=false)=>{const td=document.createElement('td');const el=bold?document.createElement('b'):td;if(bold){el.textContent=v;td.appendChild(el)}else td.textContent=v;return td};
+async function load(){
+ try {
+   const st=await (await fetch('./data/weathernext3-status.json',{cache:'no-store'})).json();
+   if(!st.ok||st.mode!=='historical_shadow_only')throw new Error('Archiv není připraven');
+   $('state').textContent='Historický sběr funguje';$('checked').textContent=fmtTime(st.checked_at_utc);
+   $('init').textContent=fmtTime(st.run_initialization_utc);$('count').textContent=String(st.archived_points??'—');
+   if(st.attribution)$('attribution').textContent=st.attribution;
+   if(!/^data\/weathernext3-history\/\d{4}-\d{2}\.jsonl$/.test(st.archive_file||''))throw new Error('Neplatná cesta archivu');
+   const res=await fetch('./'+st.archive_file,{cache:'no-store'});if(!res.ok)throw new Error('Archiv nedostupný');
+   const records=(await res.text()).split('\n').filter(Boolean).map(line=>JSON.parse(line));
+   if(!records.length)throw new Error('Archiv je zatím prázdný');
+   const last=records.at(-1),rows=last.forecast_points||[];if(!rows.length)throw new Error('Chybí hodinové hodnoty');
+   $('points').replaceChildren();
+   for(const point of rows){
+     const tr=document.createElement('tr');
+     tr.append(
+       cell(fmtTime(point.valid_at_utc)),
+       cell(fmtNum(point.temperature_2m_mean_c)+' °C',true),
+       cell(fmtNum(point.temperature_2m_p10_c)+' až '+fmtNum(point.temperature_2m_p90_c)+' °C'),
+       cell('+'+point.lead_hours+' h'),
+       cell(fmtNum(point.dewpoint_temperature_2m_mean_c)+' °C')
+     );
+     $('points').appendChild(tr);
+   }
+ }catch(err){
+   $('state').textContent='Data nedostupná';
+   $('points').replaceChildren();const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.textContent=String(err.message||err);tr.appendChild(td);$('points').appendChild(tr);
+ }
+}
+load();
+</script>
+</body>
+</html>
