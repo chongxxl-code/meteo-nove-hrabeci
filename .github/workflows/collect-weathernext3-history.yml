@@ -1,0 +1,83 @@
+name: Collect WeatherNext 3 historical shadow
+
+on:
+  schedule:
+    - cron: '29 3,9,15,21 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_weathernext3_history.py'
+      - 'tests/test_weathernext3_history.py'
+      - '.github/workflows/collect-weathernext3-history.yml'
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: meteo-weathernext3-history-writer
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Validate historical-only output and deduplication
+        run: python -m unittest discover -s tests -p test_weathernext3_history.py -v
+
+      - name: Authenticate through Google Workload Identity Federation
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: weathernext-hrabeci
+          workload_identity_provider: projects/355976439458/locations/global/workloadIdentityPools/meteo-hrabeci-github/providers/github-actions-meteo
+          service_account: meteo-weathernext3@weathernext-hrabeci.iam.gserviceaccount.com
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: Install Earth Engine Python client
+        run: python -m pip install --disable-pip-version-check earthengine-api google-auth
+
+      - name: Collect only matured WeatherNext 3 forecast values
+        run: python scripts/collect_weathernext3_history.py
+
+      - name: Commit historical archive and status only
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          make_commit() {
+            git add data/weathernext3-history/ data/weathernext3-status.json
+            if git diff --cached --quiet; then
+              echo "No new historical data."
+              return 1
+            fi
+            git commit -m "data: WeatherNext 3 historical shadow $(date -u +'%Y-%m-%d %H:%M UTC')"
+          }
+
+          make_commit || exit 0
+
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/collect_weathernext3_history.py
+            make_commit || exit 0
+            sleep $((attempt * 5))
+          done
+
+          echo "Unable to save historical WeatherNext 3 data after retries."
+          exit 1
