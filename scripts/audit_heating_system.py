@@ -52,6 +52,24 @@ def passive_fit_contract_ok(fit):
     return abs(tau - expected_tau) <= max(1.0, expected_tau * 0.02)
 
 
+def passive_forecast_publication_is_safe(model):
+    """A trained fit is not itself permission to publish a live forecast."""
+    forecast = model.get("passive_forecast")
+    indoor = model.get("current_indoor_state") or {}
+    if model.get("prediction_ready") is not True or indoor.get("ok") is not True:
+        return forecast is None
+    if not isinstance(forecast, dict):
+        return False
+    contract = forecast.get("forecast_coverage_contract") or {}
+    horizons = forecast.get("horizons") or []
+    return (
+        int(contract.get("minimum_model_branches") or 0) >= 2
+        and bool(horizons)
+        and all(h.get("coverage_sufficient") is True for h in horizons)
+        and all(int(h.get("observed_model_branches") or 0) >= 2 for h in horizons)
+    )
+
+
 def run_oracle_negative_controls(now):
     """Exercise production gates with known-good and deliberately bad synthetic cases."""
     start = 1200
@@ -306,18 +324,11 @@ def main():
         "Thermal model inputs must expose machine-readable observed/expected counts, coverage and largest gap.",
     )
 
-    passive_forecast = model.get("passive_forecast") or {}
-    forecast_contract = passive_forecast.get("forecast_coverage_contract") or {}
-    forecast_horizons = passive_forecast.get("horizons") or []
-    if model.get("prediction_ready") is True:
-        check(
-            "forecast_model_coverage_guard",
-            int(forecast_contract.get("minimum_model_branches") or 0) >= 2
-            and bool(forecast_horizons)
-            and all(h.get("coverage_sufficient") is True for h in forecast_horizons)
-            and all(int(h.get("observed_model_branches") or 0) >= 2 for h in forecast_horizons),
-            "Every published passive forecast horizon must have sufficient model-branch coverage; a single model branch is not enough.",
-        )
+    check(
+        "forecast_model_coverage_guard",
+        passive_forecast_publication_is_safe(model),
+        "Publish a passive forecast only with a fresh EMOS state and >=2 valid weather-model branches; otherwise withhold it.",
+    )
 
     heat_diag = model.get("heat_gain_diagnostics") or {}
     rejected_windows = filters.get("rejected") or {}
@@ -533,6 +544,10 @@ def main():
     )
     print(json.dumps(out["summary"] | {"overall_status": overall}, ensure_ascii=False))
     if failures:
+        print(json.dumps(
+            {"failed_checks": [item for item in checks if not item["ok"]]},
+            ensure_ascii=False,
+        ))
         raise SystemExit(1)
 
 

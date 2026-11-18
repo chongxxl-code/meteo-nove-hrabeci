@@ -1385,6 +1385,16 @@ def build_hdo_resilience(hdo_context, snapshot, start_local, fit, band, predicti
     }
 
 
+def latest_for_current_heating(latest, current_indoor):
+    """Do not use cached EMOS readings for a *current* heating-cost claim."""
+    if (current_indoor or {}).get("ok") is True:
+        return latest
+    safe = dict(latest) if isinstance(latest, dict) else {}
+    safe["latest_indoor_c"] = None
+    safe["latest_setpoint_c"] = None
+    return safe
+
+
 def build_heating_energy_model(latest, fit=None, prediction_ready=False):
     profile, state = load_house_energy_context()
     cfg = profile.get("heating_energy_model") if isinstance(profile, dict) else {}
@@ -1580,7 +1590,9 @@ def main():
 
     current_prediction_ready = bool(prediction_ready and current_indoor.get("ok"))
     passive_forecast = build_passive_forecast(latest, fit) if current_prediction_ready else None
-    heating_energy_model = build_heating_energy_model(latest, fit, current_prediction_ready)
+    heating_energy_model = build_heating_energy_model(
+        latest_for_current_heating(latest, current_indoor), fit, current_prediction_ready
+    )
     weighted_fit_shadow = weighted_passive_fit(fit_basis)
     rolling_shadow = rolling_passive_shadow_validation(fit_basis)
     indoor_points = indoor_payload.get("points") or []
