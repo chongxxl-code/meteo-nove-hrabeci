@@ -1,10 +1,12 @@
 {
   "schema": "2026-10-18.heating-audit-v6",
-  "generated_at": "2026-11-19T02:32:26.769260Z",
+  "generated_at": "2026-11-19T11:34:03.140818Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
     "Exact customer-specific HDO export is not auto-refreshed because the ČEZ DIP endpoint is CAPTCHA-protected; the current verified export is combined with a daily public-source change monitor.",
+    "Indoor latest sample is stale or missing (age 142.2 min).",
+    "Actual next-24h heating cost is intentionally withheld because active-cycle energy or threshold timing is not calibrated.",
     "D45d requires HDO blocking of electric heating, but the actual boiler wiring has not been physically verified.",
     "The 1.0 °C EMOS DIFF setting is used as the working setting but is not machine-read from the thermostat."
   ],
@@ -161,13 +163,13 @@
     },
     {
       "name": "indoor_latest_freshness",
-      "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 4.6 min)."
+      "ok": false,
+      "detail": "Indoor latest sample is stale or missing (age 142.2 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 22828 points."
+      "detail": "Indoor history has only 22913 points."
     },
     {
       "name": "passive_window_indoor_coverage_guard",
@@ -202,7 +204,7 @@
     {
       "name": "current_state_freshness_and_provenance",
       "ok": true,
-      "detail": "Current passive-rate estimate requires both a fresh connected indoor observation and a freshness-gated DWD/ČHMÚ outdoor observation."
+      "detail": "Current passive-rate estimate is missing even though both indoor and outdoor current-state inputs are fresh."
     },
     {
       "name": "dp2_not_used_as_boiler_proof",
@@ -252,7 +254,7 @@
     {
       "name": "weather_snapshot_freshness",
       "ok": true,
-      "detail": "Weather snapshot is stale or missing (age 1.3 min)."
+      "detail": "Weather snapshot is stale or missing (age 2.9 min)."
     }
   ],
   "oracle_negative_controls": [
@@ -299,8 +301,8 @@
   ],
   "summary": {
     "checks_total": 49,
-    "checks_failed": 0,
+    "checks_failed": 1,
     "critical_failures": 0,
-    "warnings": 3
+    "warnings": 5
   }
 }
