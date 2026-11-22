@@ -233,7 +233,7 @@ function renderEnergyCard(){
   }
  }else if(mains==='connected'){
   $('energyAdvice').textContent='Kotel má napájení · stav požadavku topení zatím není z cloudu spolehlivě identifikovaný';
-  $('energyAdviceMeta').textContent=`režim EMOS ${thermostatMode} · DP106 není binární stav relé`;
+  $('energyAdviceMeta').textContent=`režim EMOS ${thermostatMode}${Number.isFinite(set)?` · termostat nastaven na ${round(set)} °C`:''}${Number.isFinite(set)&&Number.isFinite(target)&&Math.abs(set-target)>0.15?` · referenční temperování ${round(target)} °C (jiný režim)`:''} · DP106 není binární stav relé`;
  }else{
   $('energyAdvice').textContent='Načítám stav kotle a termostatu…';
   $('energyAdviceMeta').textContent='Termostat z EMOS · napájení z provozního stavu domu';
