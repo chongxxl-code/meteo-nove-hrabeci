@@ -11,6 +11,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read
 
 concurrency:
   group: pages
@@ -33,6 +34,29 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
+      - name: Wait for uploaded Pages artifact to be discoverable
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # GitHub's artifact listing can lag behind a successful upload.
+          # Rerunning the same job creates a duplicate artifact, so wait here instead.
+          for attempt in $(seq 1 12); do
+            count="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts?per_page=100" --jq '[.artifacts[] | select(.name == "github-pages")] | length')"
+            if [ "${count}" = "1" ]; then
+              echo "Pages artifact indexed (one copy)."
+              sleep 5
+              exit 0
+            fi
+            if [ "${count}" != "0" ]; then
+              echo "Unexpected Pages artifact count: ${count}"
+              exit 1
+            fi
+            echo "Waiting for Pages artifact indexing (${attempt}/12)..."
+            sleep 5
+          done
+          echo "Pages artifact was not discoverable within retry window."
+          exit 1
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
