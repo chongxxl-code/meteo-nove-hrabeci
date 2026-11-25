@@ -1,6 +1,6 @@
 {
   "schema": "2026-10-18.heating-audit-v6",
-  "generated_at": "2026-11-24T23:53:36.309941Z",
+  "generated_at": "2026-11-25T08:25:48.903719Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
@@ -163,12 +163,12 @@
     {
       "name": "indoor_latest_freshness",
       "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 37.4 min)."
+      "detail": "Indoor latest sample is stale or missing (age 16.8 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 24748 points."
+      "detail": "Indoor history has only 24890 points."
     },
     {
       "name": "passive_window_indoor_coverage_guard",
@@ -203,7 +203,7 @@
     {
       "name": "current_state_freshness_and_provenance",
       "ok": true,
-      "detail": "Current passive-rate estimate is missing even though both indoor and outdoor current-state inputs are fresh."
+      "detail": "Current passive-rate estimate requires both a fresh connected indoor observation and a freshness-gated DWD/ČHMÚ outdoor observation."
     },
     {
       "name": "dp2_not_used_as_boiler_proof",
