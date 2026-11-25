@@ -1,6 +1,6 @@
 {
   "schema": "2026-10-18.heating-audit-v6",
-  "generated_at": "2026-11-25T08:25:48.903719Z",
+  "generated_at": "2026-11-25T19:13:50.050290Z",
   "overall_status": "pass_with_warnings",
   "critical_failures": [],
   "warnings": [
@@ -44,21 +44,6 @@
       "name": "hdo_week_length",
       "ok": true,
       "detail": "HDO schedule must contain seven forward days."
-    },
-    {
-      "name": "hdo_24h_2026-11-24",
-      "ok": true,
-      "detail": "HDO day 2026-11-24 does not cover exactly 24 hours."
-    },
-    {
-      "name": "hdo_nt_min_2026-11-24",
-      "ok": true,
-      "detail": "HDO day 2026-11-24 has less than 20 hours of NT."
-    },
-    {
-      "name": "hdo_vt_block_2026-11-24",
-      "ok": true,
-      "detail": "HDO day 2026-11-24 contains a VT block longer than 60 minutes."
     },
     {
       "name": "hdo_24h_2026-11-25",
@@ -151,6 +136,21 @@
       "detail": "HDO day 2026-11-30 contains a VT block longer than 60 minutes."
     },
     {
+      "name": "hdo_24h_2026-12-01",
+      "ok": true,
+      "detail": "HDO day 2026-12-01 does not cover exactly 24 hours."
+    },
+    {
+      "name": "hdo_nt_min_2026-12-01",
+      "ok": true,
+      "detail": "HDO day 2026-12-01 has less than 20 hours of NT."
+    },
+    {
+      "name": "hdo_vt_block_2026-12-01",
+      "ok": true,
+      "detail": "HDO day 2026-12-01 contains a VT block longer than 60 minutes."
+    },
+    {
       "name": "hdo_zero_paid_provider",
       "ok": true,
       "detail": "HDO monitoring unexpectedly uses a paid provider."
@@ -163,12 +163,12 @@
     {
       "name": "indoor_latest_freshness",
       "ok": true,
-      "detail": "Indoor latest sample is stale or missing (age 16.8 min)."
+      "detail": "Indoor latest sample is stale or missing (age 43.6 min)."
     },
     {
       "name": "indoor_history_present",
       "ok": true,
-      "detail": "Indoor history has only 24890 points."
+      "detail": "Indoor history has only 25053 points."
     },
     {
       "name": "passive_window_indoor_coverage_guard",
@@ -203,7 +203,7 @@
     {
       "name": "current_state_freshness_and_provenance",
       "ok": true,
-      "detail": "Current passive-rate estimate requires both a fresh connected indoor observation and a freshness-gated DWD/ČHMÚ outdoor observation."
+      "detail": "Current passive-rate estimate is missing even though both indoor and outdoor current-state inputs are fresh."
     },
     {
       "name": "dp2_not_used_as_boiler_proof",
