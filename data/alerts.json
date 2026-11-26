@@ -5,7 +5,7 @@
     "lat": 51.0162,
     "lon": 14.4398
   },
-  "computed_at_local": "2026-11-26T03:26:58.438513+01:00",
+  "computed_at_local": "2026-11-26T12:15:42.362774+01:00",
   "alerts": [
     {
       "id": "storm",
@@ -39,7 +39,7 @@
       "rank": 0,
       "headline": "bez zvýšeného rizika",
       "reasons": [
-        "modelový konsenzus nárazů do 12 h ~43 km/h"
+        "modelový konsenzus nárazů do 12 h ~44 km/h"
       ],
       "confidence": "medium"
     },
@@ -65,7 +65,7 @@
       "rank": 0,
       "headline": "bez zvýšeného rizika",
       "reasons": [
-        "modelový konsenzus maxima do 12 h ~-1.1 °C"
+        "modelový konsenzus maxima do 12 h ~-0.8 °C"
       ],
       "confidence": "medium"
     },
@@ -73,11 +73,11 @@
       "id": "frost",
       "name": "Mráz",
       "icon": "❄️",
-      "level": "red",
-      "rank": 3,
-      "headline": "silný mráz",
+      "level": "orange",
+      "rank": 2,
+      "headline": "riziko mrazu",
       "reasons": [
-        "nejnižší modelový scénář do 12 h ~-4.2 °C"
+        "nejnižší modelový scénář do 12 h ~-2.8 °C"
       ],
       "confidence": "medium",
       "note": "Později se práh upraví podle lokální chladové predispozice NH-REF."
@@ -88,48 +88,48 @@
       {
         "name": "ICON-D2",
         "ok": true,
-        "max_temp_12h": -1.1,
-        "min_temp_12h": -4.2,
+        "max_temp_12h": -0.9,
+        "min_temp_12h": -2.7,
         "max_precip_1h_12h": 0.0,
         "precip_sum_6h": 0.0,
-        "max_gust_12h": 32.8,
+        "max_gust_12h": 34.6,
         "max_cape_12h": 0.0
       },
       {
         "name": "ALADIN",
         "ok": true,
-        "max_temp_12h": -1.5,
-        "min_temp_12h": -3.6,
+        "max_temp_12h": -1.1,
+        "min_temp_12h": -2.7,
         "max_precip_1h_12h": 0.0,
         "precip_sum_6h": 0.0,
-        "max_gust_12h": 37.1,
+        "max_gust_12h": 37.4,
         "max_cape_12h": 10.0
       },
       {
         "name": "ECMWF",
         "ok": true,
-        "max_temp_12h": -1.1,
-        "min_temp_12h": -3.9,
-        "max_precip_1h_12h": 0.0,
+        "max_temp_12h": -0.8,
+        "min_temp_12h": -2.8,
+        "max_precip_1h_12h": 0.2,
         "precip_sum_6h": 0.0,
-        "max_gust_12h": 43.2,
+        "max_gust_12h": 44.3,
         "max_cape_12h": 0.0
       }
     ],
     "rain": {
-      "rain_7d_mm": 21.7,
-      "rain_14d_mm": 35.3,
+      "rain_7d_mm": 21.0,
+      "rain_14d_mm": 34.9,
       "rain_30d_mm": 46.1,
-      "latest_observation_utc": "2026-11-25T21:50:00+00:00",
+      "latest_observation_utc": "2026-11-26T03:50:00+00:00",
       "interval_counts": {
-        "7": 933,
-        "14": 1887,
-        "30": 4281
+        "7": 904,
+        "14": 1858,
+        "30": 4252
       },
       "coverage_fraction": {
-        "7": 0.926,
-        "14": 0.936,
-        "30": 0.991
+        "7": 0.897,
+        "14": 0.922,
+        "30": 0.984
       }
     },
     "sentinel": {
@@ -143,8 +143,8 @@
       "ok": true,
       "provider": "RainViewer",
       "latest": {
-        "time_unix": 1795659600,
-        "time_local": "2026-11-26T03:20:00+01:00",
+        "time_unix": 1795691400,
+        "time_local": "2026-11-26T12:10:00+01:00",
         "max_dbz": {
           "10km": -32,
           "25km": -32,
@@ -155,28 +155,18 @@
       "trend_30m": "unknown",
       "frames": [
         {
-          "time_unix": 1795657800,
-          "time_local": "2026-11-26T02:50:00+01:00",
+          "time_unix": 1795689600,
+          "time_local": "2026-11-26T11:40:00+01:00",
           "max_dbz": {
             "10km": -32,
             "25km": -32,
-            "50km": -2
+            "50km": -32
           },
           "nearest_35dbz_km": null
         },
         {
-          "time_unix": 1795658400,
-          "time_local": "2026-11-26T03:00:00+01:00",
-          "max_dbz": {
-            "10km": -32,
-            "25km": -32,
-            "50km": -2
-          },
-          "nearest_35dbz_km": null
-        },
-        {
-          "time_unix": 1795659000,
-          "time_local": "2026-11-26T03:10:00+01:00",
+          "time_unix": 1795690200,
+          "time_local": "2026-11-26T11:50:00+01:00",
           "max_dbz": {
             "10km": -32,
             "25km": -32,
@@ -185,8 +175,18 @@
           "nearest_35dbz_km": null
         },
         {
-          "time_unix": 1795659600,
-          "time_local": "2026-11-26T03:20:00+01:00",
+          "time_unix": 1795690800,
+          "time_local": "2026-11-26T12:00:00+01:00",
+          "max_dbz": {
+            "10km": -32,
+            "25km": -32,
+            "50km": -32
+          },
+          "nearest_35dbz_km": null
+        },
+        {
+          "time_unix": 1795691400,
+          "time_local": "2026-11-26T12:10:00+01:00",
           "max_dbz": {
             "10km": -32,
             "25km": -32,
@@ -201,10 +201,10 @@
       "provider": "ČHMÚ CAP",
       "active_for_point": [],
       "inspected_files": [
+        "alert_cap_50_260906.xml",
         "alert_cap_50_251032.xml",
         "alert_cap_50_241057.xml",
-        "alert_cap_50_230930.xml",
-        "alert_cap_50_220936.xml"
+        "alert_cap_50_230930.xml"
       ]
     },
     "lightning": {
@@ -316,37 +316,24 @@
       "ok": true
     },
     "radar_nowcast": {
-      "ok": true,
-      "computed_at_utc": "2026-11-26T02:26:31.888056Z",
-      "age_min": 0.6,
-      "relation": "miji_lokalitu",
-      "confidence": "medium",
-      "nearest_precip_km": 243.5,
-      "eta_min": null,
-      "motion": {
-        "bearing_deg": 45.0,
-        "compass": "SV",
-        "speed_kmh": 3.3,
-        "pair_count": 4,
-        "angle_spread_deg": 67.5,
-        "speed_spread_px_min": 0.071,
-        "phase_peak_ratio_median": 1.082
-      }
+      "ok": false,
+      "status": "stale_or_unavailable",
+      "age_min": 0.8
     },
     "chmi_radar": {
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD",
       "status": "operational",
-      "computed_at_utc": "2026-11-26T02:26:53.533653Z",
-      "latest_observed_at_utc": "2026-11-26T02:25:00Z",
+      "computed_at_utc": "2026-11-26T11:15:37.108219Z",
+      "latest_observed_at_utc": "2026-11-26T11:10:00Z",
       "max_age_min": 20.0,
       "products": {
         "maxz": {
           "ok": true,
           "product": "maxz",
-          "source_file": "T_PABV23_C_OKPR_20261126022500.hdf",
-          "observed_at_utc": "2026-11-26T02:25:00Z",
-          "age_min": 1.9,
+          "source_file": "T_PABV23_C_OKPR_20261126111000.hdf",
+          "observed_at_utc": "2026-11-26T11:10:00Z",
+          "age_min": 5.6,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -365,16 +352,16 @@
             "max_dbz_10km": null,
             "max_dbz_25km": null,
             "max_dbz_50km": null,
-            "nearest_35dbz_km": null,
+            "nearest_35dbz_km": 288.5,
             "point_dbz": null
           }
         },
         "pseudocappi2km": {
           "ok": true,
           "product": "pseudocappi2km",
-          "source_file": "T_PANV23_C_OKPR_20261126022500.hdf",
-          "observed_at_utc": "2026-11-26T02:25:00Z",
-          "age_min": 1.9,
+          "source_file": "T_PANV23_C_OKPR_20261126111000.hdf",
+          "observed_at_utc": "2026-11-26T11:10:00Z",
+          "age_min": 5.6,
           "quantity": "DBZH",
           "grid_shape": [
             378,
@@ -393,7 +380,7 @@
             "max_dbz_10km": null,
             "max_dbz_25km": null,
             "max_dbz_50km": null,
-            "nearest_35dbz_km": null,
+            "nearest_35dbz_km": 290.8,
             "point_dbz": null
           }
         }
@@ -402,7 +389,7 @@
     "chmi_radar_forecast": {
       "ok": true,
       "provider": "ČHMÚ OpenData / CZRAD COTREC",
-      "age_min": 2.1,
+      "age_min": 5.9,
       "chmi_arrival_lead_min": null,
       "chmi_strong_arrival_lead_min": null,
       "peak_dbz_25km_next60": null,
@@ -414,5 +401,5 @@
   },
   "method_note": "Deterministic local rules first; AI may explain these outputs but does not invent the warning state. Thresholds will be calibrated against the local archive over time.",
   "safety_note": "This is an experimental local observatory, not a replacement for official emergency warnings.",
-  "_fingerprint": "4e0309dfc15be3600d9f0c9462f7880c1bd3ff30ae8caae3fa8a4d5268fc6f81"
+  "_fingerprint": "b1ba09d2b589084b415c1f6f6764b0d8da0b551af84462aaadd7f0809d3891aa"
 }
