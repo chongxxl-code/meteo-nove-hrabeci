@@ -52,7 +52,7 @@ jobs:
       - name: Ensure health UI is linked
         run: python scripts/apply_health_ui.py
       - name: Test fail-closed heating and forecast gates
-        run: python -m unittest discover -s tests -p 'test_heating_stale_gates.py' -v
+        run: python -m unittest discover -s tests -p 'test_heating_*.py' -v
       - name: Collect Nové Hraběcí forecast snapshot
         run: python scripts/collect_weather.py
       - name: Fallback collect CHMI observations

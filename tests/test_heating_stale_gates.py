@@ -60,5 +60,49 @@ class StaleHeatingGateTests(unittest.TestCase):
         self.assertFalse(audit.passive_forecast_publication_is_safe(model))
 
 
+    def test_dynamic_reference_15_c_is_more_expensive_than_7_c(self):
+        from datetime import datetime, timedelta
+        from zoneinfo import ZoneInfo
+        start = datetime(2026, 11, 28, 8, 0, tzinfo=ZoneInfo("Europe/Prague"))
+        times = [(start + timedelta(hours=h)).isoformat() for h in range(1, 26)]
+        snapshot = {"models": {
+            "chmi": {"time": times, "temperature_2m": [-5.0] * len(times)},
+            "ec": {"time": times, "temperature_2m": [-4.0] * len(times)},
+        }}
+        prior = {"w_per_k": {"low": 172.9, "central": 230.5, "high": 345.7}}
+        def reference(setpoint, **opts):
+            return thermal.live_setpoint_maintenance_reference(
+                {"latest_setpoint_c": setpoint, "dp2_raw": opts.get("mode", "manual")},
+                snapshot, start, prior, 0.995, 4.39393,
+                opts.get("connected", True), opts.get("forecast_fresh", True),
+            )
+        seven = reference(7)
+        fifteen = reference(15)
+        self.assertIsNotNone(fifteen)
+        self.assertEqual(fifteen["setpoint_c"], 15)
+        self.assertGreater(fifteen["estimated_cost_czk"]["central"], seven["estimated_cost_czk"]["central"])
+        self.assertGreater(fifteen["estimated_cost_czk"]["high"], fifteen["estimated_cost_czk"]["low"])
+        self.assertFalse(fifteen["actual_consumption_measured"])
+        self.assertFalse(fifteen["actual_cost_estimate_available"])
+        self.assertIsNone(reference(None))
+        self.assertIsNone(reference(15, mode="off"))
+        self.assertIsNone(reference(15, connected=False))
+        self.assertIsNone(reference(15, forecast_fresh=False))
+
+    def test_dynamic_reference_requires_two_continuous_forecasts(self):
+        from datetime import datetime, timedelta
+        from zoneinfo import ZoneInfo
+        start = datetime(2026, 11, 28, 8, 0, tzinfo=ZoneInfo("Europe/Prague"))
+        times = [(start + timedelta(hours=h)).isoformat() for h in range(1, 26)]
+        snapshot = {"models": {"chmi": {"time": times, "temperature_2m": [-4.0] * len(times)}}}
+        result = thermal.live_setpoint_maintenance_reference(
+            {"latest_setpoint_c": 15, "dp2_raw": "manual"}, snapshot, start,
+            {"w_per_k": {"low": 172.9, "central": 230.5, "high": 345.7}},
+            0.995, 4.39393, True, True,
+        )
+        self.assertIsNone(result)
+
+
+
 if __name__ == "__main__":
     unittest.main()

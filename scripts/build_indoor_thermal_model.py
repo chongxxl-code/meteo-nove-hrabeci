@@ -1395,6 +1395,58 @@ def latest_for_current_heating(latest, current_indoor):
     return safe
 
 
+
+def live_setpoint_maintenance_reference(latest, snapshot, start_local, prior, efficiency, price, boiler_connected, forecast_fresh):
+    """Uncalibrated steady-state cost at a FRESH EMOS setpoint, never actual boiler consumption."""
+    setpoint = as_float((latest or {}).get("latest_setpoint_c"))
+    mode = str((latest or {}).get("dp2_raw") or "").lower()
+    if (
+        not boiler_connected or not forecast_fresh
+        or setpoint is None or not 5.0 <= setpoint <= 30.0
+        or mode not in {"manual", "auto", "temporary", "boost"}
+        or prior is None or price is None or price <= 0 or efficiency <= 0
+    ):
+        return None
+
+    coverage = forecast_continuity(snapshot, start_local, 24)
+    if not coverage.get("ok") or len(coverage.get("valid_models") or []) < 2:
+        return None
+    degrees = forecast_degree_hours(snapshot, start_local, setpoint, 24)
+    if set(degrees) != set(coverage["valid_models"]):
+        return None
+    values = [float(item["degree_hours_kh"]) for item in degrees.values()]
+    heat_loss = prior["w_per_k"]
+    low_kwh = energy_from_degree_hours(min(values), as_float(heat_loss["low"]), efficiency)
+    mid_kwh = energy_from_degree_hours(median(values), as_float(heat_loss["central"]), efficiency)
+    high_kwh = energy_from_degree_hours(max(values), as_float(heat_loss["high"]), efficiency)
+    if any(v is None or not math.isfinite(v) for v in (low_kwh, mid_kwh, high_kwh)):
+        return None
+    return {
+        "status": "uncalibrated_steady_state_reference",
+        "setpoint_c": rounded(setpoint, 1),
+        "horizon_hours": 24,
+        "start_timestamp_local": start_local.isoformat(),
+        "weather_models": sorted(degrees),
+        "degree_hours_by_model": degrees,
+        "estimated_electricity_kwh": {
+            "low": rounded(low_kwh, 1),
+            "central": rounded(mid_kwh, 1),
+            "high": rounded(high_kwh, 1),
+        },
+        "estimated_cost_czk": {
+            "low": rounded(low_kwh * price, 0),
+            "central": rounded(mid_kwh * price, 0),
+            "high": rounded(high_kwh * price, 0),
+        },
+        "price_czk_per_kwh": rounded(price, 5),
+        "method": "boiler-sized heat-loss prior × forecast heating degree-hours / boiler efficiency",
+        "assumption": "Target is held steadily for 24 hours; uses NT variable price only and does not model warm-up, active relay cycles, wood heating or unverified HDO wiring.",
+        "actual_consumption_measured": False,
+        "actual_cost_estimate_available": False,
+        "heating_control_use": False,
+    }
+
+
 def build_heating_energy_model(latest, fit=None, prediction_ready=False):
     profile, state = load_house_energy_context()
     cfg = profile.get("heating_energy_model") if isinstance(profile, dict) else {}
@@ -1418,6 +1470,15 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False):
     start_local = (start_dt.astimezone(TZ) if start_dt else datetime.now(TZ))
     snapshot = load_latest_forecast_snapshot()
     hdo_context = build_hdo_context(start_local, 24)
+    status = load_json(DATA / "status.json", {})
+    last_forecast = parse_dt(status.get("collected_at_utc"))
+    forecast_age_seconds = (datetime.now(timezone.utc) - last_forecast).total_seconds() if last_forecast else None
+    forecast_fresh = forecast_age_seconds is not None and -300 <= forecast_age_seconds <= 6 * 3600
+    current_setpoint_reference = live_setpoint_maintenance_reference(
+        latest, snapshot, start_local, prior, efficiency, price,
+        (state.get("electric_boiler") or {}).get("mains_power") == "connected",
+        forecast_fresh,
+    )
     degree_by_model = forecast_degree_hours(snapshot, start_local, target_c, 24)
     dh_values = [as_float(item.get("degree_hours_kh")) for item in degree_by_model.values()]
     dh_values = [value for value in dh_values if value is not None]
@@ -1503,6 +1564,7 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False):
         "status": "provisional_physics_prior",
         "absolute_energy_scale_calibrated": False,
         "tempering_setpoint_c": target_c,
+        "current_setpoint_maintenance_24h": current_setpoint_reference,
         "thermostat_hysteresis_c": hysteresis_c,
         "expected_thermostat_band_c": band,
         "boiler_efficiency_fraction": rounded(efficiency, 4),
