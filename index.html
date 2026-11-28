@@ -211,6 +211,7 @@ function renderEnergyCard(){
  const sampleTime=Date.parse(indoorLatest?.last_timestamp||'');
  const sampleAgeMs=Date.now()-sampleTime;
  const sensorFresh=!offline&&Number.isFinite(sampleTime)&&sampleAgeMs>=-300000&&sampleAgeMs<=45*60000;
+ const recentRecordedSetpoint=Number.isFinite(sampleTime)&&sampleAgeMs>=-300000&&sampleAgeMs<=24*3600000;
  const mains=houseState?.electric_boiler?.mains_power;
  const set=indoorLatest?.latest_setpoint_c==null?NaN:Number(indoorLatest.latest_setpoint_c);
  const inside=indoorLatest?.latest_indoor_c==null?NaN:Number(indoorLatest.latest_indoor_c);
@@ -222,7 +223,7 @@ function renderEnergyCard(){
  const modelAge=Date.now()-modelTime;
  const modelFresh=Number.isFinite(modelTime)&&modelAge>=-300000&&modelAge<=180*60000;
  const c=reference?.estimated_cost_czk;
- const usable=mains==='connected'&&sensorFresh&&modelFresh
+ const usable=mains==='connected'&&recentRecordedSetpoint&&modelFresh
    &&reference?.status==='uncalibrated_steady_state_reference'
    &&Number.isFinite(set)&&Number.isFinite(Number(reference?.setpoint_c))
    &&Math.abs(set-Number(reference.setpoint_c))<=0.15
@@ -254,7 +255,7 @@ function renderEnergyCard(){
 
  if(usable){
   const kwh=Number(reference?.estimated_electricity_kwh?.central);
-  $('energyNote').textContent='Při nastavených '+sp+' a aktuální předpovědi: orientační ustálené udržování ~'+Math.round(Number(c.central))+' Kč / 24 h'
+  $('energyNote').textContent='Při '+(sensorFresh?'aktuálně':'naposledy')+' zaznamenaném nastavení '+sp+' (měření před '+indoorAge(indoorLatest?.last_timestamp)+') a aktuální předpovědi: orientační ustálené udržování ~'+Math.round(Number(c.central))+' Kč / 24 h'
     +' (rozpětí '+Math.round(Number(c.low))+'–'+Math.round(Number(c.high))+' Kč'
     +(Number.isFinite(kwh)?', střed '+round(kwh,1)+' kWh':'')+'). '
     +'Jde o předběžnou fyzikální REFERENCI, nikoliv skutečnou spotřebu ani slíbené náklady na příští den. '
