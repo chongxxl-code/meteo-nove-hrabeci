@@ -1484,7 +1484,7 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False, last_kn
         forecast_fresh and recent_last_known_setpoint,
     )
     if current_setpoint_reference is not None:
-        current_setpoint_reference["setpoint_observed_at_utc"] = utc_iso(last_setpoint_observed)
+        current_setpoint_reference["setpoint_observed_at_utc"] = last_setpoint_observed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
         current_setpoint_reference["setpoint_currently_verified"] = last_known_emos is latest
         current_setpoint_reference["setpoint_age_minutes_at_calculation"] = rounded(setpoint_age_seconds / 60, 1)
     degree_by_model = forecast_degree_hours(snapshot, start_local, target_c, 24)
