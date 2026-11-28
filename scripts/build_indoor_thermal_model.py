@@ -1400,6 +1400,10 @@ def live_setpoint_maintenance_reference(latest, snapshot, start_local, prior, ef
     """Uncalibrated steady-state cost at a recent EMOS setpoint, never actual boiler consumption."""
     setpoint = as_float((latest or {}).get("latest_setpoint_c"))
     mode = str((latest or {}).get("dp2_raw") or "").lower()
+    state = (latest or {}).get("thermostat_state")
+    switch = (latest or {}).get("dp1_raw")
+    if state == "off" or switch is False or mode == "off":
+        return None
     if (
         not boiler_connected or not forecast_fresh
         or setpoint is None or not 5.0 <= setpoint <= 30.0

@@ -135,16 +135,23 @@ async function load(){
   const hist=data[0],latest=data[1],model=data[2],house=data[3],collector=data[4],pts=Array.isArray(hist.points)?hist.points:[];
   allIndoorPoints=pts.slice().sort((a,b)=>new Date(a.timestamp_local)-new Date(b.timestamp_local));
   const lastHist=allIndoorPoints.at(-1),latestMs=new Date(latest.last_timestamp||0).getTime(),histMs=new Date(lastHist?.timestamp_local||0).getTime();
-  const shown=lastHist&&Number.isFinite(histMs)&&(!Number.isFinite(latestMs)||histMs>latestMs)?{...latest,last_timestamp:lastHist.timestamp_local,latest_indoor_c:lastHist.indoor_c,latest_setpoint_c:lastHist.setpoint_c,dp2_raw:lastHist.dp2_raw}:latest;
+  const shown=lastHist&&Number.isFinite(histMs)&&(!Number.isFinite(latestMs)||histMs>latestMs)?{...latest,last_timestamp:lastHist.timestamp_local,latest_indoor_c:lastHist.indoor_c,latest_setpoint_c:lastHist.setpoint_c,dp2_raw:lastHist.dp2_raw,dp1_raw:typeof lastHist.dp1_raw==='boolean'?lastHist.dp1_raw:null,thermostat_state:lastHist.thermostat_state||'unknown'}:latest;
   allOutdoorPoints=await loadOutdoorHistory(shown.last_timestamp||Date.now());
   const latestOutdoor=allOutdoorPoints.length?allOutdoorPoints[allOutdoorPoints.length-1]:null;
-  el('latest').textContent=num(shown.latest_indoor_c);el('setpoint').textContent=shown.latest_setpoint_c!=null?num(shown.latest_setpoint_c)+' °C':'—';el('lasttime').textContent=fmt(shown.last_timestamp);
+  const freshTs=Date.parse(shown.last_timestamp||'');
+  const currentReading=Number.isFinite(freshTs)&&Date.now()-freshTs>=-300000&&Date.now()-freshTs<30*60000&&!deviceOffline;
+  const modeText=String(shown.dp2_raw??'').toLowerCase();
+  const off=currentReading&&(shown.thermostat_state==='off'||shown.dp1_raw===false||modeText==='off');
+  const on=currentReading&&(shown.thermostat_state==='on'||shown.dp1_raw===true)&&!off;
+  el('latest').textContent=num(shown.latest_indoor_c);
+  el('setpoint').textContent=off?'VYPNUTO':on&&shown.latest_setpoint_c!=null?num(shown.latest_setpoint_c)+' °C':'—';
+  el('lasttime').textContent=fmt(shown.last_timestamp);
   const deviceOffline=collector?.stage==='device_offline'||collector?.device_online===false;
   el('deviceState').textContent=deviceOffline?`zařízení OFFLINE · poslední data ${ageShort(shown.last_timestamp)}`:'zařízení · online / stav nepotvrzen jako offline';
   el('legendIndoor').textContent=shown.latest_indoor_c!=null?num(shown.latest_indoor_c)+' °C':'—';
-  el('legendSetpoint').textContent=shown.latest_setpoint_c!=null?num(shown.latest_setpoint_c)+' °C':'—';
+  el('legendSetpoint').textContent=off?'VYPNUTO':on&&shown.latest_setpoint_c!=null?num(shown.latest_setpoint_c)+' °C':'—';
   el('legendOutside').textContent=latestOutdoor?num(latestOutdoor.outside_c)+' °C · '+ageShort(latestOutdoor.timestamp_local)+' staré':'—';
-  const hs=shown.dp2_raw;el('dp2raw').textContent=hs==null?'—':String(hs).toUpperCase();
+  const hs=shown.dp2_raw;el('dp2raw').textContent=off?'VYPNUTO':on?(hs==null?'ZAPNUTO':String(hs).toUpperCase()):'NEOVĚŘENO';
   el('points').textContent=pts.length.toLocaleString('cs-CZ');el('source').textContent='EMOS · '+(hist.source_quality==='display_series'?'grafový backfill':hist.source_quality==='mixed'?'cloud + backfill':'cloud');
   if(pts.length){
    const vals=pts.map(x=>Number(x.indoor_c)).filter(Number.isFinite);el('min').textContent=num(Math.min.apply(null,vals))+' °C';el('max').textContent=num(Math.max.apply(null,vals))+' °C';
