@@ -449,3 +449,10 @@ h1{font-size:clamp(31px,4.6vw,45px)}
   #healthgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   #healthgrid .stat:last-child{grid-column:1/-1}
 }
+
+/* Show EMOS thermostat target prominently on the main dashboard, distinct from indoor actual. */
+.indoorsetpoint{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;margin:9px 0;background:rgba(101,216,207,.09);border:1px solid rgba(101,216,207,.42);border-radius:11px}
+.indoorsetpoint span{font-size:11px;font-weight:750;color:#c3d7dd;line-height:1.3}
+.indoorsetpoint strong{font-size:26px;line-height:1;font-weight:850;white-space:nowrap;color:#c3fff4;letter-spacing:-.03em}
+.indoorsetpoint.stale{background:rgba(255,195,107,.06);border-color:rgba(255,195,107,.35)}
+.indoorsetpoint.stale strong{color:#ffd9a1}
