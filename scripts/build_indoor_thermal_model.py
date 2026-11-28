@@ -1397,7 +1397,7 @@ def latest_for_current_heating(latest, current_indoor):
 
 
 def live_setpoint_maintenance_reference(latest, snapshot, start_local, prior, efficiency, price, boiler_connected, forecast_fresh):
-    """Uncalibrated steady-state cost at a FRESH EMOS setpoint, never actual boiler consumption."""
+    """Uncalibrated steady-state cost at a recent EMOS setpoint, never actual boiler consumption."""
     setpoint = as_float((latest or {}).get("latest_setpoint_c"))
     mode = str((latest or {}).get("dp2_raw") or "").lower()
     if (
@@ -1447,7 +1447,7 @@ def live_setpoint_maintenance_reference(latest, snapshot, start_local, prior, ef
     }
 
 
-def build_heating_energy_model(latest, fit=None, prediction_ready=False):
+def build_heating_energy_model(latest, fit=None, prediction_ready=False, last_known_emos=None):
     profile, state = load_house_energy_context()
     cfg = profile.get("heating_energy_model") if isinstance(profile, dict) else {}
     pricing = state.get("energy_pricing") if isinstance(state, dict) else {}
@@ -1474,11 +1474,19 @@ def build_heating_energy_model(latest, fit=None, prediction_ready=False):
     last_forecast = parse_dt(status.get("collected_at_utc"))
     forecast_age_seconds = (datetime.now(timezone.utc) - last_forecast).total_seconds() if last_forecast else None
     forecast_fresh = forecast_age_seconds is not None and -300 <= forecast_age_seconds <= 6 * 3600
+    last_known_emos = last_known_emos if isinstance(last_known_emos, dict) else latest
+    last_setpoint_observed = parse_dt(last_known_emos.get("last_timestamp") or last_known_emos.get("generated_at"))
+    setpoint_age_seconds = (datetime.now(timezone.utc) - last_setpoint_observed).total_seconds() if last_setpoint_observed else None
+    recent_last_known_setpoint = setpoint_age_seconds is not None and -300 <= setpoint_age_seconds <= 24 * 3600
     current_setpoint_reference = live_setpoint_maintenance_reference(
-        latest, snapshot, start_local, prior, efficiency, price,
+        last_known_emos, snapshot, start_local, prior, efficiency, price,
         (state.get("electric_boiler") or {}).get("mains_power") == "connected",
-        forecast_fresh,
+        forecast_fresh and recent_last_known_setpoint,
     )
+    if current_setpoint_reference is not None:
+        current_setpoint_reference["setpoint_observed_at_utc"] = utc_iso(last_setpoint_observed)
+        current_setpoint_reference["setpoint_currently_verified"] = last_known_emos is latest
+        current_setpoint_reference["setpoint_age_minutes_at_calculation"] = rounded(setpoint_age_seconds / 60, 1)
     degree_by_model = forecast_degree_hours(snapshot, start_local, target_c, 24)
     dh_values = [as_float(item.get("degree_hours_kh")) for item in degree_by_model.values()]
     dh_values = [value for value in dh_values if value is not None]
@@ -1653,7 +1661,8 @@ def main():
     current_prediction_ready = bool(prediction_ready and current_indoor.get("ok"))
     passive_forecast = build_passive_forecast(latest, fit) if current_prediction_ready else None
     heating_energy_model = build_heating_energy_model(
-        latest_for_current_heating(latest, current_indoor), fit, current_prediction_ready
+        latest_for_current_heating(latest, current_indoor), fit, current_prediction_ready,
+        last_known_emos=latest,
     )
     weighted_fit_shadow = weighted_passive_fit(fit_basis)
     rolling_shadow = rolling_passive_shadow_validation(fit_basis)
