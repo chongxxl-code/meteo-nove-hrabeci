@@ -20,6 +20,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: meteo-indoor-live-session
@@ -53,6 +54,7 @@ jobs:
           EMOS_LIVE_MODE: '1'
           EMOS_LIVE_HEARTBEAT_MINUTES: '30'
           EMOS_SESSION_FILE: ${{ runner.temp }}/emos-session.sid
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -e
           git config user.name "github-actions[bot]"
@@ -161,6 +163,14 @@ jobs:
               push_rc=$?
               set -e
               if [ "${push_rc}" -eq 0 ]; then
+                # GITHUB_TOKEN pushes do not activate downstream workflows.
+                # Explicit workflow_dispatch is allowed and publishes fresh
+                # EMOS status without waiting for the hourly Pages schedule.
+                if gh workflow run deploy-pages.yml --ref main; then
+                  echo "Requested Pages refresh for the new EMOS observation."
+                else
+                  echo "Pages dispatch failed; hourly deploy remains a fallback."
+                fi
                 return 0
               fi
               if [ "${push_rc}" -eq 88 ]; then
