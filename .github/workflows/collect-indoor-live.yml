@@ -2,12 +2,12 @@ name: Collect EMOS indoor live
 
 on:
   schedule:
-    # Keep one long-lived session for ~5.5 h. Trigger a replacement every hour
+    # Keep one long-lived session for ~5.5 h. Check every 15 minutes
     # so one fresh run is normally already pending when the active session ends.
     # The concurrency group below still allows only one active EMOS session.
-    # New hourly triggers replace the older pending run instead of creating
+    # New triggers replace the older pending run instead of creating
     # parallel logins; cloud-history overlap backfills any remaining short gap.
-    - cron: '11 * * * *'
+    - cron: '3,18,33,48 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -40,6 +40,8 @@ jobs:
           python-version: '3.13'
       - name: Install live radar dependencies
         run: pip install --disable-pip-version-check numpy pillow
+      - name: Validate EMOS switch-state interpretation
+        run: python -m unittest discover -s tests -p test_indoor_switch_state.py -v
       - name: Collect EMOS indoor every 7 minutes
         env:
           EMOS_USERNAME: ${{ secrets.EMOS_USERNAME }}

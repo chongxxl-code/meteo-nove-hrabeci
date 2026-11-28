@@ -304,7 +304,17 @@ def parse_timestamp(value):
         return None
 
 
-def live_snapshot_should_persist(previous, now, indoor, setpoint, dp2_raw, dp106_raw, heartbeat_minutes):
+
+def thermostat_operating_state(dp1_raw, dp2_raw):
+    """Use Tuya switch (DP1) and OFF mode (DP2), not remembered setpoint (DP3)."""
+    if isinstance(dp2_raw, str) and dp2_raw.strip().lower() == "off":
+        return "off"
+    if type(dp1_raw) is bool:
+        return "on" if dp1_raw else "off"
+    return "unknown"
+
+
+def live_snapshot_should_persist(previous, now, indoor, setpoint, dp2_raw, dp106_raw, heartbeat_minutes, dp1_raw=None):
     if not isinstance(previous, dict) or not previous:
         return True
     same_values = (
@@ -312,6 +322,7 @@ def live_snapshot_should_persist(previous, now, indoor, setpoint, dp2_raw, dp106
         and previous.get("latest_setpoint_c") == setpoint
         and str(previous.get("dp2_raw")) == str(dp2_raw)
         and str(previous.get("dp106_raw")) == str(dp106_raw)
+        and previous.get("dp1_raw") == dp1_raw
     )
     if not same_values:
         return True
@@ -723,14 +734,18 @@ def main():
 
     now = datetime.now(TZ).replace(microsecond=0)
     timestamp = now.isoformat()
+    dp1_raw = get_dp(dps, 1)
     dp2_raw = get_dp(dps, 2)
     dp106_raw = get_dp(dps, 106)
+    thermostat_state = thermostat_operating_state(dp1_raw, dp2_raw)
     point = {
         "timestamp_local": timestamp,
         "indoor_c": indoor,
         "setpoint_c": setpoint,
+        "dp1_raw": dp1_raw if type(dp1_raw) is bool else None,
         "dp2_raw": dp2_raw,
         "dp106_raw": dp106_raw,
+        "thermostat_state": thermostat_state,
         "device_online": device_online,
         "source": "EMOS/Tuya cloud snapshot",
     }
@@ -752,6 +767,7 @@ def main():
             dp2_raw,
             dp106_raw,
             heartbeat_minutes,
+            dp1_raw,
         )
     )
 
@@ -843,8 +859,10 @@ def main():
         "last_timestamp": timestamp,
         "latest_indoor_c": indoor,
         "latest_setpoint_c": setpoint,
+        "dp1_raw": dp1_raw if type(dp1_raw) is bool else None,
         "dp2_raw": dp2_raw,
         "dp106_raw": dp106_raw,
+        "thermostat_state": thermostat_state,
         "source": "EMOS/Tuya cloud snapshot",
     }
     (DATA / "indoor-latest.json").write_text(
@@ -864,8 +882,10 @@ def main():
         "ok": True,
         "indoor_c": indoor,
         "setpoint_c": setpoint,
+        "dp1_raw": dp1_raw if type(dp1_raw) is bool else None,
         "dp2_raw": dp2_raw,
         "dp106_raw": dp106_raw,
+        "thermostat_state": thermostat_state,
         "device_online": device_online,
         "connectivity_sources": connectivity_sources,
         "points": len(merged),
