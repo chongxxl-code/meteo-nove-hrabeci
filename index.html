@@ -8,7 +8,7 @@
 <section class="card chart"><div class="sect"><h2>Modely proti sobě</h2><span class="muted">teplota · příštích 24 hodin</span></div><svg id="chart" viewBox="0 0 800 280"></svg><div class="muted">● ICON-D2 &nbsp; ● ALADIN CZ &nbsp; ● ECMWF &nbsp; ● WeatherNext 2 · nativní 6h body</div></section>
 <section class="card models"><div class="sect"><h2>Zdroje</h2><span class="muted">živý stav</span></div><div class="model"><strong><span>ICON-D2</span><span id="dwd">…</span></strong><small class="muted">DWD · model · krátkodobý</small></div><div class="model"><strong><span>ALADIN CZ</span><span id="chmi">…</span></strong><small class="muted">ČHMÚ · model · 1 km</small></div><div class="model"><strong><span>ECMWF</span><span id="ec">…</span></strong><small class="muted">IFS · velkoprostorová kontrola</small></div><div class="model"><strong><span>Google WeatherNext 2</span><span id="wn">…</span></strong><small class="muted" id="wnMeta">64 členů · nativní 6 h · shadow · data Google přes <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · CC BY 4.0</small></div><div class="model"><strong><span>Google WeatherNext 3</span><a href="./weathernext3.html" class="indoorlink">historie ↗</a></strong><small class="muted">0,05° · automatický historický test · zatím bez vlivu na živou předpověď</small></div><div class="model"><strong><span>DWD Sohland · měření</span><span id="dwdObs">…</span></strong><small class="muted" id="dwdObsMeta">4,9 km · načítám stáří</small></div><div class="model"><strong><span>ČHMÚ Varnsdorf · měření</span><span id="chmiObs">…</span></strong><small class="muted" id="chmiObsMeta">16,8 km · načítám stáří</small></div></section>
 <section class="card hours"><div class="sect"><h2>Příštích 12 hodin</h2><span class="muted">4 × tříhodinové okno · konsenzus modelů</span></div><div class="hourstrip" id="hours"></div><div class="weatherimpact" id="weatherImpact">Načítám, co předpověď znamená pro dům…</div><div class="hdodock" id="hdoDock" hidden><div class="hdowide" id="hdoWide"><div class="hdostatus"><b id="hdoNow">Načítám HDO…</b><span id="hdoNext">—</span></div><div class="hdoplot" id="hdoPlot"><div class="hdoaxisrow"><div></div><div class="hdoaxis"><span>0:00</span><span>6:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div></div><div class="hdoweek" id="hdoWeek"></div><span class="hdocurrentline" id="hdoCurrentLine" aria-hidden="true"><span class="hdocurrenttime" id="hdoCurrentTime">--:--</span></span></div><div class="hdolegend"><span class="ntkey">nízký tarif</span><span class="vtkey">vysoký tarif</span></div><div class="hdometa" id="hdoMeta">Načítám denní kontrolu ČEZ…</div></div></div></section>
-<section class="card energy"><div class="sect"><h2>Temperování / energie</h2><span class="muted">dům</span></div><div class="energyhero"><b id="energyAdvice">Načítám stav domu…</b><span id="energyAdviceMeta">Předběžný tepelný model</span></div><div class="energyfacts"><div class="stat"><b id="thermostatState">—</b><span>režim EMOS</span></div><div class="stat"><b id="boilerPower">—</b><span>napájení kotle</span></div><div class="stat"><b id="energyCost">—</b><span>odhad Kč / den</span></div></div><details class="energydetails"><summary>Výpočet, cena a HDO</summary><div class="energynote" id="energyNote">Načítám ověřenou cenu elektřiny a model temperování…</div><div class="energyprinciple" id="energyPrinciple">Načítám princip temperování…</div></details></section>
+<section class="card energy"><div class="sect"><h2>Vytápění / energie</h2><span class="muted">dům</span></div><div class="energyhero"><b id="energyAdvice">Načítám stav domu…</b><span id="energyAdviceMeta">Předběžný tepelný model</span></div><div class="energyfacts"><div class="stat"><b id="thermostatState">—</b><span id="thermostatSetpointLabel">nastaveno EMOS</span></div><div class="stat"><b id="boilerPower">—</b><span>napájení kotle</span></div><div class="stat"><b id="energyCost">—</b><span>model Kč / 24 h</span></div></div><details class="energydetails"><summary>Výpočet, cena a HDO</summary><div class="energynote" id="energyNote">Načítám ověřenou cenu elektřiny a model temperování…</div><div class="energyprinciple" id="energyPrinciple">Načítám princip temperování…</div></details></section>
 <section class="card central"><div class="sect"><h2>Centrální sběr · GitHub Actions</h2><span class="muted">běží i bez otevřeného webu</span></div><div class="centralgrid"><div class="stat"><b id="snap">0</b><span>uložených snapshotů</span></div><div class="stat"><b id="last">—</b><span>poslední automatický sběr</span></div><div class="stat"><b>3 h</b><span>interval forecastového archivu</span></div><div class="stat"><b id="rvs">—</b><span>poslední radar v kolektoru</span></div></div><p class="note" id="centralnote">První automatický sběr ještě neproběhl.</p></section>
 <section class="card landscape"><div class="sect"><h2>Krajina · reliéf · voda</h2><span class="muted">ČÚZK DMR 4G · Sentinel-2 · ZABAGED</span></div><div class="landgrid"><div class="stat"><b id="landres">–</b><span>rozlišení hlavního reliéfu</span></div><div class="stat"><b id="hydroseg">–</b><span>D8 drenážních segmentů</span></div><div class="stat"><b id="hydromatch">–</b><span>shoda do 50 m se ZABAGED</span></div><div class="stat"><b id="relief">–</b><span>výškový rozsah české části</span></div></div><div class="landactions"><a class="action secondary" href="./hydrology.html">↗ Otevřít hydrologickou mapu</a><a class="action secondary" href="./zones.html">↗ Otevřít satelitní krajinné zóny</a><a class="action secondary" href="./predisposition.html">↗ Otevřít mapu predispozic</a><a class="action secondary" href="./validation.html">↗ Otevřít časovou řadu / ověřování</a><a class="action secondary" href="./calibration-lab.html">↗ Kalibrační laboratoř</a><a class="action secondary" href="./knowledge.html">↗ Co jsme se naučili</a><a class="action secondary" href="./about.html">↗ Jak to funguje</a></div><div class="note" id="landnote">Načítám terénní a hydrologickou vrstvu…</div></section>
 <section class="card risks"><div class="sect"><h2>Lokální rizika</h2><a class="risklink" href="./alerts.html">detail →</a></div><div class="riskgrid" id="riskgrid"><div class="muted">Načítám lokální varovný stav…</div></div><div class="note" id="risknote">Varování jsou počítaná přímo pro NH-REF z radaru, modelů, ČHMÚ a paměti krajiny. AI stav sama nevymýšlí.</div></section>
@@ -204,74 +204,80 @@ function renderHdoTimeline(){
  meta.textContent=`${source} · ${hdoSchedule?.primary_command||'A1B6DP01'} · kontrola 1× denně · naposledy ${checked} · placené API 0 Kč${thermal}${monitorAlert}`;
 }
 function renderEnergyCard(){
- const raw=String(indoorLatest?.dp2_raw??'').toLowerCase(),modeMap={off:'OFF',manual:'MANUAL',auto:'AUTO',temporary:'DOČASNÝ',boost:'BOOST',holiday:'DOVOLENÁ'},thermostatMode=modeMap[raw]||'—';
- const deviceOffline=indoorCollectorStatus?.stage==='device_offline'||indoorCollectorStatus?.device_online===false;
+ const raw=String(indoorLatest?.dp2_raw??'').toLowerCase();
+ const modeMap={off:'OFF',manual:'MANUAL',auto:'AUTO',temporary:'DOČASNÝ',boost:'BOOST',holiday:'DOVOLENÁ'};
+ const mode=modeMap[raw]||'—';
+ const offline=indoorCollectorStatus?.stage==='device_offline'||indoorCollectorStatus?.device_online===false;
+ const sampleTime=Date.parse(indoorLatest?.last_timestamp||'');
+ const sampleAgeMs=Date.now()-sampleTime;
+ const sensorFresh=!offline&&Number.isFinite(sampleTime)&&sampleAgeMs>=-300000&&sampleAgeMs<=45*60000;
  const mains=houseState?.electric_boiler?.mains_power;
- const pricing=houseState?.energy_pricing||{},price=Number(pricing.tempering_incremental_price_czk_per_kwh);
- const em=indoorModel?.heating_energy_model||{},steady=em?.steady_state_maintenance_24h||em?.forecast_next_24h||null,cost=steady?.incremental_cost_czk||{},kwh=steady?.electricity_kwh||{},actual=em?.actual_tempering_need_next_24h||null;
- const target=Number(em?.tempering_setpoint_c),centralCost=Number(cost.central),lowCost=Number(cost.low),highCost=Number(cost.high),actualCost=Number(actual?.incremental_cost_czk),actualKwh=Number(actual?.electricity_kwh);
- const band=Array.isArray(em?.expected_thermostat_band_c)?em.expected_thermostat_band_c.map(Number):[6,8],hCentral=Number(em?.heat_loss_prior?.w_per_k?.central),eff=Number(em?.boiler_efficiency_fraction)||1;
- const marginalDegreeCost=Number.isFinite(hCentral)&&Number.isFinite(price)?hCentral/1000*24/eff*price:NaN;
- $('thermostatState').textContent=deviceOffline?'OFFLINE':thermostatMode;
- $('boilerPower').textContent=mains==='disconnected'?'ODPOJENO':mains==='connected'?'PŘIPOJENO':'—';
- $('energyCost').textContent=!deviceOffline&&actual?.actual_cost_estimate_available===true&&Number.isFinite(actualCost)?`~${Math.round(actualCost)} Kč`:'—';
- const set=indoorLatest?.latest_setpoint_c==null?NaN:Number(indoorLatest.latest_setpoint_c),horizons=indoorModel?.passive_forecast?.horizons||[],lastH=horizons.slice().sort((a,b)=>Number(a.hours)-Number(b.hours)).at(-1),hours=Number(lastH?.hours);
- const q25=Number(lastH?.inside_q25_c),med=Number(lastH?.inside_median_c);
- if(deviceOffline){
-  $('energyAdvice').textContent='EMOS zařízení je offline · aktuální stav topení nelze ověřit';
-  $('energyAdviceMeta').textContent=`poslední platné měření ${indoorAge(indoorLatest?.last_timestamp)} · příčina může být napájení nebo spojení`;
+ const set=indoorLatest?.latest_setpoint_c==null?NaN:Number(indoorLatest.latest_setpoint_c);
+ const inside=indoorLatest?.latest_indoor_c==null?NaN:Number(indoorLatest.latest_indoor_c);
+ const em=indoorModel?.heating_energy_model||{};
+ const price=Number(houseState?.energy_pricing?.tempering_incremental_price_czk_per_kwh);
+ const target=Number(em?.tempering_setpoint_c);
+ const reference=em?.current_setpoint_maintenance_24h;
+ const modelTime=Date.parse(indoorModel?.generated_at||'');
+ const modelAge=Date.now()-modelTime;
+ const modelFresh=Number.isFinite(modelTime)&&modelAge>=-300000&&modelAge<=180*60000;
+ const c=reference?.estimated_cost_czk;
+ const usable=mains==='connected'&&sensorFresh&&modelFresh
+   &&reference?.status==='uncalibrated_steady_state_reference'
+   &&Number.isFinite(set)&&Number.isFinite(Number(reference?.setpoint_c))
+   &&Math.abs(set-Number(reference.setpoint_c))<=0.15
+   &&c?.low!=null&&c?.central!=null&&c?.high!=null
+   &&[c.low,c.central,c.high].every(v=>Number.isFinite(Number(v)))
+   &&Number(c.low)<=Number(c.central)&&Number(c.central)<=Number(c.high);
+ const sp=Number.isFinite(set)?round(set)+' °C':'—';
+ $('thermostatState').textContent=sp;
+ $('thermostatSetpointLabel').textContent=sensorFresh?'nastaveno EMOS':'poslední nastavení';
+ $('boilerPower').textContent=mains==='connected'?'PŘIPOJENO':mains==='disconnected'?'ODPOJENO':'—';
+ $('energyCost').textContent=usable?'~'+Math.round(Number(c.central))+' Kč':'—';
+
+ if(offline){
+  $('energyAdvice').textContent='EMOS offline · aktuální nastavení nelze ověřit';
+  $('energyAdviceMeta').textContent='poslední měření '+indoorAge(indoorLatest?.last_timestamp);
+ }else if(!sensorFresh){
+  $('energyAdvice').textContent='Měření EMOS je zastaralé · cena není aktuální';
+  $('energyAdviceMeta').textContent='poslední nastavení '+sp+' · měření před '+indoorAge(indoorLatest?.last_timestamp);
  }else if(mains==='disconnected'){
-  if(Number.isFinite(set)&&Number.isFinite(q25)&&q25>set&&Number.isFinite(hours)){
-   $('energyAdvice').textContent=`Temperování zatím nebude potřeba`;
-   $('energyAdviceMeta').textContent=`spodní scénář ~ ${round(q25)} °C · cíl ${round(set)} °C · elektrokotel bez napájení`;
-  }else if(Number.isFinite(set)&&Number.isFinite(med)&&med>set&&Number.isFinite(hours)){
-   $('energyAdvice').textContent=`Temperování zatím nebude potřeba`;
-   $('energyAdviceMeta').textContent=`${hours} h ~ ${round(med)} °C · cíl ${round(set)} °C · elektrokotel bez napájení`;
-  }else{
-   $('energyAdvice').textContent='Elektrokotel je fyzicky odpojený · zatím jen sledujeme dům';
-   $('energyAdviceMeta').textContent=`EMOS režim ${thermostatMode} · DP2 je režim, ne stav relé`;
-  }
+  $('energyAdvice').textContent='Termostat '+sp+' · kotel bez napájení';
+  $('energyAdviceMeta').textContent='režim '+mode+' · elektrický provoz kotle se neodhaduje';
  }else if(mains==='connected'){
-  $('energyAdvice').textContent='Kotel má napájení · stav požadavku topení zatím není z cloudu spolehlivě identifikovaný';
-  $('energyAdviceMeta').textContent=`režim EMOS ${thermostatMode}${Number.isFinite(set)?` · termostat nastaven na ${round(set)} °C`:''}${Number.isFinite(set)&&Number.isFinite(target)&&Math.abs(set-target)>0.15?` · referenční temperování ${round(target)} °C (jiný režim)`:''} · DP106 není binární stav relé`;
+  $('energyAdvice').textContent='Termostat nastaven na '+sp+(Number.isFinite(inside)?' · uvnitř '+round(inside)+' °C':'');
+  $('energyAdviceMeta').textContent='kotel připojen · režim '+mode+' · skutečné sepnutí není ověřeno';
  }else{
-  $('energyAdvice').textContent='Načítám stav kotle a termostatu…';
-  $('energyAdviceMeta').textContent='Termostat z EMOS · napájení z provozního stavu domu';
+  $('energyAdvice').textContent='Termostat '+sp+' · stav napájení kotle neověřen';
+  $('energyAdviceMeta').textContent='režim EMOS '+mode;
  }
- const refs=Array.isArray(em?.reference_daily_costs)?em.reference_daily_costs:[],r0=refs.find(x=>Number(x.outside_c)===0),rm5=refs.find(x=>Number(x.outside_c)===-5);
- const currentPriceSource=pricing?.current_variable_price_czk_per_kwh_vat?.source||'aktuální ceník 2026';
- if(Number.isFinite(price)){
-  let note='';
-  if(actual?.actual_cost_estimate_available===true&&Number.isFinite(actualCost)){
-   note=`Modelová potřeba temperování pro příštích 24 h při aktuálním setpointu a dostupné předpovědi: ~${Math.round(actualCost)} Kč${Number.isFinite(actualKwh)?` (~${round(actualKwh,1)} kWh)`:''}.`;
-  }else if(actual?.status==='threshold_crossing_predicted'){
-   note='Model předpokládá možné dosažení spodní meze hystereze během 24 h, ale spotřebu aktivního topného cyklu zatím poctivě nevyčísluje — chybí zimní kalibrace topení.';
-  }else if(actual?.status==='learning_threshold_timing'){
-   note='Skutečný odběr příštích 24 h zatím nelze spolehlivě vyčíslit: venkovní teplota může klesnout pod spodní mez a pasivní model ještě nemá dost nočních oken.';
-  }else if(actual?.status==='nonstandard_current_setpoint'){
-   note='Aktuální setpoint termostatu se liší od standardního temperování 7 °C, takže systém záměrně neukazuje 0 kWh ani cenu podle pásma 6–8 °C.';
-  }else if(actual?.status==='forecast_continuity_insufficient'){
-   note='Předpověď venkovní teploty nemá dostatečně souvislé pokrytí pro bezpečné tvrzení o nulové potřebě topení; číselný odhad je záměrně skrytý.';
-  }else if(actual?.status==='current_setpoint_unverified'){
-   note='Aktuální setpoint termostatu není ověřený, proto systém záměrně nevyčísluje spotřebu temperování.';
-  }else{
-   note='Skutečný odběr příštích 24 h zatím není dostatečně podložený pro číselný odhad.';
-  }
-  note+=` Aktuální proměnná cena NT je ${price.toFixed(2).replace('.',',')} Kč/kWh vč. DPH (${currentPriceSource}).`;
-  if(Number.isFinite(centralCost)){
-   const steadyRange=Number.isFinite(lowCost)&&Number.isFinite(highCost)&&Math.round(lowCost)!==Math.round(highCost)?`${Math.round(lowCost)}–${Math.round(highCost)} Kč`:`${Math.round(centralCost)} Kč`;
-   note+=` Ustálené udržování ${Number.isFinite(target)?round(target):7} °C při dnešní 24h předpovědi má pouze referenční fyzikální hodnotu ${steadyRange}/24 h; není to automaticky skutečná spotřeba od této chvíle.`;
-  }
-  if(r0?.cost_czk_per_day?.central!=null&&rm5?.cost_czk_per_day?.central!=null)note+=` Po dosažení temperovacího pásma vychází střední reference při 0 °C venku ~${Math.round(Number(r0.cost_czk_per_day.central))} Kč/den, při −5 °C ~${Math.round(Number(rm5.cost_czk_per_day.central))} Kč/den.`;
-  note+=' Absolutní kWh škála je zatím předběžná a bude se zpřesňovat zimními daty.';
-  $('energyNote').textContent=note;
+
+ if(usable){
+  const kwh=Number(reference?.estimated_electricity_kwh?.central);
+  $('energyNote').textContent='Při nastavených '+sp+' a aktuální předpovědi: orientační ustálené udržování ~'+Math.round(Number(c.central))+' Kč / 24 h'
+    +' (rozpětí '+Math.round(Number(c.low))+'–'+Math.round(Number(c.high))+' Kč'
+    +(Number.isFinite(kwh)?', střed '+round(kwh,1)+' kWh':'')+'). '
+    +'Jde o předběžnou fyzikální REFERENCI, nikoliv skutečnou spotřebu ani slíbené náklady na příští den. '
+    +'Model nezná sepnutí kotle, spotřebu elektroměru, vytápění kamny, cykly termostatu ani skutečné HDO blokování. '
+    +'Počítá s cenou NT '+(Number.isFinite(price)?price.toFixed(2).replace('.',','):'—')+' Kč/kWh včetně DPH bez fixních plateb. '
+    +'Skutečnou cenu zjistíme až z naměřených kWh nebo samostatného měření kotle.';
+ }else if(mains==='connected'&&sensorFresh&&raw==='off'){
+  $('energyNote').textContent='EMOS hlásí režim OFF. Poslední nastavená teplota '+sp+' se proto nepoužívá pro model běžného vytápění. Skutečné sepnutí kotle není ověřené.';
+ }else if(mains==='connected'&&sensorFresh){
+  $('energyNote').textContent='Nastaveno '+sp+'. Orientační náklady se zobrazí po výpočtu souvislé 24hodinové předpovědi nejméně ze dvou modelů. '
+    +'Zatím nelze používat starý cenový odhad pro referenčních 7 °C jako cenu dnešního topení.';
  }else{
-  $('energyNote').textContent='Cena nebo energetický model nejsou momentálně dostupné.';
+  $('energyNote').textContent='Čekám na aktuální měření EMOS, potvrzení napájení a dostatečně čerstvý cenový model. Staré údaje nepoužívám jako živý odhad.';
  }
- const bp=Number.isFinite(band[0])&&Number.isFinite(band[1])?`${round(band[0])}–${round(band[1])} °C`:'6–8 °C';
- let principle=`<b>Princip:</b> cíl ${Number.isFinite(target)?round(target):7} °C se neudržuje na desetinu; EMOS využívá hysterezi ${bp} a tepelnou setrvačnost domu. Kotel při sepnutí vytápí celý dům jako jednu zónu.`;
- if(Number.isFinite(marginalDegreeCost))principle+=` V ustáleném předběžném modelu znamená každý další 1 °C uvnitř při chladném počasí přibližně +${Math.round(marginalDegreeCost)} Kč/den; není to ještě měřená tepelná ztráta.`;
- principle+=' <b>Ekonomika + ekologie:</b> D45d neznamená levnou noc; kotel má využívat skutečná HDO okna. Priorita je bezpečí domu, minimum kWh a využití akumulace; před HDO blokem se má přitopit jen tehdy, když to předpověď skutečně vyžaduje. Dokud nemáme spolehlivou hodinovou uhlíkovou intenzitu české sítě, ekologická optimalizace znamená hlavně nespotřebovat zbytečnou elektřinu. Až bude uhlíková intenzita dostupná, mezi stejně bezpečnými NT okny se preferuje čistší elektřina. <b>Teplota dole je jediná řídicí i modelová reference.</b> Dům se při temperování řídí jako jedna topná zóna; rozdíly mezi místnostmi používáme pouze jako kontext pro chování a tepelné ztráty domu.';
+ const band=Array.isArray(em?.expected_thermostat_band_c)?em.expected_thermostat_band_c.map(Number):[6,8];
+ const bp=Number.isFinite(band[0])&&Number.isFinite(band[1])?round(band[0])+'–'+round(band[1])+' °C':'6–8 °C';
+ const hCentral=Number(em?.heat_loss_prior?.w_per_k?.central),eff=Number(em?.boiler_efficiency_fraction)||1;
+ const marginal=Number.isFinite(hCentral)&&Number.isFinite(price)?hCentral/1000*24/eff*price:NaN;
+ let principle='<b>Princip:</b> aktuální setpoint čteme z EMOS; model počítá tepelné ztráty domu pro tento cíl, pokud je měření čerstvé. ';
+ if(Number.isFinite(target))principle+='Staré temperování na '+round(target)+' °C (pásmo '+bp+') je samostatná reference, nikoliv aktuální nastavení. ';
+ principle+='Tepelná ztráta domu je předběžně odvozena ze štítkového výkonu kotle, ne z měřené spotřeby. ';
+ if(Number.isFinite(marginal))principle+='Každý 1 °C dlouhodobě držené teploty navíc stojí v tomto zimním modelu přibližně '+Math.round(marginal)+' Kč za 24 h. ';
+ principle+='<b>Bezpečnost:</b> DP2 je pouze režim termostatu a DP106 není prokázaný stav relé. HDO blokování nemáme fyzicky ověřené; teplotu měříme jen dole. Meteo kotel automaticky neovládá.';
  $('energyPrinciple').innerHTML=principle;
  renderHdoTimeline();
 }
